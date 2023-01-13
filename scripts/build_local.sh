@@ -4,5 +4,5 @@ mkdir ./_build/
 mkdir ./_build/html/
 mkdir ./_build/html/_images
 python ./scripts/process_notebooks.py
-jb build ../data-and-computing/
+jb build ../optimization/
 open ./_build/html/index.html

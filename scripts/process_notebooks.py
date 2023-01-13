@@ -52,7 +52,7 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
     replace_code(HIDDEN_TESTS, "# Removed autograder test. You may delete this cell.")
     
     OLD_DATA_PATH = "../data/"
-    NEW_DATA_PATH = "https://raw.githubusercontent.com/ndcbe/data-and-computing/main/notebooks/data/"    
+    NEW_DATA_PATH = "https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/data/"    
     replace_code(OLD_DATA_PATH, NEW_DATA_PATH)
     
     ## Replace elements in markdown cells
@@ -102,7 +102,7 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
     # 2022-09-21: removed "!" from the beginning both of these expressions to also work on handouts (pdf) in media folder
     # 2022-09-21: the use case is the error propagation handout
     MEDIA_LINK = '\[(.*)\]\(\.\./\.\./media/(.*\..*)\)'
-    IMAGE_LINK = r'[\1](https://ndcbe.github.io/data-and-computing/_images/\2)'
+    IMAGE_LINK = r'[\1](https://ndcbe.github.io/optimization/_images/\2)'
     
     for cell in nb.cells:
         if cell.cell_type == "markdown":
@@ -135,7 +135,7 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
 IMPORTANT. We assume the source files are in XX-dev and the new files go into XX.
 The list below is just values for XX.
 """
-folders = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16","contrib"]
+folders = ["1", "2", "3", "4", "5"]
 
 for fld in folders:
     
@@ -152,4 +152,18 @@ for fld in folders:
             
             # process the notebook!
             process_notebook(full_folder_name_original, full_folder_name_new, file, verbose=1)
-            
+
+"""
+Process assignments which are in a private repo
+"""
+# Loop over filenames
+full_folder_name_original = "../optimization-private/assignments/"
+full_folder_name_new = "./notebooks/assignments/"
+
+for file in sorted(os.listdir(full_folder_name_original)):
+    
+    # Check if file is a notebook using ending
+    if re.match("(.*?)\.ipynb$", file):
+        
+        # process the notebook!
+        process_notebook(full_folder_name_original, full_folder_name_new, file, verbose=1)

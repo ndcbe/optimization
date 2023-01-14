@@ -154,7 +154,7 @@ The following policy will apply to all assignments (homework, projects, etc.):
 * 48 to 72 hours: 30% penalty of total available points
 * Beyond 72 hours: assignment not accepted
 
-If there is an extenuating circumstance, please email the instructor with CBE 60258 in the subject. Please send your requests for extensions at least 24 hours in advance of the deadline (unless your specific circumstance prevents this). When requesting an extension, please briefly explain the extenuating circumstance and propose an alternate deadline.
+If there is an extenuating circumstance, please **email the instructor with 60499 or 40499 in the subject**. Please send your requests for extensions at least 24 hours in advance of the deadline (unless your specific circumstance prevents this). When requesting an extension, please briefly explain the extenuating circumstance and propose an alternate deadline.
 
 ## Software
 

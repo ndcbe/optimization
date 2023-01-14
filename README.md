@@ -1,8 +1,8 @@
-# Welcome to (Advanced) Data and Computing!
+# Welcome Nonlinear and Stochastic Optimization
 
-CBE 20258 and CBE 60258 at U. Notre Dame
+CBE/ACMS 40499 and 60499 at U. Notre Dame
 
-https://ndcbe.github.io/data-and-computing/
+https://ndcbe.github.io/optimization
 
 
 ## Configuring local environment to contribute

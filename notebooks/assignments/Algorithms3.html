@@ -1,0 +1,1646 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Algorithms Homework 3 &#8212; Nonlinear and Stochastic Optimization</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Algorithms Homework 4: Interior Point Methods" href="Algorithms4.html" />
+    <link rel="prev" title="Algorithms Homework 2" href="Algorithms2.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Nonlinear and Stochastic Optimization</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../intro.html">
+   Nonlinear and Stochastic Optimization
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Organinization
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../org/intro.html">
+   Welcome
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../org/syllabus.html">
+     Syllabus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../org/calendar.html">
+     Calendar
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../../org/assignments.html">
+   Assignments
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pyomo1.html">
+     Pyomo Homework 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pyomo2.html">
+     Pyomo Homework 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pyomo3.html">
+     Pyomo Homework 3
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pyomo-Mini-Project.html">
+     Pyomo Mini-Project: Receding Horizon Stochastic Control
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Algorithms1.html">
+     Algorithms Homework 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Algorithms2.html">
+     Algorithms Homework 2
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Algorithms Homework 3
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Algorithms4.html">
+     Algorithms Homework 4: Interior Point Methods
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Optimization Modeling in Pyomo
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../1/getting-started.html">
+   1. Getting Started with Pyomo
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../1/Pyomo-Introduction.html">
+     1.1. Your First Optimization Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">
+     1.2. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/notebooks/assignments/Algorithms3.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/ndcbe/optimization"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/assignments/Algorithms3.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/ndcbe/optimization/master?urlpath=tree/notebooks/assignments/Algorithms3.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <a class="colab-button" href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/assignments/Algorithms3.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pseudocode">
+   Pseudocode
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#unconstrained-nlp-algorithm-in-python">
+   Unconstrained NLP Algorithm in Python
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#library-of-helper-functions">
+     Library of Helper Functions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#main-function">
+     Main Function
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#feature-status">
+     Feature Status
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#sr1">
+       SR1
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#bfgs">
+       BFGS
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#line-search">
+       Line Search
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#trust-region">
+       Trust Region
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#benchmark-tests">
+   Benchmark Tests
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#quadratic-test-problem">
+     Quadratic Test Problem
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#benchmark-cases">
+       Benchmark Cases
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#discussion-and-analysis">
+       Discussion and Analysis
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#one-dimensional-example">
+     One-Dimensional Example
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#benchmark-cases-with-x-0-3">
+       Benchmark Cases with
+       <span class="math notranslate nohighlight">
+        \(x_0 = -3\)
+       </span>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#discussion">
+       Discussion
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#benchmark-case-with-x-0-0">
+     Benchmark Case with
+     <span class="math notranslate nohighlight">
+      \(x_0 = 0\)
+     </span>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id1">
+       Discussion
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#return-of-example-2-19">
+     Return of Example 2.19
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#benchmark-with-x-0-near-solution">
+       Benchmark with
+       <span class="math notranslate nohighlight">
+        \(x_0\)
+       </span>
+       Near Solution
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id2">
+       Discussion
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#benchmark-with-x-0-far-from-the-solution">
+       Benchmark with
+       <span class="math notranslate nohighlight">
+        \(x_0\)
+       </span>
+       Far From the Solution
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id3">
+       Discussion
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Algorithms Homework 3</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pseudocode">
+   Pseudocode
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#unconstrained-nlp-algorithm-in-python">
+   Unconstrained NLP Algorithm in Python
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#library-of-helper-functions">
+     Library of Helper Functions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#main-function">
+     Main Function
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#feature-status">
+     Feature Status
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#sr1">
+       SR1
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#bfgs">
+       BFGS
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#line-search">
+       Line Search
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#trust-region">
+       Trust Region
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#benchmark-tests">
+   Benchmark Tests
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#quadratic-test-problem">
+     Quadratic Test Problem
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#benchmark-cases">
+       Benchmark Cases
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#discussion-and-analysis">
+       Discussion and Analysis
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#one-dimensional-example">
+     One-Dimensional Example
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#benchmark-cases-with-x-0-3">
+       Benchmark Cases with
+       <span class="math notranslate nohighlight">
+        \(x_0 = -3\)
+       </span>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#discussion">
+       Discussion
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#benchmark-case-with-x-0-0">
+     Benchmark Case with
+     <span class="math notranslate nohighlight">
+      \(x_0 = 0\)
+     </span>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id1">
+       Discussion
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#return-of-example-2-19">
+     Return of Example 2.19
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#benchmark-with-x-0-near-solution">
+       Benchmark with
+       <span class="math notranslate nohighlight">
+        \(x_0\)
+       </span>
+       Near Solution
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id2">
+       Discussion
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#benchmark-with-x-0-far-from-the-solution">
+       Benchmark with
+       <span class="math notranslate nohighlight">
+        \(x_0\)
+       </span>
+       Far From the Solution
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id3">
+       Discussion
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="algorithms-homework-3">
+<h1>Algorithms Homework 3<a class="headerlink" href="#algorithms-homework-3" title="Permalink to this headline">¶</a></h1>
+<p><strong>Assignment Overview:</strong> In this assignment, we will complete the function <code class="docutils literal notranslate"><span class="pre">unconstrained_newton</span></code> which implements four Hessian options (exact, SR1 approximation, BFGS approximation, steepest descent) and three globalization strategies (none, line search, trust region). We will then compare 10 algorithm variations on three test problems.</p>
+<p>The best way to really learn the algorithms discussed in lecture is to implement them yourselves. Creating a function like <code class="docutils literal notranslate"><span class="pre">unconstrained_newton</span></code> from scratch takes a lot of time and comfort with Python. Instead, we will start with fairly complete version of <code class="docutils literal notranslate"><span class="pre">unconstrained_newton</span></code>. You will need to fill in the following details:</p>
+<ul class="simple">
+<li><p>BFGS Hessian approximation</p></li>
+<li><p>Backtracking line search with Armijo-Goldstein conditions</p></li>
+<li><p>Trust region with Powell dogleg step</p></li>
+</ul>
+<p>This assignment could take a long time, especially if you are still learning Python. Recognizing this, we will try a new grading policy for this assignment.</p>
+<p><strong>Instructions</strong>: To be eligible for full credit on the assignment, you need to:</p>
+<ol class="simple">
+<li><p>Complete all requested pseudocode</p></li>
+<li><p>Spend an honest <strong>6 hours</strong> (4 hours for CBE 40499) total working on Python implementation.</p></li>
+<li><p>Be sure to complete the <strong>Feature Status</strong> subsection.</p></li>
+<li><p>The (hopefully) correct results for the test cases are available online in this notebook. Answer the questions using these results.</p></li>
+</ol>
+<div class="section" id="pseudocode">
+<h2>Pseudocode<a class="headerlink" href="#pseudocode" title="Permalink to this headline">¶</a></h2>
+<p>After reading through the entire assignment, please prepare pseudocode for the following functions/algorithms:</p>
+<ol class="simple">
+<li><p>SR1 update (Python code is provided. Going from code to pseudocode is good practice.)</p></li>
+<li><p>BFGS update</p></li>
+<li><p>Line search</p></li>
+<li><p>Trust region</p></li>
+</ol>
+<p>Please turn in this pseudocode via Gradescope.</p>
+<p><strong>Reminder:</strong> pseudocode should not look like Python code copied to paper. Instead, pseudocode should clearly communicate the main steps of the algorithm with flow logic. Add lots of comments. It should not be programming language specific.</p>
+</div>
+<div class="section" id="unconstrained-nlp-algorithm-in-python">
+<h2>Unconstrained NLP Algorithm in Python<a class="headerlink" href="#unconstrained-nlp-algorithm-in-python" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="library-of-helper-functions">
+<h3>Library of Helper Functions<a class="headerlink" href="#library-of-helper-functions" title="Permalink to this headline">¶</a></h3>
+<p>Below is a library of helpful functions. Most of these came from in class examples.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load required Python libraries.</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">linalg</span>
+
+<span class="c1">## Check is element of array is NaN</span>
+<span class="k">def</span> <span class="nf">check_nan</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+
+<span class="c1">## Calculate gradient with central finite difference</span>
+<span class="k">def</span> <span class="nf">my_grad_approx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">eps1</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate gradient of function my_f using central difference formula</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">        x - point for which to evaluate gradient</span>
+<span class="sd">        f - function to consider</span>
+<span class="sd">        eps1 - perturbation size</span>
+<span class="sd">        </span>
+<span class="sd">    Outputs:</span>
+<span class="sd">        grad - gradient (vector)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;***** my_grad_approx at x = &quot;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="s2">&quot;*****&quot;</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+        
+        <span class="c1"># Create vector of zeros except eps in position i</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">eps1</span>
+        
+        <span class="c1"># Finite difference formula</span>
+        <span class="n">my_f_plus</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
+        <span class="n">my_f_minus</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">e</span><span class="p">)</span>
+        
+        <span class="c1"># Diagnostics</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;e[&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;] = &quot;</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f(x + e[&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;]) = &quot;</span><span class="p">,</span><span class="n">my_f_plus</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f(x - e[&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;]) = &quot;</span><span class="p">,</span><span class="n">my_f_minus</span><span class="p">)</span>
+        
+        
+        <span class="n">grad</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">my_f_plus</span> <span class="o">-</span> <span class="n">my_f_minus</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">eps1</span><span class="p">)</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;***** Done. ***** </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">grad</span>
+
+<span class="c1">## Calculate gradient using central finite difference and my_hes_approx</span>
+<span class="k">def</span> <span class="nf">my_hes_approx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">grad</span><span class="p">,</span><span class="n">eps2</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate Hessian of function my_f using central difference formula and my_grad</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">        x - point for which to evaluate gradient</span>
+<span class="sd">        grad - function to calculate the gradient</span>
+<span class="sd">        eps2 - perturbation size (for Hessian NOT gradient approximation)</span>
+<span class="sd">        </span>
+<span class="sd">    Outputs:</span>
+<span class="sd">        H - Hessian (matrix)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">])</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+        <span class="c1"># Create vector of zeros except eps in position i</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">eps2</span>
+        
+        <span class="c1"># Evaluate gradient twice</span>
+        <span class="n">grad_plus</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
+        <span class="n">grad_minus</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">e</span><span class="p">)</span>
+        
+        <span class="c1"># Notice we are building the Hessian by column (or row)</span>
+        <span class="n">H</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">grad_plus</span> <span class="o">-</span> <span class="n">grad_minus</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">eps2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">H</span>
+
+<span class="c1">## Linear algebra calculation</span>
+<span class="k">def</span> <span class="nf">xxT</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculates u*u.T to circumvent limitation with SciPy</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">    u - numpy 1D array</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    u*u.T</span>
+<span class="sd">    </span>
+<span class="sd">    Assume u is a nx1 vector.</span>
+<span class="sd">    Recall: NumPy does not distinguish between row or column vectors</span>
+<span class="sd">    </span>
+<span class="sd">    u.dot(u) returns a scalar. This functon returns an nxn matrix.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">A</span>
+
+<span class="c1">## Analyze Hessian</span>
+<span class="k">def</span> <span class="nf">analyze_hes</span><span class="p">(</span><span class="n">B</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="n">l</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Eigenvalues: &quot;</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="main-function">
+<h3>Main Function<a class="headerlink" href="#main-function" title="Permalink to this headline">¶</a></h3>
+<p>Below is the main function. You need to complete details in four functions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">unconstrained_newton</span><span class="p">(</span><span class="n">calc_f</span><span class="p">,</span><span class="n">calc_grad</span><span class="p">,</span><span class="n">calc_hes</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                         <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;newton&quot;</span><span class="p">,</span><span class="n">globalization</span><span class="o">=</span><span class="s2">&quot;line-search&quot;</span><span class="p">,</span> <span class="c1"># specify algorithm</span>
+                         <span class="n">eps_dx</span><span class="o">=</span><span class="mf">1E-6</span><span class="p">,</span><span class="n">eps_df</span><span class="o">=</span><span class="mf">1E-6</span><span class="p">,</span> <span class="c1"># Convergence tolerances (all)</span>
+                         <span class="n">eta_ls</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span><span class="n">rho_ls</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span><span class="n">alpha_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="c1"># line search parameters</span>
+                         <span class="n">delta_max_tr</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span><span class="n">delta_0_tr</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="c1"># trust region parameters</span>
+                         <span class="n">kappa_1_tr</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">kappa_2_tr</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">,</span> <span class="n">gamma_tr</span><span class="o">=</span><span class="mf">0.125</span> <span class="c1"># trust region parameters</span>
+                        <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Newton-Type Methods for Unconstrained Nonlinear Continuous Optimization</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments (required):</span>
+<span class="sd">        calc_f : function f(x) to minimize [scalar]</span>
+<span class="sd">        calc_grad: gradient of f(x) [vector]</span>
+<span class="sd">        calc_hes: Hessian of f(x) [matrix]</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments (options):</span>
+<span class="sd">        algorithm : specify main algorithm.</span>
+<span class="sd">            choices: &quot;newton&quot;, &quot;sr1&quot;, &quot;bfgs&quot;, &quot;steepest-descent&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        globalization : specify globalization strategy</span>
+<span class="sd">            choices: &quot;none&quot;, &quot;line-search&quot;, &quot;trust-region&quot;</span>
+<span class="sd">       </span>
+<span class="sd">        eps_dx : tolerance for step size norm (convergence), eps1 in notes</span>
+<span class="sd">        </span>
+<span class="sd">        eps_df : tolerance for gradient norm (convergence), eps2 in notes</span>
+<span class="sd">        </span>
+<span class="sd">        eta_ls : parameter for Goldstein-Armijo conditions (line search only)</span>
+<span class="sd">        </span>
+<span class="sd">        rho_ls : parameter to shrink (backstep) line search</span>
+<span class="sd">        </span>
+<span class="sd">        alpha_max : initial step length scaling for line search and/or steepest-descent</span>
+<span class="sd">    </span>
+<span class="sd">        delta_max_tr : maximum trust region size</span>
+<span class="sd">        </span>
+<span class="sd">        delta_0_tr : initial trust region size</span>
+<span class="sd">        </span>
+<span class="sd">        kappa_1_tr : &#39;shrink&#39; tolerance for trust region</span>
+<span class="sd">        </span>
+<span class="sd">        kappa_2_tr : &#39;expand&#39; tolerance for trust region</span>
+<span class="sd">        </span>
+<span class="sd">        gamma_tr : &#39;accept step&#39; tolerance for trust region</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        x : iteration history for x (decision variables) [list of numpy arrays]</span>
+<span class="sd">        f : iteration history for f(x) (objective values) [list of numpy arrays]</span>
+<span class="sd">        p : iteration history for p (steps)</span>
+<span class="sd">        B : iteration history for Hessian approximations [list of numpy arrays]</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="c1"># Allocate outputs as empty lists</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># decision variables</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># objective values</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># steps</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># gradients</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># line search / steepest descent step scalar</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># Hessian approximation</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># trust region size</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># trust region actual/prediction ratio</span>
+    <span class="n">step_accepted</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># step status for trust region. True means accepted. False means rejected.</span>
+    
+    <span class="c1"># Note: alpha, delta and rho will remain empty lists unless used in the algorithm below</span>
+    
+    <span class="c1"># Store starting point</span>
+    <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+    
+    <span class="c1"># Print header for iteration information</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Iter. </span><span class="se">\t</span><span class="s2">f(x) </span><span class="se">\t\t</span><span class="s2">||grad(x)|| </span><span class="se">\t</span><span class="s2">||p|| </span><span class="se">\t\t</span><span class="s2">min(eig(B)) </span><span class="se">\t</span><span class="s2">alpha </span><span class="se">\t\t</span><span class="s2">delta </span><span class="se">\t\t</span><span class="s2">step&quot;</span><span class="p">)</span>
+    
+    <span class="k">while</span> <span class="n">flag</span> <span class="ow">and</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="c1"># Evaluate f(x) at current iteration</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calc_f</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+        
+        <span class="c1"># Evaluate gradient</span>
+        <span class="n">grad</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calc_grad</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+        
+        <span class="k">if</span><span class="p">(</span><span class="n">check_nan</span><span class="p">(</span><span class="n">grad</span><span class="p">[</span><span class="n">k</span><span class="p">])):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: gradiant calculation returned NaN&quot;</span><span class="p">)</span>
+            <span class="k">break</span>
+        
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;k = &quot;</span><span class="p">,</span><span class="n">k</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x = &quot;</span><span class="p">,</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;grad = &quot;</span><span class="p">,</span><span class="n">grad</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f = &quot;</span><span class="p">,</span><span class="n">f</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+
+        <span class="c1"># Calculate exact Hessian or update approximation</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s2">&quot;newton&quot;</span><span class="p">):</span>
+            <span class="n">B</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calc_hes</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+        
+        <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">algorithm</span> <span class="o">==</span> <span class="s2">&quot;steepest-descent&quot;</span><span class="p">:</span>
+            <span class="c1"># Initialize or set to identity</span>
+            <span class="n">B</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x0</span><span class="p">)))</span>
+        
+        <span class="k">elif</span> <span class="n">algorithm</span> <span class="o">==</span> <span class="s2">&quot;sr1&quot;</span> <span class="ow">or</span> <span class="n">algorithm</span> <span class="o">==</span> <span class="s2">&quot;bfgs&quot;</span><span class="p">:</span>
+            <span class="c1"># Change in x</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="c1"># Change in gradient</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">grad</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">grad</span><span class="p">[</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;s = &quot;</span><span class="p">,</span><span class="n">s</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;y = &quot;</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">algorithm</span> <span class="o">==</span> <span class="s2">&quot;sr1&quot;</span><span class="p">:</span> <span class="c1"># Calculate SR1 update</span>
+                <span class="n">dB</span> <span class="o">=</span> <span class="n">sr1_update</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+                <span class="n">B</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dB</span><span class="p">)</span>
+                
+            <span class="k">else</span><span class="p">:</span> <span class="c1"># Calculate BFGS update  </span>
+                <span class="n">dB</span> <span class="o">=</span> <span class="n">bfgs_update</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+                <span class="n">B</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dB</span><span class="p">)</span> 
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING. algorithm = &quot;</span><span class="p">,</span><span class="n">algorithm</span><span class="p">,</span><span class="s2">&quot; is not supported.&quot;</span><span class="p">)</span>
+            <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;B = </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">B</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;B[k].shape = &quot;</span><span class="p">,</span><span class="n">B</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            
+        <span class="k">if</span><span class="p">(</span><span class="n">check_nan</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="n">k</span><span class="p">])):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: Hessian update returned NaN&quot;</span><span class="p">)</span>
+            <span class="k">break</span>
+            
+        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cond</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="mf">1E12</span><span class="p">:</span>
+            <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: Hessian approximation is near singular.&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;B[k] = </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">B</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        
+        <span class="k">else</span><span class="p">:</span>
+            
+            <span class="c1"># Solve linear system to calculate step</span>
+            <span class="n">pk</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="o">-</span><span class="n">grad</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+            
+            <span class="k">if</span> <span class="n">globalization</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">algorithm</span> <span class="o">==</span> <span class="s2">&quot;steepest-descent&quot;</span><span class="p">:</span>
+                    <span class="c1"># Save step and scale by alpha_max</span>
+                    <span class="n">p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pk</span><span class="o">*</span><span class="n">alpha_max</span><span class="p">)</span>
+                    
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Take full step</span>
+                    <span class="n">p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pk</span><span class="p">)</span>
+                    
+                <span class="c1"># Apply step and calculate x[k+1]</span>
+                <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+                    
+            <span class="k">elif</span> <span class="n">globalization</span> <span class="o">==</span> <span class="s2">&quot;line-search&quot;</span><span class="p">:</span>
+                
+                <span class="c1"># Line Search Function</span>
+                <span class="n">update</span><span class="p">,</span> <span class="n">alphak</span> <span class="o">=</span> <span class="n">line_search</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">calc_f</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">alpha_max</span><span class="p">,</span> <span class="n">eta_ls</span><span class="p">,</span> <span class="n">rho_ls</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+                
+                <span class="c1"># Now the line search is complete, apply final value of alphak</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">update</span><span class="p">)</span>
+                
+                <span class="c1"># Save alpha</span>
+                <span class="n">alpha</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">alphak</span><span class="p">)</span>
+                
+                <span class="c1"># Apply step and calculate x[k+1]</span>
+                <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+            
+            <span class="k">elif</span> <span class="n">globalization</span> <span class="o">==</span> <span class="s2">&quot;trust-region&quot;</span><span class="p">:</span>
+                
+                <span class="c1"># Trust region function</span>
+                <span class="n">update</span> <span class="o">=</span> <span class="n">trust_region</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">delta_0_tr</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">update</span><span class="p">)</span>
+                
+                <span class="c1">### Trust region management</span>
+
+                <span class="c1"># Actual reduction</span>
+                <span class="n">ared</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">calc_f</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+
+                <span class="c1"># Predicted reduction</span>
+                <span class="n">pred</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">grad</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">p</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">k</span><span class="p">])))</span>
+
+                <span class="c1"># Calculate rho</span>
+                <span class="k">if</span> <span class="n">ared</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">pred</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="c1"># This occurs is the gradient is zero and Hessian is P.D.</span>
+                    <span class="n">rho</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">1E4</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">rho</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ared</span><span class="o">/</span><span class="n">pred</span><span class="p">)</span>
+
+                <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f[k] = &quot;</span><span class="p">,</span><span class="n">f</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;p[k] = &quot;</span><span class="p">,</span><span class="n">p</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f(x[k] + p[k]) = &quot;</span><span class="p">,</span><span class="n">calc_f</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ared = &quot;</span><span class="p">,</span><span class="n">ared</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pred = &quot;</span><span class="p">,</span><span class="n">pred</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;rho = &quot;</span><span class="p">,</span><span class="n">rho</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+
+                <span class="c1">## Check trust region shrink/expand logic</span>
+                <span class="k">if</span> <span class="n">rho</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">kappa_1_tr</span><span class="p">:</span>
+                    <span class="c1"># Shrink trust region</span>
+                    <span class="n">delta</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kappa_1_tr</span><span class="o">*</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+
+                <span class="k">elif</span> <span class="n">rho</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">kappa_2_tr</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">-</span> <span class="n">delta</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mf">1E-6</span><span class="p">:</span>
+                    <span class="c1"># Expand trust region</span>
+                    <span class="n">delta</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="mi">2</span><span class="o">*</span><span class="n">delta</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">delta_max_tr</span><span class="p">]))</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Keep trust region same size</span>
+                    <span class="n">delta</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+
+                <span class="c1"># Compute step</span>
+                <span class="k">if</span> <span class="n">rho</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">gamma_tr</span><span class="p">:</span>
+                    <span class="c1"># Take step</span>
+                    <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+                    <span class="n">step_accepted</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Skip step</span>
+                    <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+                    <span class="n">step_accepted</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: globalization strategy not supported&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;p = &quot;</span><span class="p">,</span><span class="n">p</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+
+            <span class="c1"># Calculate norms</span>
+            <span class="n">norm_p</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+            <span class="n">norm_g</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">grad</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+
+            <span class="c1"># Calculate eigenvalues of Hessian (for display only)</span>
+            <span class="n">min_ev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="n">k</span><span class="p">])))</span>
+
+            <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            print(&quot;f[k] = &quot;,f[k])</span>
+<span class="sd">            print(&quot;norm_g = &quot;,norm_g)</span>
+<span class="sd">            print(&quot;norm_g = &quot;,norm_p)</span>
+<span class="sd">            print(&quot;min_ev = &quot;,min_ev)</span>
+<span class="sd">            &#39;&#39;&#39;</span>
+            
+            <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="s1">&#39;  </span><span class="se">\t</span><span class="si">{0: 1.4e}</span><span class="s1"> </span><span class="se">\t</span><span class="si">{1:1.4e}</span><span class="s1"> </span><span class="se">\t</span><span class="si">{2:1.4e}</span><span class="s1"> </span><span class="se">\t</span><span class="si">{3: 1.4e}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">norm_g</span><span class="p">,</span><span class="n">norm_p</span><span class="p">,</span><span class="n">min_ev</span><span class="p">),</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+            <span class="c1"># Python tip. The expression &#39;if my_list&#39; is false if &#39;my_list&#39; is empty</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">alpha</span><span class="p">:</span>
+                <span class="c1"># alpha is an empty list</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\t</span><span class="s1"> -------&#39;</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># otherwise print value of alpha</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\t</span><span class="si">{0: 1.2e}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alpha</span><span class="p">[</span><span class="n">k</span><span class="p">]),</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">delta</span><span class="p">:</span>
+                <span class="c1"># delta is an empty list</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\t</span><span class="s1"> -------&#39;</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># otherwise print value of alpha</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\t</span><span class="si">{0: 1.2e}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">k</span><span class="p">]),</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+                
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">step_accepted</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\t</span><span class="s1"> -----&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">step_accepted</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\t</span><span class="s1"> accept&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\t</span><span class="s1"> reject&#39;</span><span class="p">)</span>
+            
+            <span class="c1"># Check convergence criteria.</span>
+            <span class="n">flag</span> <span class="o">=</span> <span class="p">(</span><span class="n">norm_p</span> <span class="o">&gt;</span> <span class="n">eps_dx</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">norm_g</span> <span class="o">&gt;</span> <span class="n">eps_df</span><span class="p">)</span>
+
+            <span class="c1"># Update iteration counter</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="n">max_iter</span> <span class="ow">and</span> <span class="n">flag</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reached maximum number of iterations.&quot;</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x* = &quot;</span><span class="p">,</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">B</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sr1_update</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">verbose</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Function that implements the sr1 optimization algorithm</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">    s : Change in x</span>
+<span class="sd">    y : Change in gradient</span>
+<span class="sd">    k : Iteration number</span>
+<span class="sd">    B : Hessian approximation</span>
+<span class="sd">    verbose : toggles verbose output (True or False)</span>
+<span class="sd">    </span>
+<span class="sd">    Outputs:</span>
+<span class="sd">    dB : Update to Hessian approximation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># SR1 formulation</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">B</span><span class="p">[</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">denom</span> <span class="o">=</span> <span class="p">(</span><span class="n">u</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+    <span class="c1"># Formula: dB = u * u.T / (u.T * s) if u is a column vector.</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">denom</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">1E-10</span><span class="p">:</span>
+        <span class="c1"># Skip update</span>
+        <span class="n">dB</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Calculate update</span>
+        <span class="n">dB</span> <span class="o">=</span> <span class="n">xxT</span><span class="p">(</span><span class="n">u</span><span class="p">)</span><span class="o">/</span><span class="n">denom</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SR1 update denominator, (y-B[k-1]*s).T*s = &quot;</span><span class="p">,</span><span class="n">denom</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SR1 update u = &quot;</span><span class="p">,</span><span class="n">u</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SR1 update u.T*u/(u.T*s) = </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">dB</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">dB</span> <span class="c1">#return the update to the Hessian approximation</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">bfgs_update</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">verbose</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Function that implements the BFGS optimization algorithm</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">    s : Change in x</span>
+<span class="sd">    y : Change in gradient</span>
+<span class="sd">    k : Iteration number</span>
+<span class="sd">    B : Hessian approximation</span>
+<span class="sd">    verbose : toggles verbose output (True or False)</span>
+<span class="sd">    </span>
+<span class="sd">    Outputs:</span>
+<span class="sd">    dB : Update to Hessian approximation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Define constant used to check norm of the update</span>
+    <span class="c1"># See Eq. (3.19) in Biegler (2010)</span>
+    <span class="n">C2</span> <span class="o">=</span> <span class="mf">1E-4</span>
+    
+    <span class="c1"># Add your solution here</span>
+        
+    <span class="k">return</span> <span class="n">dB</span> <span class="c1">#return the update to the Hessian approximation</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">line_search</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">calc_f</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">alpha_max</span><span class="p">,</span> <span class="n">eta_ls</span><span class="p">,</span> <span class="n">rho_ls</span><span class="p">,</span> <span class="n">verbose</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function that implements the line search globalization strategy</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">    x : decision variables</span>
+<span class="sd">    f : objective values</span>
+<span class="sd">    grad : gradients</span>
+<span class="sd">    calc_f : function f(x) to minimize [scalar]</span>
+<span class="sd">    pk : step</span>
+<span class="sd">    k - Iteration number</span>
+<span class="sd">    alpha_max : initial step length scaling for line search and/or steepest-descent</span>
+<span class="sd">    eta_ls : parameter for Goldstein-Armijo conditions (line search only)</span>
+<span class="sd">    rho_ls : parameter to shrink (backstep) line search</span>
+<span class="sd">    verbose : toggles verbose output (True or False)</span>
+<span class="sd">    </span>
+<span class="sd">    Outputs:</span>
+<span class="sd">    update : update to p</span>
+<span class="sd">    alphak : update to alpha</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Flag - continue line search?</span>
+    <span class="n">ls</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1">## Initialize alpha</span>
+    <span class="n">alphak</span> <span class="o">=</span> <span class="n">alpha_max</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2"> LINE SEARCH&quot;</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="n">ls</span><span class="p">:</span>
+
+        <span class="c1"># Calculate test point (if step accepted)</span>
+        <span class="n">xtest</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">alphak</span><span class="o">*</span><span class="n">pk</span>
+
+        <span class="c1"># Evaluate f(x) at test point. This is used for Armijo and Goldstein conditions</span>
+        <span class="n">ftest</span> <span class="o">=</span> <span class="n">calc_f</span><span class="p">(</span><span class="n">xtest</span><span class="p">)</span>
+        
+        <span class="c1"># Add your solution here</span>
+
+    <span class="c1"># Now the line search is complete, apply final value of alphak</span>
+    <span class="n">update</span> <span class="o">=</span> <span class="n">alphak</span><span class="o">*</span><span class="n">pk</span>
+    
+    <span class="k">return</span> <span class="n">update</span><span class="p">,</span> <span class="n">alphak</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">trust_region</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">delta_0_tr</span><span class="p">,</span> <span class="n">verbose</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Function that implements the trust region globalization strategy</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">    x : decision variables</span>
+<span class="sd">    grad : gradients</span>
+<span class="sd">    B : Hessian approximation</span>
+<span class="sd">    delta : trust region size</span>
+<span class="sd">    k : Iteration number</span>
+<span class="sd">    pk : step</span>
+<span class="sd">    delta_0_tr : initial trust region size</span>
+<span class="sd">    verbose : toggles verbose output (True or False)</span>
+<span class="sd">    </span>
+<span class="sd">    Outputs:</span>
+<span class="sd">    update : update to p</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1">### Initialize trust region radius</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">delta</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">delta_0_tr</span><span class="p">)</span>
+
+    <span class="n">grad_zero</span> <span class="o">=</span> <span class="p">(</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">grad</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mf">1E-14</span><span class="p">)</span>
+
+    <span class="c1">### Powell dogleg step</span>
+
+    <span class="c1"># Calculate Cauchy step (pC)</span>
+    <span class="n">denom</span> <span class="o">=</span> <span class="n">grad</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">grad</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TR: Cauchy step. grad.T*B*grad = &quot;</span><span class="p">,</span><span class="n">denom</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">denom</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># Term in ( ) is a scalar</span>
+        <span class="n">pC</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">grad</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">grad</span><span class="p">[</span><span class="n">k</span><span class="p">])</span><span class="o">/</span><span class="n">denom</span><span class="p">)</span><span class="o">*</span><span class="n">grad</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">grad_zero</span><span class="p">:</span>
+        <span class="n">pC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pC</span> <span class="o">=</span> <span class="o">-</span> <span class="n">delta</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">/</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">grad</span><span class="p">[</span><span class="n">k</span><span class="p">])</span><span class="o">*</span><span class="n">grad</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+    <span class="c1"># Use Newton step (calculate above)</span>
+    <span class="n">pN</span> <span class="o">=</span> <span class="n">pk</span>
+
+    <span class="c1"># Determine step</span>
+    <span class="k">if</span> <span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">pN</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">delta</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
+        <span class="c1"># Take Newton step. pN is inside the trust region.</span>
+        <span class="n">update</span> <span class="o">=</span> <span class="n">pN</span>
+        
+    <span class="c1"># Add your solution here</span>
+    
+    <span class="k">return</span> <span class="n">update</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="feature-status">
+<h3>Feature Status<a class="headerlink" href="#feature-status" title="Permalink to this headline">¶</a></h3>
+<p>For each feature, please indicate the status upon submission.</p>
+<div class="section" id="sr1">
+<h4>SR1<a class="headerlink" href="#sr1" title="Permalink to this headline">¶</a></h4>
+<p><em>Status</em>: please choose from “implemented and tested”, “implemented but testing incomplete”, “implementation incomplete”, “did not attempt implementation”</p>
+<p><em>Details:</em> Please describe in a few sentences or bullet points the outstanding tasks.</p>
+</div>
+<div class="section" id="bfgs">
+<h4>BFGS<a class="headerlink" href="#bfgs" title="Permalink to this headline">¶</a></h4>
+<p><em>Status</em>: please choose from “implemented and tested”, “implemented but testing incomplete”, “implementation incomplete”, “did not attempt implementation”</p>
+<p><em>Details:</em> Please describe in a few sentences or bullet points the outstanding tasks.</p>
+</div>
+<div class="section" id="line-search">
+<h4>Line Search<a class="headerlink" href="#line-search" title="Permalink to this headline">¶</a></h4>
+<p><em>Status</em>: please choose from “implemented and tested”, “implemented but testing incomplete”, “implementation incomplete”, “did not attempt implementation”</p>
+<p><em>Details:</em> Please describe in a few sentences or bullet points the outstanding tasks.</p>
+</div>
+<div class="section" id="trust-region">
+<h4>Trust Region<a class="headerlink" href="#trust-region" title="Permalink to this headline">¶</a></h4>
+<p><em>Status</em>: please choose from “implemented and tested”, “implemented but testing incomplete”, “implementation incomplete”, “did not attempt implementation”</p>
+<p><em>Details:</em> Please describe in a few sentences or bullet points the outstanding tasks.</p>
+</div>
+</div>
+</div>
+<div class="section" id="benchmark-tests">
+<h2>Benchmark Tests<a class="headerlink" href="#benchmark-tests" title="Permalink to this headline">¶</a></h2>
+<p>In the remainder of the assignment, we will compare using several variants of Newton-type methods in different test problems taken from in class examples. For each problem at a given starting point, we will consider ten algorithm cases:</p>
+<ol class="simple">
+<li><p>Newton method with <strong>exact Hessian</strong> and no globalization strategy</p></li>
+<li><p>Newton method with exact Hessian and line search</p></li>
+<li><p>Newton method with exact Hessian and Powell dogleg trust region</p></li>
+<li><p>Quasi-Newton method with <strong>SR1 Hessian approximation</strong> and no globalization strategy</p></li>
+<li><p>Quasi-Newton method with SR1 Hessian approximation and line search</p></li>
+<li><p>Quasi-Newton method with SR1 Hessian approximation and Powell dogleg trust region</p></li>
+<li><p>Quasi-Newton method with <strong>BFGS Hessian approximation</strong> and no globalization strategy</p></li>
+<li><p>Quasi-Newton method with BFGS Hessian approximation and line search</p></li>
+<li><p>Quasi-Newton method with BFGS Hessian approximation and Powell dogleg trust region</p></li>
+<li><p><strong>Steepest descent</strong> with line search</p></li>
+</ol>
+<p>We will then assess each candidate solution by the eigenvalues of the true Hessian. The norm of the gradient is already displayed.</p>
+<p>All of this analysis has been automated in a function below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">check_sln</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">calc_hes</span><span class="p">):</span>
+    <span class="n">Hval</span> <span class="o">=</span> <span class="n">calc_hes</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">l</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">Hval</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Eigenvalues of Hessian at x* = &quot;</span><span class="p">,</span><span class="n">l</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">benchmark</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">calc_f</span><span class="p">,</span><span class="n">calc_grad</span><span class="p">,</span><span class="n">calc_hes</span><span class="p">,</span><span class="n">verbose</span><span class="p">,</span><span class="n">cases</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">)):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test 10 algorithm cases for a single starting point</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        x0 - starting point</span>
+<span class="sd">        calc_f - function to evaluate objective</span>
+<span class="sd">        calc_grad - function to evaluate gradient</span>
+<span class="sd">        calc_hes - function to evaluate Hessian</span>
+<span class="sd">        verbose - toggles verbose output (True or False)</span>
+<span class="sd">        cases - list of cases to consider. Especially helpful for debugging.</span>
+<span class="sd">            For example, setting cases=[1, 2] runs only case 2 and 3 (recall, Python starting counting at 0)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cases</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;***Case 1: Newton method with exact Hessian and no globalization strategy***&quot;</span><span class="p">)</span>
+            <span class="n">x1</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">B</span> <span class="o">=</span> <span class="n">unconstrained_newton</span><span class="p">(</span><span class="n">calc_f</span><span class="p">,</span><span class="n">calc_grad</span><span class="p">,</span><span class="n">calc_hes</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">verbose</span><span class="p">,</span>
+                                            <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;newton&quot;</span><span class="p">,</span><span class="n">globalization</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
+            <span class="n">check_sln</span><span class="p">(</span><span class="n">x1</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">calc_hes</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;***Case 2: Newton method with exact Hessian and line search***&quot;</span><span class="p">)</span>
+            <span class="n">x2</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">B</span> <span class="o">=</span> <span class="n">unconstrained_newton</span><span class="p">(</span><span class="n">calc_f</span><span class="p">,</span><span class="n">calc_grad</span><span class="p">,</span><span class="n">calc_hes</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">verbose</span><span class="p">,</span>
+                                            <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;newton&quot;</span><span class="p">,</span><span class="n">globalization</span><span class="o">=</span><span class="s2">&quot;line-search&quot;</span><span class="p">)</span>
+            <span class="n">check_sln</span><span class="p">(</span><span class="n">x2</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">calc_hes</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;***Case 3: Newton method with exact Hessian and trust region***&quot;</span><span class="p">)</span>
+            <span class="n">x3</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">B</span> <span class="o">=</span> <span class="n">unconstrained_newton</span><span class="p">(</span><span class="n">calc_f</span><span class="p">,</span><span class="n">calc_grad</span><span class="p">,</span><span class="n">calc_hes</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">verbose</span><span class="p">,</span>
+                                            <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;newton&quot;</span><span class="p">,</span><span class="n">globalization</span><span class="o">=</span><span class="s2">&quot;trust-region&quot;</span><span class="p">)</span>
+            <span class="n">check_sln</span><span class="p">(</span><span class="n">x3</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">calc_hes</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;***Case 4: Quasi-Newton method with SR1 Hessian approximation and no globalization strategy***&quot;</span><span class="p">)</span>
+            <span class="n">x4</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">B</span> <span class="o">=</span> <span class="n">unconstrained_newton</span><span class="p">(</span><span class="n">calc_f</span><span class="p">,</span><span class="n">calc_grad</span><span class="p">,</span><span class="n">calc_hes</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">verbose</span><span class="p">,</span>
+                                            <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;sr1&quot;</span><span class="p">,</span><span class="n">globalization</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
+            <span class="n">check_sln</span><span class="p">(</span><span class="n">x4</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">calc_hes</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;***Case 5: Quasi-Newton method with SR1 Hessian approximation and line search***&quot;</span><span class="p">)</span>
+            <span class="n">x5</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">B</span> <span class="o">=</span> <span class="n">unconstrained_newton</span><span class="p">(</span><span class="n">calc_f</span><span class="p">,</span><span class="n">calc_grad</span><span class="p">,</span><span class="n">calc_hes</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">verbose</span><span class="p">,</span>
+                                            <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;sr1&quot;</span><span class="p">,</span><span class="n">globalization</span><span class="o">=</span><span class="s2">&quot;line-search&quot;</span><span class="p">)</span>
+            <span class="n">check_sln</span><span class="p">(</span><span class="n">x5</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">calc_hes</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;***Case 6: Quasi-Newton method with SR1 Hessian approximation and trust region***&quot;</span><span class="p">)</span>
+            <span class="n">x6</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">B</span> <span class="o">=</span> <span class="n">unconstrained_newton</span><span class="p">(</span><span class="n">calc_f</span><span class="p">,</span><span class="n">calc_grad</span><span class="p">,</span><span class="n">calc_hes</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">verbose</span><span class="p">,</span>
+                                            <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;sr1&quot;</span><span class="p">,</span><span class="n">globalization</span><span class="o">=</span><span class="s2">&quot;trust-region&quot;</span><span class="p">)</span>
+            <span class="n">check_sln</span><span class="p">(</span><span class="n">x6</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">calc_hes</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;***Case 7: Quasi-Newton method with BFGS Hessian approximation and no globalization strategy***&quot;</span><span class="p">)</span>
+            <span class="n">x7</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">B</span> <span class="o">=</span> <span class="n">unconstrained_newton</span><span class="p">(</span><span class="n">calc_f</span><span class="p">,</span><span class="n">calc_grad</span><span class="p">,</span><span class="n">calc_hes</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">verbose</span><span class="p">,</span>
+                                            <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;bfgs&quot;</span><span class="p">,</span><span class="n">globalization</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
+            <span class="n">check_sln</span><span class="p">(</span><span class="n">x7</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">calc_hes</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;***Case 8: Quasi-Newton method with BFGS Hessian approximation and line search***&quot;</span><span class="p">)</span>
+            <span class="n">x8</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">B</span> <span class="o">=</span> <span class="n">unconstrained_newton</span><span class="p">(</span><span class="n">calc_f</span><span class="p">,</span><span class="n">calc_grad</span><span class="p">,</span><span class="n">calc_hes</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">verbose</span><span class="p">,</span>
+                                            <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;bfgs&quot;</span><span class="p">,</span><span class="n">globalization</span><span class="o">=</span><span class="s2">&quot;line-search&quot;</span><span class="p">)</span>
+            <span class="n">check_sln</span><span class="p">(</span><span class="n">x8</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">calc_hes</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;***Case 9: Quasi-Newton method with BFGS Hessian approximation and trust region***&quot;</span><span class="p">)</span>
+            <span class="n">x9</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">B</span> <span class="o">=</span> <span class="n">unconstrained_newton</span><span class="p">(</span><span class="n">calc_f</span><span class="p">,</span><span class="n">calc_grad</span><span class="p">,</span><span class="n">calc_hes</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">verbose</span><span class="p">,</span>
+                                            <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;bfgs&quot;</span><span class="p">,</span><span class="n">globalization</span><span class="o">=</span><span class="s2">&quot;trust-region&quot;</span><span class="p">)</span>
+            <span class="n">check_sln</span><span class="p">(</span><span class="n">x9</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">calc_hes</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">9</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;***Case 10: Steepest Descent and line search***&quot;</span><span class="p">)</span>
+            <span class="n">x10</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">B</span> <span class="o">=</span> <span class="n">unconstrained_newton</span><span class="p">(</span><span class="n">calc_f</span><span class="p">,</span><span class="n">calc_grad</span><span class="p">,</span><span class="n">calc_hes</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">verbose</span><span class="p">,</span>
+                                             <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;steepest-descent&quot;</span><span class="p">,</span><span class="n">globalization</span><span class="o">=</span><span class="s2">&quot;line-search&quot;</span><span class="p">)</span>
+            <span class="n">check_sln</span><span class="p">(</span><span class="n">x10</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">calc_hes</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="quadratic-test-problem">
+<h3>Quadratic Test Problem<a class="headerlink" href="#quadratic-test-problem" title="Permalink to this headline">¶</a></h3>
+<p>Start debugging your function with the following problem:</p>
+<div class="math notranslate nohighlight">
+\[\min_x ~~ x_1^2 + (x_2 -1)^2\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">my_f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="k">def</span> <span class="nf">my_grad</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">my_hes</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="benchmark-cases">
+<h4>Benchmark Cases<a class="headerlink" href="#benchmark-cases" title="Permalink to this headline">¶</a></h4>
+<p>The following code below runs cases 1 through 10. You can specify only a subset using the <code class="docutils literal notranslate"><span class="pre">cases</span></code> keyword.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">3.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">])</span>
+<span class="n">benchmark</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">my_f</span><span class="p">,</span><span class="n">my_grad</span><span class="p">,</span><span class="n">my_hes</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="discussion-and-analysis">
+<h4>Discussion and Analysis<a class="headerlink" href="#discussion-and-analysis" title="Permalink to this headline">¶</a></h4>
+<p>Classify the solutions.</p>
+<p><strong>Answer:</strong></p>
+<p>Should we expect the SR1, BFGS, and steepest descent (all with line search) to always have the same results for the first iteration? Explain in a few sentences.</p>
+<p><strong>Answer:</strong></p>
+<p>For this problem, should we always expect all of the cases to converge to the same solution (regardless of starting point)? Explain in a few sentences.</p>
+<p><strong>Answer:</strong></p>
+</div>
+</div>
+<div class="section" id="one-dimensional-example">
+<h3>One-Dimensional Example<a class="headerlink" href="#one-dimensional-example" title="Permalink to this headline">¶</a></h3>
+<p>Consider a scalar function <span class="math notranslate nohighlight">\(f(x): \mathbb{R} \rightarrow \mathbb{R}\)</span>. Recall</p>
+<div class="math notranslate nohighlight">
+\[f(x) = 0.5 (x-1)^4 + (x+1)^3 - 10 x^2 + 5 x\]</div>
+<div class="math notranslate nohighlight">
+\[f'(x) = 6 - 8 x - 3 x^2 + 2 x^3\]</div>
+<div class="math notranslate nohighlight">
+\[f''(x) = -8 - 6 x + 6 x^2 \]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Define f(x)</span>
+<span class="n">f_</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">4</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">10</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">5</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1">## Define f&#39;(x)</span>
+<span class="n">df_</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="p">(</span><span class="mi">6</span> <span class="o">-</span> <span class="mi">8</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1">## Define f&#39;&#39;(x)</span>
+<span class="n">ddf_</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">8</span> <span class="o">-</span> <span class="mi">6</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">6</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="benchmark-cases-with-x-0-3">
+<h4>Benchmark Cases with <span class="math notranslate nohighlight">\(x_0 = -3\)</span><a class="headerlink" href="#benchmark-cases-with-x-0-3" title="Permalink to this headline">¶</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mf">3.0</span><span class="p">)</span>
+<span class="n">benchmark</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">f_</span><span class="p">,</span><span class="n">df_</span><span class="p">,</span><span class="n">ddf_</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="discussion">
+<h4>Discussion<a class="headerlink" href="#discussion" title="Permalink to this headline">¶</a></h4>
+<p>Did all of the cases converge to the nearby solution?</p>
+<p><strong>Answer</strong></p>
+</div>
+</div>
+<div class="section" id="benchmark-case-with-x-0-0">
+<h3>Benchmark Case with <span class="math notranslate nohighlight">\(x_0 = 0\)</span><a class="headerlink" href="#benchmark-case-with-x-0-0" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">benchmark</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">f_</span><span class="p">,</span><span class="n">df_</span><span class="p">,</span><span class="n">ddf_</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id1">
+<h4>Discussion<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<p>Which cases converged to a <strong>local maximizer</strong>?</p>
+<p><strong>Answer:</strong></p>
+<p>Which cases converged to a <strong>local minimizer</strong>?</p>
+<p><strong>Answer:</strong></p>
+<p>Based on these results, which algorithms do you recommend for non-convex problems?</p>
+<p><strong>Answer:</strong></p>
+</div>
+</div>
+<div class="section" id="return-of-example-2-19">
+<h3>Return of Example 2.19<a class="headerlink" href="#return-of-example-2-19" title="Permalink to this headline">¶</a></h3>
+<p>Now we will benchmark the algorithms using <strong>Example 2.19</strong>.</p>
+<p><img alt="ex2-19" src="notebooks/assignments/figures/ex2-19.png" /></p>
+<p>Consider the function <span class="math notranslate nohighlight">\(g(z) = \sqrt{z}\)</span>, which is only defined for <span class="math notranslate nohighlight">\(z \geq 0\)</span>. We will shortly learn how handle bounds/inequality constraints in an optimization problem.</p>
+<p>But for this assignment, we will focus on algorithms for <em>unconstrained</em> nonlinear optimization. We will use a smoothed approximation to ensure <span class="math notranslate nohighlight">\(g(z)\)</span> is defined and twice-differentiable over <span class="math notranslate nohighlight">\(z \in \mathbb{R}\)</span>. Consider:</p>
+<div class="math notranslate nohighlight">
+\[g(z) \approx \sqrt{\max(z,0)}\]</div>
+<p>This ensures that <span class="math notranslate nohighlight">\(g(z)\)</span> is defined over <span class="math notranslate nohighlight">\(z \in \mathbb{R}\)</span>. But what about twice-differentiable? We will further approximate</p>
+<div class="math notranslate nohighlight">
+\[\max(z,0) \approx \frac{1}{2}\left(\sqrt{z^2 + 10^{-4}} + z \right)\]</div>
+<p>Below is an implementation of the Example 2.19 that uses this smoothed approximation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">asqrt</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Approximate/smoothed square root</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">z</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mf">1E-4</span><span class="p">)</span> <span class="o">+</span> <span class="n">z</span><span class="p">))</span>
+    
+<span class="k">def</span> <span class="nf">ex2_19_smoothed</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Evaluate function given above at point x</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">        x - vector with 2 elements</span>
+<span class="sd">        </span>
+<span class="sd">    Outputs:</span>
+<span class="sd">        f - function value (scalar)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Constants</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">40</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+    
+    <span class="c1"># Intermediates. Recall Python indicies start at 0</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.8</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">asqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">s2</span> <span class="o">=</span> <span class="n">asqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">s</span><span class="o">-</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="o">-</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">s2</span><span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">u</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">v</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">v</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    
+    <span class="n">f</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">beta</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;##### my_f at x = &quot;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;#####&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;u = &quot;</span><span class="p">,</span><span class="n">u</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sqrt(1-u) = &quot;</span><span class="p">,</span><span class="n">s</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sqrt(1+u) = &quot;</span><span class="p">,</span><span class="n">s2</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;v = &quot;</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;alpha = &quot;</span><span class="p">,</span><span class="n">alpha</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;beta = &quot;</span><span class="p">,</span><span class="n">beta</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f(x) = &quot;</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;##### Done. #####</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">f</span>
+
+<span class="n">my_f2</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">ex2_19_smoothed</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">my_grad2</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">my_grad_approx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">my_f2</span><span class="p">,</span><span class="mf">1E-6</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">my_hes2</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">my_hes_approx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">my_grad2</span><span class="p">,</span><span class="mf">1E-6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="benchmark-with-x-0-near-solution">
+<h4>Benchmark with <span class="math notranslate nohighlight">\(x_0\)</span> Near Solution<a class="headerlink" href="#benchmark-with-x-0-near-solution" title="Permalink to this headline">¶</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+<span class="n">benchmark</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">my_f2</span><span class="p">,</span><span class="n">my_grad2</span><span class="p">,</span><span class="n">my_hes2</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="id2">
+<h4>Discussion<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>Which cases do not converge to the known solution?</p>
+<p><strong>Answer:</strong></p>
+<p>What is happening with the SR1 and BFGS update when no globalization strategy is used? <em>Hint:</em> This is related to the square root approximation.</p>
+<p><strong>Answer:</strong></p>
+</div>
+<div class="section" id="benchmark-with-x-0-far-from-the-solution">
+<h4>Benchmark with <span class="math notranslate nohighlight">\(x_0\)</span> Far From the Solution<a class="headerlink" href="#benchmark-with-x-0-far-from-the-solution" title="Permalink to this headline">¶</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+<span class="n">benchmark</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">my_f2</span><span class="p">,</span><span class="n">my_grad2</span><span class="p">,</span><span class="n">my_hes2</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="id3">
+<h4>Discussion<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<p>Did any of the 10 cases converge to the known solution?</p>
+<p>What do you recommend trying next to more reliably solve this particular problem?</p>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./notebooks/assignments"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="Algorithms2.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Algorithms Homework 2</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="Algorithms4.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Algorithms Homework 4: Interior Point Methods</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Alexander Dowling, et al.<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

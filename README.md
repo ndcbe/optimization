@@ -1,4 +1,4 @@
-# Welcome Nonlinear and Stochastic Optimization
+# Nonlinear and Stochastic Optimization
 
 CBE/ACMS 40499 and 60499 at U. Notre Dame
 

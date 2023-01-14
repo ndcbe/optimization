@@ -150,7 +150,7 @@ def _download(relative_file_names):
 
     # GitHub pages url
     # url = "https://ndcbe.github.io/CBE60499/"
-    url = "https://raw.githubusercontent.com/ndcbe/CBE60499/main/docs/"
+    url = "https://raw.githubusercontent.com/ndcbe/optimization/main/"
 
     # loop over all files to download
     for file_path in relative_file_names:
@@ -180,12 +180,12 @@ def _download(relative_file_names):
 
 def download_data(filenames):
     for i in range(len(filenames)):
-        filenames[i] = "./data/"+filenames[i]
+        filenames[i] = "./notebooks/data/"+filenames[i]
     
     _download(filenames)
 
 def download_figures(filenames):
     for i in range(len(filenames)):
-        filenames[i] = "./figures/"+filenames[i]
+        filenames[i] = "./media/"+filenames[i]
     
     _download(filenames)

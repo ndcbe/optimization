@@ -1,0 +1,1958 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>2.3. Integer Programs &#8212; Nonlinear and Stochastic Optimization</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.4. Logical Modeling and Generalized Disjunctive Programs" href="GDP.html" />
+    <link rel="prev" title="2.2. Continuous Optimization" href="LP-NLP.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Nonlinear and Stochastic Optimization</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Nonlinear and Stochastic Optimization
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Organinization
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../org/intro.html">
+   Welcome
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../org/syllabus.html">
+     Syllabus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../org/calendar.html">
+     Calendar
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../org/assignments.html">
+   Assignments
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/Pyomo1.html">
+     Pyomo Homework 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/Pyomo2.html">
+     Pyomo Homework 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/Pyomo3.html">
+     Pyomo Homework 3
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">
+     Pyomo Mini-Project: Receding Horizon Stochastic Control
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/Algorithms1.html">
+     Algorithms Homework 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/Algorithms2.html">
+     Algorithms Homework 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/Algorithms3.html">
+     Algorithms Homework 3
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/Algorithms4.html">
+     Algorithms Homework 4: Interior Point Methods
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Optimization Modeling in Pyomo
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../1/getting-started.html">
+   1. Getting Started with Pyomo
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../1/Local-Install.html">
+     1.1. Local Installation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../1/Pyomo-Introduction.html">
+     1.2. Your First Optimization Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">
+     1.3. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="modeling.html">
+   2. Taxonomy of Optimization Problems via Examples
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="Optimization-Modeling.html">
+     2.1. Optimization Modeling with Applications
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="LP-NLP.html">
+     2.2. Continuous Optimization
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     2.3. Integer Programs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="GDP.html">
+     2.4. Logical Modeling and Generalized Disjunctive Programs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="DAE-modeling.html">
+     2.5. Dynamic Optimization: Differential Algebraic Equations (DAEs)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Numeric-Integration.html">
+     2.6. Numeric Integration for DAEs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pyomo-DAE.html">
+     2.7. Dynamic Optimization with Pyomo.DAE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="SP.html">
+     2.8. Stochastic Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Parmest-tutorial.html">
+     2.9. Parameter estimation with
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       parmest
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Parmest-generate-data.html">
+     2.10. Supplementary material: data for parmest tutorial
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Algorithms and Theory
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../3/unconstrained.html">
+   3. Unconstrained Nonlinear Optimization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../3/Math-Primer.html">
+     3.1. Linear Algebra Review and SciPy Basics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../3/Math-Primer-2.html">
+     3.2. Mathematics Primer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../3/Optimality.html">
+     3.3. Unconstrained Optimality Conditions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../3/Newton-Methods.html">
+     3.4. Newton-type Methods for Unconstrained Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../3/Quasi-Newton-Methods.html">
+     3.5. Quasi-Newton Methods for Unconstrained Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../3/Globalization.html">
+     3.6. Descent and Globalization
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../4/constrained.html">
+   4. Constrained Nonlinear Optimization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/Convexity.html">
+     4.1. Convexity Revisited
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/Local-Optimality.html">
+     4.2. Local Optimality Conditions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/KKT-Multipliers.html">
+     4.3. Analysis of KKT Conditions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/Constraint-Qualifications.html">
+     4.4. Constraint Qualifications
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/Second-Order.html">
+     4.5. Second Order Optimality Conditions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/NLP-Diagnostics.html">
+     4.6. NLP Diagnostics with Degeneracy Hunter
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/Interior-Point1.html">
+     4.7. Simple Netwon Method for Equality Constrained NLPs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/Interior-Point2.html">
+     4.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../5/special-topics.html">
+   5. Special Topics
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../5/MILP.html">
+     5.1. Integer Programming with Simple Branch and Bound
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../5/MINLP-Algorithms.html">
+     5.2. MINLP Algorithms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../5/Global-Opt.html">
+     5.3. Deterministic Global Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../5/Bayesian-Opt.html">
+     5.4. Bayesian Optimization
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/ndcbe/optimization/master?urlpath=tree/notebooks/2/IP.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/2/IP.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="headerbtn__text-container">Colab</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/ndcbe/optimization"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/2/IP.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../_sources/notebooks/2/IP.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optimizing-across-process-alternatives">
+   2.3.1. Optimizing Across Process Alternatives
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#develop-the-optimization-model">
+     2.3.1.1. Develop the optimization model
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#solve-with-continuous-cost-model-in-pyomo">
+     2.3.1.2. Solve with Continuous Cost Model in Pyomo
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#initialize-to-favor-reaction-1-and-solve">
+     2.3.1.3. Initialize to Favor Reaction 1 and Solve
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#initialize-to-favor-reaction-2-and-solve">
+     2.3.1.4. Initialize to Favor Reaction 2 and Solve
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#discrete-cost-model">
+     2.3.1.5. Discrete Cost Model
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#enumerate-the-solutions">
+     2.3.1.6. Enumerate the solutions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#solve-with-pyomo">
+     2.3.1.7. Solve with Pyomo
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#is-rounding-good-enough">
+   2.3.2. Is rounding good enough?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#linear-program-relaxation">
+     2.3.2.1. Linear Program (Relaxation)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#rounding">
+     2.3.2.2. Rounding
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#integer-program">
+     2.3.2.3. Integer Program
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#why-rounding-does-not-always-work">
+     2.3.2.4. Why rounding does not always work
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Integer Programs</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optimizing-across-process-alternatives">
+   2.3.1. Optimizing Across Process Alternatives
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#develop-the-optimization-model">
+     2.3.1.1. Develop the optimization model
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#solve-with-continuous-cost-model-in-pyomo">
+     2.3.1.2. Solve with Continuous Cost Model in Pyomo
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#initialize-to-favor-reaction-1-and-solve">
+     2.3.1.3. Initialize to Favor Reaction 1 and Solve
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#initialize-to-favor-reaction-2-and-solve">
+     2.3.1.4. Initialize to Favor Reaction 2 and Solve
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#discrete-cost-model">
+     2.3.1.5. Discrete Cost Model
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#enumerate-the-solutions">
+     2.3.1.6. Enumerate the solutions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#solve-with-pyomo">
+     2.3.1.7. Solve with Pyomo
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#is-rounding-good-enough">
+   2.3.2. Is rounding good enough?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#linear-program-relaxation">
+     2.3.2.1. Linear Program (Relaxation)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#rounding">
+     2.3.2.2. Rounding
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#integer-program">
+     2.3.2.3. Integer Program
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#why-rounding-does-not-always-work">
+     2.3.2.4. Why rounding does not always work
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="integer-programs">
+<h1><span class="section-number">2.3. </span>Integer Programs<a class="headerlink" href="#integer-programs" title="Permalink to this headline">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This code cell installs packages on Colab</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="k">if</span> <span class="s2">&quot;google.colab&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+    <span class="o">!</span>wget <span class="s2">&quot;https://raw.githubusercontent.com/ndcbe/CBE60499/main/notebooks/helper.py&quot;</span>
+    <span class="kn">import</span> <span class="nn">helper</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">install_idaes</span><span class="p">()</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">install_ipopt</span><span class="p">()</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">install_glpk</span><span class="p">()</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">install_cbc</span><span class="p">()</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">download_figures</span><span class="p">([</span><span class="s1">&#39;feasible.png&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="optimizing-across-process-alternatives">
+<h2><span class="section-number">2.3.1. </span>Optimizing Across Process Alternatives<a class="headerlink" href="#optimizing-across-process-alternatives" title="Permalink to this headline">#</a></h2>
+<p>Reference: Example 15.3 from Biegler, Grossmann, Westerberg (1997).</p>
+<p>Assume that we have the choice of selecting two reactors (shown below) for the reaction <span class="math notranslate nohighlight">\(A \rightarrow B\)</span>. Reactor I has a higher conversation (80%) but it is more expensive; reactor II has a lower conversion (66.7%) but is cheaper. The cost of feed <span class="math notranslate nohighlight">\(A\)</span> is $5/kmol. Which process alternative (reactor I, reactor II, or both) has the minimum costs to make 10 kmol/hr of product B?</p>
+<p>Let <span class="math notranslate nohighlight">\(x_i\)</span> be the size of reactor <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>Continuous cost model: <span class="math notranslate nohighlight">\(c_i (x_i)^{0.6}\)</span></p>
+<section id="develop-the-optimization-model">
+<h3><span class="section-number">2.3.1.1. </span>Develop the optimization model<a class="headerlink" href="#develop-the-optimization-model" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Draw a picture</p></li>
+<li><p>Sets</p></li>
+<li><p>Parameters</p></li>
+<li><p>Variables</p></li>
+<li><p>Objective</p></li>
+<li><p>Constraints</p></li>
+<li><p>Degree of freedom analysis</p></li>
+</ul>
+</section>
+<section id="solve-with-continuous-cost-model-in-pyomo">
+<h3><span class="section-number">2.3.1.2. </span>Solve with Continuous Cost Model in Pyomo<a class="headerlink" href="#solve-with-continuous-cost-model-in-pyomo" title="Permalink to this headline">#</a></h3>
+<p>We start my defining the model in Pyomo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyomo.environ</span> <span class="k">as</span> <span class="nn">pyo</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+<span class="c1">## Define sets</span>
+<span class="n">nlp</span><span class="o">.</span><span class="n">REACTORS</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+
+<span class="c1">## Define parameters (data)</span>
+
+<span class="c1"># $ / hr</span>
+<span class="n">cost_coefficient</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="mf">5.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="mf">4.0</span><span class="p">}</span>
+<span class="n">nlp</span><span class="o">.</span><span class="n">reactor_cost</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">nlp</span><span class="o">.</span><span class="n">REACTORS</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="n">cost_coefficient</span><span class="p">)</span>
+
+<span class="c1"># kmol/hr B</span>
+<span class="n">nlp</span><span class="o">.</span><span class="n">product_flowrate</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
+
+<span class="c1"># conversion fraction</span>
+<span class="n">reactor_conversion</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="mf">0.8</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="mf">0.67</span><span class="p">}</span>
+<span class="n">nlp</span><span class="o">.</span><span class="n">conversion</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">nlp</span><span class="o">.</span><span class="n">REACTORS</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="n">reactor_conversion</span><span class="p">)</span>
+
+<span class="c1"># feed cost, $/kmol of A</span>
+<span class="n">nlp</span><span class="o">.</span><span class="n">feed_cost</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mf">5.0</span><span class="p">)</span>
+
+
+<span class="c1">## Define variables</span>
+
+<span class="c1"># Feed flowrate into reactor, x0 in handout illustration</span>
+<span class="n">nlp</span><span class="o">.</span><span class="n">feed_flowrate</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+
+<span class="c1"># Reactor feed, x1 and x2 in handout illustration</span>
+<span class="n">nlp</span><span class="o">.</span><span class="n">reactor_feed</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">nlp</span><span class="o">.</span><span class="n">REACTORS</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+
+<span class="c1"># Reactor effluent (outlet), z1 and z2 in handout illustration</span>
+<span class="n">nlp</span><span class="o">.</span><span class="n">reactor_effluent</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">nlp</span><span class="o">.</span><span class="n">REACTORS</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+
+<span class="c1">## Define constraints</span>
+
+<span class="c1"># Add your solution here</span>
+
+<span class="c1">## Define objective</span>
+<span class="n">nlp</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">nlp</span><span class="o">.</span><span class="n">reactor_cost</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">nlp</span><span class="o">.</span><span class="n">reactor_feed</span><span class="p">[</span><span class="n">r</span><span class="p">])</span><span class="o">**</span><span class="p">(</span><span class="mf">0.6</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">nlp</span><span class="o">.</span><span class="n">REACTORS</span><span class="p">)</span> <span class="o">+</span>
+                        <span class="n">nlp</span><span class="o">.</span><span class="n">feed_cost</span> <span class="o">*</span> <span class="n">nlp</span><span class="o">.</span><span class="n">feed_flowrate</span><span class="p">)</span>
+
+<span class="n">nlp</span><span class="o">.</span><span class="n">pprint</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1 Set Declarations
+    REACTORS : Size=1, Index=None, Ordered=Insertion
+        Key  : Dimen : Domain : Size : Members
+        None :     1 :    Any :    2 : {1, 2}
+
+4 Param Declarations
+    conversion : Size=2, Index=REACTORS, Domain=Any, Default=None, Mutable=False
+        Key : Value
+          1 :   0.8
+          2 :  0.67
+    feed_cost : Size=1, Index=None, Domain=Any, Default=None, Mutable=False
+        Key  : Value
+        None :   5.0
+    product_flowrate : Size=1, Index=None, Domain=Any, Default=None, Mutable=False
+        Key  : Value
+        None :  10.0
+    reactor_cost : Size=2, Index=REACTORS, Domain=Any, Default=None, Mutable=False
+        Key : Value
+          1 :   5.5
+          2 :   4.0
+
+3 Var Declarations
+    feed_flowrate : Size=1, Index=None
+        Key  : Lower : Value : Upper : Fixed : Stale : Domain
+        None :     0 :  None :  None : False :  True : NonNegativeReals
+    reactor_effluent : Size=2, Index=REACTORS
+        Key : Lower : Value : Upper : Fixed : Stale : Domain
+          1 :     0 :  None :  None : False :  True : NonNegativeReals
+          2 :     0 :  None :  None : False :  True : NonNegativeReals
+    reactor_feed : Size=2, Index=REACTORS
+        Key : Lower : Value : Upper : Fixed : Stale : Domain
+          1 :     0 :  None :  None : False :  True : NonNegativeReals
+          2 :     0 :  None :  None : False :  True : NonNegativeReals
+
+1 Objective Declarations
+    cost : Size=1, Index=None, Active=True
+        Key  : Active : Sense    : Expression
+        None :   True : minimize : 5.5*reactor_feed[1]**0.6 + 4.0*reactor_feed[2]**0.6 + 5.0*feed_flowrate
+
+3 Constraint Declarations
+    inlet_split : Size=1, Index=None, Active=True
+        Key  : Lower : Body                                                : Upper : Active
+        None :   0.0 : feed_flowrate - (reactor_feed[1] + reactor_feed[2]) :   0.0 :   True
+    mixer : Size=1, Index=None, Active=True
+        Key  : Lower : Body                                      : Upper : Active
+        None :  10.0 : reactor_effluent[1] + reactor_effluent[2] :  10.0 :   True
+    reactor_performance : Size=2, Index=REACTORS, Active=True
+        Key : Lower : Body                                       : Upper : Active
+          1 :   0.0 :  reactor_effluent[1] - 0.8*reactor_feed[1] :   0.0 :   True
+          2 :   0.0 : reactor_effluent[2] - 0.67*reactor_feed[2] :   0.0 :   True
+
+12 Declarations: REACTORS reactor_cost product_flowrate conversion feed_cost feed_flowrate reactor_feed reactor_effluent inlet_split reactor_performance mixer cost
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="initialize-to-favor-reaction-1-and-solve">
+<h3><span class="section-number">2.3.1.3. </span>Initialize to Favor Reaction 1 and Solve<a class="headerlink" href="#initialize-to-favor-reaction-1-and-solve" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">reactor_choice</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Initialize all of the variables in the model to demonstrate local solutions</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        model: Pyomo model</span>
+<span class="sd">        reactor_choice: 1 or 2</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        nothing</span>
+<span class="sd">        </span>
+<span class="sd">    Action:</span>
+<span class="sd">        initializes model</span>
+<span class="sd">    </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="c1"># Guess 20 kmol/hr feed of A</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">feed_flowrate</span> <span class="o">=</span> <span class="mf">20.0</span>
+    
+    <span class="c1"># Either assign all of the feed to reactor 1 or 2</span>
+    <span class="k">if</span> <span class="n">reactor_choice</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">reactor_feed</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">20.0</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">reactor_feed</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="n">reactor_choice</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">reactor_feed</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">reactor_feed</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">20.0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Argument reactor_choice needs value 1 or 2.&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Based on the feed assignments, calculate effluent flowrate</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">REACTORS</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">reactor_effluent</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">reactor_feed</span><span class="p">[</span><span class="n">r</span><span class="p">]()</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">conversion</span><span class="p">[</span><span class="n">r</span><span class="p">]</span>
+    
+<span class="n">initialize</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">reactor_choice</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">nlp</span><span class="o">.</span><span class="n">pprint</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1 Set Declarations
+    REACTORS : Size=1, Index=None, Ordered=Insertion
+        Key  : Dimen : Domain : Size : Members
+        None :     1 :    Any :    2 : {1, 2}
+
+4 Param Declarations
+    conversion : Size=2, Index=REACTORS, Domain=Any, Default=None, Mutable=False
+        Key : Value
+          1 :   0.8
+          2 :  0.67
+    feed_cost : Size=1, Index=None, Domain=Any, Default=None, Mutable=False
+        Key  : Value
+        None :   5.0
+    product_flowrate : Size=1, Index=None, Domain=Any, Default=None, Mutable=False
+        Key  : Value
+        None :  10.0
+    reactor_cost : Size=2, Index=REACTORS, Domain=Any, Default=None, Mutable=False
+        Key : Value
+          1 :   5.5
+          2 :   4.0
+
+3 Var Declarations
+    feed_flowrate : Size=1, Index=None
+        Key  : Lower : Value : Upper : Fixed : Stale : Domain
+        None :     0 :  20.0 :  None : False : False : NonNegativeReals
+    reactor_effluent : Size=2, Index=REACTORS
+        Key : Lower : Value : Upper : Fixed : Stale : Domain
+          1 :     0 :  16.0 :  None : False : False : NonNegativeReals
+          2 :     0 :   0.0 :  None : False : False : NonNegativeReals
+    reactor_feed : Size=2, Index=REACTORS
+        Key : Lower : Value : Upper : Fixed : Stale : Domain
+          1 :     0 :  20.0 :  None : False : False : NonNegativeReals
+          2 :     0 :     0 :  None : False : False : NonNegativeReals
+
+1 Objective Declarations
+    cost : Size=1, Index=None, Active=True
+        Key  : Active : Sense    : Expression
+        None :   True : minimize : 5.5*reactor_feed[1]**0.6 + 4.0*reactor_feed[2]**0.6 + 5.0*feed_flowrate
+
+3 Constraint Declarations
+    inlet_split : Size=1, Index=None, Active=True
+        Key  : Lower : Body                                                : Upper : Active
+        None :   0.0 : feed_flowrate - (reactor_feed[1] + reactor_feed[2]) :   0.0 :   True
+    mixer : Size=1, Index=None, Active=True
+        Key  : Lower : Body                                      : Upper : Active
+        None :  10.0 : reactor_effluent[1] + reactor_effluent[2] :  10.0 :   True
+    reactor_performance : Size=2, Index=REACTORS, Active=True
+        Key : Lower : Body                                       : Upper : Active
+          1 :   0.0 :  reactor_effluent[1] - 0.8*reactor_feed[1] :   0.0 :   True
+          2 :   0.0 : reactor_effluent[2] - 0.67*reactor_feed[2] :   0.0 :   True
+
+12 Declarations: REACTORS reactor_cost product_flowrate conversion feed_cost feed_flowrate reactor_feed reactor_effluent inlet_split reactor_performance mixer cost
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s solve the model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error evaluating &quot;var =&quot; definition -1: can&#39;t evaluate pow&#39;(0,0.6).
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: 
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:        9
+Number of nonzeros in inequality constraint Jacobian.:        0
+Number of nonzeros in Lagrangian Hessian.............:        2
+
+ERROR: Solver (ipopt) returned non-zero return code (1)
+ERROR: See the solver log above for diagnostic information.
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ApplicationError</span><span class="g g-Whitespace">                          </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">3</span><span class="o">-</span><span class="mi">6941515</span><span class="n">c3caa</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">results</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nn">/anaconda3/envs/spring2021/lib/python3.8/site-packages/pyomo/opt/base/solvers.py</span> in <span class="ni">solve</span><span class="nt">(self, *args, **kwds)</span>
+<span class="g g-Whitespace">    </span><span class="mi">595</span>                 <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">_status</span><span class="p">,</span> <span class="s1">&#39;log&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">_status</span><span class="o">.</span><span class="n">log</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">596</span>                     <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Solver log:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">_status</span><span class="o">.</span><span class="n">log</span><span class="p">))</span>
+<span class="ne">--&gt; </span><span class="mi">597</span>                 <span class="k">raise</span> <span class="n">ApplicationError</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">598</span>                     <span class="s2">&quot;Solver (</span><span class="si">%s</span><span class="s2">) did not exit normally&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">599</span>             <span class="n">solve_completion_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="ne">ApplicationError</span>: Solver (ipopt) did not exit normally
+</pre></div>
+</div>
+</div>
+</div>
+<p>What happened? <span class="math notranslate nohighlight">\(0^{0.6}\)</span> is not well defined. Work around? Let’s set the lower bound to something really small:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">small_number</span> <span class="o">=</span> <span class="mf">1E-6</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">nlp</span><span class="o">.</span><span class="n">REACTORS</span><span class="p">:</span>
+    
+    <span class="c1"># Set lower bound</span>
+    <span class="n">nlp</span><span class="o">.</span><span class="n">reactor_feed</span><span class="p">[</span><span class="n">r</span><span class="p">]</span><span class="o">.</span><span class="n">setlb</span><span class="p">(</span><span class="n">small_number</span><span class="p">)</span>
+    
+    <span class="c1"># Adjust initial point if needed</span>
+    <span class="n">nlp</span><span class="o">.</span><span class="n">reactor_feed</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">nlp</span><span class="o">.</span><span class="n">reactor_feed</span><span class="p">[</span><span class="n">r</span><span class="p">](),</span> <span class="n">small_number</span><span class="p">)</span>
+    
+<span class="n">nlp</span><span class="o">.</span><span class="n">pprint</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1 Set Declarations
+    REACTORS : Size=1, Index=None, Ordered=Insertion
+        Key  : Dimen : Domain : Size : Members
+        None :     1 :    Any :    2 : {1, 2}
+
+4 Param Declarations
+    conversion : Size=2, Index=REACTORS, Domain=Any, Default=None, Mutable=False
+        Key : Value
+          1 :   0.8
+          2 :  0.67
+    feed_cost : Size=1, Index=None, Domain=Any, Default=None, Mutable=False
+        Key  : Value
+        None :   5.0
+    product_flowrate : Size=1, Index=None, Domain=Any, Default=None, Mutable=False
+        Key  : Value
+        None :  10.0
+    reactor_cost : Size=2, Index=REACTORS, Domain=Any, Default=None, Mutable=False
+        Key : Value
+          1 :   5.5
+          2 :   4.0
+
+3 Var Declarations
+    feed_flowrate : Size=1, Index=None
+        Key  : Lower : Value : Upper : Fixed : Stale : Domain
+        None :     0 :  20.0 :  None : False : False : NonNegativeReals
+    reactor_effluent : Size=2, Index=REACTORS
+        Key : Lower : Value : Upper : Fixed : Stale : Domain
+          1 :     0 :  16.0 :  None : False : False : NonNegativeReals
+          2 :     0 :   0.0 :  None : False : False : NonNegativeReals
+    reactor_feed : Size=2, Index=REACTORS
+        Key : Lower : Value : Upper : Fixed : Stale : Domain
+          1 : 1e-06 :  20.0 :  None : False : False : NonNegativeReals
+          2 : 1e-06 : 1e-06 :  None : False : False : NonNegativeReals
+
+1 Objective Declarations
+    cost : Size=1, Index=None, Active=True
+        Key  : Active : Sense    : Expression
+        None :   True : minimize : 5.5*reactor_feed[1]**0.6 + 4.0*reactor_feed[2]**0.6 + 5.0*feed_flowrate
+
+3 Constraint Declarations
+    inlet_split : Size=1, Index=None, Active=True
+        Key  : Lower : Body                                                : Upper : Active
+        None :   0.0 : feed_flowrate - (reactor_feed[1] + reactor_feed[2]) :   0.0 :   True
+    mixer : Size=1, Index=None, Active=True
+        Key  : Lower : Body                                      : Upper : Active
+        None :  10.0 : reactor_effluent[1] + reactor_effluent[2] :  10.0 :   True
+    reactor_performance : Size=2, Index=REACTORS, Active=True
+        Key : Lower : Body                                       : Upper : Active
+          1 :   0.0 :  reactor_effluent[1] - 0.8*reactor_feed[1] :   0.0 :   True
+          2 :   0.0 : reactor_effluent[2] - 0.67*reactor_feed[2] :   0.0 :   True
+
+12 Declarations: REACTORS reactor_cost product_flowrate conversion feed_cost feed_flowrate reactor_feed reactor_effluent inlet_split reactor_performance mixer cost
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s resolve:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: 
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:        9
+Number of nonzeros in inequality constraint Jacobian.:        0
+Number of nonzeros in Lagrangian Hessian.............:        2
+
+Total number of variables............................:        5
+                     variables with only lower bounds:        5
+                variables with lower and upper bounds:        0
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:        4
+Total number of inequality constraints...............:        0
+        inequality constraints with only lower bounds:        0
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        0
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  1.3344037e+02 6.01e+00 8.32e-01  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1  8.9498771e+01 1.72e-15 1.11e+01  -1.0 7.77e+00    -  4.44e-02 1.00e+00f  1
+   2  8.9572341e+01 6.11e-16 5.52e+00  -1.0 4.18e-02    -  9.98e-01 5.00e-01f  2
+   3  8.9546293e+01 8.88e-16 8.09e-05  -1.0 7.46e-03    -  1.00e+00 1.00e+00f  1
+   4  8.7594136e+01 3.89e-16 5.50e+00  -2.5 5.48e-01    -  9.88e-01 6.12e-01f  1
+   5  8.7593412e+01 1.95e-16 1.87e-01  -2.5 1.87e-05   4.0 1.00e+00 1.00e+00f  1
+   6  8.7589094e+01 1.08e-15 2.70e-02  -2.5 1.08e-04    -  1.00e+00 1.00e+00f  1
+   7  8.7533830e+01 1.00e-15 8.54e+01  -3.8 1.31e-03    -  1.00e+00 6.28e-01f  1
+   8  8.7542171e+01 4.36e-16 2.02e+02  -3.8 8.12e-05    -  2.29e-03 5.00e-01f  2
+   9  8.7536494e+01 1.78e-15 1.91e+01  -3.8 3.28e-05   5.3 1.00e+00 1.00e+00f  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  10  8.7535635e+01 3.64e-17 7.35e+00  -3.8 6.31e-06   5.8 1.00e+00 5.00e-01f  2
+  11  8.7536085e+01 1.78e-15 8.56e-01  -3.8 1.58e-06    -  1.00e+00 1.00e+00f  1
+  12  8.7536020e+01 1.78e-15 1.36e-02  -3.8 2.39e-07    -  1.00e+00 1.00e+00f  1
+  13  8.7536022e+01 1.06e-15 1.73e-05  -3.8 8.30e-09    -  1.00e+00 1.00e+00h  1
+  14  8.7533756e+01 1.78e-15 3.24e+01  -5.7 1.03e-05    -  1.00e+00 5.98e-01f  1
+  15  8.7533783e+01 9.34e-16 5.52e-02  -5.7 4.47e-08    -  1.00e+00 1.00e+00f  1
+  16  8.7533768e+01 1.78e-15 1.74e-02  -5.7 2.57e-08    -  1.00e+00 1.00e+00f  1
+  17  8.7533768e+01 2.11e-17 1.13e-07  -5.7 6.42e-11    -  1.00e+00 1.00e+00h  1
+  18  8.7533756e+01 1.53e-16 6.30e-02  -8.6 1.93e-08    -  1.00e+00 9.76e-01f  1
+  19  8.7533756e+01 1.78e-15 1.79e-08  -8.6 2.50e-11    -  1.00e+00 1.00e+00f  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  20  8.7533756e+01 1.78e-15 7.27e-09  -9.0 1.59e-11    -  1.00e+00 1.00e+00h  1
+
+Number of Iterations....: 20
+
+                                   (scaled)                 (unscaled)
+Objective...............:   1.4519923356722005e+01    8.7533756319141716e+01
+Dual infeasibility......:   7.2660668593016453e-09    4.3803683410370973e-08
+Constraint violation....:   1.7763568394002505e-15    1.7763568394002505e-15
+Complementarity.........:   9.0911618532142856e-10    5.4806318653791501e-09
+Overall NLP error.......:   7.2660668593016453e-09    4.3803683410370973e-08
+
+
+Number of objective function evaluations             = 26
+Number of objective gradient evaluations             = 21
+Number of equality constraint evaluations            = 26
+Number of inequality constraint evaluations          = 0
+Number of equality constraint Jacobian evaluations   = 21
+Number of inequality constraint Jacobian evaluations = 0
+Number of Lagrangian Hessian evaluations             = 20
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.005
+Total CPU secs in NLP function evaluations           =      0.000
+
+EXIT: Optimal Solution Found.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can print the variable names and values:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_solution</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Print variable names and values</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        model: Pyomo model</span>
+<span class="sd">    </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Variable Names</span><span class="se">\t\t</span><span class="s2">Value&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">component_data_objects</span><span class="p">(</span><span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+        
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Objective Name</span><span class="se">\t\t</span><span class="s2">Value&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">component_data_objects</span><span class="p">(</span><span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+        
+<span class="n">print_solution</span><span class="p">(</span><span class="n">nlp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Variable Names		Value
+feed_flowrate 		 12.50000016087647
+reactor_feed[1] 		 12.499999170867413
+reactor_feed[2] 		 1e-06
+reactor_effluent[1] 		 9.99999933669393
+reactor_effluent[2] 		 6.633060682547189e-07
+
+Objective Name		Value
+cost 		 87.53376235430073
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="initialize-to-favor-reaction-2-and-solve">
+<h3><span class="section-number">2.3.1.4. </span>Initialize to Favor Reaction 2 and Solve<a class="headerlink" href="#initialize-to-favor-reaction-2-and-solve" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize</span>
+<span class="n">initialize</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">reactor_choice</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Correct for bound</span>
+<span class="c1"># Note: I would have put this in the initialize function but I wanted to show</span>
+<span class="c1"># the error in class</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">nlp</span><span class="o">.</span><span class="n">REACTORS</span><span class="p">:</span>
+    <span class="c1"># Adjust initial point if needed</span>
+    <span class="n">nlp</span><span class="o">.</span><span class="n">reactor_feed</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">nlp</span><span class="o">.</span><span class="n">reactor_feed</span><span class="p">[</span><span class="n">r</span><span class="p">](),</span> <span class="n">small_number</span><span class="p">)</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">print_solution</span><span class="p">(</span><span class="n">nlp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: 
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:        9
+Number of nonzeros in inequality constraint Jacobian.:        0
+Number of nonzeros in Lagrangian Hessian.............:        2
+
+Total number of variables............................:        5
+                     variables with only lower bounds:        5
+                variables with lower and upper bounds:        0
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:        4
+Total number of inequality constraints...............:        0
+        inequality constraints with only lower bounds:        0
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        0
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  1.2448375e+02 3.41e+00 8.54e-01  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1  9.6785883e+01 0.00e+00 9.38e+00  -1.0 5.37e+00    -  6.58e-02 1.00e+00f  1
+   2  9.9320862e+01 2.22e-16 2.05e+00  -1.0 2.25e+00    -  1.41e-01 1.00e+00f  1
+   3  9.9386245e+01 1.78e-15 5.06e-04  -1.0 2.06e-01    -  1.00e+00 1.00e+00f  1
+   4  9.8712942e+01 1.78e-15 3.67e-02  -1.7 1.26e+00  -2.0 9.62e-01 1.00e+00f  1
+   5  9.5055675e+01 1.78e-15 3.30e+00  -2.5 5.41e+00  -1.6 1.00e+00 2.76e-01f  1
+   6  9.4951632e+01 3.25e-19 2.68e+00  -2.5 3.26e-03   2.5 1.00e+00 1.00e+00f  1
+   7  9.4957287e+01 1.78e-15 1.23e+00  -2.5 2.52e-04   2.9 1.00e+00 5.00e-01f  2
+   8  9.4955819e+01 1.78e-15 1.75e-03  -2.5 3.33e-05    -  1.00e+00 1.00e+00f  1
+   9  9.4877882e+01 1.78e-15 8.54e+01  -3.8 1.71e-03    -  1.00e+00 6.18e-01f  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  10  9.4886607e+01 1.78e-15 1.19e+02  -3.8 1.30e-04    -  1.66e-03 2.50e-01f  3
+  11  9.4883285e+01 1.78e-15 9.54e+01  -3.8 6.25e-05   5.1 1.00e+00 2.60e-01f  2
+  12  9.4881130e+01 9.32e-21 9.72e+01  -3.8 3.54e-05    -  1.00e+00 2.30e-01f  2
+  13  9.4880984e+01 1.78e-15 3.37e-02  -3.8 4.78e-07    -  1.00e+00 1.00e+00f  1
+  14  9.4880897e+01 1.78e-15 1.28e-02  -3.8 2.79e-07    -  1.00e+00 1.00e+00f  1
+  15  9.4880898e+01 1.78e-15 1.69e-06  -3.8 3.12e-09    -  1.00e+00 1.00e+00h  1
+  16  9.4877775e+01 1.48e-21 3.25e+01  -5.7 1.24e-05    -  1.00e+00 5.96e-01f  1
+  17  9.4877812e+01 1.06e-22 5.58e-02  -5.7 5.36e-08    -  1.00e+00 1.00e+00f  1
+  18  9.4877790e+01 0.00e+00 1.77e-02  -5.7 3.10e-08    -  1.00e+00 1.00e+00f  1
+  19  9.4877790e+01 1.06e-22 1.14e-07  -5.7 7.69e-11    -  1.00e+00 1.00e+00f  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  20  9.4877775e+01 1.06e-22 5.31e-02  -8.6 2.31e-08    -  1.00e+00 9.76e-01f  1
+  21  9.4877775e+01 1.78e-15 1.80e-08  -8.6 2.99e-11    -  1.00e+00 1.00e+00f  1
+  22  9.4877775e+01 1.78e-15 7.30e-09  -9.0 1.90e-11    -  1.00e+00 1.00e+00h  1
+
+Number of Iterations....: 22
+
+                                   (scaled)                 (unscaled)
+Objective...............:   1.1445915871146484e+01    9.4877774550678950e+01
+Dual infeasibility......:   7.2954691177073983e-09    6.0473786631279065e-08
+Constraint violation....:   1.7763568394002505e-15    1.7763568394002505e-15
+Complementarity.........:   9.0911629756661984e-10    7.5358697453220019e-09
+Overall NLP error.......:   7.2954691177073983e-09    6.0473786631279065e-08
+
+
+Number of objective function evaluations             = 31
+Number of objective gradient evaluations             = 23
+Number of equality constraint evaluations            = 31
+Number of inequality constraint evaluations          = 0
+Number of equality constraint Jacobian evaluations   = 23
+Number of inequality constraint Jacobian evaluations = 0
+Number of Lagrangian Hessian evaluations             = 22
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.006
+Total CPU secs in NLP function evaluations           =      0.000
+
+EXIT: Optimal Solution Found.
+Variable Names		Value
+feed_flowrate 		 14.925372942237043
+reactor_feed[1] 		 1e-06
+reactor_feed[2] 		 14.925371952227968
+reactor_effluent[1] 		 7.920072602986078e-07
+reactor_effluent[2] 		 9.99999920799274
+
+Objective Name		Value
+cost 		 94.87778284900739
+</pre></div>
+</div>
+</div>
+</div>
+<p>Which solution is better? Why are there multiple solutions?</p>
+</section>
+<section id="discrete-cost-model">
+<h3><span class="section-number">2.3.1.5. </span>Discrete Cost Model<a class="headerlink" href="#discrete-cost-model" title="Permalink to this headline">#</a></h3>
+<p>We want to modify the model to:</p>
+<ul class="simple">
+<li><p>Easily find the best global solution (reduce impacts of initialization)</p></li>
+<li><p>Account for the fact there is a minimum reactor size we can purchase</p></li>
+</ul>
+</section>
+<section id="enumerate-the-solutions">
+<h3><span class="section-number">2.3.1.6. </span>Enumerate the solutions<a class="headerlink" href="#enumerate-the-solutions" title="Permalink to this headline">#</a></h3>
+<p>As an illustration, enumerate through the following four options:</p>
+<ol class="simple">
+<li><p>No reactor</p></li>
+<li><p>Reactor I only</p></li>
+<li><p>Reactor II only</p></li>
+<li><p>Reactor I and II only</p></li>
+</ol>
+<p>For each option, ask:</p>
+<ul class="simple">
+<li><p>Are the constraints feasible?</p></li>
+<li><p>What is the objective?</p></li>
+</ul>
+</section>
+<section id="solve-with-pyomo">
+<h3><span class="section-number">2.3.1.7. </span>Solve with Pyomo<a class="headerlink" href="#solve-with-pyomo" title="Permalink to this headline">#</a></h3>
+<p>Create and inspect the model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">milp</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+<span class="c1">## Define sets</span>
+<span class="n">milp</span><span class="o">.</span><span class="n">REACTORS</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+
+<span class="c1">## Define parameters (data)</span>
+
+<span class="c1"># kmol/hour</span>
+<span class="n">milp</span><span class="o">.</span><span class="n">max_flowrate</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mf">20.0</span><span class="p">)</span>
+
+<span class="c1"># $ / hr</span>
+<span class="n">cost_coefficient1</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="mf">6.4</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="mf">6.0</span><span class="p">}</span>
+<span class="n">milp</span><span class="o">.</span><span class="n">reactor_cost_linear</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">milp</span><span class="o">.</span><span class="n">REACTORS</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="n">cost_coefficient1</span><span class="p">)</span>
+
+<span class="c1"># $</span>
+<span class="n">cost_coefficient2</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="mf">7.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="mf">5.5</span><span class="p">}</span>
+<span class="n">milp</span><span class="o">.</span><span class="n">reactor_cost_fixed</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">milp</span><span class="o">.</span><span class="n">REACTORS</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="n">cost_coefficient2</span><span class="p">)</span>
+
+<span class="c1"># kmol/hr B</span>
+<span class="n">milp</span><span class="o">.</span><span class="n">product_flowrate</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
+
+<span class="c1"># conversion fraction</span>
+<span class="n">reactor_conversion</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="mf">0.8</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="mf">0.67</span><span class="p">}</span>
+<span class="n">milp</span><span class="o">.</span><span class="n">conversion</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">milp</span><span class="o">.</span><span class="n">REACTORS</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="n">reactor_conversion</span><span class="p">)</span>
+
+<span class="c1"># feed cost, $/kmol of A</span>
+<span class="n">milp</span><span class="o">.</span><span class="n">feed_cost</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mf">5.0</span><span class="p">)</span>
+
+
+<span class="c1">## Define variables</span>
+
+<span class="c1"># Feed flowrate into reactor, x0 in handout illustration</span>
+<span class="n">milp</span><span class="o">.</span><span class="n">feed_flowrate</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">milp</span><span class="o">.</span><span class="n">max_flowrate</span><span class="p">))</span>
+
+<span class="c1"># Reactor feed, x1 and x2 in handout illustration</span>
+<span class="n">milp</span><span class="o">.</span><span class="n">reactor_feed</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">milp</span><span class="o">.</span><span class="n">REACTORS</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">milp</span><span class="o">.</span><span class="n">max_flowrate</span><span class="p">))</span>
+
+<span class="c1"># Reactor effluent (outlet), z1 and z2 in handout illustration</span>
+<span class="n">milp</span><span class="o">.</span><span class="n">reactor_effluent</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">milp</span><span class="o">.</span><span class="n">REACTORS</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+
+<span class="c1"># Boolean variables</span>
+<span class="c1"># Add your solution here</span>
+
+<span class="c1">## Define constraints</span>
+
+<span class="c1"># mass balance over splitter</span>
+<span class="n">milp</span><span class="o">.</span><span class="n">inlet_split</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">milp</span><span class="o">.</span><span class="n">feed_flowrate</span> <span class="o">==</span> <span class="nb">sum</span><span class="p">(</span><span class="n">milp</span><span class="o">.</span><span class="n">reactor_feed</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">milp</span><span class="o">.</span><span class="n">REACTORS</span><span class="p">))</span>
+
+<span class="c1"># reactor conversion</span>
+<span class="k">def</span> <span class="nf">rule_reactor</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">reactor_effluent</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">conversion</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">*</span> <span class="n">m</span><span class="o">.</span><span class="n">reactor_feed</span><span class="p">[</span><span class="n">r</span><span class="p">]</span>
+<span class="n">milp</span><span class="o">.</span><span class="n">reactor_performance</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">milp</span><span class="o">.</span><span class="n">REACTORS</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">rule_reactor</span><span class="p">)</span>
+
+<span class="c1"># mass balance over mixer meets product requirements</span>
+<span class="n">milp</span><span class="o">.</span><span class="n">mixer</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">milp</span><span class="o">.</span><span class="n">product_flowrate</span> <span class="o">==</span> <span class="nb">sum</span><span class="p">(</span><span class="n">milp</span><span class="o">.</span><span class="n">reactor_effluent</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">milp</span><span class="o">.</span><span class="n">REACTORS</span><span class="p">))</span>
+
+<span class="c1"># logical constraints</span>
+<span class="c1"># Add your solution here</span>
+
+<span class="c1">## Define objective</span>
+<span class="c1"># Note: our linearization already includes feed costs</span>
+<span class="c1"># Add your solution here</span>
+<span class="n">milp</span><span class="o">.</span><span class="n">pprint</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1 Set Declarations
+    REACTORS : Size=1, Index=None, Ordered=Insertion
+        Key  : Dimen : Domain : Size : Members
+        None :     1 :    Any :    2 : {1, 2}
+
+6 Param Declarations
+    conversion : Size=2, Index=REACTORS, Domain=Any, Default=None, Mutable=False
+        Key : Value
+          1 :   0.8
+          2 :  0.67
+    feed_cost : Size=1, Index=None, Domain=Any, Default=None, Mutable=False
+        Key  : Value
+        None :   5.0
+    max_flowrate : Size=1, Index=None, Domain=Any, Default=None, Mutable=False
+        Key  : Value
+        None :  20.0
+    product_flowrate : Size=1, Index=None, Domain=Any, Default=None, Mutable=False
+        Key  : Value
+        None :  10.0
+    reactor_cost_fixed : Size=2, Index=REACTORS, Domain=Any, Default=None, Mutable=False
+        Key : Value
+          1 :   7.5
+          2 :   5.5
+    reactor_cost_linear : Size=2, Index=REACTORS, Domain=Any, Default=None, Mutable=False
+        Key : Value
+          1 :   6.4
+          2 :   6.0
+
+4 Var Declarations
+    feed_flowrate : Size=1, Index=None
+        Key  : Lower : Value : Upper : Fixed : Stale : Domain
+        None :     0 :  None :  20.0 : False :  True : NonNegativeReals
+    reactor_boolean : Size=2, Index=REACTORS
+        Key : Lower : Value : Upper : Fixed : Stale : Domain
+          1 :     0 :  None :     1 : False :  True : Boolean
+          2 :     0 :  None :     1 : False :  True : Boolean
+    reactor_effluent : Size=2, Index=REACTORS
+        Key : Lower : Value : Upper : Fixed : Stale : Domain
+          1 :     0 :  None :  None : False :  True : NonNegativeReals
+          2 :     0 :  None :  None : False :  True : NonNegativeReals
+    reactor_feed : Size=2, Index=REACTORS
+        Key : Lower : Value : Upper : Fixed : Stale : Domain
+          1 :     0 :  None :  20.0 : False :  True : NonNegativeReals
+          2 :     0 :  None :  20.0 : False :  True : NonNegativeReals
+
+1 Objective Declarations
+    cost : Size=1, Index=None, Active=True
+        Key  : Active : Sense    : Expression
+        None :   True : minimize : 6.4*reactor_feed[1] + 7.5*reactor_boolean[1] + 6.0*reactor_feed[2] + 5.5*reactor_boolean[2]
+
+4 Constraint Declarations
+    inlet_split : Size=1, Index=None, Active=True
+        Key  : Lower : Body                                                : Upper : Active
+        None :   0.0 : feed_flowrate - (reactor_feed[1] + reactor_feed[2]) :   0.0 :   True
+    mixer : Size=1, Index=None, Active=True
+        Key  : Lower : Body                                      : Upper : Active
+        None :  10.0 : reactor_effluent[1] + reactor_effluent[2] :  10.0 :   True
+    reactor_performance : Size=2, Index=REACTORS, Active=True
+        Key : Lower : Body                                       : Upper : Active
+          1 :   0.0 :  reactor_effluent[1] - 0.8*reactor_feed[1] :   0.0 :   True
+          2 :   0.0 : reactor_effluent[2] - 0.67*reactor_feed[2] :   0.0 :   True
+    toggle_reactor : Size=2, Index=REACTORS, Active=True
+        Key : Lower : Body                                      : Upper : Active
+          1 :  -Inf : reactor_feed[1] - 20.0*reactor_boolean[1] :   0.0 :   True
+          2 :  -Inf : reactor_feed[2] - 20.0*reactor_boolean[2] :   0.0 :   True
+
+16 Declarations: REACTORS max_flowrate reactor_cost_linear reactor_cost_fixed product_flowrate conversion feed_cost feed_flowrate reactor_feed reactor_effluent reactor_boolean inlet_split reactor_performance mixer toggle_reactor cost
+</pre></div>
+</div>
+</div>
+</div>
+<p>Solve the model using <code class="docutils literal notranslate"><span class="pre">cbc</span></code>, <code class="docutils literal notranslate"><span class="pre">bonmin</span></code>, <code class="docutils literal notranslate"><span class="pre">gurobi</span></code> (need license), or <code class="docutils literal notranslate"><span class="pre">cplex</span></code> (need license).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set solver</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;gurobi&#39;</span><span class="p">)</span>
+<span class="c1"># solver = pyo.SolverFactory(&#39;glpk&#39;)</span>
+<span class="c1"># solver = pyo.SolverFactory(&#39;cbc&#39;)</span>
+<span class="c1"># solver = pyo.SolverFactory(&#39;bonmin&#39;)</span>
+
+<span class="c1"># Add your solution here</span>
+
+<span class="n">print_solution</span><span class="p">(</span><span class="n">milp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using license file /Users/adowling/gurobi.lic
+Academic license - for non-commercial use only
+Read LP format model from file /var/folders/xy/24xvnyss36v3d8mw68tygxdw0000gp/T/tmpqhpzlzbd.pyomo.lp
+Reading time = 0.00 seconds
+x8: 7 rows, 8 columns, 14 nonzeros
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (mac64)
+Optimize a model with 7 rows, 8 columns and 14 nonzeros
+Model fingerprint: 0x49a58b0f
+Variable types: 6 continuous, 2 integer (2 binary)
+Coefficient statistics:
+  Matrix range     [7e-01, 2e+01]
+  Objective range  [6e+00, 8e+00]
+  Bounds range     [1e+00, 2e+01]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 7 rows and 8 columns
+Presolve time: 0.01s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.01 seconds
+Thread count was 1 (of 6 available processors)
+
+Solution count 1: 87.5 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 8.750000000000e+01, best bound 8.750000000000e+01, gap 0.0000%
+Variable Names		Value
+feed_flowrate 		 12.5
+reactor_feed[1] 		 12.5
+reactor_feed[2] 		 0.0
+reactor_effluent[1] 		 10.0
+reactor_effluent[2] 		 0.0
+reactor_boolean[1] 		 1.0
+reactor_boolean[2] 		 0.0
+
+Objective Name		Value
+cost 		 87.5
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="is-rounding-good-enough">
+<h2><span class="section-number">2.3.2. </span>Is rounding good enough?<a class="headerlink" href="#is-rounding-good-enough" title="Permalink to this headline">#</a></h2>
+<section id="linear-program-relaxation">
+<h3><span class="section-number">2.3.2.1. </span>Linear Program (Relaxation)<a class="headerlink" href="#linear-program-relaxation" title="Permalink to this headline">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}\min_{x_1,x_2} \quad &amp; x_2 \\
+\mathrm{s.t.} \quad &amp; 2 x_1 + x_2 \geq 13 \\
+&amp; 5 x_1 + 2 x_2 \leq 30 \\
+&amp; -x_1 + x_2 \geq 5 \\
+&amp; x_1, x_2 \geq 0
+\end{align}\end{split}\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyomo.environ</span> <span class="k">as</span> <span class="nn">pyo</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+<span class="c1"># Declare variables with bounds</span>
+<span class="n">m</span><span class="o">.</span><span class="n">x1</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">x2</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+
+<span class="c1"># Constraint 1</span>
+<span class="n">m</span><span class="o">.</span><span class="n">con1</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">x1</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">x2</span> <span class="o">&gt;=</span> <span class="mi">13</span><span class="p">)</span>
+
+<span class="c1"># Constraint 2</span>
+<span class="n">m</span><span class="o">.</span><span class="n">con2</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="mi">5</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">x1</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">x2</span> <span class="o">&lt;=</span> <span class="mi">30</span><span class="p">)</span>
+
+<span class="c1"># Constraint 3</span>
+<span class="n">m</span><span class="o">.</span><span class="n">con3</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=-</span><span class="n">m</span><span class="o">.</span><span class="n">x1</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">x2</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># Objective</span>
+<span class="n">m</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">x2</span><span class="p">)</span>
+
+<span class="c1"># Print model</span>
+<span class="n">m</span><span class="o">.</span><span class="n">pprint</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2 Var Declarations
+    x1 : Size=1, Index=None
+        Key  : Lower : Value : Upper : Fixed : Stale : Domain
+        None :     0 :  None :  None : False :  True : NonNegativeReals
+    x2 : Size=1, Index=None
+        Key  : Lower : Value : Upper : Fixed : Stale : Domain
+        None :     0 :  None :  None : False :  True : NonNegativeReals
+
+1 Objective Declarations
+    obj : Size=1, Index=None, Active=True
+        Key  : Active : Sense    : Expression
+        None :   True : minimize :         x2
+
+3 Constraint Declarations
+    con1 : Size=1, Index=None, Active=True
+        Key  : Lower : Body      : Upper : Active
+        None :  13.0 : 2*x1 + x2 :  +Inf :   True
+    con2 : Size=1, Index=None, Active=True
+        Key  : Lower : Body        : Upper : Active
+        None :  -Inf : 5*x1 + 2*x2 :  30.0 :   True
+    con3 : Size=1, Index=None, Active=True
+        Key  : Lower : Body      : Upper : Active
+        None :   5.0 : - x1 + x2 :  +Inf :   True
+
+6 Declarations: x1 x2 con1 con2 con3 obj
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set solver</span>
+<span class="c1"># solver = pyo.SolverFactory(&#39;gurobi&#39;)</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;glpk&#39;</span><span class="p">)</span>
+<span class="c1"># solver = pyo.SolverFactory(&#39;ipopt&#39;)</span>
+
+
+<span class="c1"># Solve</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Print solution</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x1 = &quot;</span><span class="p">,</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">x1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x2 = &quot;</span><span class="p">,</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">x2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GLPSOL: GLPK LP/MIP Solver, v4.65
+Parameter(s) specified in the command line:
+ --write /var/folders/xy/24xvnyss36v3d8mw68tygxdw0000gp/T/tmpmp918eg6.glpk.raw
+ --wglp /var/folders/xy/24xvnyss36v3d8mw68tygxdw0000gp/T/tmpjwou7gyx.glpk.glp
+ --cpxlp /var/folders/xy/24xvnyss36v3d8mw68tygxdw0000gp/T/tmponqo37ck.pyomo.lp
+Reading problem data from &#39;/var/folders/xy/24xvnyss36v3d8mw68tygxdw0000gp/T/tmponqo37ck.pyomo.lp&#39;...
+4 rows, 3 columns, 7 non-zeros
+30 lines were read
+Writing problem data to &#39;/var/folders/xy/24xvnyss36v3d8mw68tygxdw0000gp/T/tmpjwou7gyx.glpk.glp&#39;...
+22 lines were written
+GLPK Simplex Optimizer, v4.65
+4 rows, 3 columns, 7 non-zeros
+Preprocessing...
+3 rows, 2 columns, 6 non-zeros
+Scaling...
+ A: min|aij| =  1.000e+00  max|aij| =  5.000e+00  ratio =  5.000e+00
+Problem data seem to be well scaled
+Constructing initial basis...
+Size of triangular part is 3
+      0: obj =   0.000000000e+00 inf =   1.800e+01 (2)
+      2: obj =   7.666666667e+00 inf =   0.000e+00 (0)
+OPTIMAL LP SOLUTION FOUND
+Time used:   0.0 secs
+Memory used: 0.0 Mb (40424 bytes)
+Writing basic solution to &#39;/var/folders/xy/24xvnyss36v3d8mw68tygxdw0000gp/T/tmpmp918eg6.glpk.raw&#39;...
+16 lines were written
+ 
+x1 =  2.66666666666667
+x2 =  7.66666666666667
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="rounding">
+<h3><span class="section-number">2.3.2.2. </span>Rounding<a class="headerlink" href="#rounding" title="Permalink to this headline">#</a></h3>
+<p>With your neighbor, discuss:</p>
+<ul class="simple">
+<li><p>If you round <span class="math notranslate nohighlight">\(x_1\)</span> and <span class="math notranslate nohighlight">\(x_2\)</span> to an integer, are all of the constraints feasible?</p></li>
+<li><p>How would you go about checking the optimality of a feasible integer solution?</p></li>
+</ul>
+</section>
+<section id="integer-program">
+<h3><span class="section-number">2.3.2.3. </span>Integer Program<a class="headerlink" href="#integer-program" title="Permalink to this headline">#</a></h3>
+<p>Consider the following integer program:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}\min_{x_1,x_2} \quad &amp; x_2 \\
+\mathrm{s.t.} \quad &amp; 2 x_1 + x_2 \geq 13 \\
+&amp; 5 x_1 + 2 x_2 \leq 30 \\
+&amp; -x_1 + x_2 \geq 5 \\
+&amp; x_1, x_2 \in \mathcal{Z} := \{0,1,2,...\}
+\end{align}\end{split}\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m2</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+<span class="c1"># Declare variables as positive integers</span>
+<span class="n">m2</span><span class="o">.</span><span class="n">x1</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">PositiveIntegers</span><span class="p">)</span>
+<span class="n">m2</span><span class="o">.</span><span class="n">x2</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">PositiveIntegers</span><span class="p">)</span>
+
+<span class="c1"># Constraint 1</span>
+<span class="n">m2</span><span class="o">.</span><span class="n">con1</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">m2</span><span class="o">.</span><span class="n">x1</span> <span class="o">+</span> <span class="n">m2</span><span class="o">.</span><span class="n">x2</span> <span class="o">&gt;=</span> <span class="mi">13</span><span class="p">)</span>
+
+<span class="c1"># Constraint 2</span>
+<span class="n">m2</span><span class="o">.</span><span class="n">con2</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="mi">5</span><span class="o">*</span><span class="n">m2</span><span class="o">.</span><span class="n">x1</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">m2</span><span class="o">.</span><span class="n">x2</span> <span class="o">&lt;=</span> <span class="mi">30</span><span class="p">)</span>
+
+<span class="c1"># Constraint 3</span>
+<span class="n">m2</span><span class="o">.</span><span class="n">con3</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=-</span><span class="n">m2</span><span class="o">.</span><span class="n">x1</span> <span class="o">+</span> <span class="n">m2</span><span class="o">.</span><span class="n">x2</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># Objective</span>
+<span class="n">m2</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">m2</span><span class="o">.</span><span class="n">x2</span><span class="p">)</span>
+
+<span class="n">m2</span><span class="o">.</span><span class="n">pprint</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2 Var Declarations
+    x1 : Size=1, Index=None
+        Key  : Lower : Value : Upper : Fixed : Stale : Domain
+        None :     1 :  None :  None : False :  True : PositiveIntegers
+    x2 : Size=1, Index=None
+        Key  : Lower : Value : Upper : Fixed : Stale : Domain
+        None :     1 :  None :  None : False :  True : PositiveIntegers
+
+1 Objective Declarations
+    obj : Size=1, Index=None, Active=True
+        Key  : Active : Sense    : Expression
+        None :   True : minimize :         x2
+
+3 Constraint Declarations
+    con1 : Size=1, Index=None, Active=True
+        Key  : Lower : Body      : Upper : Active
+        None :  13.0 : 2*x1 + x2 :  +Inf :   True
+    con2 : Size=1, Index=None, Active=True
+        Key  : Lower : Body        : Upper : Active
+        None :  -Inf : 5*x1 + 2*x2 :  30.0 :   True
+    con3 : Size=1, Index=None, Active=True
+        Key  : Lower : Body      : Upper : Active
+        None :   5.0 : - x1 + x2 :  +Inf :   True
+
+6 Declarations: x1 x2 con1 con2 con3 obj
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set solver</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;gurobi&#39;</span><span class="p">)</span>
+<span class="c1"># solver = pyo.SolverFactory(&#39;glpk&#39;)</span>
+<span class="c1"># solver = pyo.SolverFactory(&#39;cbc&#39;)</span>
+<span class="c1"># solver = pyo.SolverFactory(&#39;bonmin&#39;)</span>
+
+<span class="c1"># Solve</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">m2</span><span class="p">,</span><span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Print solution</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x1 = &quot;</span><span class="p">,</span><span class="n">m2</span><span class="o">.</span><span class="n">x1</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x2 = &quot;</span><span class="p">,</span><span class="n">m2</span><span class="o">.</span><span class="n">x2</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using license file /Users/adowling/gurobi.lic
+Academic license - for non-commercial use only
+Read LP format model from file /var/folders/xy/24xvnyss36v3d8mw68tygxdw0000gp/T/tmpmsmdp9dm.pyomo.lp
+Reading time = 0.00 seconds
+x3: 4 rows, 3 columns, 7 nonzeros
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (mac64)
+Optimize a model with 4 rows, 3 columns and 7 nonzeros
+Model fingerprint: 0x3a0f60a9
+Variable types: 1 continuous, 2 integer (0 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 5e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 3e+01]
+Presolve removed 1 rows and 1 columns
+Presolve time: 0.00s
+Presolved: 3 rows, 2 columns, 6 nonzeros
+Variable types: 0 continuous, 2 integer (0 binary)
+Found heuristic solution: objective 10.0000000
+Found heuristic solution: objective 9.0000000
+
+Explored 0 nodes (0 simplex iterations) in 0.01 seconds
+Thread count was 6 (of 6 available processors)
+
+Solution count 2: 9 10 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 9.000000000000e+00, best bound 9.000000000000e+00, gap 0.0000%
+ 
+x1 =  2.0
+x2 =  9.0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="why-rounding-does-not-always-work">
+<h3><span class="section-number">2.3.2.4. </span>Why rounding does not always work<a class="headerlink" href="#why-rounding-does-not-always-work" title="Permalink to this headline">#</a></h3>
+<p>Reference: <a class="reference external" href="http://personal.lse.ac.uk/williahp/publications/wp%2010-118.pdf">http://personal.lse.ac.uk/williahp/publications/wp 10-118.pdf</a></p>
+<p><img alt="feasible" src="https://ndcbe.github.io/optimization/_images/feasible.png" /></p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./notebooks/2"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="LP-NLP.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">2.2. </span>Continuous Optimization</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="GDP.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2.4. </span>Logical Modeling and Generalized Disjunctive Programs</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Alexander Dowling, et al.<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

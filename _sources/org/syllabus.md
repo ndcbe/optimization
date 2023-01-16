@@ -64,11 +64,14 @@ As an advanced technical elective, this class aims to prepare you to apply compu
 
 Final grades will be determined as follows:
 
-Homework: 30%
-Midterm Exam: 30%
-Final Project: 40%
+| Category    | Weight |
+| ------ | ----- |
+| Homework | 20% |
+| Mini-Project | 10% |
+| Midterm Exam| 30% |
+| Final Project | 40% |
 
-Grade scale for 60499:
+Grade scale for 60499 (graduate):
 - A : demonstrated mastery of main concepts
 - A- : comfort with most concepts
 - B+ : comfort with many concepts but struggled in a few areas
@@ -76,7 +79,7 @@ Grade scale for 60499:
 
 The median grade in 60499 will likely be an A- or B+.
 
-Grading scale for 40499:
+Grading scale for 40499 (undergraduate):
 - A : demonstrated mastery of main concepts
 - A- / B+ : comfort with most concepts
 - B / B - : comfort with many concepts but struggled in a few areas

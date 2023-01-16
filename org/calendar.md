@@ -47,7 +47,7 @@ All assignments are due at 5pm unless otherwise noted.
 | Thursday, March 09, 2023 | [](../notebooks/4/Convexity.ipynb) |
 | Tuesday, March 14, 2023 | Spring Break |
 | Thursday, March 16, 2023 | Spring Break |
-| Tuesday, March 21, 2023 | Midsemester Exam (in-class) |
+| Tuesday, March 21, 2023 | **Midsemester Exam** (in-class) |
 | Thursday, March 23, 2023 | [](../notebooks/4/Local-Optimality.ipynb) |
 | Tuesday, March 28, 2023 | [](../notebooks/4/KKT-Multipliers.ipynb) |
 | Thursday, March 30, 2023 | [](../notebooks/4/Constraint-Qualifications.ipynb) |

@@ -82,8 +82,8 @@ The median grade in 60499 will likely be an A- or B+.
 Grading scale for 40499 (undergraduate):
 - A : demonstrated mastery of main concepts
 - A- / B+ : comfort with most concepts
-- B / B - : comfort with many concepts but struggled in a few areas
-- C+ or below: struggled with main concepts or missing assignments or both
+- B : comfort with many concepts but struggled in a few areas
+- B- or below: struggled with main concepts or missing assignments or both
 
 The median grade in 40499 will likely be an A- or B+.
 

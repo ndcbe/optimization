@@ -26,8 +26,6 @@ Everyone: You should satisfy at least TWO of the following advisory prerequisite
 | | ![](https://dowlinglab.nd.edu/assets/320333/200x200/dowling_alex_sq.jpg) | ![](https://dowlinglab.nd.edu/assets/477743/200x200/img_5301_square_sized.jpg) | ![](https://dowlinglab.nd.edu/assets/477378/200x200/xinhe.jpg) |
 | Office Hours | 8-9am on Thursdays in 366 or 369 Nieuwland Hall | 9-10am on Wednesdays in 366 Nieuwland Hall | 9-10am on Wednesdays in 366 Nieuwland Hall  |
 
-(Office hours are tentative, still need to be confirmed.)
-
 ## Discussuion Board (Canvas) and Email Correspondance
 * Post your questions to the **discussion board in Canvas**
 * Instructor only: adowling@nd.edu, **'60499' or '40499' in the subject**, private official matters (e.g., excused absence, testing accommodations)

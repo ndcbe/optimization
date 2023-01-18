@@ -4,11 +4,13 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>4.6. NLP Diagnostics with Degeneracy Hunter &#8212; Nonlinear and Stochastic Optimization</title>
     
-  <link href="../../_static/css/theme.css" rel="stylesheet">
-  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -18,20 +20,16 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     
-  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
@@ -39,12 +37,13 @@
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
@@ -64,7 +63,21 @@ const thebe_selector_output = ".output, .cell_output"
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
     
     <div class="container-fluid" id="banner"></div>
 
@@ -73,9 +86,10 @@ const thebe_selector_output = ".output, .cell_output"
     <div class="container-xl">
       <div class="row">
           
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../../index.html">
       
       
@@ -88,14 +102,15 @@ const thebe_selector_output = ".output, .cell_output"
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item active">
-        <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../intro.html">
-   Nonlinear and Stochastic Optimization
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Nonlinear and Stochastic Optimization
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Organinization
  </span>
@@ -412,112 +427,227 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
             
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/notebooks/4/NLP-Diagnostics.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.ipynb</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/ndcbe/optimization"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/4/NLP-Diagnostics.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        
-    </div>
-</div>
-
-            <!-- Full screen (wrap in <a> to have style consistency -->
-
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
-
-            <!-- Launch buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        <a class="binder-button" href="https://mybinder.org/v2/gh/ndcbe/optimization/master?urlpath=tree/notebooks/4/NLP-Diagnostics.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
-                data-placement="left"><img class="binder-button-logo"
-                    src="../../_static/images/logo_binder.svg"
-                    alt="Interact on binder">Binder</button></a>
-        
-        
-        
-        <a class="colab-button" href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/4/NLP-Diagnostics.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
-                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
-                    src="../../_static/images/logo_colab.png"
-                    alt="Interact on Colab">Colab</button></a>
-        
-        
-    </div>
-</div>
-
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
-            
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/ndcbe/optimization/master?urlpath=tree/notebooks/4/NLP-Diagnostics.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/4/NLP-Diagnostics.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="headerbtn__text-container">Colab</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/ndcbe/optimization"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/4/NLP-Diagnostics.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../_sources/notebooks/4/NLP-Diagnostics.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#setup">
    4.6.1. Setup
@@ -636,12 +766,11 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
 </ul>
 
-            </nav>
-        </div>
-    </div>
+    </nav>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
                 <h1>NLP Diagnostics with Degeneracy Hunter</h1>
@@ -776,11 +905,12 @@ const thebe_selector_output = ".output, .cell_output"
                     </div>
                 </div>
             </div>
-            
+            <main id="main-content" role="main">
+                
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="nlp-diagnostics-with-degeneracy-hunter">
-<h1><span class="section-number">4.6. </span>NLP Diagnostics with Degeneracy Hunter<a class="headerlink" href="#nlp-diagnostics-with-degeneracy-hunter" title="Permalink to this headline">¶</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="nlp-diagnostics-with-degeneracy-hunter">
+<h1><span class="section-number">4.6. </span>NLP Diagnostics with Degeneracy Hunter<a class="headerlink" href="#nlp-diagnostics-with-degeneracy-hunter" title="Permalink to this headline">#</a></h1>
 <p>Created by Prof. Alex Dowling (<a class="reference external" href="mailto:adowling&#37;&#52;&#48;nd&#46;edu">adowling<span>&#64;</span>nd<span>&#46;</span>edu</a>) at the University of Notre Dame. This notebook (and Degeneracy Hunter) are available through the <a class="reference external" href="https://idaes.org">Institute for the Design of Advanced Energy Systems</a> under a BSD-3 license.</p>
 <p>This notebook shows how to use the following Degeneracy Hunter features using two motivating examples:</p>
 <ul class="simple">
@@ -803,8 +933,8 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 </div>
-<div class="section" id="setup">
-<h2><span class="section-number">4.6.1. </span>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<section id="setup">
+<h2><span class="section-number">4.6.1. </span>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">#</a></h2>
 <p>We start by importing Pyomo and Degeneracy Hunter.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -817,9 +947,9 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="example-1-well-behaved-nonlinear-program">
-<h2><span class="section-number">4.6.2. </span>Example 1: Well-Behaved Nonlinear Program<a class="headerlink" href="#example-1-well-behaved-nonlinear-program" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="example-1-well-behaved-nonlinear-program">
+<h2><span class="section-number">4.6.2. </span>Example 1: Well-Behaved Nonlinear Program<a class="headerlink" href="#example-1-well-behaved-nonlinear-program" title="Permalink to this headline">#</a></h2>
 <p>Consider the following “well-behaved” nonlinear optimization problem.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align*} \min_{\mathbf{x}} \quad &amp; \sum_{i=\{0,...,4\}} x_i^2\\
@@ -828,8 +958,8 @@ const thebe_selector_output = ".output, .cell_output"
 &amp; x_4 \times x_3 + x_0 \times x_3 + x_4 = 0
 \end{align*} \end{split}\]</div>
 <p>This problem is feasible, well-initialized, and standard constraint qualifications hold. As expected, we have no trouble solving this problem.</p>
-<div class="section" id="define-the-model-in-pyomo">
-<h3><span class="section-number">4.6.2.1. </span>Define the model in Pyomo<a class="headerlink" href="#define-the-model-in-pyomo" title="Permalink to this headline">¶</a></h3>
+<section id="define-the-model-in-pyomo">
+<h3><span class="section-number">4.6.2.1. </span>Define the model in Pyomo<a class="headerlink" href="#define-the-model-in-pyomo" title="Permalink to this headline">#</a></h3>
 <p>We start by defining the optimization problem in Pyomo.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -885,9 +1015,9 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="evaluate-the-initial-point">
-<h3><span class="section-number">4.6.2.2. </span>Evaluate the initial point<a class="headerlink" href="#evaluate-the-initial-point" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="evaluate-the-initial-point">
+<h3><span class="section-number">4.6.2.2. </span>Evaluate the initial point<a class="headerlink" href="#evaluate-the-initial-point" title="Permalink to this headline">#</a></h3>
 <p>Initialization is extremely important for nonlinear optimization problems. By setting the Ipopt option <code class="docutils literal notranslate"><span class="pre">max_iter</span></code> to zero, we can inspect the initial point.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -978,9 +1108,9 @@ WARNING: Loading a SolverResults object with a warning status into
 </div>
 </div>
 <p>We expect the exit status <code class="docutils literal notranslate"><span class="pre">Maximum</span> <span class="pre">Number</span> <span class="pre">of</span> <span class="pre">Iterations</span> <span class="pre">Exceeded</span></code> because we told Ipopt to take zero iterations (only evaluate the initial point).</p>
-</div>
-<div class="section" id="identify-the-constraint-residuals-larger-than-0-1">
-<h3><span class="section-number">4.6.2.3. </span>Identify the constraint residuals larger than 0.1<a class="headerlink" href="#identify-the-constraint-residuals-larger-than-0-1" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="identify-the-constraint-residuals-larger-than-0-1">
+<h3><span class="section-number">4.6.2.3. </span>Identify the constraint residuals larger than 0.1<a class="headerlink" href="#identify-the-constraint-residuals-larger-than-0-1" title="Permalink to this headline">#</a></h3>
 <p>When developing nonlinear optimization models, one often wants to know: “what constraints are violated at the initial point (or more generally the point the solver terminated) within a given tolerance?” Degeneracy Hunter makes this very easy by provided a simple interface to several IDAES utility functions.</p>
 <p>The following line of code will print out all constraints with residuals larger than <code class="docutils literal notranslate"><span class="pre">0.1</span></code>:</p>
 <div class="cell docutils container">
@@ -1019,9 +1149,9 @@ No constraints with residuals larger than 0.1 !
 </div>
 </div>
 <p>Important: Ipopt does several preprocessing steps when we executed it with zero iterations. When checking the initial point, it is strongly recommended to call Ipopt with zero iterations first. Otherwise, you will not be analyzing the initial point Ipopt starts with.</p>
-</div>
-<div class="section" id="identify-all-variables-within-1-of-their-bounds">
-<h3><span class="section-number">4.6.2.4. </span>Identify all variables within 1 of their bounds<a class="headerlink" href="#identify-all-variables-within-1-of-their-bounds" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="identify-all-variables-within-1-of-their-bounds">
+<h3><span class="section-number">4.6.2.4. </span>Identify all variables within 1 of their bounds<a class="headerlink" href="#identify-all-variables-within-1-of-their-bounds" title="Permalink to this headline">#</a></h3>
 <p>Another common question when developing optimization models is, “Which variables are within their bounds by a given tolerance?” Below is the syntax:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1039,9 +1169,9 @@ No variables within 1.0 (absolute) of their bounds.
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="solve-the-optimization-problem">
-<h3><span class="section-number">4.6.2.5. </span>Solve the optimization problem<a class="headerlink" href="#solve-the-optimization-problem" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="solve-the-optimization-problem">
+<h3><span class="section-number">4.6.2.5. </span>Solve the optimization problem<a class="headerlink" href="#solve-the-optimization-problem" title="Permalink to this headline">#</a></h3>
 <p>Now we can solve the optimization problem. We first set the number of iterations to 50 and then resolve with Ipopt.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1134,9 +1264,9 @@ EXIT: Optimal Solution Found.
 </div>
 </div>
 <p>As expected, Ipopt has no trouble solving this optimization problem.</p>
-</div>
-<div class="section" id="check-if-any-constraint-residuals-are-large-than-10-14">
-<h3><span class="section-number">4.6.2.6. </span>Check if any constraint residuals are large than 10<span class="math notranslate nohighlight">\(^{-14}\)</span><a class="headerlink" href="#check-if-any-constraint-residuals-are-large-than-10-14" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="check-if-any-constraint-residuals-are-large-than-10-14">
+<h3><span class="section-number">4.6.2.6. </span>Check if any constraint residuals are large than 10<span class="math notranslate nohighlight">\(^{-14}\)</span><a class="headerlink" href="#check-if-any-constraint-residuals-are-large-than-10-14" title="Permalink to this headline">#</a></h3>
 <p>Let’s now inspect the new solution to see which (if any) constraints have residuals larger than 10<span class="math notranslate nohighlight">\(^{-14}\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1183,9 +1313,9 @@ No constraints with residuals larger than 1e-14 !
 </div>
 </div>
 <p>As expected, all of the constraints are satisfied, even with this fairly tight tolerance.</p>
-</div>
-<div class="section" id="identify-all-variables-within-10-5-of-their-bounds">
-<h3><span class="section-number">4.6.2.7. </span>Identify all variables within 10<span class="math notranslate nohighlight">\(^{-5}\)</span> of their bounds<a class="headerlink" href="#identify-all-variables-within-10-5-of-their-bounds" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="identify-all-variables-within-10-5-of-their-bounds">
+<h3><span class="section-number">4.6.2.7. </span>Identify all variables within 10<span class="math notranslate nohighlight">\(^{-5}\)</span> of their bounds<a class="headerlink" href="#identify-all-variables-within-10-5-of-their-bounds" title="Permalink to this headline">#</a></h3>
 <p>Finally, let’s check if any of the variables are near their bounds at the new solution.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1204,9 +1334,9 @@ No variables within 1e-05 (absolute) of their bounds.
 </div>
 </div>
 <p>Great, no variables are near their bounds. If a variable was at its bound, it is important the inspect the model and confirm the bound is physically sensible/what you intended.</p>
-</div>
-<div class="section" id="check-the-rank-of-the-constraint-jacobian-at-the-solution">
-<h3><span class="section-number">4.6.2.8. </span>Check the rank of the constraint Jacobian at the solution<a class="headerlink" href="#check-the-rank-of-the-constraint-jacobian-at-the-solution" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="check-the-rank-of-the-constraint-jacobian-at-the-solution">
+<h3><span class="section-number">4.6.2.8. </span>Check the rank of the constraint Jacobian at the solution<a class="headerlink" href="#check-the-rank-of-the-constraint-jacobian-at-the-solution" title="Permalink to this headline">#</a></h3>
 <p>The main feature of Degeneracy Hunter is to check if an optimization problem is poorly formulated. Let’s see what happens when we check the rank on a carefully formulated optimization problem:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1225,9 +1355,9 @@ Model needs at least 2 equality constraints to check rank.
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="try-degeneracy-hunter">
-<h3><span class="section-number">4.6.2.9. </span>Try Degeneracy Hunter<a class="headerlink" href="#try-degeneracy-hunter" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="try-degeneracy-hunter">
+<h3><span class="section-number">4.6.2.9. </span>Try Degeneracy Hunter<a class="headerlink" href="#try-degeneracy-hunter" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ids</span> <span class="o">=</span> <span class="n">dh</span><span class="o">.</span><span class="n">find_irreducible_degenerate_sets</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1274,10 +1404,10 @@ No candidate equations. The Jacobian is likely full rank.
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="example-2-linear-program-with-redundant-equality-constraints">
-<h2><span class="section-number">4.6.3. </span>Example 2: Linear Program with Redundant Equality Constraints<a class="headerlink" href="#example-2-linear-program-with-redundant-equality-constraints" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="example-2-linear-program-with-redundant-equality-constraints">
+<h2><span class="section-number">4.6.3. </span>Example 2: Linear Program with Redundant Equality Constraints<a class="headerlink" href="#example-2-linear-program-with-redundant-equality-constraints" title="Permalink to this headline">#</a></h2>
 <p>Now let’s apply Degeneracy Hunter to a poorly formulated optimization problem:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align*} \min_{\mathbf{x}} \quad &amp; \sum_{i=\{1,...,3\}} x_i \\
@@ -1294,8 +1424,8 @@ No candidate equations. The Jacobian is likely full rank.
 <li><p>Theoretical convergence properties of optimization algorithms may not hold</p></li>
 </ol>
 <p>The absolute best defense against this is to detect degenerate equations and reformulate the model to remove them; this is the primary purpose of Degeneracy Hunter. Let’s see it in action.</p>
-<div class="section" id="id1">
-<h3><span class="section-number">4.6.3.1. </span>Define the model in Pyomo<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<section id="id1">
+<h3><span class="section-number">4.6.3.1. </span>Define the model in Pyomo<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">example2</span><span class="p">(</span><span class="n">with_degenerate_constraint</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -1373,9 +1503,9 @@ No candidate equations. The Jacobian is likely full rank.
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="id2">
-<h3><span class="section-number">4.6.3.2. </span>Evaluate the initial point<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id2">
+<h3><span class="section-number">4.6.3.2. </span>Evaluate the initial point<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Specifying an iteration limit of 0 allows us to inspect the initial point</span>
@@ -1461,9 +1591,9 @@ WARNING: Loading a SolverResults object with a warning status into
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="identify-constraints-with-residuals-greater-than-0-1-at-the-initial-point">
-<h3><span class="section-number">4.6.3.3. </span>Identify constraints with residuals greater than 0.1 at the initial point<a class="headerlink" href="#identify-constraints-with-residuals-greater-than-0-1-at-the-initial-point" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="identify-constraints-with-residuals-greater-than-0-1-at-the-initial-point">
+<h3><span class="section-number">4.6.3.3. </span>Identify constraints with residuals greater than 0.1 at the initial point<a class="headerlink" href="#identify-constraints-with-residuals-greater-than-0-1-at-the-initial-point" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dh2</span><span class="o">.</span><span class="n">check_residuals</span><span class="p">(</span><span class="n">tol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
@@ -1499,9 +1629,9 @@ No constraints with residuals larger than 0.1 !
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="solve-the-optimization-problem-and-extract-the-solution">
-<h3><span class="section-number">4.6.3.4. </span>Solve the optimization problem and extract the solution<a class="headerlink" href="#solve-the-optimization-problem-and-extract-the-solution" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="solve-the-optimization-problem-and-extract-the-solution">
+<h3><span class="section-number">4.6.3.4. </span>Solve the optimization problem and extract the solution<a class="headerlink" href="#solve-the-optimization-problem-and-extract-the-solution" title="Permalink to this headline">#</a></h3>
 <p>Now let’s solve the optimization problem.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1600,9 +1730,9 @@ x[ 3 ]= 0.0
 </div>
 </div>
 <p>We got luck here. Ipopt implements several algorithmic and numerical safeguards to handle (mildy) degenerate equations. Nevertheless, notice the last column of the Ipopt output labeled <code class="docutils literal notranslate"><span class="pre">ls</span></code>. This is the number of linesearch evaluations. For iterations 0 to 11, <code class="docutils literal notranslate"><span class="pre">ls</span></code> is 1, which means Ipopt is taking full steps. For iterations 12 to 16, however, <code class="docutils literal notranslate"><span class="pre">ls</span></code> is greater than 20. This means Ipopt is struggling (a little) to converge to the solution.</p>
-</div>
-<div class="section" id="check-the-rank-of-the-jacobian-of-the-equality-constraints">
-<h3><span class="section-number">4.6.3.5. </span>Check the rank of the Jacobian of the equality constraints<a class="headerlink" href="#check-the-rank-of-the-jacobian-of-the-equality-constraints" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="check-the-rank-of-the-jacobian-of-the-equality-constraints">
+<h3><span class="section-number">4.6.3.5. </span>Check the rank of the Jacobian of the equality constraints<a class="headerlink" href="#check-the-rank-of-the-jacobian-of-the-equality-constraints" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_deficient</span> <span class="o">=</span> <span class="n">dh2</span><span class="o">.</span><span class="n">check_rank_equality_constraints</span><span class="p">()</span>
@@ -1620,9 +1750,9 @@ Smallest singular value(s):
 </div>
 </div>
 <p>A singular value near 0 indicates the Jacobian of the equality constraints is rank deficient. For each near-zero signular value, there is likely one degenerate constraint.</p>
-</div>
-<div class="section" id="identify-candidate-degenerate-constraints">
-<h3><span class="section-number">4.6.3.6. </span>Identify candidate degenerate constraints<a class="headerlink" href="#identify-candidate-degenerate-constraints" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="identify-candidate-degenerate-constraints">
+<h3><span class="section-number">4.6.3.6. </span>Identify candidate degenerate constraints<a class="headerlink" href="#identify-candidate-degenerate-constraints" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds2</span> <span class="o">=</span> <span class="n">dh2</span><span class="o">.</span><span class="n">find_candidate_equations</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1785,9 +1915,9 @@ Total time (CPU seconds):       0.02   (Wallclock seconds):       0.02
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="find-irreducible-degenerate-sets-ids">
-<h3><span class="section-number">4.6.3.7. </span>Find irreducible degenerate sets (IDS)<a class="headerlink" href="#find-irreducible-degenerate-sets-ids" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="find-irreducible-degenerate-sets-ids">
+<h3><span class="section-number">4.6.3.7. </span>Find irreducible degenerate sets (IDS)<a class="headerlink" href="#find-irreducible-degenerate-sets-ids" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ids</span> <span class="o">=</span> <span class="n">dh2</span><span class="o">.</span><span class="n">find_irreducible_degenerate_sets</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1813,9 +1943,9 @@ nu	Constraint Name
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="reformulate-example-2">
-<h3><span class="section-number">4.6.3.8. </span>Reformulate Example 2<a class="headerlink" href="#reformulate-example-2" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="reformulate-example-2">
+<h3><span class="section-number">4.6.3.8. </span>Reformulate Example 2<a class="headerlink" href="#reformulate-example-2" title="Permalink to this headline">#</a></h3>
 <p>Now let’s reformulate the model by skipping/removing the redundant equality constraint:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align*} \min_{\mathbf{x}} \quad &amp; \sum_{i=\{1,...,3\}} x_i \\
@@ -1867,9 +1997,9 @@ nu	Constraint Name
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="solve-the-reformulated-model">
-<h3><span class="section-number">4.6.3.9. </span>Solve the reformulated model<a class="headerlink" href="#solve-the-reformulated-model" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="solve-the-reformulated-model">
+<h3><span class="section-number">4.6.3.9. </span>Solve the reformulated model<a class="headerlink" href="#solve-the-reformulated-model" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">opt</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;max_iter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">50</span>
@@ -1990,9 +2120,9 @@ x[ 3 ]= -3.4867300513803765
 </pre></div>
 </div>
 <p>Removing a <strong>single redundant constraint</strong> reduced the number of objective and constraint evaluations <strong>5-fold</strong>!</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -2016,9 +2146,11 @@ x[ 3 ]= -3.4867300513803765
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
     <a class='left-prev' id="prev-link" href="Second-Order.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -2034,24 +2166,28 @@ x[ 3 ]= -3.4867300513803765
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-            
+            </footer>
         </div>
     </div>
-    <footer class="footer">
-  <p>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Alexander Dowling, et al.<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
     
-      By Alexander Dowling, et al.<br/>
-    
-        &copy; Copyright 2021.<br/>
-  </p>
-</footer>
-</main>
+</div>
 
 
       </div>
     </div>
   
-  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
 
   </body>
 </html>

@@ -4,13 +4,11 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>2.6. Numeric Integration for DAEs &#8212; Nonlinear and Stochastic Optimization</title>
     
-  <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -20,16 +18,20 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
+    
+      
+
+    
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-  <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
@@ -37,13 +39,12 @@
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/design-tabs.js"></script>
+    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
@@ -63,21 +64,7 @@ const thebe_selector_output = ".output, .cell_output"
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-<!-- Checkboxes to toggle the left sidebar -->
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
-<label class="overlay overlay-navbar" for="__navigation">
-    <div class="visually-hidden">Toggle navigation sidebar</div>
-</label>
-<!-- Checkboxes to toggle the in-page toc -->
-<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
-<label class="overlay overlay-pagetoc" for="__page-toc">
-    <div class="visually-hidden">Toggle in-page Table of Contents</div>
-</label>
-<!-- Headers at the top -->
-<div class="announcement header-item noprint"></div>
-<div class="header header-item noprint"></div>
-
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
     <div class="container-fluid" id="banner"></div>
 
@@ -86,10 +73,9 @@ const thebe_selector_output = ".output, .cell_output"
     <div class="container-xl">
       <div class="row">
           
-<!-- Sidebar -->
-<div class="bd-sidebar noprint" id="site-navigation">
-    <div class="bd-sidebar__content">
-        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../../index.html">
       
       
@@ -102,15 +88,14 @@ const thebe_selector_output = ".output, .cell_output"
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item active">
-        
-        <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1">
-                <a class="reference internal" href="../../intro.html">
-                    Nonlinear and Stochastic Optimization
-                </a>
-            </li>
-        </ul>
-        <p aria-level="2" class="caption" role="heading">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../intro.html">
+   Nonlinear and Stochastic Optimization
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Organinization
  </span>
@@ -427,17 +412,12 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 
     </div>
-</nav></div>
-        <div class="bd-sidebar__bottom">
-             <!-- To handle the deprecated key -->
-            
-            <div class="navbar_extra_footer">
-            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-            </div>
-            
-        </div>
-    </div>
-    <div id="rtd-footer-container"></div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
 </div>
 
 
@@ -445,209 +425,99 @@ const thebe_selector_output = ".output, .cell_output"
 
 
           
-<!-- A tiny helper pixel to detect if we've scrolled -->
-<div class="sbt-scroll-pixel-helper"></div>
-<!-- Main content -->
-<div class="col py-0 content-container">
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
     
-    <div class="header-article row sticky-top noprint">
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
         
-
-
-
-<div class="col py-1 d-flex header-article-main">
-    <div class="header-article__left">
-        
-        <label for="__navigation"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="right"
-title="Toggle navigation"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-bars"></i>
-  </span>
-
-</label>
-
-        
-    </div>
-    <div class="header-article__right">
-<div class="menu-dropdown menu-dropdown-launch-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Launch interactive content">
-      <i class="fas fa-rocket"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://mybinder.org/v2/gh/ndcbe/optimization/master?urlpath=tree/notebooks/2/Numeric-Integration.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Binder"
->
-  
-
-<span class="headerbtn__icon-container">
-  
-    <img src="../../_static/images/logo_binder.svg">
-  </span>
-<span class="headerbtn__text-container">Binder</span>
-</a>
-
-      </li>
-      
-      <li>
-        <a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/2/Numeric-Integration.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Colab"
->
-  
-
-<span class="headerbtn__icon-container">
-  
-    <img src="../../_static/images/logo_colab.png">
-  </span>
-<span class="headerbtn__text-container">Colab</span>
-</a>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-
-<button onclick="toggleFullScreen()"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="bottom"
-title="Fullscreen mode"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-expand"></i>
-  </span>
-
-</button>
-
-<div class="menu-dropdown menu-dropdown-repository-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Source repositories">
-      <i class="fab fa-github"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://github.com/ndcbe/optimization"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Source repository"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fab fa-github"></i>
-  </span>
-<span class="headerbtn__text-container">repository</span>
-</a>
-
-      </li>
-      
-      <li>
-        <a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/2/Numeric-Integration.html&body=Your%20issue%20content%20here."
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Open an issue"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-lightbulb"></i>
-  </span>
-<span class="headerbtn__text-container">open issue</span>
-</a>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-
-<div class="menu-dropdown menu-dropdown-download-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Download this page">
-      <i class="fas fa-download"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="../../_sources/notebooks/2/Numeric-Integration.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Download source file"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="headerbtn__text-container">.ipynb</span>
-</a>
-
-      </li>
-      
-      <li>
-        
-<button onclick="printPdf(this)"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="left"
-title="Print to PDF"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="headerbtn__text-container">.pdf</span>
-</button>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
-  </span>
-
-</label>
-
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/notebooks/2/Numeric-Integration.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
-<!-- Table of contents -->
-<div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/ndcbe/optimization"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/2/Numeric-Integration.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
     </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/ndcbe/optimization/master?urlpath=tree/notebooks/2/Numeric-Integration.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <a class="colab-button" href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/2/Numeric-Integration.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#single-step-runge-kutta-methods">
    2.6.1. Single-Step Runge-Kutta Methods
@@ -768,11 +638,12 @@ title="Print to PDF"
  </li>
 </ul>
 
-    </nav>
-</div>
+            </nav>
+        </div>
     </div>
-    <div class="article row">
-        <div class="col pl-md-3 pl-lg-5 content-container">
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
                 <h1>Numeric Integration for DAEs</h1>
@@ -909,12 +780,11 @@ title="Print to PDF"
                     </div>
                 </div>
             </div>
-            <main id="main-content" role="main">
-                
+            
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="numeric-integration-for-daes">
-<h1><span class="section-number">2.6. </span>Numeric Integration for DAEs<a class="headerlink" href="#numeric-integration-for-daes" title="Permalink to this headline">#</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="numeric-integration-for-daes">
+<h1><span class="section-number">2.6. </span>Numeric Integration for DAEs<a class="headerlink" href="#numeric-integration-for-daes" title="Permalink to this headline">¶</a></h1>
 <p>The purpose of this notebook/class session is to provide the requisite background on numeric integration of DAEs. This helps appreciate the “direct transcription” approach for dynamic optimization used in <code class="docutils literal notranslate"><span class="pre">Pyomo.dae</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -925,15 +795,15 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-<section id="single-step-runge-kutta-methods">
-<h2><span class="section-number">2.6.1. </span>Single-Step Runge-Kutta Methods<a class="headerlink" href="#single-step-runge-kutta-methods" title="Permalink to this headline">#</a></h2>
+<div class="section" id="single-step-runge-kutta-methods">
+<h2><span class="section-number">2.6.1. </span>Single-Step Runge-Kutta Methods<a class="headerlink" href="#single-step-runge-kutta-methods" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>ADD REFERENCE HERE</p></li>
 <li><p>Chapter 9 in <a class="reference external" href="https://epubs.siam.org/doi/book/10.1137/1.9780898719383">Biegler (2010)</a></p></li>
 <li><p>Chapter 17 in <a class="reference external" href="https://www.sciencedirect.com/book/9780128122532/computational-nuclear-engineering-and-radiological-science-using-python">McClarren (2018)</a></p></li>
 </ul>
-<section id="general-form-index-0-dae">
-<h3><span class="section-number">2.6.1.1. </span>General Form: Index 0 DAE<a class="headerlink" href="#general-form-index-0-dae" title="Permalink to this headline">#</a></h3>
+<div class="section" id="general-form-index-0-dae">
+<h3><span class="section-number">2.6.1.1. </span>General Form: Index 0 DAE<a class="headerlink" href="#general-form-index-0-dae" title="Permalink to this headline">¶</a></h3>
 <p>Consider the ODE system:
 $<span class="math notranslate nohighlight">\(\begin{equation*}
 \dot{z} = f(t,z), \quad z(t_0) = z_0
@@ -962,9 +832,9 @@ z_{i+1} &amp;= z_{i} + h_i \sum_{k=1}^{n_s} b_k f(t_i + c_k h_i, \hat{z}_k) \\
 $<span class="math notranslate nohighlight">\(\begin{equation*}
 \sum_{k=1}^{n_s} b_k = 1 \quad \mathrm{and} \quad \sum_{j=1}^{n_s} a_{k,j} = c_k
 \end{equation*}\)</span>$</p>
-</section>
-<section id="explicit-forward-euler">
-<h3><span class="section-number">2.6.1.2. </span>Explicit (Forward) Euler<a class="headerlink" href="#explicit-forward-euler" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="explicit-forward-euler">
+<h3><span class="section-number">2.6.1.2. </span>Explicit (Forward) Euler<a class="headerlink" href="#explicit-forward-euler" title="Permalink to this headline">¶</a></h3>
 <p>Consider one of the simplest Runge-Kutta methods:</p>
 <div class="math notranslate nohighlight">
 \[z_{i+1} = z_{i} + h_i~f(t_i, z_i)\]</div>
@@ -1023,9 +893,9 @@ $<span class="math notranslate nohighlight">\(\begin{equation*}
 </div>
 </div>
 </div>
-</section>
-<section id="implicit-backward-euler">
-<h3><span class="section-number">2.6.1.3. </span>Implicit (Backward) Euler<a class="headerlink" href="#implicit-backward-euler" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="implicit-backward-euler">
+<h3><span class="section-number">2.6.1.3. </span>Implicit (Backward) Euler<a class="headerlink" href="#implicit-backward-euler" title="Permalink to this headline">¶</a></h3>
 <p>Consider another simple Runge-Kutta method:</p>
 <div class="math notranslate nohighlight">
 \[z_{i+1} = z_{i} + h_i~f(t_{i+1}, z_{i+1})\]</div>
@@ -1089,9 +959,9 @@ $<span class="math notranslate nohighlight">\(\begin{equation*}
 </div>
 </div>
 </div>
-</section>
-<section id="comparison">
-<h3><span class="section-number">2.6.1.4. </span>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="comparison">
+<h3><span class="section-number">2.6.1.4. </span>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline">¶</a></h3>
 <p>Let’s test this on a simple problem:
 $<span class="math notranslate nohighlight">\(\dot{z}(t) = -\lambda z(t), \qquad z_0 = 1.\)</span><span class="math notranslate nohighlight">\( The solution to this problem is 
 \)</span><span class="math notranslate nohighlight">\(z(t) = e^{-\lambda t}.\)</span>$</p>
@@ -1130,9 +1000,9 @@ $<span class="math notranslate nohighlight">\(\dot{z}(t) = -\lambda z(t), \qquad
 <img alt="../../_images/Numeric-Integration_9_0.png" src="../../_images/Numeric-Integration_9_0.png" />
 </div>
 </div>
-</section>
-<section id="stability">
-<h3><span class="section-number">2.6.1.5. </span>Stability<a class="headerlink" href="#stability" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="stability">
+<h3><span class="section-number">2.6.1.5. </span>Stability<a class="headerlink" href="#stability" title="Permalink to this headline">¶</a></h3>
 <p>Keeping <span class="math notranslate nohighlight">\(\lambda = 1\)</span>, are there any limits on step size?</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1173,9 +1043,9 @@ $<span class="math notranslate nohighlight">\(\dot{z}(t) = -\lambda z(t), \qquad
 <li><p>Implicit Euler is <em>unconditionally stable</em> provided <span class="math notranslate nohighlight">\(\lambda &gt; 0\)</span>.</p></li>
 <li><p>Similar analysis and concepts extend to Runge-Kutta methods.</p></li>
 </ul>
-</section>
-<section id="error-analysis">
-<h3><span class="section-number">2.6.1.6. </span>Error Analysis<a class="headerlink" href="#error-analysis" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="error-analysis">
+<h3><span class="section-number">2.6.1.6. </span>Error Analysis<a class="headerlink" href="#error-analysis" title="Permalink to this headline">¶</a></h3>
 <p>How does our choice in step size <span class="math notranslate nohighlight">\(h\)</span> impact the error of these numerical techniques?</p>
 <p>Excellent tutorial: <a class="reference external" href="http://www.math.unl.edu/~gledder1/Math447/EulerError">http://www.math.unl.edu/~gledder1/Math447/EulerError</a></p>
 <div class="cell docutils container">
@@ -1234,9 +1104,9 @@ where \)</span>N$ is the number of steps the ODE is solved over.</p>
 <ul class="simple">
 <li><p>Implicit and Explicit Euler have <span class="math notranslate nohighlight">\(O(h^2)\)</span> local error and <span class="math notranslate nohighlight">\(O(h)\)</span> global error.</p></li>
 </ul>
-</section>
-<section id="extensions-to-daes">
-<h3><span class="section-number">2.6.1.7. </span>Extensions to DAEs<a class="headerlink" href="#extensions-to-daes" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="extensions-to-daes">
+<h3><span class="section-number">2.6.1.7. </span>Extensions to DAEs<a class="headerlink" href="#extensions-to-daes" title="Permalink to this headline">¶</a></h3>
 <p>Consider semi-explicit DAEs:
 $<span class="math notranslate nohighlight">\(\begin{equation*}
 \dot{z} = f(t,z,y), \quad g(z,y) = 0, \quad z(t_0) = z_0
@@ -1250,16 +1120,16 @@ z_{i+1} &amp;= z_{i} + h_i \sum_{k=1}^{n_s} b_k f(t_i + c_k h_i, \hat{z}_k, \hat
 \end{align*}\end{split}\]</div>
 <p><strong>Key Results</strong>. If DAE is index 1, then similar stability and order properties as for ODE problems.</p>
 <p><strong>Discussion:</strong> Why are <em>implicit</em> RK methods always used for DAE systems?</p>
-</section>
-</section>
-<section id="quadrature-rules">
-<h2><span class="section-number">2.6.2. </span>Quadrature Rules<a class="headerlink" href="#quadrature-rules" title="Permalink to this headline">#</a></h2>
+</div>
+</div>
+<div class="section" id="quadrature-rules">
+<h2><span class="section-number">2.6.2. </span>Quadrature Rules<a class="headerlink" href="#quadrature-rules" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Chapter 16 in <a class="reference external" href="https://www.sciencedirect.com/book/9780128122532/computational-nuclear-engineering-and-radiological-science-using-python">McClarren (2018)</a>.</p></li>
 <li><p>Chapter 10 in <a class="reference external" href="https://epubs.siam.org/doi/book/10.1137/1.9780898719383">Biegler (2010)</a></p></li>
 </ul>
-<section id="main-idea">
-<h3><span class="section-number">2.6.2.1. </span>Main Idea<a class="headerlink" href="#main-idea" title="Permalink to this headline">#</a></h3>
+<div class="section" id="main-idea">
+<h3><span class="section-number">2.6.2.1. </span>Main Idea<a class="headerlink" href="#main-idea" title="Permalink to this headline">¶</a></h3>
 <p>Approximate integral <span class="math notranslate nohighlight">\(I\)</span> with weighted sum of function evaluations:</p>
 <div class="math notranslate nohighlight">
 \[\begin{equation*}
@@ -1277,27 +1147,27 @@ I := \int_{-1}^{1} f(x) dx \approx \underbrace{\sum_{l=1}^{L} w_l f(x_l)}_{\text
 <li><p>How does this choice impact approximation error?</p></li>
 <li><p>How does <span class="math notranslate nohighlight">\(n\)</span> impact approximation error?</p></li>
 </ul>
-</section>
-<section id="degree-and-order-of-a-polynomial">
-<h3><span class="section-number">2.6.2.2. </span>Degree and order of a polynomial<a class="headerlink" href="#degree-and-order-of-a-polynomial" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="degree-and-order-of-a-polynomial">
+<h3><span class="section-number">2.6.2.2. </span>Degree and order of a polynomial<a class="headerlink" href="#degree-and-order-of-a-polynomial" title="Permalink to this headline">¶</a></h3>
 <p>Consider the polynomial:</p>
 <div class="math notranslate nohighlight">
 \[p(t) = a_0 + a_1 t + ... + a_K t^K.\]</div>
 <p><span class="math notranslate nohighlight">\(p(t)\)</span> is said to be of <strong>order K+1</strong> as it has K+1 coefficients <span class="math notranslate nohighlight">\(a_0, ... a_K\)</span>.</p>
 <p>The <strong>degree</strong> of the polynomial is the highest power with a non-zero coefficient. Thus if <span class="math notranslate nohighlight">\(a_K \neq 0\)</span>, then <span class="math notranslate nohighlight">\(p(t)\)</span> is degree K.</p>
 <p>Example: What is the degree of <span class="math notranslate nohighlight">\(2 x^3 - x^2 + 1\)</span>? What can you say about its order?</p>
-</section>
-<section id="gauss-legrenge-quadrature">
-<h3><span class="section-number">2.6.2.3. </span>Gauss-Legrenge Quadrature<a class="headerlink" href="#gauss-legrenge-quadrature" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="gauss-legrenge-quadrature">
+<h3><span class="section-number">2.6.2.3. </span>Gauss-Legrenge Quadrature<a class="headerlink" href="#gauss-legrenge-quadrature" title="Permalink to this headline">¶</a></h3>
 <p>For a <em>specific choice of nodes and weights</em>, the quadrature rule <span class="math notranslate nohighlight">\(\sum_{l=1}^{L} w_l f(x_l)\)</span> is exact for integral <span class="math notranslate nohighlight">\(I\)</span> is <span class="math notranslate nohighlight">\(f(x)\)</span> is a polynomial of degree <span class="math notranslate nohighlight">\(2L-1\)</span> or less. This specific case is the <strong>optimal</strong> (most accurate) rule known as the Gauss-Legrenge quadrature.</p>
 <p>The weights and abscissas are given for <span class="math notranslate nohighlight">\(L\)</span> up to 8:</p>
 <table>
 <tbody><tr><td>$L$</td><td>$x_l$</td><td>$w_l$</td></tr></tbody>
 <tbody><tr><td>1</td><td>0</td><td>2.0000000000000000000000000</td></tr></tbody>
 <tbody><tr><td>2</td><td>±0.5773502691896257645091488</td><td>1.0000000000000000000000000</td></tr></tbody><p></p><tbody><tr><td rowspan="2">3</td><td>0</td><td>0.8888888888888888888888889</td></tr><tr><td>±0.7745966692414833770358531</td><td>0.5555555555555555555555556</td></tr></tbody><p></p><tbody><tr><td rowspan="2">4</td><td>±0.3399810435848562648026658</td><td>0.6521451548625461426269361</td></tr><tr><td>±0.8611363115940525752239465</td><td>0.3478548451374538573730639</td></tr></tbody><p></p><tbody><tr><td rowspan="3">5</td><td>0</td><td>0.5688888888888888888888889</td></tr><tr><td>±0.5384693101056830910363144</td><td>0.4786286704993664680412915</td></tr><tr><td>±0.9061798459386639927976269</td><td>0.2369268850561890875142640</td></tr></tbody><p></p><tbody><tr><td rowspan="3">6</td><td>±0.2386191860831969086305017</td><td>0.4679139345726910473898703</td></tr><tr><td>±0.6612093864662645136613996</td><td>0.3607615730481386075698335</td></tr><tr><td>±0.9324695142031520278123016</td><td>0.1713244923791703450402961</td></tr></tbody><p></p><tbody><tr><td rowspan="4">7</td><td>0</td><td>0.4179591836734693877551020</td></tr><tr><td>±0.4058451513773971669066064</td><td>0.3818300505051189449503698</td></tr><tr><td>±0.7415311855993944398638648</td><td>0.2797053914892766679014678</td></tr><tr><td>±0.9491079123427585245261897</td><td>0.1294849661688696932706114</td></tr></tbody><p></p><tbody><tr><td rowspan="4">8</td><td>±0.1834346424956498049394761</td><td>0.3626837833783619829651504</td></tr><tr><td>±0.5255324099163289858177390</td><td>0.3137066458778872873379622</td></tr><tr><td>±0.7966664774136267395915539</td><td>0.2223810344533744705443560</td></tr><tr><td>±0.9602898564975362316835609</td><td>0.1012285362903762591525314</td></tr></tbody>
-</table></section>
-<section id="code">
-<h3><span class="section-number">2.6.2.4. </span>Code<a class="headerlink" href="#code" title="Permalink to this headline">#</a></h3>
+</table></div>
+<div class="section" id="code">
+<h3><span class="section-number">2.6.2.4. </span>Code<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -1371,9 +1241,9 @@ I := \int_{-1}^{1} f(x) dx \approx \underbrace{\sum_{l=1}^{L} w_l f(x_l)}_{\text
 </div>
 </div>
 </div>
-</section>
-<section id="visualize-weights">
-<h3><span class="section-number">2.6.2.5. </span>Visualize Weights<a class="headerlink" href="#visualize-weights" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="visualize-weights">
+<h3><span class="section-number">2.6.2.5. </span>Visualize Weights<a class="headerlink" href="#visualize-weights" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">15</span><span class="p">)</span>
@@ -1393,23 +1263,23 @@ I := \int_{-1}^{1} f(x) dx \approx \underbrace{\sum_{l=1}^{L} w_l f(x_l)}_{\text
 <img alt="../../_images/Numeric-Integration_27_0.png" src="../../_images/Numeric-Integration_27_0.png" />
 </div>
 </div>
-</section>
-<section id="why-2l-1">
-<h3><span class="section-number">2.6.2.6. </span>Why <span class="math notranslate nohighlight">\(2L-1\)</span>?<a class="headerlink" href="#why-2l-1" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="why-2l-1">
+<h3><span class="section-number">2.6.2.6. </span>Why <span class="math notranslate nohighlight">\(2L-1\)</span>?<a class="headerlink" href="#why-2l-1" title="Permalink to this headline">¶</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(f(x) = a_{2L-1} x^{2L-1} + a_{2L-2} x^{2L-2} + ... + a_{1} x^1 + a_{0}\)</span></p>
 <p>This polynomial has <span class="math notranslate nohighlight">\(2L\)</span> coefficients. Likewise, <span class="math notranslate nohighlight">\(\int f(x)dx\)</span> has <span class="math notranslate nohighlight">\(2L\)</span> coefficients plus the constant of integration. This is the same number of degrees of freedom we have in choosing the <em>weights</em> and <em>nodes</em>.</p>
-</section>
-<section id="how-to-determine-the-nodes-and-weights">
-<h3><span class="section-number">2.6.2.7. </span>How to determine the nodes and weights?<a class="headerlink" href="#how-to-determine-the-nodes-and-weights" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="how-to-determine-the-nodes-and-weights">
+<h3><span class="section-number">2.6.2.7. </span>How to determine the nodes and weights?<a class="headerlink" href="#how-to-determine-the-nodes-and-weights" title="Permalink to this headline">¶</a></h3>
 <p>One way to derive the Gauss-Legendre quadrature rules is by looking at the integral generic monomials of degree 0 up to <span class="math notranslate nohighlight">\(2L-1\)</span> and setting each equal to the <span class="math notranslate nohighlight">\(L\)</span> point Gauss-Legendre quadrature rule:
 $<span class="math notranslate nohighlight">\( \int\limits_{-1}^{1} dx\, a_0 x^0 =  a_0\sum_{l=1}^L w_l x_l^0,\)</span><span class="math notranslate nohighlight">\(
 \)</span><span class="math notranslate nohighlight">\( \int\limits_{-1}^{1} dx\, a_1 x^1 = a_1\sum_{l=1}^L w_l x_l^1,\)</span><span class="math notranslate nohighlight">\(
 and continuing until
 \)</span><span class="math notranslate nohighlight">\( \int\limits_{-1}^{1} dx\, a_{2L-1} x^{2L-1} = a_{2L-1}\sum_{l=1}^L w_l x_l^{2L-1}.\)</span><span class="math notranslate nohighlight">\(
 Notice that the \)</span>a_i<span class="math notranslate nohighlight">\( **constants cancel out** of each equation so they do not matter. This system is \)</span>2L<span class="math notranslate nohighlight">\( equations with \)</span>L<span class="math notranslate nohighlight">\( weights, \)</span>w_l<span class="math notranslate nohighlight">\(, and \)</span>L<span class="math notranslate nohighlight">\( abscissas (nodes), \)</span>x_l$. We could solve these equations to get the weights and abscissas, though this is not how it is done in practice generally—this is accomplished by using the theory of orthogonal polynomials.</p>
-</section>
-<section id="polynomial-example">
-<h3><span class="section-number">2.6.2.8. </span>Polynomial Example<a class="headerlink" href="#polynomial-example" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="polynomial-example">
+<h3><span class="section-number">2.6.2.8. </span>Polynomial Example<a class="headerlink" href="#polynomial-example" title="Permalink to this headline">¶</a></h3>
 <p>As a simple demonstration of the Gauss-Legendre quadrature, let’s show that it integrates polynomials of degree <span class="math notranslate nohighlight">\(2L-1\)</span> exactly.  Consider the integral
 $<span class="math notranslate nohighlight">\(\int\limits_{-1}^1 (x+1)^{2L-1}\,dx = \frac{2^{2 L-1}}{L}.\)</span>$</p>
 <div class="cell docutils container">
@@ -1460,9 +1330,9 @@ Abs. Relative Error is 4.274358644806853e-15
 </div>
 </div>
 </div>
-</section>
-<section id="generalization">
-<h3><span class="section-number">2.6.2.9. </span>Generalization<a class="headerlink" href="#generalization" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="generalization">
+<h3><span class="section-number">2.6.2.9. </span>Generalization<a class="headerlink" href="#generalization" title="Permalink to this headline">¶</a></h3>
 <p>We are generally interested in integrals not just over the domain <span class="math notranslate nohighlight">\(x\in [-1,1]\)</span>.  We’ll now make a function that does Gauss-Legendre quadrature over a general range using the formula
 $<span class="math notranslate nohighlight">\(\int_a^b f(x)\,dx = \frac{b-a}{2} \int_{-1}^1 f\left(\frac{b-a}{2}z + \frac{a+b}{2}\right)\,dz.\)</span>$</p>
 <div class="cell docutils container">
@@ -1528,9 +1398,9 @@ Abs. Relative Error is 6.5195531446713024e-15
 </div>
 </div>
 </div>
-</section>
-<section id="another-example">
-<h3><span class="section-number">2.6.2.10. </span>Another Example<a class="headerlink" href="#another-example" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="another-example">
+<h3><span class="section-number">2.6.2.10. </span>Another Example<a class="headerlink" href="#another-example" title="Permalink to this headline">¶</a></h3>
 <p>Let’s see how Gauss-Quadrature performs on a function that is not polynomial:
 $<span class="math notranslate nohighlight">\(\int_{0}^\pi \sin(x)\,dx = 2,\)</span>$</p>
 <div class="cell docutils container">
@@ -1574,9 +1444,9 @@ L = 14 Estimate is 1.999999999999999 Exact value is 2
 </div>
 <p>Notice that we get to machine-precision by evaluating the integral at only 8 points!</p>
 <p>This exponential convergence will only be obtained on smooth solutions without singularities in the function or its derivatives.</p>
-</section>
-<section id="a-more-complicated-example">
-<h3><span class="section-number">2.6.2.11. </span>A More Complicated Example<a class="headerlink" href="#a-more-complicated-example" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="a-more-complicated-example">
+<h3><span class="section-number">2.6.2.11. </span>A More Complicated Example<a class="headerlink" href="#a-more-complicated-example" title="Permalink to this headline">¶</a></h3>
 <p>Consider:
 $<span class="math notranslate nohighlight">\( \int\limits_0^1 4 \sqrt{1-x^2}\,dx = \pi.\)</span><span class="math notranslate nohighlight">\(
 This integral has a singularity in its derivative at \)</span>x=1$. Gauss-Legendre quadrature will not have exponential convergence on this function.</p>
@@ -1650,9 +1520,9 @@ L = 39 Estimate is 3.1416021081268766 Exact value is 3.141592653589793
 </div>
 </div>
 <p>There is a big difference between exponential convergence we saw in the integral of the sine function and the polynomial convergence in this problem. Even at a high rate of convergence (order 2.8), the error converges slowly in that we are still only accurate to 3 digits at <span class="math notranslate nohighlight">\(L=13.\)</span></p>
-</section>
-<section id="radau-quadrature">
-<h3><span class="section-number">2.6.2.12. </span>Radau Quadrature<a class="headerlink" href="#radau-quadrature" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="radau-quadrature">
+<h3><span class="section-number">2.6.2.12. </span>Radau Quadrature<a class="headerlink" href="#radau-quadrature" title="Permalink to this headline">¶</a></h3>
 <p>Sometimes we desire either:</p>
 <ul class="simple">
 <li><p>The first node is at the beginning of the interval, i.e., <span class="math notranslate nohighlight">\(x_1 = -1\)</span> or</p></li>
@@ -1660,9 +1530,9 @@ L = 39 Estimate is 3.1416021081268766 Exact value is 3.141592653589793
 </ul>
 <p>This is known as <strong>Gauss-Radu quadrature</strong>. The remaining nodes and weights are chosen optimally; thus, Radu quadrature <em>exactly</em> integrates <em>all</em> polynomials of degree <span class="math notranslate nohighlight">\(2L-2\)</span> or less. Specifying one of the nodes leaves only <span class="math notranslate nohighlight">\(2L-1\)</span> degrees of freedom.</p>
 <p>More info: <a class="reference external" href="http://mathworld.wolfram.com/RadauQuadrature.html">http://mathworld.wolfram.com/RadauQuadrature.html</a></p>
-</section>
-<section id="differential-equations">
-<h3><span class="section-number">2.6.2.13. </span>Differential Equations<a class="headerlink" href="#differential-equations" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="differential-equations">
+<h3><span class="section-number">2.6.2.13. </span>Differential Equations<a class="headerlink" href="#differential-equations" title="Permalink to this headline">¶</a></h3>
 <p>Consider solving the differential equation</p>
 <div class="math notranslate nohighlight">
 \[\dot{x} = f(t,x), \quad x(t_0) = x_0,\]</div>
@@ -1670,9 +1540,9 @@ L = 39 Estimate is 3.1416021081268766 Exact value is 3.141592653589793
 <div class="math notranslate nohighlight">
 \[x(t_f) = \int_{t_0}^{t_f} \frac{dx}{dt} dt + x_0 = \underbrace{\int_{t_0}^{t_f} f(t, x(t)) dt}_{\text{use quadrature rule}} + x_0\]</div>
 <p>Thus, Runge-Kutta methods can be interpreted as a quadrature rule.</p>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1696,11 +1566,9 @@ L = 39 Estimate is 3.1416021081268766 Exact value is 3.141592653589793
 
               </div>
               
-            </main>
-            <footer class="footer-article noprint">
-                
-    <!-- Previous / next buttons -->
-<div class='prev-next-area'>
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
     <a class='left-prev' id="prev-link" href="DAE-modeling.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -1716,28 +1584,24 @@ L = 39 Estimate is 3.1416021081268766 Exact value is 3.141592653589793
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-            </footer>
+            
         </div>
     </div>
-    <div class="footer-content row">
-        <footer class="col footer"><p>
-  
-    By Alexander Dowling, et al.<br/>
-  
-      &copy; Copyright 2022.<br/>
-</p>
-        </footer>
-    </div>
+    <footer class="footer">
+  <p>
     
-</div>
+      By Alexander Dowling, et al.<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
 
 
       </div>
     </div>
   
-  <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
 
   </body>
 </html>

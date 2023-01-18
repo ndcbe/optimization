@@ -4,13 +4,11 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>1.3. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example &#8212; Nonlinear and Stochastic Optimization</title>
     
-  <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -20,16 +18,20 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
+    
+      
+
+    
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-  <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
@@ -37,13 +39,12 @@
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/design-tabs.js"></script>
+    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
@@ -63,21 +64,7 @@ const thebe_selector_output = ".output, .cell_output"
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-<!-- Checkboxes to toggle the left sidebar -->
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
-<label class="overlay overlay-navbar" for="__navigation">
-    <div class="visually-hidden">Toggle navigation sidebar</div>
-</label>
-<!-- Checkboxes to toggle the in-page toc -->
-<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
-<label class="overlay overlay-pagetoc" for="__page-toc">
-    <div class="visually-hidden">Toggle in-page Table of Contents</div>
-</label>
-<!-- Headers at the top -->
-<div class="announcement header-item noprint"></div>
-<div class="header header-item noprint"></div>
-
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
     <div class="container-fluid" id="banner"></div>
 
@@ -86,10 +73,9 @@ const thebe_selector_output = ".output, .cell_output"
     <div class="container-xl">
       <div class="row">
           
-<!-- Sidebar -->
-<div class="bd-sidebar noprint" id="site-navigation">
-    <div class="bd-sidebar__content">
-        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../../index.html">
       
       
@@ -102,15 +88,14 @@ const thebe_selector_output = ".output, .cell_output"
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item active">
-        
-        <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1">
-                <a class="reference internal" href="../../intro.html">
-                    Nonlinear and Stochastic Optimization
-                </a>
-            </li>
-        </ul>
-        <p aria-level="2" class="caption" role="heading">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../intro.html">
+   Nonlinear and Stochastic Optimization
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Organinization
  </span>
@@ -427,17 +412,12 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 
     </div>
-</nav></div>
-        <div class="bd-sidebar__bottom">
-             <!-- To handle the deprecated key -->
-            
-            <div class="navbar_extra_footer">
-            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-            </div>
-            
-        </div>
-    </div>
-    <div id="rtd-footer-container"></div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
 </div>
 
 
@@ -445,209 +425,99 @@ const thebe_selector_output = ".output, .cell_output"
 
 
           
-<!-- A tiny helper pixel to detect if we've scrolled -->
-<div class="sbt-scroll-pixel-helper"></div>
-<!-- Main content -->
-<div class="col py-0 content-container">
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
     
-    <div class="header-article row sticky-top noprint">
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
         
-
-
-
-<div class="col py-1 d-flex header-article-main">
-    <div class="header-article__left">
-        
-        <label for="__navigation"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="right"
-title="Toggle navigation"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-bars"></i>
-  </span>
-
-</label>
-
-        
-    </div>
-    <div class="header-article__right">
-<div class="menu-dropdown menu-dropdown-launch-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Launch interactive content">
-      <i class="fas fa-rocket"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://mybinder.org/v2/gh/ndcbe/optimization/master?urlpath=tree/notebooks/1/Pyomo-Nuts-and-Bolts.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Binder"
->
-  
-
-<span class="headerbtn__icon-container">
-  
-    <img src="../../_static/images/logo_binder.svg">
-  </span>
-<span class="headerbtn__text-container">Binder</span>
-</a>
-
-      </li>
-      
-      <li>
-        <a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/1/Pyomo-Nuts-and-Bolts.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Colab"
->
-  
-
-<span class="headerbtn__icon-container">
-  
-    <img src="../../_static/images/logo_colab.png">
-  </span>
-<span class="headerbtn__text-container">Colab</span>
-</a>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-
-<button onclick="toggleFullScreen()"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="bottom"
-title="Fullscreen mode"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-expand"></i>
-  </span>
-
-</button>
-
-<div class="menu-dropdown menu-dropdown-repository-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Source repositories">
-      <i class="fab fa-github"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://github.com/ndcbe/optimization"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Source repository"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fab fa-github"></i>
-  </span>
-<span class="headerbtn__text-container">repository</span>
-</a>
-
-      </li>
-      
-      <li>
-        <a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/1/Pyomo-Nuts-and-Bolts.html&body=Your%20issue%20content%20here."
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Open an issue"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-lightbulb"></i>
-  </span>
-<span class="headerbtn__text-container">open issue</span>
-</a>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-
-<div class="menu-dropdown menu-dropdown-download-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Download this page">
-      <i class="fas fa-download"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="../../_sources/notebooks/1/Pyomo-Nuts-and-Bolts.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Download source file"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="headerbtn__text-container">.ipynb</span>
-</a>
-
-      </li>
-      
-      <li>
-        
-<button onclick="printPdf(this)"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="left"
-title="Print to PDF"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="headerbtn__text-container">.pdf</span>
-</button>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
-  </span>
-
-</label>
-
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/notebooks/1/Pyomo-Nuts-and-Bolts.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
-<!-- Table of contents -->
-<div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/ndcbe/optimization"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/1/Pyomo-Nuts-and-Bolts.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
     </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/ndcbe/optimization/master?urlpath=tree/notebooks/1/Pyomo-Nuts-and-Bolts.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <a class="colab-button" href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/1/Pyomo-Nuts-and-Bolts.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#problem-setup">
    1.3.1. Problem Setup
@@ -806,11 +676,12 @@ title="Print to PDF"
  </li>
 </ul>
 
-    </nav>
-</div>
+            </nav>
+        </div>
     </div>
-    <div class="article row">
-        <div class="col pl-md-3 pl-lg-5 content-container">
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
                 <h1>60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</h1>
@@ -985,12 +856,11 @@ title="Print to PDF"
                     </div>
                 </div>
             </div>
-            <main id="main-content" role="main">
-                
+            
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="minutes-to-pyomo-an-energy-storage-model-predictive-control-example">
-<h1><span class="section-number">1.3. </span>60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example<a class="headerlink" href="#minutes-to-pyomo-an-energy-storage-model-predictive-control-example" title="Permalink to this headline">#</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="minutes-to-pyomo-an-energy-storage-model-predictive-control-example">
+<h1><span class="section-number">1.3. </span>60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example<a class="headerlink" href="#minutes-to-pyomo-an-energy-storage-model-predictive-control-example" title="Permalink to this headline">¶</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This code cell installs packages on Colab</span>
@@ -1022,10 +892,10 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-<section id="problem-setup">
-<h2><span class="section-number">1.3.1. </span>Problem Setup<a class="headerlink" href="#problem-setup" title="Permalink to this headline">#</a></h2>
-<section id="background">
-<h3><span class="section-number">1.3.1.1. </span>Background<a class="headerlink" href="#background" title="Permalink to this headline">#</a></h3>
+<div class="section" id="problem-setup">
+<h2><span class="section-number">1.3.1. </span>Problem Setup<a class="headerlink" href="#problem-setup" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="background">
+<h3><span class="section-number">1.3.1.1. </span>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h3>
 <p>In many regions of the world, including the US, electricity generation is scheduled through wholesale electricity markets. Individual generators (resources) transmit information about their operating costs and constraints to the market via a bid. The market operator then solves an optimization problem (e.g., the unit commitment problem) to minimize the total electricity generator cost. The market operator decides which generators to dispatch during each hour to satisfy the forecasted demand while honoring limitations for each generator (e.g., maximum ramp rate, the required time for start-up/shutdown, etc.).</p>
 <p><img alt="US_markets" src="https://www.ferc.gov/sites/default/files/2020-06/map-overview-electric.jpg" /></p>
 <p>Read more information here:</p>
@@ -1033,14 +903,14 @@ title="Print to PDF"
 <li><p><a class="reference external" href="https://www.ferc.gov/industries-data/market-assessments/electric-power-markets">https://www.ferc.gov/industries-data/market-assessments/electric-power-markets</a></p></li>
 <li><p><a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0306261916318487">https://www.sciencedirect.com/science/article/pii/S0306261916318487</a></p></li>
 </ul>
-</section>
-<section id="pandas-and-energy-prices">
-<h3><span class="section-number">1.3.1.2. </span>Pandas and Energy Prices<a class="headerlink" href="#pandas-and-energy-prices" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="pandas-and-energy-prices">
+<h3><span class="section-number">1.3.1.2. </span>Pandas and Energy Prices<a class="headerlink" href="#pandas-and-energy-prices" title="Permalink to this headline">¶</a></h3>
 <p>The CSV (comma separated value) file <code class="docutils literal notranslate"><span class="pre">Prices_DAM_ALTA2G_7_B1.csv</span></code> contains price data for a single location in California for an entire year. The prices are set every hour and have units $/MWh. We will use the package <code class="docutils literal notranslate"><span class="pre">pandas</span></code> to import and analyze the data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the data file</span>
-<span class="n">ca_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">ndcbe</span><span class="o">/</span><span class="n">optimization</span><span class="o">/</span><span class="n">main</span><span class="o">/</span><span class="n">notebooks</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">Prices_DAM_ALTA2G_7_B1</span><span class="o">.</span><span class="n">csv</span><span class="s1">&#39;,names=[&#39;</span><span class="n">price</span><span class="s1">&#39;])</span>
+<span class="n">ca_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/data/Prices_DAM_ALTA2G_7_B1.csv&#39;</span><span class="p">,</span><span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">])</span>
 
 <span class="c1"># Print the first 10 rows</span>
 <span class="n">ca_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -1161,8 +1031,8 @@ title="Print to PDF"
 </div></div></div>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><b>Activity</b>: What are 2 or 3 interesting observations from these summary statistics?</p>
+<p class="admonition-title"><b>Activity</b></p>
+<p>What are 2 or 3 interesting observations from these summary statistics?</p>
 </div>
 <p>Next, let’s visualize the data in a histogram:</p>
 <div class="cell docutils container">
@@ -1212,26 +1082,26 @@ title="Print to PDF"
 </div>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><b>Activity</b>: What are 1 or 2 interesting observations from these plots?</p>
+<p class="admonition-title"><b>Activity</b></p>
+<p>What are 1 or 2 interesting observations from these plots?</p>
 </div>
-</section>
-<section id="optimization-mathematical-model">
-<h3><span class="section-number">1.3.1.3. </span>Optimization Mathematical Model<a class="headerlink" href="#optimization-mathematical-model" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="optimization-mathematical-model">
+<h3><span class="section-number">1.3.1.3. </span>Optimization Mathematical Model<a class="headerlink" href="#optimization-mathematical-model" title="Permalink to this headline">¶</a></h3>
 <p><em>Energy (price) arbitrage</em> is the idea of using energy storage (e.g., a battery) to take advantage of the significant daily energy price swings. This gives rise to many analysis questions including:</p>
 <p><em>If a battery energy storage system perfectly timed it’s energy purchases and sales (i.e., it could perfectly forecast the market price), how much money could it make from energy arbitrage?</em></p>
 <p>We can answer this question using mathematical/computational optimization!</p>
 <p>Let’s start by drawing a picture.</p>
 <p><img alt="battery-optimization" src="https://ndcbe.github.io/optimization/_images/battery.png" /></p>
-<section id="sets">
-<h4><span class="section-number">1.3.1.3.1. </span>Sets<a class="headerlink" href="#sets" title="Permalink to this headline">#</a></h4>
+<div class="section" id="sets">
+<h4><span class="section-number">1.3.1.3.1. </span>Sets<a class="headerlink" href="#sets" title="Permalink to this headline">¶</a></h4>
 <p>Let’s say we want to define our optimization problem over a 24 hour window. The day-ahead market sets the energy prices in 1-hour intervals. We’ll define the set</p>
 <div class="math notranslate nohighlight">
 \[\mathcal{T} = \{0, 1, ..., N\}\]</div>
 <p>for time where <span class="math notranslate nohighlight">\(N = 24\)</span> for a 24-hour planning horizon. For convienence, we’ll also define <span class="math notranslate nohighlight">\(\mathcal{T}' := \mathcal{T} / \{0\}\)</span>, which is the original set <span class="math notranslate nohighlight">\(\mathcal{T}\)</span> substract subset <span class="math notranslate nohighlight">\(\{0\}\)</span>.</p>
-</section>
-<section id="variables">
-<h4><span class="section-number">1.3.1.3.2. </span>Variables<a class="headerlink" href="#variables" title="Permalink to this headline">#</a></h4>
+</div>
+<div class="section" id="variables">
+<h4><span class="section-number">1.3.1.3.2. </span>Variables<a class="headerlink" href="#variables" title="Permalink to this headline">¶</a></h4>
 <p>Next, let’s identify the variables in the optimization problem:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(E_t\)</span>, energy stored in battery at time <span class="math notranslate nohighlight">\(t\)</span>, units: MWh</p></li>
@@ -1239,9 +1109,9 @@ title="Print to PDF"
 <li><p><span class="math notranslate nohighlight">\(c_t\)</span>, battery charge power (purchased from the market) during time interval [t-1, t), units: MW</p></li>
 </ul>
 <p>Notice how all of these variables are indexed by the timestep <span class="math notranslate nohighlight">\(t\)</span>. We’ll write in the model <span class="math notranslate nohighlight">\(t \in \mathcal{T}'\)</span></p>
-</section>
-<section id="parameters">
-<h4><span class="section-number">1.3.1.3.3. </span>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">#</a></h4>
+</div>
+<div class="section" id="parameters">
+<h4><span class="section-number">1.3.1.3.3. </span>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h4>
 <p>Parameters are data that are constant during the optimization problem. Here we have:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\pi_t\)</span>: Energy price during time interval [t-1, t), units: $/MW</p></li>
@@ -1252,9 +1122,9 @@ title="Print to PDF"
 <li><p><span class="math notranslate nohighlight">\(E_{0}\)</span> Energy in storage at time <span class="math notranslate nohighlight">\(t=0\)</span>, units: MWh</p></li>
 <li><p><span class="math notranslate nohighlight">\(\Delta t = 1\)</span> hour, Timestep for grid decisions and prices (fixed)</p></li>
 </ul>
-</section>
-<section id="objective-and-constraints">
-<h4><span class="section-number">1.3.1.3.4. </span>Objective and Constraints<a class="headerlink" href="#objective-and-constraints" title="Permalink to this headline">#</a></h4>
+</div>
+<div class="section" id="objective-and-constraints">
+<h4><span class="section-number">1.3.1.3.4. </span>Objective and Constraints<a class="headerlink" href="#objective-and-constraints" title="Permalink to this headline">¶</a></h4>
 <p>Finally, we’ll identify the objective, which is the function to improve, and the mathematical constraints. Below is the full mathematical model for the problem:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -1268,13 +1138,13 @@ title="Print to PDF"
 \end{align*}
 \end{split}\]</div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><b>Activity</b>: Write on paper a 1-sentence description for each equation.</p>
+<p class="admonition-title"><b>Activity</b></p>
+<p>Write on paper a 1-sentence description for each equation.</p>
 </div>
-</section>
-</section>
-<section id="degree-of-freedom-analysis">
-<h3><span class="section-number">1.3.1.4. </span>Degree of Freedom Analysis<a class="headerlink" href="#degree-of-freedom-analysis" title="Permalink to this headline">#</a></h3>
+</div>
+</div>
+<div class="section" id="degree-of-freedom-analysis">
+<h3><span class="section-number">1.3.1.4. </span>Degree of Freedom Analysis<a class="headerlink" href="#degree-of-freedom-analysis" title="Permalink to this headline">¶</a></h3>
 <p>Before we program our model in Pyomo, it is <em>very important</em> to first perform a degree of freedom analysis. Here are the steps:</p>
 <ul class="simple">
 <li><p>Count the number of variables</p></li>
@@ -1284,19 +1154,19 @@ title="Print to PDF"
 <p>The degrees of freedom are the number of decisions variables that be freely manipulated by the optimizer. If there are no degrees of freedom, we ofter say the problem is square or it is a simulation problem.</p>
 <p>For now, we will ignore inequality constraints and bounds. Later in the semester we will revisit degree of freedom analysis using some optimization theory concepts (e.g., active sets).</p>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><b>Activity</b>: Perform degree of freedom analysis.</p>
+<p class="admonition-title"><b>Activity</b></p>
+<p>Perform degree of freedom analysis.</p>
 </div>
-</section>
-</section>
-<section id="pyomo-modeling-components">
-<h2><span class="section-number">1.3.2. </span>Pyomo Modeling Components<a class="headerlink" href="#pyomo-modeling-components" title="Permalink to this headline">#</a></h2>
+</div>
+</div>
+<div class="section" id="pyomo-modeling-components">
+<h2><span class="section-number">1.3.2. </span>Pyomo Modeling Components<a class="headerlink" href="#pyomo-modeling-components" title="Permalink to this headline">¶</a></h2>
 <div class="admonition danger">
 <p class="admonition-title">Note</p>
 <p><b>Important</b>: Do NOT implement an optimization model in Pyomo (or any other software) until you have written it on paper and performed degree of freedom analysis, as done above. Be sure to resolve any doubts, questions, or concerns while your model is still on paper. When applying optimization to a problem, a majority of the mistakes happen at the problem formulation step. So do not rush it!</p>
 </div>
-<section id="create-concretemodel">
-<h3><span class="section-number">1.3.2.1. </span>Create <code class="docutils literal notranslate"><span class="pre">ConcreteModel</span></code><a class="headerlink" href="#create-concretemodel" title="Permalink to this headline">#</a></h3>
+<div class="section" id="create-concretemodel">
+<h3><span class="section-number">1.3.2.1. </span>Create <code class="docutils literal notranslate"><span class="pre">ConcreteModel</span></code><a class="headerlink" href="#create-concretemodel" title="Permalink to this headline">¶</a></h3>
 <p>We will start by creating a concrete Pyomo model. Recall, Pyomo is an object-oriented algebriac modeling language. The line below creates an instance of the ConcreteModel class.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1307,9 +1177,9 @@ title="Print to PDF"
 </div>
 <p>For those unfamilar with object-oriented programming, <code class="docutils literal notranslate"><span class="pre">m</span></code> is a container to define an optimization model. It includes a bunch of functionality to interface with different optimization solvers, perform diagnostics, and inspect the solution.</p>
 <p>Pyomo also supports abstract models, but we will stick with concrete models this semester. See the Pyomo textbook for more details if you are curious.</p>
-</section>
-<section id="id1">
-<h3><span class="section-number">1.3.2.2. </span>Sets<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="id1">
+<h3><span class="section-number">1.3.2.2. </span>Sets<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>We start by declaring a set for time. From above, recall we want to index all of the variables and constraints over the set</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1327,9 +1197,9 @@ title="Print to PDF"
 </div>
 </div>
 <p>Some Pyomo modelers prefer to use all capital names for sets; this is a personal preference.</p>
-</section>
-<section id="id2">
-<h3><span class="section-number">1.3.2.3. </span>Variables<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="id2">
+<h3><span class="section-number">1.3.2.3. </span>Variables<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>Next, we can declare our three variables: <span class="math notranslate nohighlight">\(E_t\)</span>, <span class="math notranslate nohighlight">\(c_t\)</span>, <span class="math notranslate nohighlight">\(d_t\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1351,9 +1221,9 @@ title="Print to PDF"
 <p>The following table (Hart et al., 2017) shows the options for the <code class="docutils literal notranslate"><span class="pre">within</span></code>/<code class="docutils literal notranslate"><span class="pre">domain</span></code> variable keyword:</p>
 <p><img alt="pyomo-var-domain" src="https://ndcbe.github.io/optimization/_images/pyomo-table-4.2.png" /></p>
 <p>In the example above, <code class="docutils literal notranslate"><span class="pre">domain=pyo.NonNegativeReals</span></code> is not needs, as we are specifying stricker bounds. It is included above to show the syntax.</p>
-</section>
-<section id="parameters-constants-data">
-<h3><span class="section-number">1.3.2.4. </span>Parameters (Constants / Data)<a class="headerlink" href="#parameters-constants-data" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="parameters-constants-data">
+<h3><span class="section-number">1.3.2.4. </span>Parameters (Constants / Data)<a class="headerlink" href="#parameters-constants-data" title="Permalink to this headline">¶</a></h3>
 <p>The next step is to define the parameter data: <span class="math notranslate nohighlight">\(\pi_t\)</span> (energy prices), <span class="math notranslate nohighlight">\(\eta\)</span> (round trip efficiency) and <span class="math notranslate nohighlight">\(E_0\)</span> (intial energy storage level).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1590,8 +1460,8 @@ title="Print to PDF"
 </div>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><b>Activity</b>: Uncomment the line below and look at the error message and read below. Then comment the line out again and rerun the notebook up to this cell.</p>
+<p class="admonition-title"><b>Activity</b></p>
+<p>Uncomment the line below and look at the error message and read below. Then comment the line out again and rerun the notebook up to this cell.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1650,8 +1520,8 @@ title="Print to PDF"
 </div>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><b>Activity</b>: Confirm <tt>my_data_dict</tt> contains the correct prices for the January 2, 2015.</p>
+<p class="admonition-title"><b>Activity</b></p>
+<p>Confirm <tt>my_data_dict</tt> contains the correct prices for the January 2, 2015.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1679,9 +1549,9 @@ title="Print to PDF"
 <p class="admonition-title">Note</p>
 <p><b>Tip</b>: When initializing variables and parameters with a pandas DataFrame, always convert to dictionary and check the keys. Often incorrectly loaded data is the root cause of unexpected errors or strange results. Checking the keys while building the model helps prevent these mistakes.</p>
 </div>
-</section>
-<section id="objectives">
-<h3><span class="section-number">1.3.2.5. </span>Objectives<a class="headerlink" href="#objectives" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="objectives">
+<h3><span class="section-number">1.3.2.5. </span>Objectives<a class="headerlink" href="#objectives" title="Permalink to this headline">¶</a></h3>
 <p>Next, we will declare the objective function in Pyomo. Below are two equally valid syntax optimizations.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1698,14 +1568,14 @@ title="Print to PDF"
 </div>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><b>Activity</b>: Comment out Approach 2 above and rerun the notebook. You’ll get a warning message if you do not comment out Approach 1. The answer should not change.</p>
+<p class="admonition-title"><b>Activity</b></p>
+<p>Comment out Approach 2 above and rerun the notebook. You’ll get a warning message if you do not comment out Approach 1. The answer should not change.</p>
 </div>
 <p>The following table (Hart et al., 2017) summarizes the keyword arguments for <code class="docutils literal notranslate"><span class="pre">Objective</span></code>:</p>
 <p><img alt="pyomo-objective-arguments" src="https://ndcbe.github.io/optimization/_images/pyomo-table-4.3.png" /></p>
-</section>
-<section id="constraints">
-<h3><span class="section-number">1.3.2.6. </span>Constraints<a class="headerlink" href="#constraints" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="constraints">
+<h3><span class="section-number">1.3.2.6. </span>Constraints<a class="headerlink" href="#constraints" title="Permalink to this headline">¶</a></h3>
 <p>Now let’s add the last model component: the constraints.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1735,12 +1605,12 @@ title="Print to PDF"
 <p>Below is a table of keyword arguments for <code class="docutils literal notranslate"><span class="pre">Constraint</span></code>:</p>
 <p><img alt="pyomo-constraint-arguments" src="https://ndcbe.github.io/optimization/_images/pyomo-table-4.4.png" /></p>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><b>Activity</b>: Compare the two model equations above to the optimization formulation below. Notice the one-to-one corespondance between the equality constraints in the mathematical formulation (below) and calls to <tt>pyo.Constraint</tt>. Also notice the sets used to create the Pyomo model are listed next to each constraint in the mathematical model. Once you learn the Pyomo syntax, translated a mathematical model into code is easy!</p>
+<p class="admonition-title"><b>Activity</b></p>
+<p>Compare the two model equations above to the optimization formulation below. Notice the one-to-one corespondance between the equality constraints in the mathematical formulation (below) and calls to <tt>pyo.Constraint</tt>. Also notice the sets used to create the Pyomo model are listed next to each constraint in the mathematical model. Once you learn the Pyomo syntax, translated a mathematical model into code is easy!</p>
 </div>
-</section>
-<section id="printing-the-model">
-<h3><span class="section-number">1.3.2.7. </span>Printing the Model<a class="headerlink" href="#printing-the-model" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="printing-the-model">
+<h3><span class="section-number">1.3.2.7. </span>Printing the Model<a class="headerlink" href="#printing-the-model" title="Permalink to this headline">¶</a></h3>
 <p>Here is the optimization model, reproduced from above for convenience:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -1922,20 +1792,20 @@ title="Print to PDF"
 </div>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><b>Activity</b>: Does our Pyomo model match the optimization mathematical model (equations above)? How did we incorporate the inequality constraints into the Pyomo model?</p>
+<p class="admonition-title"><b>Activity</b></p>
+<p>Does our Pyomo model match the optimization mathematical model (equations above)? How did we incorporate the inequality constraints into the Pyomo model?</p>
 </div>
-</section>
-<section id="another-approach-build-the-model-in-a-function">
-<h3><span class="section-number">1.3.2.8. </span>Another Approach: Build the Model in a Function<a class="headerlink" href="#another-approach-build-the-model-in-a-function" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="another-approach-build-the-model-in-a-function">
+<h3><span class="section-number">1.3.2.8. </span>Another Approach: Build the Model in a Function<a class="headerlink" href="#another-approach-build-the-model-in-a-function" title="Permalink to this headline">¶</a></h3>
 <p>To emphasize the tutorial nature of this example, we build the model on piece at a time above. An often preferred approach is to define a Python function that builds the model, such as the one below.</p>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><b>Activity</b>: The function below uses elements of <tt>price</tt> directly. Update the function to add the price data as a parameter in the Pyomo model. Make this parameter mutable as shown above.</p>
+<p class="admonition-title"><b>Activity</b></p>
+<p>The function below uses elements of <tt>price</tt> directly. Update the function to add the price data as a parameter in the Pyomo model. Make this parameter mutable as shown above.</p>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><b>Activity</b>: Fix any syntax errors with the function below.</p>
+<p class="admonition-title"><b>Activity</b></p>
+<p>Fix any syntax errors with the function below.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2010,13 +1880,13 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="calling-optimization-solver">
-<h2><span class="section-number">1.3.3. </span>Calling Optimization Solver<a class="headerlink" href="#calling-optimization-solver" title="Permalink to this headline">#</a></h2>
+</div>
+</div>
+<div class="section" id="calling-optimization-solver">
+<h2><span class="section-number">1.3.3. </span>Calling Optimization Solver<a class="headerlink" href="#calling-optimization-solver" title="Permalink to this headline">¶</a></h2>
 <p>Now that our Pyomo model is complete, we can numerically solve the model!</p>
-<section id="solverfactory-and-solver-options">
-<h3><span class="section-number">1.3.3.1. </span><code class="docutils literal notranslate"><span class="pre">SolverFactory</span></code> and Solver Options<a class="headerlink" href="#solverfactory-and-solver-options" title="Permalink to this headline">#</a></h3>
+<div class="section" id="solverfactory-and-solver-options">
+<h3><span class="section-number">1.3.3.1. </span><code class="docutils literal notranslate"><span class="pre">SolverFactory</span></code> and Solver Options<a class="headerlink" href="#solverfactory-and-solver-options" title="Permalink to this headline">¶</a></h3>
 <p>Algebraic Modeling Languages, including Pyomo, allow us to define optimization problems is a general, solver agnostic way. This means we can quickly swap between solvers.</p>
 <p>We will start by using Ipopt. First, we will create an instance of the <code class="docutils literal notranslate"><span class="pre">SolverFactory</span></code>:</p>
 <div class="cell docutils container">
@@ -2118,9 +1988,9 @@ EXIT: Optimal Solution Found.
 </div>
 </div>
 <p>The keyword argument <code class="docutils literal notranslate"><span class="pre">tee=True</span></code> tells the solve to dispaly its output to the screen.</p>
-</section>
-<section id="interpreting-ipopt-output-verifying-degree-of-freedom-analysis">
-<h3><span class="section-number">1.3.3.2. </span>Interpreting Ipopt Output - Verifying Degree of Freedom Analysis<a class="headerlink" href="#interpreting-ipopt-output-verifying-degree-of-freedom-analysis" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="interpreting-ipopt-output-verifying-degree-of-freedom-analysis">
+<h3><span class="section-number">1.3.3.2. </span>Interpreting Ipopt Output - Verifying Degree of Freedom Analysis<a class="headerlink" href="#interpreting-ipopt-output-verifying-degree-of-freedom-analysis" title="Permalink to this headline">¶</a></h3>
 <p>Your Ipopt output should include the following:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Number</span> <span class="n">of</span> <span class="n">nonzeros</span> <span class="ow">in</span> <span class="n">equality</span> <span class="n">constraint</span> <span class="n">Jacobian</span><span class="o">...</span><span class="p">:</span>       <span class="mi">96</span>
 <span class="n">Number</span> <span class="n">of</span> <span class="n">nonzeros</span> <span class="ow">in</span> <span class="n">inequality</span> <span class="n">constraint</span> <span class="n">Jacobian</span><span class="o">.</span><span class="p">:</span>        <span class="mi">0</span>
@@ -2138,16 +2008,16 @@ EXIT: Optimal Solution Found.
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><b>Activity</b>: Compare this output to your degree of freedom analysis.</p>
+<p class="admonition-title"><b>Activity</b></p>
+<p>Compare this output to your degree of freedom analysis.</p>
 </div>
-</section>
-<section id="try-another-solver">
-<h3><span class="section-number">1.3.3.3. </span>Try Another Solver<a class="headerlink" href="#try-another-solver" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="try-another-solver">
+<h3><span class="section-number">1.3.3.3. </span>Try Another Solver<a class="headerlink" href="#try-another-solver" title="Permalink to this headline">¶</a></h3>
 <p>Let’s see how easy it is to switch to another solver with Pyomo.</p>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><b>Activity</b>: Create a new instance of <tt>SolverFactory</tt> by specifying <tt>’glpk’</tt> as the solver name. Then solve the Pyomo model <tt>m</tt> and store the results in <tt>results2</tt>.</p>
+<p class="admonition-title"><b>Activity</b></p>
+<p>Create a new instance of <tt>SolverFactory</tt> by specifying <tt>’glpk’</tt> as the solver name. Then solve the Pyomo model <tt>m</tt> and store the results in <tt>results2</tt>.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2188,10 +2058,10 @@ Writing basic solution to &#39;/var/folders/xy/24xvnyss36v3d8mw68tygxdw0000gp/T/
 </div>
 </div>
 <p>Notice we used <code class="docutils literal notranslate"><span class="pre">solver2</span></code>, which is an instance of <code class="docutils literal notranslate"><span class="pre">SolverFactory</span></code> for the solver <code class="docutils literal notranslate"><span class="pre">glpk</span></code>. But we reused model <code class="docutils literal notranslate"><span class="pre">m</span></code>. This means the solver <code class="docutils literal notranslate"><span class="pre">glpk</span></code> used the solution from <code class="docutils literal notranslate"><span class="pre">ipopt</span></code> as its initial point.</p>
-</section>
-</section>
-<section id="inspecting-the-solution">
-<h2><span class="section-number">1.3.4. </span>Inspecting the Solution<a class="headerlink" href="#inspecting-the-solution" title="Permalink to this headline">#</a></h2>
+</div>
+</div>
+<div class="section" id="inspecting-the-solution">
+<h2><span class="section-number">1.3.4. </span>Inspecting the Solution<a class="headerlink" href="#inspecting-the-solution" title="Permalink to this headline">¶</a></h2>
 <p>We can inspect the entire model solution using <code class="docutils literal notranslate"><span class="pre">pprint()</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2361,8 +2231,8 @@ Writing basic solution to &#39;/var/folders/xy/24xvnyss36v3d8mw68tygxdw0000gp/T/
 </div>
 </div>
 <p>The solution is stored in the <code class="docutils literal notranslate"><span class="pre">value</span></code> column. This is helpful for debugging small models but tendious overwise.</p>
-<section id="extracting-solution-from-pyomo">
-<h3><span class="section-number">1.3.4.1. </span>Extracting Solution from Pyomo<a class="headerlink" href="#extracting-solution-from-pyomo" title="Permalink to this headline">#</a></h3>
+<div class="section" id="extracting-solution-from-pyomo">
+<h3><span class="section-number">1.3.4.1. </span>Extracting Solution from Pyomo<a class="headerlink" href="#extracting-solution-from-pyomo" title="Permalink to this headline">¶</a></h3>
 <p>A key advantage of Pyomo is that it is an Algebriac Modeling Language in Python. So let’s use Python to analyze the solution! The code below extracts the values of the variables into three lists.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2423,9 +2293,9 @@ Writing basic solution to &#39;/var/folders/xy/24xvnyss36v3d8mw68tygxdw0000gp/T/
 </div>
 </div>
 </div>
-</section>
-<section id="visualizing-the-solution">
-<h3><span class="section-number">1.3.4.2. </span>Visualizing the Solution<a class="headerlink" href="#visualizing-the-solution" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="visualizing-the-solution">
+<h3><span class="section-number">1.3.4.2. </span>Visualizing the Solution<a class="headerlink" href="#visualizing-the-solution" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the state of charge (E)</span>
@@ -2475,20 +2345,20 @@ Writing basic solution to &#39;/var/folders/xy/24xvnyss36v3d8mw68tygxdw0000gp/T/
 </div>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><b>Activity</b>: Improve the formatting of the plots using the code from the top of the notebook (pandas section).</p>
+<p class="admonition-title"><b>Activity</b></p>
+<p>Improve the formatting of the plots using the code from the top of the notebook (pandas section).</p>
 </div>
-</section>
-<section id="accessing-dual-variables">
-<h3><span class="section-number">1.3.4.3. </span>Accessing Dual Variables<a class="headerlink" href="#accessing-dual-variables" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="accessing-dual-variables">
+<h3><span class="section-number">1.3.4.3. </span>Accessing Dual Variables<a class="headerlink" href="#accessing-dual-variables" title="Permalink to this headline">¶</a></h3>
 <p>Coming Soon! This will get updated sometime during the first month. We will revisit dual variables later in the semester after introducing some optimization theory concepts.</p>
-</section>
-</section>
-<section id="references">
-<h2><span class="section-number">1.3.5. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
+</div>
+</div>
+<div class="section" id="references">
+<h2><span class="section-number">1.3.5. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
 <p>All tables are from Chapter 4 of Hart, W. E., Laird, C. D., Watson, J. P., Woodruff, D. L., Hackebeil, G. A., Nicholson, B. L., &amp; Siirola, J. D. (2017). <em>Pyomo-Optimization Modeling in Python</em> (Vol. 67). Berlin: Springer. <a class="reference external" href="https://www.springer.com/gp/book/9783319588193">https://www.springer.com/gp/book/9783319588193</a></p>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -2512,11 +2382,9 @@ Writing basic solution to &#39;/var/folders/xy/24xvnyss36v3d8mw68tygxdw0000gp/T/
 
               </div>
               
-            </main>
-            <footer class="footer-article noprint">
-                
-    <!-- Previous / next buttons -->
-<div class='prev-next-area'>
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
     <a class='left-prev' id="prev-link" href="Pyomo-Introduction.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -2532,28 +2400,24 @@ Writing basic solution to &#39;/var/folders/xy/24xvnyss36v3d8mw68tygxdw0000gp/T/
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-            </footer>
+            
         </div>
     </div>
-    <div class="footer-content row">
-        <footer class="col footer"><p>
-  
-    By Alexander Dowling, et al.<br/>
-  
-      &copy; Copyright 2022.<br/>
-</p>
-        </footer>
-    </div>
+    <footer class="footer">
+  <p>
     
-</div>
+      By Alexander Dowling, et al.<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
 
 
       </div>
     </div>
   
-  <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
 
   </body>
 </html>

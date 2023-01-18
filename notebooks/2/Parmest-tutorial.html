@@ -4,13 +4,11 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>2.9. Parameter estimation with parmest &#8212; Nonlinear and Stochastic Optimization</title>
     
-  <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -20,16 +18,20 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
+    
+      
+
+    
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-  <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
@@ -37,13 +39,12 @@
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/design-tabs.js"></script>
+    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
@@ -63,21 +64,7 @@ const thebe_selector_output = ".output, .cell_output"
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-<!-- Checkboxes to toggle the left sidebar -->
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
-<label class="overlay overlay-navbar" for="__navigation">
-    <div class="visually-hidden">Toggle navigation sidebar</div>
-</label>
-<!-- Checkboxes to toggle the in-page toc -->
-<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
-<label class="overlay overlay-pagetoc" for="__page-toc">
-    <div class="visually-hidden">Toggle in-page Table of Contents</div>
-</label>
-<!-- Headers at the top -->
-<div class="announcement header-item noprint"></div>
-<div class="header header-item noprint"></div>
-
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
     <div class="container-fluid" id="banner"></div>
 
@@ -86,10 +73,9 @@ const thebe_selector_output = ".output, .cell_output"
     <div class="container-xl">
       <div class="row">
           
-<!-- Sidebar -->
-<div class="bd-sidebar noprint" id="site-navigation">
-    <div class="bd-sidebar__content">
-        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../../index.html">
       
       
@@ -102,15 +88,14 @@ const thebe_selector_output = ".output, .cell_output"
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item active">
-        
-        <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1">
-                <a class="reference internal" href="../../intro.html">
-                    Nonlinear and Stochastic Optimization
-                </a>
-            </li>
-        </ul>
-        <p aria-level="2" class="caption" role="heading">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../intro.html">
+   Nonlinear and Stochastic Optimization
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Organinization
  </span>
@@ -427,17 +412,12 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 
     </div>
-</nav></div>
-        <div class="bd-sidebar__bottom">
-             <!-- To handle the deprecated key -->
-            
-            <div class="navbar_extra_footer">
-            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-            </div>
-            
-        </div>
-    </div>
-    <div id="rtd-footer-container"></div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
 </div>
 
 
@@ -445,209 +425,99 @@ const thebe_selector_output = ".output, .cell_output"
 
 
           
-<!-- A tiny helper pixel to detect if we've scrolled -->
-<div class="sbt-scroll-pixel-helper"></div>
-<!-- Main content -->
-<div class="col py-0 content-container">
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
     
-    <div class="header-article row sticky-top noprint">
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
         
-
-
-
-<div class="col py-1 d-flex header-article-main">
-    <div class="header-article__left">
-        
-        <label for="__navigation"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="right"
-title="Toggle navigation"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-bars"></i>
-  </span>
-
-</label>
-
-        
-    </div>
-    <div class="header-article__right">
-<div class="menu-dropdown menu-dropdown-launch-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Launch interactive content">
-      <i class="fas fa-rocket"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://mybinder.org/v2/gh/ndcbe/optimization/master?urlpath=tree/notebooks/2/Parmest-tutorial.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Binder"
->
-  
-
-<span class="headerbtn__icon-container">
-  
-    <img src="../../_static/images/logo_binder.svg">
-  </span>
-<span class="headerbtn__text-container">Binder</span>
-</a>
-
-      </li>
-      
-      <li>
-        <a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/2/Parmest-tutorial.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Colab"
->
-  
-
-<span class="headerbtn__icon-container">
-  
-    <img src="../../_static/images/logo_colab.png">
-  </span>
-<span class="headerbtn__text-container">Colab</span>
-</a>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-
-<button onclick="toggleFullScreen()"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="bottom"
-title="Fullscreen mode"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-expand"></i>
-  </span>
-
-</button>
-
-<div class="menu-dropdown menu-dropdown-repository-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Source repositories">
-      <i class="fab fa-github"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://github.com/ndcbe/optimization"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Source repository"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fab fa-github"></i>
-  </span>
-<span class="headerbtn__text-container">repository</span>
-</a>
-
-      </li>
-      
-      <li>
-        <a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/2/Parmest-tutorial.html&body=Your%20issue%20content%20here."
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Open an issue"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-lightbulb"></i>
-  </span>
-<span class="headerbtn__text-container">open issue</span>
-</a>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-
-<div class="menu-dropdown menu-dropdown-download-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Download this page">
-      <i class="fas fa-download"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="../../_sources/notebooks/2/Parmest-tutorial.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Download source file"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="headerbtn__text-container">.ipynb</span>
-</a>
-
-      </li>
-      
-      <li>
-        
-<button onclick="printPdf(this)"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="left"
-title="Print to PDF"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="headerbtn__text-container">.pdf</span>
-</button>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
-  </span>
-
-</label>
-
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/notebooks/2/Parmest-tutorial.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
-<!-- Table of contents -->
-<div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/ndcbe/optimization"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/2/Parmest-tutorial.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
     </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/ndcbe/optimization/master?urlpath=tree/notebooks/2/Parmest-tutorial.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <a class="colab-button" href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/2/Parmest-tutorial.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#what-is-parameter-estimation">
    2.9.1. What is parameter estimation?
@@ -770,11 +640,12 @@ title="Print to PDF"
  </li>
 </ul>
 
-    </nav>
-</div>
+            </nav>
+        </div>
     </div>
-    <div class="article row">
-        <div class="col pl-md-3 pl-lg-5 content-container">
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
                 <h1>Parameter estimation with parmest</h1>
@@ -913,12 +784,11 @@ title="Print to PDF"
                     </div>
                 </div>
             </div>
-            <main id="main-content" role="main">
-                
+            
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="parameter-estimation-with-parmest">
-<h1><span class="section-number">2.9. </span>Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code><a class="headerlink" href="#parameter-estimation-with-parmest" title="Permalink to this headline">#</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="parameter-estimation-with-parmest">
+<h1><span class="section-number">2.9. </span>Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code><a class="headerlink" href="#parameter-estimation-with-parmest" title="Permalink to this headline">¶</a></h1>
 <p>Created by <a class="reference external" href="https://github.com/kanishka-ghosh">Kanishka Ghosh</a>, <a class="reference external" href="https://github.com/jialuw96">Jialu Wang</a>, and <a class="reference external" href="https://github.com/adowling2/">Prof. Alex Dowling</a> at the University of Notre Dame.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -946,13 +816,13 @@ title="Print to PDF"
 <span class="kn">from</span> <span class="nn">pyomo.dae</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># Define the directory to save/read the data files</span>
-<span class="n">data_dir</span> <span class="o">=</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">ndcbe</span><span class="o">/</span><span class="n">optimization</span><span class="o">/</span><span class="n">main</span><span class="o">/</span><span class="n">notebooks</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="s1">&#39;</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/data/&#39;</span>
 </pre></div>
 </div>
 </div>
 </div>
-<section id="what-is-parameter-estimation">
-<h2><span class="section-number">2.9.1. </span>What is parameter estimation?<a class="headerlink" href="#what-is-parameter-estimation" title="Permalink to this headline">#</a></h2>
+<div class="section" id="what-is-parameter-estimation">
+<h2><span class="section-number">2.9.1. </span>What is parameter estimation?<a class="headerlink" href="#what-is-parameter-estimation" title="Permalink to this headline">¶</a></h2>
 <p>Given a function <span class="math notranslate nohighlight">\(f(x,\theta)\)</span> where <span class="math notranslate nohighlight">\(x\)</span> is the input or array of inputs, <span class="math notranslate nohighlight">\(\theta\)</span> is the vector of unknown model parameters, and <span class="math notranslate nohighlight">\(y\)</span> is the array of observed output, parameter estimation is performed to determine the values of <span class="math notranslate nohighlight">\(\theta\)</span> to minimize the error between <span class="math notranslate nohighlight">\(f(x,\theta)\)</span> and <span class="math notranslate nohighlight">\(y\)</span>.  Commonly, parameter estimation is set up as a least squares objective problem:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -965,9 +835,9 @@ title="Print to PDF"
 \end{align}
 \end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(i\)</span> is used to index the datapoints in a dataset and <span class="math notranslate nohighlight">\(\hat{\theta}\)</span> is the optimal set of parameter values that minimizes the prediction error.</p>
-</section>
-<section id="what-is-parmest">
-<h2><span class="section-number">2.9.2. </span>What is <code class="docutils literal notranslate"><span class="pre">parmest</span></code>?<a class="headerlink" href="#what-is-parmest" title="Permalink to this headline">#</a></h2>
+</div>
+<div class="section" id="what-is-parmest">
+<h2><span class="section-number">2.9.2. </span>What is <code class="docutils literal notranslate"><span class="pre">parmest</span></code>?<a class="headerlink" href="#what-is-parmest" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">parmest</span></code> is a Python package built on the <a class="reference external" href="http://www.pyomo.org/">Pyomo optimization modeling language</a> to support parameter estimation using experimental data along with confidence regions and subsequent creation of scenarios for <a class="reference external" href="https://github.com/Pyomo/pysp">PySP</a>. <code class="docutils literal notranslate"><span class="pre">parmest</span></code> supports scenario generation for multiple ‘experiments’ and can be used to characterize estimate uncertainties through, for example, confidence region generations. <code class="docutils literal notranslate"><span class="pre">parmest</span></code> requires the following positional arguments in order solve the optimization problem:</p>
 <ol>
 <li><p>Function that accepts an ‘experimental’ dataset or a list of ‘experimental’ datasets, each defined as a dictionary, as it’s argument and returns the Pyomo model.</p>
@@ -983,9 +853,9 @@ title="Print to PDF"
 </ol>
 <p>More information about the <code class="docutils literal notranslate"><span class="pre">parmest</span></code> package can be found <a class="reference external" href="https://pyomo.readthedocs.io/en/stable/contributed_packages/parmest/index.html">here</a>.</p>
 <p>Detailed explanation of the various methods in <code class="docutils literal notranslate"><span class="pre">parmest</span></code> can be found <a class="reference external" href="https://www.osti.gov/servlets/purl/1761797">here</a>.</p>
-</section>
-<section id="example-reaction-kinetics">
-<h2><span class="section-number">2.9.3. </span>Example: Reaction Kinetics<a class="headerlink" href="#example-reaction-kinetics" title="Permalink to this headline">#</a></h2>
+</div>
+<div class="section" id="example-reaction-kinetics">
+<h2><span class="section-number">2.9.3. </span>Example: Reaction Kinetics<a class="headerlink" href="#example-reaction-kinetics" title="Permalink to this headline">¶</a></h2>
 <p>Consider two chemical reactions that convert molecule <span class="math notranslate nohighlight">\(A\)</span> to desired product <span class="math notranslate nohighlight">\(B\)</span> and a less valuable side-product <span class="math notranslate nohighlight">\(C\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[A \overset{k_1}{\rightarrow} B \overset{k_2}{\rightarrow} C\]</div>
@@ -1003,8 +873,8 @@ title="Print to PDF"
 <div class="math notranslate nohighlight">
 \[k_2 = A_2 \exp{\frac{-E_2}{R T}}\]</div>
 <p><span class="math notranslate nohighlight">\(A_1, A_2, E_1\)</span>, and <span class="math notranslate nohighlight">\(E_2\)</span> are fitted model parameters. <span class="math notranslate nohighlight">\(R\)</span> is the ideal-gas constant and <span class="math notranslate nohighlight">\(T\)</span> is absolute temperature.</p>
-<section id="batch-reactor">
-<h3><span class="section-number">2.9.3.1. </span>Batch Reactor<a class="headerlink" href="#batch-reactor" title="Permalink to this headline">#</a></h3>
+<div class="section" id="batch-reactor">
+<h3><span class="section-number">2.9.3.1. </span>Batch Reactor<a class="headerlink" href="#batch-reactor" title="Permalink to this headline">¶</a></h3>
 <p>The concentrations in a batch reactor evolve with time per the following differential equations:</p>
 <div class="math notranslate nohighlight">
 \[ \frac{d C_A}{dt} = r_A = -k_1 C_A \]</div>
@@ -1085,9 +955,9 @@ title="Print to PDF"
 <img alt="../../_images/Parmest-tutorial_11_0.png" src="../../_images/Parmest-tutorial_11_0.png" />
 </div>
 </div>
-</section>
-<section id="experimental-data">
-<h3><span class="section-number">2.9.3.2. </span>Experimental Data<a class="headerlink" href="#experimental-data" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="experimental-data">
+<h3><span class="section-number">2.9.3.2. </span>Experimental Data<a class="headerlink" href="#experimental-data" title="Permalink to this headline">¶</a></h3>
 <p>See the notebook <em>Supplementary material: data for parmest tutorial</em> for details on how these experimental data were generated (via simulation).</p>
 <p>Experimental data consists of the concentration of species A, B, and C in <span class="math notranslate nohighlight">\(\mathrm{mol/L}\)</span> with respect to time <span class="math notranslate nohighlight">\(t\)</span> in <span class="math notranslate nohighlight">\(\mathrm{hours}\)</span> inside the batch reactor. The experimental data is stored in csv files where the first column records the time <span class="math notranslate nohighlight">\(t\)</span> in the reactor. Next, the temperature <span class="math notranslate nohighlight">\(T\)</span> in <span class="math notranslate nohighlight">\(\mathrm{K}\)</span> at which the reaction was simulated is recorded followed by the initial concentration of species A, <span class="math notranslate nohighlight">\(C_{A,0}\)</span>, in <span class="math notranslate nohighlight">\(\mathrm{mol/L}\)</span>. Finally, the time-varying species concentrations (<span class="math notranslate nohighlight">\(C_A\)</span>), (<span class="math notranslate nohighlight">\(C_B\)</span>), and (<span class="math notranslate nohighlight">\(C_C\)</span>) are recorded in <span class="math notranslate nohighlight">\(\mathrm{mol/L}\)</span>. Following is how the pandas dataframe of a single experiment looks like:</p>
 <div class="cell docutils container">
@@ -1126,9 +996,9 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-</section>
-<section id="pyomo-model">
-<h3><span class="section-number">2.9.3.3. </span>Pyomo model<a class="headerlink" href="#pyomo-model" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="pyomo-model">
+<h3><span class="section-number">2.9.3.3. </span>Pyomo model<a class="headerlink" href="#pyomo-model" title="Permalink to this headline">¶</a></h3>
 <p>In the following cell, we define a function to define and return the Pyomo model for the kinetic model to be used for parameter estimation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1256,16 +1126,16 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="parameter-estimation-with-a-single-dataset">
-<h2><span class="section-number">2.9.4. </span>Parameter estimation with a single dataset<a class="headerlink" href="#parameter-estimation-with-a-single-dataset" title="Permalink to this headline">#</a></h2>
+</div>
+</div>
+<div class="section" id="parameter-estimation-with-a-single-dataset">
+<h2><span class="section-number">2.9.4. </span>Parameter estimation with a single dataset<a class="headerlink" href="#parameter-estimation-with-a-single-dataset" title="Permalink to this headline">¶</a></h2>
 <p>Here, we will estimate parameters <span class="math notranslate nohighlight">\(A_1\)</span>, <span class="math notranslate nohighlight">\(A_2\)</span>, <span class="math notranslate nohighlight">\(E_1\)</span>, and <span class="math notranslate nohighlight">\(E_2\)</span> using data generated for a batch ‘experiment’ at 250 C with an inlet concentration of 0.5 mol/L of A.</p>
 <p>The parameter estimation problem is solved with the least squares optimization scheme</p>
 <p>The parameter estimation problem is solved with the least squares optimization scheme
 $$</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6ea1f3a7-f04e-45cb-b884-5074b05dcb2f">
-<span class="eqno">(2.1)<a class="headerlink" href="#equation-6ea1f3a7-f04e-45cb-b884-5074b05dcb2f" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-f8aed605-9692-4960-9998-ea31c48f8f0f">
+<span class="eqno">(2.1)<a class="headerlink" href="#equation-f8aed605-9692-4960-9998-ea31c48f8f0f" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \begin{split}
     \min_{\hat{\theta}} \quad &amp; \sum_{i}^{} (y_i - f(x_i,\hat{\theta}))^2\\
     \textrm{s.t.} \quad &amp; \mathrm{bounds \ on} \ \theta\\
@@ -1278,7 +1148,7 @@ where \)</span>i<span class="math notranslate nohighlight">\( is used to index t
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># read-in data from csv file</span>
 
-<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">ndcbe</span><span class="o">/</span><span class="n">optimization</span><span class="o">/</span><span class="n">main</span><span class="o">/</span><span class="n">notebooks</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">parmest_20210609_data_exp1</span><span class="o">.</span><span class="n">csv</span><span class="s1">&#39;,index_col=0)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/data/parmest_20210609_data_exp1.csv&#39;</span><span class="p">,</span><span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="c1"># create dictionary of data</span>
 <span class="c1"># format of dictionary needs to be consistent with input provided to create_model() function</span>
 <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1380,9 +1250,9 @@ E2 = 14.939 kJ/mol
 </div>
 </div>
 </div>
-</section>
-<section id="parameter-estimation-with-multiple-datasets">
-<h2><span class="section-number">2.9.5. </span>Parameter estimation with multiple datasets<a class="headerlink" href="#parameter-estimation-with-multiple-datasets" title="Permalink to this headline">#</a></h2>
+</div>
+<div class="section" id="parameter-estimation-with-multiple-datasets">
+<h2><span class="section-number">2.9.5. </span>Parameter estimation with multiple datasets<a class="headerlink" href="#parameter-estimation-with-multiple-datasets" title="Permalink to this headline">¶</a></h2>
 <p>Here, we will estimate parameters <span class="math notranslate nohighlight">\(A_1\)</span>, <span class="math notranslate nohighlight">\(A_2\)</span>, <span class="math notranslate nohighlight">\(E_1\)</span>, and <span class="math notranslate nohighlight">\(E_2\)</span> using data generated for a batch ‘experiment’ at 250 C with an inlet concentration of 0.5 mol/L of A.</p>
 <p>The parameter estimation problem is now defined to solve optimization problem where the objective function is the mean of the least square error between observed and calculated data for multiple experiments.</p>
 <div class="math notranslate nohighlight">
@@ -1396,8 +1266,8 @@ E2 = 14.939 kJ/mol
 \end{align}
 \end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(i\)</span> is used to index the datapoints in a dataset, <span class="math notranslate nohighlight">\(j\)</span> is an index on the dataset such that <span class="math notranslate nohighlight">\(j \in [1,N]\)</span> and <span class="math notranslate nohighlight">\(N\)</span> is the number of experiments conducted.</p>
-<section id="generate-list-of-dataset">
-<h3><span class="section-number">2.9.5.1. </span>Generate list of dataset<a class="headerlink" href="#generate-list-of-dataset" title="Permalink to this headline">#</a></h3>
+<div class="section" id="generate-list-of-dataset">
+<h3><span class="section-number">2.9.5.1. </span>Generate list of dataset<a class="headerlink" href="#generate-list-of-dataset" title="Permalink to this headline">¶</a></h3>
 <p>In the following cell, we define a function to generate a list of dictionaries containing the ‘experimental’ data.  For this, we read-in the list of file names generated earlier</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1465,9 +1335,9 @@ E2 = 14.939 kJ/mol
 <img alt="../../_images/Parmest-tutorial_22_1.png" src="../../_images/Parmest-tutorial_22_1.png" />
 </div>
 </div>
-</section>
-<section id="id1">
-<h3><span class="section-number">2.9.5.2. </span>Parameter estimation with parmest<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="id1">
+<h3><span class="section-number">2.9.5.2. </span>Parameter estimation with parmest<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>In the following cell, we perform parameter estimation using parmest to solve the least squares problem defined in the Pyomo model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1567,9 +1437,9 @@ theta:
 </div>
 </div>
 </div>
-</section>
-<section id="plotting-fitted-model-simulation-with-experimental-data">
-<h3><span class="section-number">2.9.5.3. </span>Plotting fitted model simulation with ‘experimental’ data<a class="headerlink" href="#plotting-fitted-model-simulation-with-experimental-data" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="plotting-fitted-model-simulation-with-experimental-data">
+<h3><span class="section-number">2.9.5.3. </span>Plotting fitted model simulation with ‘experimental’ data<a class="headerlink" href="#plotting-fitted-model-simulation-with-experimental-data" title="Permalink to this headline">¶</a></h3>
 <p>Next, we plot the ‘experimental’ data along with the profiles generated using the fitted kinetic model.  The symbols represent the ‘experimental’ data and the solid and dashed lines are the profiles generated using the fitted model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1618,10 +1488,10 @@ theta:
 <img alt="../../_images/Parmest-tutorial_26_15.png" src="../../_images/Parmest-tutorial_26_15.png" />
 </div>
 </div>
-</section>
-</section>
-<section id="using-parmest-with-pyomo-dae">
-<h2><span class="section-number">2.9.6. </span>Using <code class="docutils literal notranslate"><span class="pre">parmest</span></code> with <code class="docutils literal notranslate"><span class="pre">pyomo.dae</span></code><a class="headerlink" href="#using-parmest-with-pyomo-dae" title="Permalink to this headline">#</a></h2>
+</div>
+</div>
+<div class="section" id="using-parmest-with-pyomo-dae">
+<h2><span class="section-number">2.9.6. </span>Using <code class="docutils literal notranslate"><span class="pre">parmest</span></code> with <code class="docutils literal notranslate"><span class="pre">pyomo.dae</span></code><a class="headerlink" href="#using-parmest-with-pyomo-dae" title="Permalink to this headline">¶</a></h2>
 <p>In contrast to the approach above, we will now try to solve the model without the analytic solution for the concentrations using Pyomo.DAE.  To recap, the concentrations in a batch reactor evolve with time per the following differential equations:</p>
 <div class="math notranslate nohighlight">
 \[ \frac{d C_A}{dt} = r_A = -k_1 C_A \]</div>
@@ -1764,8 +1634,8 @@ theta:
 </div>
 </div>
 </div>
-<section id="id2">
-<h3><span class="section-number">2.9.6.1. </span>Parameter estimation with parmest<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id2">
+<h3><span class="section-number">2.9.6.1. </span>Parameter estimation with parmest<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>In the following cell, we perform parameter estimation using parmest to solve the least squares problem defined in the Pyomo dynamic model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1868,9 +1738,9 @@ theta:
 </div>
 </div>
 </div>
-</section>
-<section id="id3">
-<h3><span class="section-number">2.9.6.2. </span>Plotting fitted model simulation with ‘experimental’ data<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="id3">
+<h3><span class="section-number">2.9.6.2. </span>Plotting fitted model simulation with ‘experimental’ data<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>Next, we plot the ‘experimental’ data along with the profiles generated using the fitted kinetic model.  The symbols represent the ‘experimental’ data and the solid and dashed lines are the profiles generated using the fitted model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1919,12 +1789,12 @@ theta:
 <img alt="../../_images/Parmest-tutorial_32_15.png" src="../../_images/Parmest-tutorial_32_15.png" />
 </div>
 </div>
-</section>
-</section>
-<section id="local-uncertainty-analysis">
-<h2><span class="section-number">2.9.7. </span>Local uncertainty analysis<a class="headerlink" href="#local-uncertainty-analysis" title="Permalink to this headline">#</a></h2>
-<section id="covariance-matrix">
-<h3><span class="section-number">2.9.7.1. </span>Covariance matrix<a class="headerlink" href="#covariance-matrix" title="Permalink to this headline">#</a></h3>
+</div>
+</div>
+<div class="section" id="local-uncertainty-analysis">
+<h2><span class="section-number">2.9.7. </span>Local uncertainty analysis<a class="headerlink" href="#local-uncertainty-analysis" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="covariance-matrix">
+<h3><span class="section-number">2.9.7.1. </span>Covariance matrix<a class="headerlink" href="#covariance-matrix" title="Permalink to this headline">¶</a></h3>
 <p>The parameter covariance matrix is calculated using the reduced Hessian approach. Using <code class="docutils literal notranslate"><span class="pre">parmest</span></code>, the covariance matrix can be calculated by setting optional argument <code class="docutils literal notranslate"><span class="pre">calc_cov</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>. More information on this approach can be found here: <a class="reference external" href="https://doi.org/10.1002/aic.16242">https://doi.org/10.1002/aic.16242</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2024,9 +1894,9 @@ theta:
 </div>
 </div>
 </div>
-</section>
-<section id="parameter-identifiability">
-<h3><span class="section-number">2.9.7.2. </span>Parameter identifiability<a class="headerlink" href="#parameter-identifiability" title="Permalink to this headline">#</a></h3>
+</div>
+<div class="section" id="parameter-identifiability">
+<h3><span class="section-number">2.9.7.2. </span>Parameter identifiability<a class="headerlink" href="#parameter-identifiability" title="Permalink to this headline">¶</a></h3>
 <p>The Fisher information matrix, <span class="math notranslate nohighlight">\(FIM\)</span>, is calculated as the inverse of the parameter covariance matrix:
 <span class="math notranslate nohighlight">\(FIM = {(Cov.)}^{-1}\)</span></p>
 <p>Eigen decomposition of <span class="math notranslate nohighlight">\(FIM\)</span> following <span class="math notranslate nohighlight">\(FIM = v \lambda {v}^{-1}\)</span> gives eigenvector matrix <span class="math notranslate nohighlight">\(v\)</span> and <span class="math notranslate nohighlight">\(\lambda\)</span> is the diagonal matrix of eigenvalues. Column <span class="math notranslate nohighlight">\(i\)</span> in <span class="math notranslate nohighlight">\(v\)</span> is the eigenvector corresponding to the <span class="math notranslate nohighlight">\(i\)</span>-th eigenvalue. Further, each element of the eigenvector corresponds to the fitted parameters in order in which they appear in in <code class="docutils literal notranslate"><span class="pre">theta_names</span></code>. The magnitude of each element of an eigenvector denotes the contribution of the parameters on the direciton of the unit vector.</p>
@@ -2119,10 +1989,10 @@ Eigen value: 6.451e-06
 </div>
 </div>
 <p>Looking at the eigenvalues and corresponding eigenvectors, we can see that parameters A2 and A1 (in order) have the largest contributions to the direction of the eigenvector corresponding to the smallest eigenvalue.  Therefore, as discussed above, we can conclude from this analysis that parameter A2 is the least identifiable parameter in this kinetic model, followed by parameter A1.</p>
-</section>
-</section>
-<section id="bootstrap-resampling">
-<h2><span class="section-number">2.9.8. </span>Bootstrap resampling<a class="headerlink" href="#bootstrap-resampling" title="Permalink to this headline">#</a></h2>
+</div>
+</div>
+<div class="section" id="bootstrap-resampling">
+<h2><span class="section-number">2.9.8. </span>Bootstrap resampling<a class="headerlink" href="#bootstrap-resampling" title="Permalink to this headline">¶</a></h2>
 <p>Bootstrapping is a resampling method by independently sampling with replacement from an existing sample data with same sample size n, and performing inference among these resampled data (<a class="reference external" href="https://towardsdatascience.com/an-introduction-to-the-bootstrap-method-58bcb51b4d60">link</a>). Bootstrap resampling is often used in parameter estimation problems to determine parameter confidence intervals. More information about bootstrap resampling and confidence interval calculation can be found <a class="reference external" href="https://ocw.mit.edu/courses/mathematics/18-05-introduction-to-probability-and-statistics-spring-2014/readings/MIT18_05S14_Reading24.pdf">here</a>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">theta_est_bootstrap()</span></code> is used to perform resampling with <code class="docutils literal notranslate"><span class="pre">parmest</span></code>.  More information can be found <a class="reference external" href="https://pyomo.readthedocs.io/en/stable/contributed_packages/parmest/api.html#pyomo.contrib.parmest.parmest.Estimator.theta_est_bootstrap">here</a>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">parmest</span></code> also provides functions to plot bootstrap parameter estimates along with various confidence intervals <a class="reference external" href="https://pyomo.readthedocs.io/en/stable/contributed_packages/parmest/api.html#pyomo.contrib.parmest.graphics.pairwise_plot">link</a>.</p>
@@ -2919,9 +2789,9 @@ EXIT: Optimal Solution Found.
 <img alt="../../_images/Parmest-tutorial_44_2.png" src="../../_images/Parmest-tutorial_44_2.png" />
 </div>
 </div>
-</section>
-<section id="nonlinear-confidence-regions">
-<h2><span class="section-number">2.9.9. </span>Nonlinear confidence regions<a class="headerlink" href="#nonlinear-confidence-regions" title="Permalink to this headline">#</a></h2>
+</div>
+<div class="section" id="nonlinear-confidence-regions">
+<h2><span class="section-number">2.9.9. </span>Nonlinear confidence regions<a class="headerlink" href="#nonlinear-confidence-regions" title="Permalink to this headline">¶</a></h2>
 <p>The likelihood-ratio test (sometimes called the likelihood-ratio <span class="math notranslate nohighlight">\(\chi^2\)</span> test) is a hypothesis test that helps one choose the “best” model between two models<a class="reference external" href="https://www.statisticshowto.com/likelihood-ratio-tests/">link</a>. Basically, the test compares the fit of two models. The null hypothesis is that the first model is the “best” model; It is rejected when the test statistic is large. In other words, if the null hypothesis is rejected, then the second model is a significant improvement over the first model.</p>
 <p>In the last part of this notebook, we use the bootstrap parameter estimates to determine the goodness of fit using the likelihood-ratio <span class="math notranslate nohighlight">\(\chi^2\)</span> test. More information can be found <a class="reference external" href="https://pyomo.readthedocs.io/en/stable/contributed_packages/parmest/api.html#pyomo.contrib.parmest.parmest.Estimator.likelihood_ratio_test">here</a>.</p>
 <div class="cell docutils container">
@@ -3006,8 +2876,8 @@ Objective contour plot for E2 E1 slice failed
 <img alt="../../_images/Parmest-tutorial_49_1.png" src="../../_images/Parmest-tutorial_49_1.png" />
 </div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -3031,11 +2901,9 @@ Objective contour plot for E2 E1 slice failed
 
               </div>
               
-            </main>
-            <footer class="footer-article noprint">
-                
-    <!-- Previous / next buttons -->
-<div class='prev-next-area'>
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
     <a class='left-prev' id="prev-link" href="SP.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -3051,28 +2919,24 @@ Objective contour plot for E2 E1 slice failed
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-            </footer>
+            
         </div>
     </div>
-    <div class="footer-content row">
-        <footer class="col footer"><p>
-  
-    By Alexander Dowling, et al.<br/>
-  
-      &copy; Copyright 2022.<br/>
-</p>
-        </footer>
-    </div>
+    <footer class="footer">
+  <p>
     
-</div>
+      By Alexander Dowling, et al.<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
 
 
       </div>
     </div>
   
-  <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
 
   </body>
 </html>

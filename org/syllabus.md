@@ -24,9 +24,7 @@ Everyone: You should satisfy at least TWO of the following advisory prerequisite
 | | Prof. Alexander (Alex) Dowling | Ms. Nicole Cortes | Mr. Xinhe Chen|
 | ----------- | ----------- | ----------- | ----------- |
 | | ![](https://dowlinglab.nd.edu/assets/320333/200x200/dowling_alex_sq.jpg) | ![](https://dowlinglab.nd.edu/assets/477743/200x200/img_5301_square_sized.jpg) | ![](https://dowlinglab.nd.edu/assets/477378/200x200/xinhe.jpg) |
-| Office Hours | 9-10am on Fridays in 366 or 369 Nieuwland Hall | 3-4pm on Wednesdays in 366 Nieuwland Hall | 3-4pm on Wednesdays in 366 Nieuwland Hall  |
-
-(Office hours are tentative, still need to be confirmed.)
+| Office Hours | 8-9am on Thursdays in 366 or 369 Nieuwland Hall | 9-10am on Wednesdays in 366 Nieuwland Hall | 9-10am on Wednesdays in 366 Nieuwland Hall  |
 
 ## Discussuion Board (Canvas) and Email Correspondance
 * Post your questions to the **discussion board in Canvas**

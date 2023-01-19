@@ -50,7 +50,7 @@ Additional References:
 
 ## Classroom Meetings
 
-Classroom meetings are a mix of i) traditional chalk board instruction, ii) computer demonstrations, and iii) in-class activities. Please bring an internet connected laptop computer. You are expected to have completed the assigned reading and at home activities for each topic (posted on Canvas/Vocareum) before each class session. 
+Classroom meetings are a mix of i) traditional chalk board instruction, ii) computer demonstrations, and iii) in-class activities. Please bring an internet connected laptop computer. You are encouraged to review the [relevant notebooks](./calendar.md) and chapters in reference textbooks before and after each class meeting.
 
 ## Focus and Final Grades
 
@@ -110,7 +110,7 @@ The following is a non-exhaustive list of collaborative scenarios that are PROHI
 
 ## Midterm Exam
 
-The midterm exam will take place during class as indicated on the [semester schedule](./schedule.md). The exam will be closed book with no access to a computer. Students will be permitted to bring 2 sheets of letter size paper filled with handwritten notes.
+The midterm exam will take place during class as indicated on the [semester calendar](./calendar.md). The exam will be closed book with no access to a computer. Students will be permitted to bring 2 sheets of letter size paper filled with handwritten notes.
 
 ## Projects
 

@@ -93,6 +93,9 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
                      'class=\"admonition note\"')
     replace_markdown('<b>Class Activity</b>:', '<p class=\"title\"><b>Class Activity</b></p>\n')
     
+    # Process Activities (for 60499)
+    replace_markdown('<b>Activity</b>:', '<p class=\"title\"><b>Activity</b></p>\n')
+    
     # Process Note Boxes
     replace_markdown('style=\"background-color: rgba\(255,255,0,0.05\) ; padding: 10px; border: 1px solid black;\"',
                      'class=\"admonition tip\"')
@@ -157,7 +160,7 @@ for fld in folders:
 Process assignments which are in a private repo
 """
 # Loop over filenames
-full_folder_name_original = "../optimization-private/assignments/"
+full_folder_name_original = "../optimization-private/notebooks/assignments/"
 full_folder_name_new = "./notebooks/assignments/"
 
 for file in sorted(os.listdir(full_folder_name_original)):

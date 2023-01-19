@@ -1,0 +1,1464 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Algorithms Homework 4: Interior Point Methods &#8212; Nonlinear and Stochastic Optimization</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="1. Getting Started with Pyomo" href="../1/getting-started.html" />
+    <link rel="prev" title="Algorithms Homework 3" href="Algorithms3.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Nonlinear and Stochastic Optimization</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../intro.html">
+   Nonlinear and Stochastic Optimization
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Organinization
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../org/intro.html">
+   Welcome
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../org/syllabus.html">
+     Syllabus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../org/calendar.html">
+     Spring 2023 Calendar
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../../org/assignments.html">
+   Assignments
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pyomo1.html">
+     Pyomo Homework 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pyomo2.html">
+     Pyomo Homework 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pyomo3.html">
+     Pyomo Homework 3
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pyomo-Mini-Project.html">
+     Pyomo Mini-Project: Receding Horizon Stochastic Control
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Algorithms1.html">
+     Algorithms Homework 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Algorithms2.html">
+     Algorithms Homework 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Algorithms3.html">
+     Algorithms Homework 3
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Algorithms Homework 4: Interior Point Methods
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Optimization Modeling in Pyomo
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../1/getting-started.html">
+   1. Getting Started with Pyomo
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../1/Local-Install.html">
+     1.1. Local Installation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../1/Pyomo-Introduction.html">
+     1.2. Your First Optimization Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">
+     1.3. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../2/modeling.html">
+   2. Taxonomy of Optimization Problems via Examples
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/Optimization-Modeling.html">
+     2.1. Optimization Modeling with Applications
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/LP-NLP.html">
+     2.2. Continuous Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/IP.html">
+     2.3. Integer Programs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/GDP.html">
+     2.4. Logical Modeling and Generalized Disjunctive Programs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/DAE-modeling.html">
+     2.5. Dynamic Optimization: Differential Algebraic Equations (DAEs)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/Numeric-Integration.html">
+     2.6. Numeric Integration for DAEs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/Pyomo-DAE.html">
+     2.7. Dynamic Optimization with Pyomo.DAE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/SP.html">
+     2.8. Stochastic Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/Parmest-tutorial.html">
+     2.9. Parameter estimation with
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       parmest
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/Parmest-generate-data.html">
+     2.10. Supplementary material: data for parmest tutorial
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Algorithms and Theory
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../3/unconstrained.html">
+   3. Unconstrained Nonlinear Optimization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../3/Math-Primer.html">
+     3.1. Linear Algebra Review and SciPy Basics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../3/Math-Primer-2.html">
+     3.2. Mathematics Primer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../3/Optimality.html">
+     3.3. Unconstrained Optimality Conditions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../3/Newton-Methods.html">
+     3.4. Newton-type Methods for Unconstrained Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../3/Quasi-Newton-Methods.html">
+     3.5. Quasi-Newton Methods for Unconstrained Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../3/Globalization.html">
+     3.6. Descent and Globalization
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../4/constrained.html">
+   4. Constrained Nonlinear Optimization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/Convexity.html">
+     4.1. Convexity Revisited
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/Local-Optimality.html">
+     4.2. Local Optimality Conditions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/KKT-Multipliers.html">
+     4.3. Analysis of KKT Conditions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/Constraint-Qualifications.html">
+     4.4. Constraint Qualifications
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/Second-Order.html">
+     4.5. Second Order Optimality Conditions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/NLP-Diagnostics.html">
+     4.6. NLP Diagnostics with Degeneracy Hunter
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/Interior-Point1.html">
+     4.7. Simple Netwon Method for Equality Constrained NLPs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/Interior-Point2.html">
+     4.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../5/special-topics.html">
+   5. Special Topics
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../5/MILP.html">
+     5.1. Integer Programming with Simple Branch and Bound
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../5/MINLP-Algorithms.html">
+     5.2. MINLP Algorithms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../5/Global-Opt.html">
+     5.3. Deterministic Global Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../5/Bayesian-Opt.html">
+     5.4. Bayesian Optimization
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/notebooks/assignments/Algorithms4.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/ndcbe/optimization"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/assignments/Algorithms4.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/ndcbe/optimization/master?urlpath=tree/notebooks/assignments/Algorithms4.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <a class="colab-button" href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/assignments/Algorithms4.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tips-and-tricks">
+   Tips and Tricks
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#background">
+     Background
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#problem-formulation">
+     Problem Formulation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#reformulation-example">
+     Reformulation Example
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#primal-dual-optimality-conditions">
+     Primal Dual Optimality Conditions
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#basic-interior-point-method-for-inequality-and-equality-constraint-nlps">
+   Basic Interior Point Method for Inequality and Equality Constraint NLPs
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pseudocode">
+     Pseudocode
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#python-implementation">
+     Python Implementation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#test-problems">
+   Test Problems
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#problem-1-convex">
+     Problem 1: Convex
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#problem-2-convex">
+     Problem 2: Convex
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#problem-3-nonconvex">
+     Problem 3: Nonconvex
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Algorithms Homework 4: Interior Point Methods</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tips-and-tricks">
+   Tips and Tricks
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#background">
+     Background
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#problem-formulation">
+     Problem Formulation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#reformulation-example">
+     Reformulation Example
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#primal-dual-optimality-conditions">
+     Primal Dual Optimality Conditions
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#basic-interior-point-method-for-inequality-and-equality-constraint-nlps">
+   Basic Interior Point Method for Inequality and Equality Constraint NLPs
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pseudocode">
+     Pseudocode
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#python-implementation">
+     Python Implementation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#test-problems">
+   Test Problems
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#problem-1-convex">
+     Problem 1: Convex
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#problem-2-convex">
+     Problem 2: Convex
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#problem-3-nonconvex">
+     Problem 3: Nonconvex
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="algorithms-homework-4-interior-point-methods">
+<h1>Algorithms Homework 4: Interior Point Methods<a class="headerlink" href="#algorithms-homework-4-interior-point-methods" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="tips-and-tricks">
+<h2>Tips and Tricks<a class="headerlink" href="#tips-and-tricks" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="background">
+<h3>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h3>
+<p><img alt="fig6_56" src="https://ndcbe.github.io/optimization/_images/eq_6_56.png" /></p>
+<p><img alt="fig6_57" src="https://ndcbe.github.io/optimization/_images/eq_6_57.png" /></p>
+<p><img alt="fig6_58" src="https://ndcbe.github.io/optimization/_images/eq_6_58.png" /></p>
+<p><img alt="fig6_59" src="https://ndcbe.github.io/optimization/_images/eq_6_59.png" /></p>
+</div>
+<div class="section" id="problem-formulation">
+<h3>Problem Formulation<a class="headerlink" href="#problem-formulation" title="Permalink to this headline">¶</a></h3>
+<p>Consider the following nonlinear program:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+	\min_{x} \quad &amp; f(x) \\
+	\mathrm{s.t.} \quad &amp; c(x) = 0 \\
+	&amp; x_i \geq 0, \quad i \in \mathcal{I}
+\end{align}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(x \in \mathbb{R}^{n}\)</span>, <span class="math notranslate nohighlight">\(f(x): \mathbb{R}^{n} \rightarrow \mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(c(x): \mathbb{R}^{n} \rightarrow \mathbb{R}^{m}\)</span> and <span class="math notranslate nohighlight">\(|\mathcal{I} |\)</span> = <span class="math notranslate nohighlight">\(r\)</span> (i.e., there are <span class="math notranslate nohighlight">\(r\)</span> variables with a lower bound and <span class="math notranslate nohighlight">\(r \leq n\)</span>). This is an extension of (6.48) in Biegler (2010).</p>
+<p>This has the corresponding log-barrier approximation:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+	\min_{x} \quad &amp; \phi_{\mu_l}(x) := f(x) - \mu_l \sum_{i \in \mathcal{I}} \log(x_i) \\
+	\mathrm{s.t.} \quad &amp; c(x) = 0
+\end{align}
+\end{split}\]</div>
+<p>which is an extension of (6.49) in Biegler (2010).</p>
+<p>Let the <span class="math notranslate nohighlight">\(n \times r\)</span> matrix <span class="math notranslate nohighlight">\(G\)</span> encode which variables are bounded. If variable <span class="math notranslate nohighlight">\(i\)</span> corresponds to the <span class="math notranslate nohighlight">\(j\)</span>th bound, then <span class="math notranslate nohighlight">\(G_{i,j} = 1\)</span> and otherwise <span class="math notranslate nohighlight">\(G_{i,j} = 0\)</span>. <span class="math notranslate nohighlight">\(G\)</span> is assembled as follows:</p>
+<p><img alt="ip_bounds_G" src="notebooks/media/media/figures/ip_bounds_G.png" /></p>
+<p>Notice that <span class="math notranslate nohighlight">\(G\)</span> is the gradient of <span class="math notranslate nohighlight">\(x \geq 0\)</span>. <span class="math notranslate nohighlight">\(G^T G = I\)</span> but the converse does not hold unless <span class="math notranslate nohighlight">\(r = n\)</span>.</p>
+</div>
+<div class="section" id="reformulation-example">
+<h3>Reformulation Example<a class="headerlink" href="#reformulation-example" title="Permalink to this headline">¶</a></h3>
+<p>Start with:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+	\begin{align}
+		\min_{x} \quad &amp; x_1^2 + x_2 \\
+		\mathrm{s.t.} \quad &amp; x_1 + x_2 = 1 \\
+		&amp; x_1 + 1 \geq 0
+	\end{align}
+\end{split}\]</div>
+<p>Add slack variable <span class="math notranslate nohighlight">\(x_3\)</span> and convert the inequality constraint to an equality constraint and bound:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+	\begin{align}
+		\min_{x} \quad &amp; x_1^2 + x_2 \\
+		\mathrm{s.t.} \quad &amp; x_1 + x_2 = 1 \\
+		&amp; x_1 + 1 - x_3 = 0 \\
+		&amp; x_3 \geq 0
+	\end{align}
+\end{split}\]</div>
+<p>Now assemble <span class="math notranslate nohighlight">\(G\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+	G = \begin{bmatrix}
+		0 \\
+		0 \\
+		1
+	\end{bmatrix}
+\end{split}\]</div>
+</div>
+<div class="section" id="primal-dual-optimality-conditions">
+<h3>Primal Dual Optimality Conditions<a class="headerlink" href="#primal-dual-optimality-conditions" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[
+\newcommand{\dims}[3]{\underbrace{#1}_{#2 \times #3}}
+\newcommand{\I}[0]{\mathcal{I}}
+\newcommand{\dfx}[0]{\dims{\nabla f(x^k)}{n}{1}}
+\newcommand{\cx}[0]{\dims{c(x^k)}{m}{1}}
+\newcommand{\dcx}[0]{\dims{\nabla c(x^k)}{n}{m}}
+\newcommand{\dcxT}[0]{\dims{\nabla_x c(x^k)^T}{m}{n}}
+\newcommand{\W}[0]{\dims{W^k}{n}{n}}
+\newcommand{\G}[0]{\dims{G}{n}{r}}
+\newcommand{\GT}[0]{\dims{G^T}{r}{n}}
+\newcommand{\vk}[0]{\dims{v^k}{m}{1}}
+\newcommand{\Xinv}[0]{\dims{(\hat{X}^k)^{-1}}{r}{r}}
+\newcommand{\X}[0]{\dims{\hat{X}^k}{r}{r}}
+\newcommand{\e}[0]{\dims{e}{r}{1}}
+\newcommand{\uk}[0]{\dims{u^k}{r}{1}}
+\newcommand{\dx}[0]{\dims{d_x^k}{n}{1}}
+\newcommand{\dv}[0]{\dims{d_v^k}{m}{1}}
+\newcommand{\du}[0]{\dims{d_u^k}{r}{1}}
+\newcommand{\Uk}[0]{\dims{U^k}{r}{r}}
+\newcommand{\Sk}[0]{\dims{\Sigma^k}{n}{n}}
+\newcommand{\dphi}[0]{\dims{\nabla \phi_{\mu_l}}{n}{1}}
+\]</div>
+<p>Next we extend (6.51) in Biegler (2010):</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{gather}
+	\dfx ~+~ \dcx \vk ~-~ \G \uk = \dims{0}{n}{1} \\
+	\X \uk = \mu \e \\
+	\cx = \dims{0}{m}{1}
+\end{gather}
+\end{split}\]</div>
+<p>We now extend (6.56) in Biegler (2010):</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+	\begin{bmatrix}
+		\W &amp; \dcx &amp; \G \\
+		\dcxT &amp; \dims{0}{m}{m} &amp; \dims{0}{m}{r} \\
+		\Uk \GT &amp; \dims{0}{r}{m} &amp; \X
+	\end{bmatrix} 
+	\begin{bmatrix}
+		\dx \\
+		\dv \\
+		\du
+	\end{bmatrix} = -
+	\begin{bmatrix}
+	\dfx ~+~ \dcx \vk ~-~ \G \uk \\
+	\cx \\
+	\X \uk ~-~ \mu_l \e
+	\end{bmatrix}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(U^k = \mathrm{diag}\{u^k\}\)</span> and <span class="math notranslate nohighlight">\(W^k = \nabla_{xx} L(x^k,v^k)\)</span>. Notice that <span class="math notranslate nohighlight">\(W^k\)</span> does NOT include a contribution from the barrier term:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+	\W = \dims{\nabla^2 f(x^k)}{n}{n} + \sum_{j=1}^{m} \left( \dims{\nabla^2 c_{j}(x^k)}{n}{n} \underbrace{v^k_{j}}_{\mathrm{scalar}} \right)
+\end{equation}
+\]</div>
+<p>We can verify that <span class="math notranslate nohighlight">\(W^k\)</span> does not include <span class="math notranslate nohighlight">\(\hat{X}\)</span> by showing that the KKT system above is a Newton step to solve the nonlinear system for the primal dual conditions.</p>
+<p>The Newton step can be simplified, similar to (6.57) and (6.58) in Biegler (2010):</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+	\begin{bmatrix}
+		\W + \Sk &amp; \dcx \\
+		\dcxT &amp; 0
+	\end{bmatrix} 
+	\begin{bmatrix}
+		\dx \\
+		\dv
+	\end{bmatrix} = -
+	\begin{bmatrix}
+	\dphi ~+~ \dcx \vk \\
+	\cx
+	\end{bmatrix}
+\end{equation}
+\end{split}\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation} \label{eq:du}
+	\du = \mu_l \Xinv \e ~-~ \uk ~-~ \GT \Sk \dx
+\end{equation}
+\]</div>
+<p>where
+$$</p>
+<div class="amsmath math notranslate nohighlight" id="equation-181ac51b-0bb8-4c2f-aa23-cfe9242312a1">
+<span class="eqno">(1)<a class="headerlink" href="#equation-181ac51b-0bb8-4c2f-aa23-cfe9242312a1" title="Permalink to this equation">¶</a></span>\[\begin{equation} \label{eq:Sk}
+	\Sk = \G \Xinv \Uk \GT
+\end{equation}\]</div>
+<div class="math notranslate nohighlight">
+\[and \]</div>
+<div class="amsmath math notranslate nohighlight" id="equation-6b2fd1dd-9c7c-4125-aeb6-aba3ed599816">
+<span class="eqno">(2)<a class="headerlink" href="#equation-6b2fd1dd-9c7c-4125-aeb6-aba3ed599816" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+	\dphi = \dfx - \mu_l \G \Xinv \dims{e}{r}{1}
+\end{equation}\]</div>
+<div class="math notranslate nohighlight">
+\[Notice that the equation for $\du$ simplifies by substituting $G^T G = I$:\]</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>\du = \mu_l \Xinv \e ~-~ \uk ~-~ \Xinv \Uk \GT \dx
+</pre></div>
+</div>
+<p>$$</p>
+<p>Finally, inertia correction can be applied to simplified KKT step similar to (6.59) in Biegler (2010).</p>
+</div>
+</div>
+<div class="section" id="basic-interior-point-method-for-inequality-and-equality-constraint-nlps">
+<h2>Basic Interior Point Method for Inequality and Equality Constraint NLPs<a class="headerlink" href="#basic-interior-point-method-for-inequality-and-equality-constraint-nlps" title="Permalink to this headline">¶</a></h2>
+<p>Implement a basic interior point method for inequality and equality constrained nonlinear programs. See pg. 154 – 155 in Biegler (2010). You may skip the line search, i.e., always take a full step.</p>
+<div class="section" id="pseudocode">
+<h3>Pseudocode<a class="headerlink" href="#pseudocode" title="Permalink to this headline">¶</a></h3>
+<p>Write detailed pseudocode on paper or a whiteboard. Scan/take a photo and turn in.</p>
+</div>
+<div class="section" id="python-implementation">
+<h3>Python Implementation<a class="headerlink" href="#python-implementation" title="Permalink to this headline">¶</a></h3>
+<p>Implement in Python. Hints: Reuse code from Algorithm 5.2 example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### Load Python libraries</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">linalg</span>
+
+<span class="c1">### Define helper functions</span>
+<span class="c1">## Check is element of array is NaN</span>
+<span class="k">def</span> <span class="nf">check_nan</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+
+<span class="c1">## Calculate gradient with central finite difference</span>
+<span class="k">def</span> <span class="nf">my_grad_approx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">eps1</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate gradient of function f using central difference formula</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">        x - point for which to evaluate gradient</span>
+<span class="sd">        f - function to consider</span>
+<span class="sd">        eps1 - perturbation size</span>
+<span class="sd">        </span>
+<span class="sd">    Outputs:</span>
+<span class="sd">        grad - gradient (vector)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;***** my_grad_approx at x = &quot;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="s2">&quot;*****&quot;</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+        
+        <span class="c1"># Create vector of zeros except eps in position i</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">eps1</span>
+        
+        <span class="c1"># Finite difference formula</span>
+        <span class="n">my_f_plus</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
+        <span class="n">my_f_minus</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">e</span><span class="p">)</span>
+        
+        <span class="c1"># Diagnostics</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;e[&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;] = &quot;</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f(x + e[&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;]) = &quot;</span><span class="p">,</span><span class="n">my_f_plus</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f(x - e[&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;]) = &quot;</span><span class="p">,</span><span class="n">my_f_minus</span><span class="p">)</span>
+        
+        
+        <span class="n">grad</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">my_f_plus</span> <span class="o">-</span> <span class="n">my_f_minus</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">eps1</span><span class="p">)</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;***** Done. ***** </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">grad</span>
+
+<span class="c1">## Calculate gradient with central finite difference</span>
+<span class="k">def</span> <span class="nf">my_jac_approx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">eps1</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate Jacobian of function h(x) using central difference formula</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">        x - point for which to evaluate gradient</span>
+<span class="sd">        h - vector-valued function to consider. h(x): R^n --&gt; R^m</span>
+<span class="sd">        eps1 - perturbation size</span>
+<span class="sd">        </span>
+<span class="sd">    Outputs:</span>
+<span class="sd">        A - Jacobian (n x m matrix)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="c1"># Check h(x) at x</span>
+    <span class="n">h_x0</span> <span class="o">=</span> <span class="n">h</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    
+    <span class="c1"># Extract dimensions</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">h_x0</span><span class="p">)</span>
+    
+    <span class="c1"># Initialize Jacobian matrix</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">))</span>
+    
+    <span class="c1"># Calculate Jacobian by row</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+        
+        <span class="c1"># Create vector of zeros except eps in position i</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">eps1</span>
+        
+        <span class="c1"># Finite difference formula</span>
+        <span class="n">my_h_plus</span> <span class="o">=</span> <span class="n">h</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
+        <span class="n">my_h_minus</span> <span class="o">=</span> <span class="n">h</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">e</span><span class="p">)</span>
+        
+        <span class="c1"># Diagnostics</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;e[&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;] = &quot;</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;h(x + e[&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;]) = &quot;</span><span class="p">,</span><span class="n">my_h_plus</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;h(x - e[&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;]) = &quot;</span><span class="p">,</span><span class="n">my_h_minus</span><span class="p">)</span>
+        
+        
+        <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="p">(</span><span class="n">my_h_plus</span> <span class="o">-</span> <span class="n">my_h_minus</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">eps1</span><span class="p">)</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;***** Done. ***** </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">A</span>
+    
+<span class="c1">## Calculate Hessian using central finite difference</span>
+<span class="k">def</span> <span class="nf">my_hes_approx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">grad</span><span class="p">,</span><span class="n">eps2</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate gradient of function my_f using central difference formula and my_grad</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">        x - point for which to evaluate gradient</span>
+<span class="sd">        grad - function to calculate the gradient</span>
+<span class="sd">        eps2 - perturbation size (for Hessian NOT gradient approximation)</span>
+<span class="sd">        </span>
+<span class="sd">    Outputs:</span>
+<span class="sd">        H - Hessian (matrix)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">])</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+        <span class="c1"># Create vector of zeros except eps in position i</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">eps2</span>
+        
+        <span class="c1"># Evaluate gradient twice</span>
+        <span class="n">grad_plus</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
+        <span class="n">grad_minus</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">e</span><span class="p">)</span>
+        
+        <span class="c1"># Notice we are building the Hessian by column (or row)</span>
+        <span class="n">H</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">grad_plus</span> <span class="o">-</span> <span class="n">grad_minus</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">eps2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">H</span>
+
+<span class="c1">## Linear algebra calculation</span>
+<span class="k">def</span> <span class="nf">xxT</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculates u*u.T to circumvent limitation with SciPy</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">    u - numpy 1D array</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    u*u.T</span>
+<span class="sd">    </span>
+<span class="sd">    Assume u is a nx1 vector.</span>
+<span class="sd">    Recall: NumPy does not distinguish between row or column vectors</span>
+<span class="sd">    </span>
+<span class="sd">    u.dot(u) returns a scalar. This functon returns an nxn matrix.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">A</span>
+
+<span class="c1">## Analyze Hessian</span>
+<span class="k">def</span> <span class="nf">analyze_hes</span><span class="p">(</span><span class="n">B</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="n">l</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Eigenvalues: &quot;</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Assemble KKT matrix (equality constrained only)</span>
+<span class="k">def</span> <span class="nf">assemble_check_KKT</span><span class="p">(</span><span class="n">W</span><span class="p">,</span><span class="n">Sk</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">deltaA</span><span class="p">,</span><span class="n">deltaW</span><span class="p">,</span><span class="n">verbose</span><span class="p">):</span>
+    
+    <span class="c1"># Add your solution here</span>
+    
+    <span class="k">return</span> <span class="n">KKT</span><span class="p">,</span><span class="n">inertia_correct</span><span class="p">,</span><span class="n">pos_ev</span><span class="p">,</span><span class="n">neg_ev</span><span class="p">,</span><span class="n">zero_ev</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">barrier_subproblem</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">v0</span><span class="p">,</span><span class="n">u0</span><span class="p">,</span><span class="n">calc_f</span><span class="p">,</span><span class="n">calc_c</span><span class="p">,</span><span class="n">var_bounds</span><span class="p">,</span><span class="n">mu</span><span class="p">,</span><span class="n">eps</span><span class="p">,</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Basic Full Space Newton Method for Solving Barrier Subproblem Constrained NLP</span>
+<span class="sd">    </span>
+<span class="sd">    Input:</span>
+<span class="sd">        x0 - starting point (vector)</span>
+<span class="sd">        calc_f - function to calculate objective (returns scalar)</span>
+<span class="sd">        calc_c - function to calculate constraints (returns vector)</span>
+<span class="sd">        var_bounds - list of indicies for variables with lower bound</span>
+<span class="sd">        mu - barrier penalty</span>
+<span class="sd">        eps - tolerance for termination</span>
+<span class="sd">        </span>
+<span class="sd">    Histories (stored for debugging):</span>
+<span class="sd">        x - history of steps (primal variables)</span>
+<span class="sd">        v - history of steps (duals for constraints)</span>
+<span class="sd">        u - history of steps (duals for bounds)</span>
+<span class="sd">        f - history of objective evaluations</span>
+<span class="sd">        c - history of constraint evaluations</span>
+<span class="sd">        df - history of objective gradients</span>
+<span class="sd">        dL - history of Lagrange function gradients</span>
+<span class="sd">        A - history of constraint Jacobians</span>
+<span class="sd">        W - history of Lagrange Hessians</span>
+<span class="sd">        S - history of sigma matrix</span>
+<span class="sd">    </span>
+<span class="sd">    Outputs:</span>
+<span class="sd">        x - final value for primal variable</span>
+<span class="sd">        v - final value for constraint duals</span>
+<span class="sd">        u - final value for bound duals</span>
+<span class="sd">    </span>
+<span class="sd">    Notes:</span>
+<span class="sd">        1. For simplicity, central finite difference is used </span>
+<span class="sd">           for all gradient calculations.</span>
+<span class="sd">    &#39;&#39;&#39;</span>    
+    
+    <span class="c1">### Specifics for Algorithm 5.2</span>
+    <span class="c1"># Tuning parameters</span>
+    <span class="n">delta_bar_W_min</span> <span class="o">=</span> <span class="mf">1E-20</span>
+    <span class="n">delta_bar_W_0</span> <span class="o">=</span> <span class="mf">1E-4</span>
+    <span class="n">delta_bar_W_max</span> <span class="o">=</span> <span class="mf">1E40</span>
+    <span class="n">delta_bar_A</span> <span class="o">=</span> <span class="mf">1E-8</span>
+    <span class="n">kappa_u</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="n">kappa_l</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span>
+    
+    <span class="c1"># Declare iteration histories as empty lists</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">dL</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Add your solution here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">interior_point</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">calc_f</span><span class="p">,</span><span class="n">calc_c</span><span class="p">,</span><span class="n">var_bounds</span><span class="p">,</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+    
+    
+    <span class="c1"># Add your solution here</span>
+    
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">E</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="test-problems">
+<h2>Test Problems<a class="headerlink" href="#test-problems" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="problem-1-convex">
+<h3>Problem 1: Convex<a class="headerlink" href="#problem-1-convex" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">c</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Indices of variables with lower bound of zero</span>
+<span class="n">vb</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">u0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">v0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">x_</span><span class="p">,</span> <span class="n">v_</span><span class="p">,</span> <span class="n">u_</span><span class="p">,</span> <span class="n">E_</span> <span class="o">=</span> <span class="n">barrier_subproblem</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">v0</span><span class="p">,</span><span class="n">u0</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">vb</span><span class="p">,</span><span class="mf">1E-1</span><span class="p">,</span><span class="mf">1E-10</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iter. 	f(x) 		||c(x)|| 	E 		||dx|| 		||dv|| 		||du|| 		delta_A 	delta_W
+0   	 3.0000e+00 	1.0000e+00 	 2.00e+00 	 9.06e-01 	 2.00e+00 	 3.56e-04 	 0.00e+00 	 0.00e+00
+1   	 1.0996e+00 	1.3978e-10 	 3.20e-04 	 5.03e-04 	 1.78e-04 	 3.56e-04 	 0.00e+00 	 0.00e+00
+2   	 1.1000e+00 	3.9524e-14 	 1.26e-07 	 1.70e-07 	 3.94e-08 	 5.91e-08 	 0.00e+00 	 0.00e+00
+3   	 1.1000e+00 	0.0000e+00 	 6.87e-11 	 1.48e-11 	 1.11e-10 	 1.04e-10 	 0.00e+00 	 0.00e+00
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="problem-2-convex">
+<h3>Problem 2: Convex<a class="headerlink" href="#problem-2-convex" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">c</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Indices of variables with lower bound of zero</span>
+<span class="n">vb</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1">#u0 = np.ones(1)</span>
+<span class="c1">#v0 = np.ones(1)</span>
+
+<span class="c1"># x_, v_, u_, E_ = barrier_subproblem(x0,v0,u0,f,c,vb,1E-1,1E-10,verbose=False)</span>
+
+<span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">E</span> <span class="o">=</span> <span class="n">interior_point</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">vb</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>*** Barrier Subproblem  0  ***
+mu =  10.0
+Iter. 	f(x) 		||c(x)|| 	E 		||dx|| 		||dv|| 		||du|| 		delta_A 	delta_W
+0   	 3.0000e+00 	1.0000e+00 	 9.00e+00 	 1.35e+01 	 2.00e+00 	 8.45e-03 	 0.00e+00 	 0.00e+00
+
+*** Barrier Subproblem  1  ***
+mu =  2.0
+Iter. 	f(x) 		||c(x)|| 	E 		||dx|| 		||dv|| 		||du|| 		delta_A 	delta_W
+0   	 1.1008e+01 	1.3978e-10 	 7.92e+00 	 1.14e+01 	 4.22e-03 	 8.45e-03 	 0.00e+00 	 0.00e+00
+
+*** Barrier Subproblem  2  ***
+mu =  0.4
+Iter. 	f(x) 		||c(x)|| 	E 		||dx|| 		||dv|| 		||du|| 		delta_A 	delta_W
+0   	 2.9318e+00 	0.0000e+00 	 1.53e+00 	 2.17e+00 	 1.70e-04 	 3.40e-04 	 0.00e+00 	 0.00e+00
+
+*** Barrier Subproblem  3  ***
+mu =  0.08000000000000002
+Iter. 	f(x) 		||c(x)|| 	E 		||dx|| 		||dv|| 		||du|| 		delta_A 	delta_W
+0   	 1.3993e+00 	2.5520e-10 	 3.19e-01 	 4.51e-01 	 1.70e-04 	 3.40e-04 	 0.00e+00 	 0.00e+00
+
+*** Barrier Subproblem  4  ***
+mu =  0.016000000000000004
+Iter. 	f(x) 		||c(x)|| 	E 		||dx|| 		||dv|| 		||du|| 		delta_A 	delta_W
+0   	 1.0801e+00 	5.3163e-11 	 6.41e-02 	 9.07e-02 	 1.07e-05 	 1.78e-05 	 0.00e+00 	 0.00e+00
+
+*** Barrier Subproblem  5  ***
+mu =  0.0020238577025077633
+Iter. 	f(x) 		||c(x)|| 	E 		||dx|| 		||dv|| 		||du|| 		delta_A 	delta_W
+0   	 1.0160e+00 	0.0000e+00 	 1.40e-02 	 1.98e-02 	 1.15e-05 	 1.86e-05 	 0.00e+00 	 0.00e+00
+
+*** Barrier Subproblem  6  ***
+mu =  9.104790579399288e-05
+Iter. 	f(x) 		||c(x)|| 	E 		||dx|| 		||dv|| 		||du|| 		delta_A 	delta_W
+0   	 1.0020e+00 	7.7571e-13 	 1.93e-03 	 2.73e-03 	 7.76e-07 	 8.83e-07 	 0.00e+00 	 0.00e+00
+1   	 1.0001e+00 	0.0000e+00 	 1.07e-07 	 2.43e-09 	 0.00e+00 	 1.07e-07 	 0.00e+00 	 0.00e+00
+
+*** Barrier Subproblem  7  ***
+mu =  8.687702517211205e-07
+Iter. 	f(x) 		||c(x)|| 	E 		||dx|| 		||dv|| 		||du|| 		delta_A 	delta_W
+0   	 1.0001e+00 	0.0000e+00 	 9.02e-05 	 1.28e-04 	 1.11e-10 	 5.12e-09 	 0.00e+00 	 0.00e+00
+1   	 1.0000e+00 	9.9920e-15 	 4.95e-09 	 6.52e-13 	 3.88e-17 	 4.95e-09 	 0.00e+00 	 0.00e+00
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># number of iterations</span>
+<span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># iteration</span>
+<span class="n">iters</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">x0</span><span class="p">)):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">iters</span><span class="p">,[</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">N</span><span class="p">)],</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Primal Variables&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">iters</span><span class="p">,[</span><span class="n">u</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">N</span><span class="p">)],</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;u&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">iters</span><span class="p">,[</span><span class="n">v</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">N</span><span class="p">)],</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;v&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Dual Variables&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">iters</span><span class="p">,</span><span class="n">mu</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Barrier Penalty&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="p">),</span><span class="n">E</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/Algorithms4_25_0.png" src="../../_images/Algorithms4_25_0.png" />
+<img alt="../../_images/Algorithms4_25_1.png" src="../../_images/Algorithms4_25_1.png" />
+<img alt="../../_images/Algorithms4_25_2.png" src="../../_images/Algorithms4_25_2.png" />
+<img alt="../../_images/Algorithms4_25_3.png" src="../../_images/Algorithms4_25_3.png" />
+</div>
+</div>
+</div>
+<div class="section" id="problem-3-nonconvex">
+<h3>Problem 3: Nonconvex<a class="headerlink" href="#problem-3-nonconvex" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="k">def</span> <span class="nf">c</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">rhs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">rhs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">rhs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">3</span>
+    <span class="k">return</span> <span class="n">rhs</span>
+
+<span class="c1"># Indices of variables with lower bound of zero</span>
+<span class="n">vb</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">u0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">v0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1">## Test barrier subproblem</span>
+<span class="c1"># xtest, vtest, utest, Etest = barrier_subproblem(x0,v0,u0,f,c,vb,1E-1,1E-10,max_iter=10,verbose=True)</span>
+
+<span class="c1">##</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">E</span> <span class="o">=</span> <span class="n">interior_point</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">vb</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>*** Barrier Subproblem  0  ***
+mu =  10.0
+Iter. 	f(x) 		||c(x)|| 	E 		||dx|| 		||dv|| 		||du|| 		delta_A 	delta_W
+0   	 4.0000e+00 	3.1623e+00 	 9.00e+00 	 6.17e+00 	 8.25e+00 	 8.06e+00 	 0.00e+00 	 0.00e+00
+
+*** Barrier Subproblem  1  ***
+mu =  2.0
+Iter. 	f(x) 		||c(x)|| 	E 		||dx|| 		||dv|| 		||du|| 		delta_A 	delta_W
+0   	 4.0013e+01 	4.4202e-10 	 2.80e+01 	 3.79e+00 	 1.52e+00 	 3.22e+00 	 0.00e+00 	 0.00e+00
+1   	 1.6354e+01 	1.3323e-15 	 6.22e+00 	 9.26e-01 	 2.49e-01 	 1.35e+00 	 0.00e+00 	 0.00e+00
+
+*** Barrier Subproblem  2  ***
+mu =  0.4
+Iter. 	f(x) 		||c(x)|| 	E 		||dx|| 		||dv|| 		||du|| 		delta_A 	delta_W
+0   	 1.2029e+01 	5.9350e-11 	 2.31e+00 	 3.94e-01 	 1.93e-01 	 6.76e-01 	 0.00e+00 	 0.00e+00
+
+*** Barrier Subproblem  3  ***
+mu =  0.08000000000000002
+Iter. 	f(x) 		||c(x)|| 	E 		||dx|| 		||dv|| 		||du|| 		delta_A 	delta_W
+0   	 1.0363e+01 	5.0465e-11 	 4.67e-01 	 7.00e-02 	 6.98e-02 	 1.66e-01 	 0.00e+00 	 0.00e+00
+
+*** Barrier Subproblem  4  ***
+mu =  0.016000000000000004
+Iter. 	f(x) 		||c(x)|| 	E 		||dx|| 		||dv|| 		||du|| 		delta_A 	delta_W
+0   	 1.0077e+01 	8.9693e-12 	 7.01e-02 	 1.52e-02 	 5.71e-03 	 2.39e-02 	 0.00e+00 	 0.00e+00
+
+*** Barrier Subproblem  5  ***
+mu =  0.0020238577025077633
+Iter. 	f(x) 		||c(x)|| 	E 		||dx|| 		||dv|| 		||du|| 		delta_A 	delta_W
+0   	 1.0016e+01 	4.8606e-13 	 1.42e-02 	 3.45e-03 	 7.38e-04 	 4.77e-03 	 0.00e+00 	 0.00e+00
+
+*** Barrier Subproblem  6  ***
+mu =  9.104790579399288e-05
+Iter. 	f(x) 		||c(x)|| 	E 		||dx|| 		||dv|| 		||du|| 		delta_A 	delta_W
+0   	 1.0002e+01 	4.5590e-13 	 1.94e-03 	 4.78e-04 	 9.46e-05 	 6.54e-04 	 0.00e+00 	 0.00e+00
+1   	 1.0000e+01 	6.1284e-14 	 2.94e-07 	 6.48e-09 	 4.36e-07 	 8.52e-07 	 0.00e+00 	 0.00e+00
+
+*** Barrier Subproblem  7  ***
+mu =  8.687702517211205e-07
+Iter. 	f(x) 		||c(x)|| 	E 		||dx|| 		||dv|| 		||du|| 		delta_A 	delta_W
+0   	 1.0000e+01 	4.4409e-16 	 9.02e-05 	 2.23e-05 	 4.29e-06 	 3.04e-05 	 0.00e+00 	 0.00e+00
+1   	 1.0000e+01 	2.6645e-15 	 1.67e-08 	 1.36e-11 	 1.69e-08 	 2.21e-08 	 0.00e+00 	 0.00e+00
+
+*** Barrier Subproblem  8  ***
+mu =  1e-09
+Iter. 	f(x) 		||c(x)|| 	E 		||dx|| 		||dv|| 		||du|| 		delta_A 	delta_W
+0   	 1.0000e+01 	1.1102e-16 	 8.68e-07 	 2.15e-07 	 4.23e-08 	 2.92e-07 	 0.00e+00 	 0.00e+00
+1   	 1.0000e+01 	0.0000e+00 	 1.36e-09 	 1.33e-15 	 3.33e-10 	 1.60e-09 	 0.00e+00 	 0.00e+00
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># number of iterations</span>
+<span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># iteration</span>
+<span class="n">iters</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">x0</span><span class="p">)):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">iters</span><span class="p">,[</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">N</span><span class="p">)],</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Primal Variables&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">iters</span><span class="p">,[</span><span class="n">u</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">N</span><span class="p">)],</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;u&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">iters</span><span class="p">,[</span><span class="n">v</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">N</span><span class="p">)],</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;v&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Dual Variables&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">iters</span><span class="p">,</span><span class="n">mu</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Barrier Penalty&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="p">),</span><span class="n">E</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/Algorithms4_28_0.png" src="../../_images/Algorithms4_28_0.png" />
+<img alt="../../_images/Algorithms4_28_1.png" src="../../_images/Algorithms4_28_1.png" />
+<img alt="../../_images/Algorithms4_28_2.png" src="../../_images/Algorithms4_28_2.png" />
+<img alt="../../_images/Algorithms4_28_3.png" src="../../_images/Algorithms4_28_3.png" />
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./notebooks/assignments"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="Algorithms3.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Algorithms Homework 3</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../1/getting-started.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">1. </span>Getting Started with Pyomo</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Alexander Dowling, et al.<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

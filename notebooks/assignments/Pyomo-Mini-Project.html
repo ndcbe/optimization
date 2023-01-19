@@ -1,0 +1,1475 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pyomo Mini-Project: Receding Horizon Stochastic Control &#8212; Nonlinear and Stochastic Optimization</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Algorithms Homework 1" href="Algorithms1.html" />
+    <link rel="prev" title="Pyomo Homework 3" href="Pyomo3.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Nonlinear and Stochastic Optimization</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../intro.html">
+   Nonlinear and Stochastic Optimization
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Organinization
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../org/intro.html">
+   Welcome
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../org/syllabus.html">
+     Syllabus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../org/calendar.html">
+     Spring 2023 Calendar
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../../org/assignments.html">
+   Assignments
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pyomo1.html">
+     Pyomo Homework 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pyomo2.html">
+     Pyomo Homework 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Pyomo3.html">
+     Pyomo Homework 3
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Pyomo Mini-Project: Receding Horizon Stochastic Control
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Algorithms1.html">
+     Algorithms Homework 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Algorithms2.html">
+     Algorithms Homework 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Algorithms3.html">
+     Algorithms Homework 3
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Algorithms4.html">
+     Algorithms Homework 4: Interior Point Methods
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Optimization Modeling in Pyomo
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../1/getting-started.html">
+   1. Getting Started with Pyomo
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../1/Local-Install.html">
+     1.1. Local Installation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../1/Pyomo-Introduction.html">
+     1.2. Your First Optimization Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">
+     1.3. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../2/modeling.html">
+   2. Taxonomy of Optimization Problems via Examples
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/Optimization-Modeling.html">
+     2.1. Optimization Modeling with Applications
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/LP-NLP.html">
+     2.2. Continuous Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/IP.html">
+     2.3. Integer Programs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/GDP.html">
+     2.4. Logical Modeling and Generalized Disjunctive Programs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/DAE-modeling.html">
+     2.5. Dynamic Optimization: Differential Algebraic Equations (DAEs)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/Numeric-Integration.html">
+     2.6. Numeric Integration for DAEs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/Pyomo-DAE.html">
+     2.7. Dynamic Optimization with Pyomo.DAE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/SP.html">
+     2.8. Stochastic Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/Parmest-tutorial.html">
+     2.9. Parameter estimation with
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       parmest
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/Parmest-generate-data.html">
+     2.10. Supplementary material: data for parmest tutorial
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Algorithms and Theory
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../3/unconstrained.html">
+   3. Unconstrained Nonlinear Optimization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../3/Math-Primer.html">
+     3.1. Linear Algebra Review and SciPy Basics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../3/Math-Primer-2.html">
+     3.2. Mathematics Primer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../3/Optimality.html">
+     3.3. Unconstrained Optimality Conditions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../3/Newton-Methods.html">
+     3.4. Newton-type Methods for Unconstrained Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../3/Quasi-Newton-Methods.html">
+     3.5. Quasi-Newton Methods for Unconstrained Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../3/Globalization.html">
+     3.6. Descent and Globalization
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../4/constrained.html">
+   4. Constrained Nonlinear Optimization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/Convexity.html">
+     4.1. Convexity Revisited
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/Local-Optimality.html">
+     4.2. Local Optimality Conditions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/KKT-Multipliers.html">
+     4.3. Analysis of KKT Conditions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/Constraint-Qualifications.html">
+     4.4. Constraint Qualifications
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/Second-Order.html">
+     4.5. Second Order Optimality Conditions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/NLP-Diagnostics.html">
+     4.6. NLP Diagnostics with Degeneracy Hunter
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/Interior-Point1.html">
+     4.7. Simple Netwon Method for Equality Constrained NLPs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/Interior-Point2.html">
+     4.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../5/special-topics.html">
+   5. Special Topics
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../5/MILP.html">
+     5.1. Integer Programming with Simple Branch and Bound
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../5/MINLP-Algorithms.html">
+     5.2. MINLP Algorithms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../5/Global-Opt.html">
+     5.3. Deterministic Global Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../5/Bayesian-Opt.html">
+     5.4. Bayesian Optimization
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/notebooks/assignments/Pyomo-Mini-Project.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/ndcbe/optimization"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/assignments/Pyomo-Mini-Project.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/ndcbe/optimization/master?urlpath=tree/notebooks/assignments/Pyomo-Mini-Project.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <a class="colab-button" href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/assignments/Pyomo-Mini-Project.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#assignment-goals">
+   Assignment Goals
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#model-refinement-and-code-reorganization">
+   Model Refinement and Code Reorganization
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#revised-model">
+     Revised Model
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#degree-of-freedom-analysis">
+     Degree of Freedom Analysis
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#python-code">
+     Python Code
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#optimal-control-over-3-day-horizon">
+     Optimal Control Over 3 Day Horizon
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#original-model">
+       Original Model
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#with-constraint-enforcing-no-simultaneous-charging-or-discharging">
+       With Constraint Enforcing No Simultaneous Charging or Discharging
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#comparison">
+       Comparison
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#receding-horizon-control">
+   Receding Horizon Control
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#write-pseudocode">
+     Write Pseudocode
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Python Code
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#simulate-performance-over-3-days">
+     Simulate Performance Over 3 Days
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#impact-of-horizon-length">
+     Impact of Horizon Length
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#impact-of-periodic-boundary-condition">
+     Impact of Periodic Boundary Condition
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#forecast-uncertainty-required-for-cbe-60499-optional-for-cbe-40499">
+   Forecast Uncertainty (required for CBE 60499, optional for CBE 40499)
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Pyomo Mini-Project: Receding Horizon Stochastic Control</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#assignment-goals">
+   Assignment Goals
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#model-refinement-and-code-reorganization">
+   Model Refinement and Code Reorganization
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#revised-model">
+     Revised Model
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#degree-of-freedom-analysis">
+     Degree of Freedom Analysis
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#python-code">
+     Python Code
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#optimal-control-over-3-day-horizon">
+     Optimal Control Over 3 Day Horizon
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#original-model">
+       Original Model
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#with-constraint-enforcing-no-simultaneous-charging-or-discharging">
+       With Constraint Enforcing No Simultaneous Charging or Discharging
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#comparison">
+       Comparison
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#receding-horizon-control">
+   Receding Horizon Control
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#write-pseudocode">
+     Write Pseudocode
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Python Code
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#simulate-performance-over-3-days">
+     Simulate Performance Over 3 Days
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#impact-of-horizon-length">
+     Impact of Horizon Length
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#impact-of-periodic-boundary-condition">
+     Impact of Periodic Boundary Condition
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#forecast-uncertainty-required-for-cbe-60499-optional-for-cbe-40499">
+   Forecast Uncertainty (required for CBE 60499, optional for CBE 40499)
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="pyomo-mini-project-receding-horizon-stochastic-control">
+<h1>Pyomo Mini-Project: Receding Horizon Stochastic Control<a class="headerlink" href="#pyomo-mini-project-receding-horizon-stochastic-control" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="assignment-goals">
+<h2>Assignment Goals<a class="headerlink" href="#assignment-goals" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>primary purpose</strong> of this assignment is to give you <strong>hands-on-keyboard experience</strong> with optimization modeling and analysis. In this assignment, I incorporated many of the best practices I share with my Ph.D. students during their first year using Pyomo for research. Specifically:</p>
+<ul class="simple">
+<li><p>Planning is the most important (and often most overlooked step) in computer programming. Two best practices are to (1) write pseudocode and (2) write the optimization model on paper and perform degree of freedom analysis before you use the computer. We practiced tip (2) in class. If you cannot do (1) and (2), no amount of Googling Pyomo/Python syntax will save you.</p></li>
+<li><p>Functions (or classes) allow us to reuse most of our code. Below I gave you function definitions and doc strings to show you a good way to “modularize” this analysis. Once the functions defined below work, performing the analysis is easy.</p></li>
+<li><p>Solving your optimization problem a few times is (often) not a sufficient research result. Who cares? Application-driven research is all about the analysis. Optimization is a tool to better answer analysis questions. By giving you &gt;50% of the code for this assignment, I am intentionally emphasizing the analysis (not just coding).  You will see we can take a really simple optimization model and ask/answer some interesting analysis questions.</p></li>
+</ul>
+<p>You should start this assignment early. Almost everyone will make at least one Python/Pyomo syntax mistake. Give yourself plenty of time to ask questions on Slack. Please also be generous with helping your classmates. This assignment (and grades in general in this class) is not a competition. You are welcome (encouraged!) to post screenshots of your code in Slack when asking/answering questions. Please refrain from posting your discussion responses. You are welcome to discuss the analysis questions on Slack; everyone should answer the discussion questions in their own words.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This code cell installs packages on Colab</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="k">if</span> <span class="s2">&quot;google.colab&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+    <span class="o">!</span>wget <span class="s2">&quot;https://raw.githubusercontent.com/ndcbe/CBE60499/main/notebooks/helper.py&quot;</span>
+    <span class="kn">import</span> <span class="nn">helper</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">install_idaes</span><span class="p">()</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">install_ipopt</span><span class="p">()</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">download_data</span><span class="p">([</span><span class="s1">&#39;Prices_DAM_ALTA2G_7_B1.csv&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">pyomo.environ</span> <span class="k">as</span> <span class="nn">pyo</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ca_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/data/Prices_DAM_ALTA2G_7_B1.csv&#39;</span><span class="p">,</span><span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">prepare_data_array</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">num_days</span><span class="o">=</span><span class="mi">8</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Prepare numpy array of prices</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        day: day to start (0 = January 1, 2015)</span>
+<span class="sd">        num_days: numbers of days to include in the vector</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        numpy array of prices</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">return</span> <span class="n">ca_data</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">][(</span><span class="n">day</span><span class="p">)</span><span class="o">*</span><span class="mi">24</span><span class="p">:</span><span class="mi">24</span><span class="o">*</span><span class="p">(</span><span class="n">day</span><span class="o">+</span><span class="n">num_days</span><span class="p">)]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the previous notebook, we considered model predictive control (MPC) of a battery energy storage system interacting with the electricity market. In essence, we posed an optimization problem:</p>
+<p><em>Given a forecasting for energy prices, what charging and discharging strategy maximizes net market revenue?</em></p>
+<p>In this homework mini-project, you will consider two modifications to make the example more realistic:</p>
+<ol class="simple">
+<li><p>Add a constraint to prevent simultanous charging and discharging.</p></li>
+<li><p>Receding horizon control</p></li>
+<li><p>Uncertainty</p></li>
+</ol>
+<p>The goal is to help you develop Python and Pyomo programming skills.</p>
+</div>
+<div class="section" id="model-refinement-and-code-reorganization">
+<h2>Model Refinement and Code Reorganization<a class="headerlink" href="#model-refinement-and-code-reorganization" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="revised-model">
+<h3>Revised Model<a class="headerlink" href="#revised-model" title="Permalink to this headline">¶</a></h3>
+<p>Propose a new mathematical model that includes a constraint to prevent charging and discharging. Hint: using either integer variables or a disjunction will ensure the objective and constraints remaining linear.</p>
+<p>Below is the model description copied from our in-class example. <strong>Please edit</strong> such that this notebook describes your complete new model.</p>
+<p><strong>Sets</strong></p>
+<p>Timesteps: <span class="math notranslate nohighlight">\(\mathcal{T} = \{0, 1, ..., N\}\)</span></p>
+<p>Timesteps without the initial time: <span class="math notranslate nohighlight">\(\mathcal{T}' = \{1, ..., N\}\)</span></p>
+<p><strong>Variables</strong></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(E_t\)</span>, energy stored in battery at time <span class="math notranslate nohighlight">\(t\)</span>, units: MWh</p></li>
+<li><p><span class="math notranslate nohighlight">\(d_t\)</span>, battery discharge power (sold to market) during time interval [t-1, t), units: MW</p></li>
+<li><p><span class="math notranslate nohighlight">\(c_t\)</span>, battery charge power (purchased from the market) during time interval [t-1, t), units: MW</p></li>
+</ul>
+<p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\pi_t\)</span>: Energy price during time interval [t-1, t), units: $/MW</p></li>
+<li><p><span class="math notranslate nohighlight">\(\eta\)</span>: Round trip efficiency, units: dimensionless</p></li>
+<li><p><span class="math notranslate nohighlight">\(c_{max}\)</span> Maximum charge power, units: MW</p></li>
+<li><p><span class="math notranslate nohighlight">\(d_{max}\)</span> Maximum discharge power, units: MW</p></li>
+<li><p><span class="math notranslate nohighlight">\(E_{max}\)</span> Maximum storage energy, units: MWh</p></li>
+<li><p><span class="math notranslate nohighlight">\(E_{0}\)</span> Energy in storage at time <span class="math notranslate nohighlight">\(t=0\)</span>, units: MWh</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Delta t = 1\)</span> hour, Timestep for grid decisions and prices (fixed)</p></li>
+</ul>
+<p><strong>Optimization Problem</strong>
+$$</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \max_{\mathbf{E},\mathbf{d},\mathbf{c}} \quad &amp; \psi := \sum_{t \in \mathcal{T}'} \pi_{t} \Delta t (d_{t} - c_{t}) \\
+\mathrm{s.t.} \quad &amp; E_{t} = E_{t-1} + \Delta t \left( c_{t} \sqrt{\eta} - \frac{d_{t}}{\sqrt{\eta}} \right), ~~ \forall ~ t \in \mathcal{T}' \\
+    &amp; E_{0} = E_{N} \\
+    &amp; 0 \leq c_{t} \leq c_{max}, ~~\forall ~ t \in \mathcal{T}' \\
+    &amp; 0 \leq d_{t} \leq d_{max}, ~~\forall ~ t \in \mathcal{T}' \\
+    &amp; 0 \leq E_{t} \leq E_{max},  ~~\forall ~ t \in \mathcal{T}'
+\end{align*}\]</div>
+<p>$$</p>
+</div>
+<div class="section" id="degree-of-freedom-analysis">
+<h3>Degree of Freedom Analysis<a class="headerlink" href="#degree-of-freedom-analysis" title="Permalink to this headline">¶</a></h3>
+<p>Perform degree of freedom analysis. Identify:</p>
+<ol class="simple">
+<li><p>Total number of continous variables</p></li>
+<li><p>Total number of integer variables (or disjunctions if using)</p></li>
+<li><p>Total number of equality constraints</p></li>
+<li><p>Total number of inequality constraints</p></li>
+<li><p>Degrees of freedom</p></li>
+</ol>
+<p>Tip: perform this on paper then typeset below.</p>
+<p><strong>Number of continous variables:</strong></p>
+<p><strong>Number of integer variables:</strong></p>
+<p><strong>Number of equality constraints:</strong></p>
+<p><strong>Number of inequality constraints:</strong></p>
+<p><strong>Degrees of freedom.</strong> <em>Please discuss in a few sentences. There are a few ways to do this; we are less concerned about you getting the “right” answer and more about giving an answer with a supporting argument.</em></p>
+</div>
+<div class="section" id="python-code">
+<h3>Python Code<a class="headerlink" href="#python-code" title="Permalink to this headline">¶</a></h3>
+<p>Programmers organize their code into functions, often following the rule “1 task/action = 1 function”. Here are a few of the reasons you should always do this:</p>
+<ol class="simple">
+<li><p>Functions make your code easier to use</p></li>
+<li><p>More specifically, functions force you to abstract/generalize your code</p></li>
+<li><p>Writing doc strings (required for this course!) forces you to document your code and think about the structure.</p></li>
+<li><p>Functions allow your code to best tested piece by piece</p></li>
+</ol>
+<p>To show you how to do this, we have provided skeletons for several functions in this assignment. Based on the doc string, complete the functions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">build_model</span><span class="p">(</span><span class="n">price_data</span><span class="p">,</span> <span class="n">horizon_length</span><span class="p">,</span> <span class="n">include_pbc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_disjunction</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Builds HORIZON pyomo model</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">    price_data: dictionary of price data</span>
+<span class="sd">    horizon_length: number of timesteps to evaluate</span>
+<span class="sd">    include_pbc: Boolean, include periodic boundary condition constraint</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    m: HORIZON pyomo model</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">m</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+    
+    <span class="c1"># Add your solution here</span>
+    
+    <span class="k">return</span> <span class="n">m</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">extract_solution</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Function to extract the solution from the solved pyomo model</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">        m: Solved pyomo model</span>
+<span class="sd">    </span>
+<span class="sd">    Outputs:</span>
+<span class="sd">        c_control: numpy array of charging power values, MW</span>
+<span class="sd">        d_control: numpy array of discharging power values, MW</span>
+<span class="sd">        E_control: numpy array of energy stored values, MWh</span>
+<span class="sd">        t: numpy array of time indices from the Pyomo model, hr</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">c_control</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">d_control</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">E_control</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">N</span><span class="p">)</span>
+
+    <span class="c1"># Tip: We added a negative sign to d to help with plotting in the code discussed during class.</span>
+    <span class="c1"># Add your solution here</span>
+    
+    <span class="k">return</span> <span class="n">c_control</span><span class="p">,</span> <span class="n">d_control</span><span class="p">,</span> <span class="n">E_control</span><span class="p">,</span> <span class="n">t</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_solution</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Function to plot the solution of the HORIZON problem</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">        c_control: numpy array of charging power values, MW</span>
+<span class="sd">        d_control: numpy array of discharging power values, MW</span>
+<span class="sd">        E_control: numpy array of energy stored values, MWh</span>
+<span class="sd">        t: numpy array of time indices from the Pyomo model, hr. (default=None)</span>
+<span class="sd">    </span>
+<span class="sd">    Actions. Creates the following plots: </span>
+<span class="sd">        State of charge (energy) verus time</span>
+<span class="sd">        Power to the grid verus time</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="c1"># Plot the state of charge (E)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">N</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Input t must have length greate than 0&quot;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">==</span> <span class="n">N</span><span class="p">,</span> <span class="s2">&quot;All inputs should be the same length&quot;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">)</span> <span class="o">==</span> <span class="n">N</span><span class="p">,</span> <span class="s2">&quot;All inputs should be the same length&quot;</span>
+    
+    <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># add E0</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">t_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">t_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="mi">0</span><span class="p">],</span>  <span class="n">t</span><span class="p">))</span>
+
+    <span class="c1"># Add your solution here</span>
+    
+    <span class="c1"># Plot charging/discharging plot</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+
+    <span class="c1"># double up first data point to make the step plot</span>
+    <span class="n">c_control_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>  <span class="n">c</span><span class="p">))</span>
+    <span class="n">d_control_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>  <span class="n">d</span><span class="p">))</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">t_</span><span class="p">,</span><span class="n">c_control_</span><span class="p">,</span><span class="s1">&#39;r.-&#39;</span><span class="p">,</span><span class="n">where</span><span class="o">=</span><span class="s1">&#39;pre&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">t_</span><span class="p">,</span><span class="n">d_control_</span><span class="p">,</span><span class="s1">&#39;g.-&#39;</span><span class="p">,</span><span class="n">where</span><span class="o">=</span><span class="s1">&#39;pre&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (hr)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Power from Grid (MW)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+    <span class="k">return</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="optimal-control-over-3-day-horizon">
+<h3>Optimal Control Over 3 Day Horizon<a class="headerlink" href="#optimal-control-over-3-day-horizon" title="Permalink to this headline">¶</a></h3>
+<p>Now let’s use our functions for some analysis. Calculate the optimal battery operation strategy over 3 days starting on January 4, 2015.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">three_days</span> <span class="o">=</span> <span class="n">prepare_data_array</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="original-model">
+<h4>Original Model<a class="headerlink" href="#original-model" title="Permalink to this headline">¶</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add your solution here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="with-constraint-enforcing-no-simultaneous-charging-or-discharging">
+<h4>With Constraint Enforcing No Simultaneous Charging or Discharging<a class="headerlink" href="#with-constraint-enforcing-no-simultaneous-charging-or-discharging" title="Permalink to this headline">¶</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add your solution here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="comparison">
+<h4>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline">¶</a></h4>
+<p>Write Python code below to compare the solutions. Print out any timesteps where the charge, discharge, and energy profiles are different by more than 10<span class="math notranslate nohighlight">\(^{-4}\)</span> MW (or MWh).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compare_solutions</span><span class="p">(</span><span class="n">solution1</span><span class="p">,</span><span class="n">solution2</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Function to compare outputs between the original model and model with disjuncutions</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">    original: list of original charging/discharging data</span>
+<span class="sd">    disjunction: list of disjunction model results charging/discharging data</span>
+<span class="sd">    t: list of timesteps</span>
+<span class="sd">    </span>
+<span class="sd">    Action:</span>
+<span class="sd">    prints same/different + timestep</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">solution1</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">solution2</span><span class="p">),</span> <span class="s2">&quot;solution 1 and solution2 must be the same length&quot;</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">solution1</span><span class="p">)</span>
+    
+    <span class="c1"># Add your solution here</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Charge</span>
+<span class="n">compare_solutions</span><span class="p">(</span><span class="n">c_control_og</span><span class="p">,</span> <span class="n">c_control_disj</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Discharge</span>
+<span class="n">compare_solutions</span><span class="p">(</span><span class="n">d_control_og</span><span class="p">,</span> <span class="n">d_control_disj</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Energy</span>
+<span class="n">compare_solutions</span><span class="p">(</span><span class="n">E_control_og</span><span class="p">,</span> <span class="n">E_control_disj</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="receding-horizon-control">
+<h2>Receding Horizon Control<a class="headerlink" href="#receding-horizon-control" title="Permalink to this headline">¶</a></h2>
+<p>We now have functions to build, solve, and analyze the battery problem for a single problem. Now we can consider receeding horizon control.</p>
+<p><em>Please ask questions during class. You do not need to turn anything in for this section.</em></p>
+<p>Nomenclature: Let <span class="math notranslate nohighlight">\(u^*_{i}\)</span> represent the optimal control action from time <span class="math notranslate nohighlight">\(t=i\)</span> to <span class="math notranslate nohighlight">\(t=i+1\)</span>. For the battery system, <span class="math notranslate nohighlight">\(u_{i} = [c_i, d_i]^{T}\)</span> (charging and discharging).</p>
+<p>Algorithm:</p>
+<ol class="simple">
+<li><p>Consider time <span class="math notranslate nohighlight">\(t=m\)</span>.</p></li>
+<li><p>Compute the optimal control actions <span class="math notranslate nohighlight">\(u^*=[u^*_m, u^*_{m+1}, ..., u^*_{m+N-1}]^T\)</span> from time <span class="math notranslate nohighlight">\(t=m\)</span> until <span class="math notranslate nohighlight">\(t=N+m\)</span> where <span class="math notranslate nohighlight">\(N\)</span> is the length of the planning horizon. In our battery example, we considered <span class="math notranslate nohighlight">\(N = 24\)</span>.</p></li>
+<li><p>Simulate the system for one timestep using control action <span class="math notranslate nohighlight">\(u^*_{m}\)</span>.</p></li>
+<li><p>(Optional). Update the system model or forecasts using new observations.</p></li>
+<li><p>Step <span class="math notranslate nohighlight">\(t=m+1\)</span> and goto Step 2.</p></li>
+</ol>
+<div class="section" id="write-pseudocode">
+<h3>Write Pseudocode<a class="headerlink" href="#write-pseudocode" title="Permalink to this headline">¶</a></h3>
+<p>Pseudocode is an important planning tool for complex computer programs. The idea is to write out the code on paper or a whiteboard using generic programming syntax. As an example, consider calculating the 3rd through 10th elements of the Fibonacci sequence:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Governing equation where f[i] is the ith element of the sequence</span>
+<span class="c1"># f[i] = f[i-1] + f[i-2]</span>
+
+<span class="c1"># Algorithm:</span>
+
+<span class="c1"># Previous previous number in the sequence, f[i-2]</span>
+<span class="n">n_2prev</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># Previous number in the sequence, f[i-1]</span>
+<span class="n">n_1prev</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># Set counter</span>
+<span class="n">j</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="k">while</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="mi">10</span> <span class="n">do</span><span class="p">:</span>
+    <span class="c1"># Apply Fib. formula</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">n1_prev</span> <span class="o">+</span> <span class="n">n2_prev</span>
+    
+    <span class="c1"># Print to screen</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    
+    <span class="c1"># Shift history.</span>
+    <span class="c1"># Previous number becomes previous previous number</span>
+    <span class="n">n2prev</span> <span class="o">=</span> <span class="n">n1prev</span>
+    
+    <span class="c1"># Current number becomes previous number</span>
+    <span class="n">n1prev</span> <span class="o">=</span> <span class="n">n</span>
+    
+    <span class="c1"># Increment counter</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>Here we sketched out the main algorithm (with comments!) in generic syntax. We did not worry about the correct way to write a while loop in Python. Once we figure out the algorithm we can worry about those details.</p>
+<p>Write pseudocode for the receding horizon control example on paper or a whiteboard. Your algorithm should include the following main steps:</p>
+<ol class="simple">
+<li><p>Load price data from a text file</p></li>
+<li><p>Loop over timesteps. Keep track of implemented control actions (charge and discharge), battery SOC, and net revenue.</p></li>
+<li><p>Make a plot of battery SOC and control actions that were actually implemented.</p></li>
+</ol>
+<p>Scan your pseudocode as a PDF and turn in via Gradescope.</p>
+</div>
+<div class="section" id="id1">
+<h3>Python Code<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Tip: You should use the same <code class="docutils literal notranslate"><span class="pre">create_model</span></code> function throughout the assignment. In your model, define <code class="docutils literal notranslate"><span class="pre">price</span></code> to be a mutable parameter. This means we can just update the Pyomo model in the function below. We do not need to recreate it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">new_price_data</span><span class="p">,</span> <span class="n">new_E0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Update the Pyomo model with new price data</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        model: pyomo model</span>
+<span class="sd">        new_price_data: numpy array or list containing price data</span>
+<span class="sd">        new_E0: (float) value for initial battery charge</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Add your solution here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">receding_horizon_simulation</span><span class="p">(</span><span class="n">price_data</span><span class="p">,</span> <span class="n">simulation_length</span><span class="p">,</span> <span class="n">num_hours</span><span class="p">,</span> <span class="n">include_pbc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>  
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Perform receding horizon simulation</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">        price_data: numpy array price data for entire time period of interest</span>
+<span class="sd">        simulation_length: number of total hours to evaluate</span>
+<span class="sd">        num_hours: horizon length for each optimization problem</span>
+<span class="sd">        include_pbc: boolean, include periodic boundary condition</span>
+<span class="sd">        verbose: boolean, if true, print out message each hour</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        c_control: charging decision implemented</span>
+<span class="sd">        d_control: discharging decision implemented</span>
+<span class="sd">        E_control: state-of-charge profile</span>
+<span class="sd">        revenue_control: total revenue over simulation horizon</span>
+<span class="sd">    </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="c1"># Check input data length</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">price_data</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">simulation_length</span> <span class="o">+</span> <span class="n">num_hours</span><span class="p">,</span> <span class="s2">&quot;Input price data is too short&quot;</span>
+    
+    <span class="k">assert</span> <span class="n">simulation_length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Must evaluate more than 0 days&quot;</span>
+    
+    <span class="k">assert</span> <span class="n">num_hours</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Must consider planning horizon longer than 0 days&quot;</span>
+
+    <span class="n">nS</span> <span class="o">=</span> <span class="n">simulation_length</span>
+        
+    <span class="c1">## Preallocate vectors to store results</span>
+    <span class="n">c_control</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">nS</span><span class="p">)</span>
+    <span class="n">d_control</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">nS</span><span class="p">)</span>
+    <span class="n">E_control</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">nS</span><span class="p">)</span>
+    <span class="n">revenue_control</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">nS</span><span class="p">)</span>
+
+    <span class="c1"># Add your solution here</span>
+
+    <span class="k">return</span> <span class="n">c_control</span><span class="p">,</span> <span class="n">d_control</span><span class="p">,</span> <span class="n">E_control</span><span class="p">,</span> <span class="n">revenue_control</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="simulate-performance-over-3-days">
+<h3>Simulate Performance Over 3 Days<a class="headerlink" href="#simulate-performance-over-3-days" title="Permalink to this headline">¶</a></h3>
+<p>Perform receding horizon control for the first 3 days in January 2015. Make a plot to show the implemented control action.</p>
+<p>Tips:</p>
+<ul class="simple">
+<li><p>The implemented control action is a concationation of the first timestep for each optimization problem.</p></li>
+<li><p>How can you resuse the plot function above?</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">three_days</span> <span class="o">=</span> <span class="n">prepare_data_array</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tip: do not overwrite these results. We will use them later.</span>
+<span class="c1"># If you reuse this code, change the variable names used to save the results.</span>
+<span class="n">c_control_pbc</span><span class="p">,</span> <span class="n">d_control_pbc</span><span class="p">,</span> <span class="n">E_control_pbc</span><span class="p">,</span> <span class="n">revenue_control_pbc</span> <span class="o">=</span> <span class="n">receding_horizon_simulation</span><span class="p">(</span><span class="n">three_days</span><span class="p">,</span> <span class="mi">24</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> 
+                                                                               <span class="mi">24</span><span class="p">,</span> <span class="n">include_pbc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                                              <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_solution</span><span class="p">(</span><span class="n">c_control_pbc</span><span class="p">,</span> <span class="n">d_control_pbc</span><span class="p">,</span> <span class="n">E_control_pbc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="impact-of-horizon-length">
+<h3>Impact of Horizon Length<a class="headerlink" href="#impact-of-horizon-length" title="Permalink to this headline">¶</a></h3>
+<p>Repeat the sensitivity analysis for horizon lengths of N=2 through N=48. For each simulation, compute the following:</p>
+<ol class="simple">
+<li><p>Revenue from first 30 days</p></li>
+<li><p>Total energy purchased from the market during the first 30 days</p></li>
+<li><p>Total energy sold to the market during the first 30 days</p></li>
+<li><p>Total computation time</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Study this cell to see how to time calculations in Python</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">time_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+<span class="n">first_month</span> <span class="o">=</span> <span class="n">prepare_data_array</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">34</span><span class="p">)</span>
+<span class="n">time_elapsed</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">time_start</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Elapsed Time&quot;</span><span class="p">,</span><span class="n">time_elapsed</span><span class="p">,</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rev</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">charge</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">discharge</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">timer</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Tip: This will take a few minutes to finish. While developing your solutions, </span>
+<span class="c1"># only simulate the first few values of N. This will be helpful if you need to</span>
+<span class="c1"># restart your kernel and rerun the cells. Once you are happy with your code</span>
+<span class="c1"># for the entire assignment, you can set N to the values given here then</span>
+<span class="c1"># restart and run all.</span>
+<span class="n">N</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">48</span><span class="p">]</span>
+
+<span class="c1"># Add your solution here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Make four well labeled plots to show these trends.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">rev</span><span class="p">,</span><span class="s1">&#39;o-&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;purple&quot;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;N&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Revenue, $&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">charge</span><span class="p">,</span><span class="s1">&#39;ro-&#39;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;N&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Charging, [MWh]&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">discharge</span><span class="p">,</span><span class="s1">&#39;go-&#39;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;N&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Discharging, [MWh]&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">timer</span><span class="p">,</span><span class="s1">&#39;ko-&#39;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;N&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Computational Time, [s]&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Discussion</strong> How long of a simulation horizon do you recommend? Discuss the trade-off between revenue and computation time.</p>
+</div>
+<div class="section" id="impact-of-periodic-boundary-condition">
+<h3>Impact of Periodic Boundary Condition<a class="headerlink" href="#impact-of-periodic-boundary-condition" title="Permalink to this headline">¶</a></h3>
+<p>We will now explore the impact of the periodic boundary constraint.</p>
+<p>First, simulate the performance over 3 days <strong>without enforcing the periodic boundary constraint</strong>. Plot the implemented control action and calculate the total revenue. Use <span class="math notranslate nohighlight">\(N=4\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c_control2</span><span class="p">,</span> <span class="n">d_control2</span><span class="p">,</span> <span class="n">E_control2</span><span class="p">,</span> <span class="n">revenue_control</span> <span class="o">=</span> <span class="n">receding_horizon_simulation</span><span class="p">(</span><span class="n">three_days</span><span class="p">,</span> <span class="mi">24</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span>
+                                                                                  <span class="n">include_pbc</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_solution</span><span class="p">(</span><span class="n">c_control2</span><span class="p">,</span> <span class="n">d_control2</span><span class="p">,</span> <span class="n">E_control2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, simulate <strong>with the periodic boundary constraint</strong> using <span class="math notranslate nohighlight">\(N=4\)</span>. Plot the results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c_control3</span><span class="p">,</span> <span class="n">d_control3</span><span class="p">,</span> <span class="n">E_control3</span><span class="p">,</span> <span class="n">revenue_control</span> <span class="o">=</span> <span class="n">receding_horizon_simulation</span><span class="p">(</span><span class="n">three_days</span><span class="p">,</span> <span class="mi">24</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span>
+                                                                                  <span class="n">include_pbc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plot_solution</span><span class="p">(</span><span class="n">c_control3</span><span class="p">,</span> <span class="n">d_control3</span><span class="p">,</span> <span class="n">E_control3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s compare.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Charge</span>
+<span class="n">compare_solutions</span><span class="p">(</span><span class="n">c_control2</span><span class="p">,</span> <span class="n">c_control3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Discharge</span>
+<span class="n">compare_solutions</span><span class="p">(</span><span class="n">d_control2</span><span class="p">,</span> <span class="n">d_control3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Energy</span>
+<span class="n">compare_solutions</span><span class="p">(</span><span class="n">E_control2</span><span class="p">,</span> <span class="n">E_control3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Discussion</strong> Compare the control actions and revenue with and without the periodic boundary constraint. How are they different (if at all)? Offer an explanation for any differences. (The purpose of this questions is to get you thinking about how to critically analyze the optimization results. This skill will be really important for the semester projects.)</p>
+<p>Next, repeat the horizon length sensitivity analysis without the peridoic boundary constraint.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add your solution here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Discussion</strong> Compare these result to the analysis with periodic boundary constraints. Based on these results, make a recommendation to a battery operator.</p>
+</div>
+</div>
+<div class="section" id="forecast-uncertainty-required-for-cbe-60499-optional-for-cbe-40499">
+<h2>Forecast Uncertainty (required for CBE 60499, optional for CBE 40499)<a class="headerlink" href="#forecast-uncertainty-required-for-cbe-60499-optional-for-cbe-40499" title="Permalink to this headline">¶</a></h2>
+<p>So far, we have assumed the battery operator can perfectly forecast the market price. This is not realistic. What is the impact of uncertainty?</p>
+<p>Generate white noise with mean zero and standard deviation 5 $/MWh using <code class="docutils literal notranslate"><span class="pre">np.random.normal()</span></code> and add this to the historical price. We will treat this as a price forecast. Simulate the first three days with <span class="math notranslate nohighlight">\(N=24\)</span>. Calculate how much less revenue you make with price uncertainty compared to the perfect information case. <em>Hint:</em> Each time you run the simulation, you will get a different answer. Repeat the analysis 10 times and record the average.</p>
+<p><strong>Are you enrolled in CBE 60499</strong> (are you a graduate student)? Please answer yes/no:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">revenue_unc_predicted</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">revenue_unc_actual</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Perform simulation with perfect information</span>
+<span class="n">c_control</span><span class="p">,</span> <span class="n">d_control</span><span class="p">,</span> <span class="n">E_control</span><span class="p">,</span> <span class="n">revenue_control</span> <span class="o">=</span> <span class="n">receding_horizon_simulation</span><span class="p">(</span><span class="n">three_days</span><span class="p">,</span> 
+                                                                                       <span class="mi">24</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="n">include_pbc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                                                  <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># We can also calculate the revenue after the fact</span>
+<span class="n">rev_check</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">c_control</span><span class="p">)):</span>
+    <span class="c1"># Why is this slightly different? In the instructor/TA solutions for receding_horizon_simulation,</span>
+    <span class="c1"># we added a negative sign to d_control for plotting.</span>
+    <span class="n">rev_check</span> <span class="o">-=</span>  <span class="n">three_days</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">d_control</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">c_control</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
+
+<span class="n">revenue_perfect_information</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">revenue_control</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Revenue with perfect price forecast =&quot;</span><span class="p">,</span><span class="n">revenue_perfect_information</span><span class="p">,</span><span class="s2">&quot;=&quot;</span><span class="p">,</span><span class="n">rev_check</span><span class="p">,</span><span class="s2">&quot;$&quot;</span><span class="p">)</span>
+
+<span class="c1"># Tip: normalize the revenue from the uncertain simulations by `revenue_perfect_information`</span>
+<span class="c1"># This will make the interpretation much easier!</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">three_days</span><span class="p">)</span>
+<span class="n">nsim</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsim</span><span class="p">):</span>
+
+    <span class="c1"># Add random noise to data</span>
+    <span class="n">three_days_with_noise</span> <span class="o">=</span> <span class="n">three_days</span> <span class="o">+</span> <span class="mi">5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="c1"># Add your solution here</span>
+    
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Average Revenue =&quot;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">revenue_unc_actual</span><span class="p">)</span><span class="o">/</span><span class="n">revenue_perfect_information</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span><span class="s2">&quot;%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Discussion</strong> Compare the results with your earlier analysis. How much less revenue do you get with Gaussian noise with standard deviation 5 $/MWh.</p>
+<p>Next, make a plot showing the average revenue as a function of the standard deviation of the uncertainty. <em>Hint</em>: Normalize the revenue by dividing by the perfect information revenue (no uncertainty).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add your solution here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Discussion</strong> What is the impact with the larger uncertainty?</p>
+<p><strong>Discussion</strong> Why does uncertainty in the price decrease the revenue (on average)?</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./notebooks/assignments"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="Pyomo3.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Pyomo Homework 3</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="Algorithms1.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Algorithms Homework 1</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Alexander Dowling, et al.<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

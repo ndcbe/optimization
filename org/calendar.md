@@ -6,9 +6,10 @@
 | ----------- | ----------- |
 | Friday, January 20, 2023 | [](../notebooks/assignments/Pyomo1.ipynb) |
 | Friday, January  27, 2023 | [](../notebooks/assignments/Pyomo2.ipynb) |
-| Friday, February 3, 2023 | [](../notebooks/assignments/Pyomo3.ipynb) |
+| Friday, February 3, 2023 | postponed |
 | Friday, February 10, 2023 | [](../notebooks/assignments/Pyomo-Mini-Project.ipynb) |
-| Friday, February 17, 2023 | Semester Project: Proposal |
+| Friday, February 17, 2023 | [](../notebooks/assignments/Pyomo3.ipynb) | 
+| | Semester Project: Proposal |
 | Friday, February 24, 2023 | [](../notebooks/assignments/Algorithms1.ipynb) |
 | Friday, March 3, 2023 | [](../notebooks/assignments/Algorithms2.ipynb) |
 | Friday, March 10, 2023 | [](../notebooks/assignments/Algorithms3.ipynb) |

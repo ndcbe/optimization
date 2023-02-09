@@ -17,18 +17,55 @@ By completing this project, you will:
 
 ## Scope and Project Types
 
-Please choose from the following options. As a rough guide, your project should require 20 (undergraduate) to 30 (graduate) hours of time investment over the entire semester.
+Please choose from the following options. As a rough guide, your project should require 25 (undergraduate) to 35 (graduate) hours of time investment over the entire semester.
 
-### Optional 1: Make significant revisions to two class notebooks
+### Option 1: Make significant revisions to two class notebooks
 
 Many of our class notebooks would benefit for enhancements such as:
-* Replacing screenshots with typeset equations
-* Updating figures to be publication quality
-* Creating new examples
-* Adding discussion questions to better explain current results
-* Add sections on new concepts
+* Replace screenshots with typeset equations
+* Add equations from class lecture to notebooks (typeset)
+* Update the figures to be publication quality
+* Add discussion questions to better explain current results
+* Add sections on new concepts or create new examples
 
-By completing this project, you will 
+By completing this type of project, you will deep dive on two class topics. In addition to helping future classes, you will practice making educational material. The expectation are:
+* For the selected notebooks, complete all of the improvements identified above.
+* Add at least one section to a notebook on a new topic. The new section should include a concise description of the theory or model (e.g., governing equations) and a computational example.
+
+### Option 2: Create a new notebook for the class website
+
+#### Algorithms and Theory
+
+Our class website would also benefit from additional content, such as:
+* Stochastic gradient descent
+* Numeric integration for DAE systems (e.g., extend backward Euler code for ODEs into an implicit Runge-Kutta integrator for DAEs).
+* Sequential quadratic programming
+* Branch and bound for integer programming
+* Branch and cut for deterministic global optimization
+* Bayesian optimization
+* Surrogate assisted optimization
+* Sequential DAE optimization
+
+This is a great project choice for students that plan to use optimization via other packages, e.g., scikit-learn for machine learning, and do not see themselves developing optimization models or using Pyomo. This project structure allows you to understand what is “under the hood”.
+
+The contributed notebooks should include:
+* Summarize main concepts and theory
+* Typeset governing equations
+* Describe algorithm steps
+* Provide Python code for algorithm
+* Explain algorithm properties with one or more computational case studies (e.g., toy problems)
+* References to all source material (equations, models, example code)
+
+#### Examples
+
+Alternately, you may reproduce a simple optimization problem from literature as an instructive case study, similar to the Pyomo Mini Project.
+
+The contributed notebooks should include:
+* Motivation for the problem (~1 paragraph)
+* Typeset model equations
+* Degree of freedom analysis
+* Pyomo implementation
+
 
 A.	Develop and solve an optimization model related to your research
 

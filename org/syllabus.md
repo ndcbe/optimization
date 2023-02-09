@@ -114,7 +114,9 @@ The midterm exam will take place during class as indicated on the [semester cale
 
 ## Projects
 
-More details will be shared soon.
+In the [Pyomo Mini-Project](../notebooks/assignments/Pyomo-Mini-Project.ipynb) you will hone your Pyomo skills and practice using optimization as an analysis tool.
+
+In the [Semester Project](../org/semester_project.md) you will independently explore a topic related to optimization. This serves, instead of a final exam, as a the major assessment vehicle for the semester.
 
 ## Grading Standards
 

@@ -669,8 +669,8 @@ title="Print to PDF"
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#new-add-ons-classical-dae-form-interpretation">
-     2.5.2.1. New add-ons: classical DAE form interpretation
+    <a class="reference internal nav-link" href="#classical-dae-form-interpretation">
+     2.5.2.1. Classical DAE form interpretation
     </a>
    </li>
   </ul>
@@ -742,8 +742,8 @@ title="Print to PDF"
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#new-add-ons-classical-dae-form-interpretation">
-     2.5.2.1. New add-ons: classical DAE form interpretation
+    <a class="reference internal nav-link" href="#classical-dae-form-interpretation">
+     2.5.2.1. Classical DAE form interpretation
     </a>
    </li>
   </ul>
@@ -806,6 +806,8 @@ title="Print to PDF"
     <span class="o">!</span>pip install casadi
     <span class="n">helper</span><span class="o">.</span><span class="n">install_idaes</span><span class="p">()</span>
     <span class="c1">#helper.install_ipopt()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">idaes</span> <span class="c1"># loads Ipopt with HSL</span>
 </pre></div>
 </div>
 </div>
@@ -839,8 +841,8 @@ title="Print to PDF"
 <p><img alt="dae-form1" src="https://ndcbe.github.io/optimization/_images/dae_form1.png" />
 <img alt="dae-form2" src="https://ndcbe.github.io/optimization/_images/dae_form2.png" /></p>
 <p><img alt="dae-reduction" src="https://ndcbe.github.io/optimization/_images/dae_reduction.png" /></p>
-<section id="new-add-ons-classical-dae-form-interpretation">
-<h3><span class="section-number">2.5.2.1. </span>New add-ons: classical DAE form interpretation<a class="headerlink" href="#new-add-ons-classical-dae-form-interpretation" title="Permalink to this headline">#</a></h3>
+<section id="classical-dae-form-interpretation">
+<h3><span class="section-number">2.5.2.1. </span>Classical DAE form interpretation<a class="headerlink" href="#classical-dae-form-interpretation" title="Permalink to this headline">#</a></h3>
 <p>A classical fully implicit set of DAE form is:</p>
 <p><img alt="dae" src="https://ndcbe.github.io/optimization/_images/dae-form3.png" /></p>
 <p>They are expressed with respect to an independnet variable, <span class="math notranslate nohighlight">\(t\)</span>, which usually is time or distance. Other variables include:</p>
@@ -1043,40 +1045,49 @@ At t = 0 and h = 1.06624e-14, the corrector convergence failed repeatedly or wit
 </div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">RuntimeError</span><span class="g g-Whitespace">                              </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">2</span><span class="o">-</span><span class="mi">6</span><span class="n">df9f09067d7</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">62</span>
 <span class="g g-Whitespace">     </span><span class="mi">60</span> <span class="c1"># Solve DAEs</span>
 <span class="g g-Whitespace">     </span><span class="mi">61</span> <span class="n">sim</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">(</span><span class="n">index3</span><span class="p">,</span> <span class="n">package</span><span class="o">=</span><span class="s1">&#39;casadi&#39;</span><span class="p">)</span>
 <span class="ne">---&gt; </span><span class="mi">62</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">profiles</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">numpoints</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">integrator</span><span class="o">=</span><span class="s1">&#39;idas&#39;</span><span class="p">,</span><span class="n">integrator_options</span><span class="o">=</span><span class="n">int_ops</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">63</span> 
 <span class="g g-Whitespace">     </span><span class="mi">64</span> <span class="c1"># Plot solution</span>
+<span class="g g-Whitespace">     </span><span class="mi">65</span> <span class="n">plot_results</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">profiles</span><span class="p">)</span>
 
-<span class="nn">~/anaconda3/envs/idaes_pse/lib/python3.7/site-packages/pyomo/dae/simulator.py</span> in <span class="ni">simulate</span><span class="nt">(self, numpoints, tstep, integrator, varying_inputs, initcon, integrator_options)</span>
-<span class="g g-Whitespace">    </span><span class="mi">907</span>                     <span class="bp">self</span><span class="o">.</span><span class="n">_simulate_with_casadi_no_inputs</span><span class="p">(</span><span class="n">initcon</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">908</span>                                                          <span class="n">integrator</span><span class="p">,</span>
-<span class="ne">--&gt; </span><span class="mi">909</span>                                                          <span class="n">integrator_options</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">910</span> 
-<span class="g g-Whitespace">    </span><span class="mi">911</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_tsim</span> <span class="o">=</span> <span class="n">tsim</span>
+<span class="nn">File ~/opt/anaconda3/envs/idaes/lib/python3.10/site-packages/pyomo/dae/simulator.py:884,</span> in <span class="ni">Simulator.simulate</span><span class="nt">(self, numpoints, tstep, integrator, varying_inputs, initcon, integrator_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">877</span>         <span class="n">tsim</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> \
+<span class="g g-Whitespace">    </span><span class="mi">878</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_simulate_with_casadi_with_inputs</span><span class="p">(</span><span class="n">initcon</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">879</span>                                                    <span class="n">varying_inputs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">880</span>                                                    <span class="n">integrator</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">881</span>                                                    <span class="n">integrator_options</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">882</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">883</span>         <span class="n">tsim</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> \
+<span class="ne">--&gt; </span><span class="mi">884</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_simulate_with_casadi_no_inputs</span><span class="p">(</span><span class="n">initcon</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">885</span>                                                  <span class="n">integrator</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">886</span>                                                  <span class="n">integrator_options</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">888</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tsim</span> <span class="o">=</span> <span class="n">tsim</span>
+<span class="g g-Whitespace">    </span><span class="mi">889</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simsolution</span> <span class="o">=</span> <span class="n">profile</span>
 
-<span class="nn">~/anaconda3/envs/idaes_pse/lib/python3.7/site-packages/pyomo/dae/simulator.py</span> in <span class="ni">_simulate_with_casadi_no_inputs</span><span class="nt">(self, initcon, tsim, integrator, integrator_options)</span>
-<span class="g g-Whitespace">    </span><span class="mi">967</span>         <span class="n">integrator_options</span><span class="p">[</span><span class="s1">&#39;output_t0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="g g-Whitespace">    </span><span class="mi">968</span>         <span class="n">F</span> <span class="o">=</span> <span class="n">casadi</span><span class="o">.</span><span class="n">integrator</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">integrator</span><span class="p">,</span> <span class="n">dae</span><span class="p">,</span> <span class="n">integrator_options</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">969</span>         <span class="n">sol</span> <span class="o">=</span> <span class="n">F</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="n">initcon</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">970</span>         <span class="n">profile</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;xf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">full</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
-<span class="g g-Whitespace">    </span><span class="mi">971</span> 
+<span class="nn">File ~/opt/anaconda3/envs/idaes/lib/python3.10/site-packages/pyomo/dae/simulator.py:945,</span> in <span class="ni">Simulator._simulate_with_casadi_no_inputs</span><span class="nt">(self, initcon, tsim, integrator, integrator_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">943</span> <span class="n">integrator_options</span><span class="p">[</span><span class="s1">&#39;output_t0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="g g-Whitespace">    </span><span class="mi">944</span> <span class="n">F</span> <span class="o">=</span> <span class="n">casadi</span><span class="o">.</span><span class="n">integrator</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">integrator</span><span class="p">,</span> <span class="n">dae</span><span class="p">,</span> <span class="n">integrator_options</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">945</span> <span class="n">sol</span> <span class="o">=</span> <span class="n">F</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="n">initcon</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">946</span> <span class="n">profile</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;xf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">full</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
+<span class="g g-Whitespace">    </span><span class="mi">948</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_algvars</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
 
-<span class="nn">~/anaconda3/envs/idaes_pse/lib/python3.7/site-packages/casadi/casadi.py</span> in <span class="ni">__call__</span><span class="nt">(self, *args, **kwargs)</span>
-<span class="g g-Whitespace">  </span><span class="mi">13451</span>       <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">  </span><span class="mi">13452</span>     <span class="c1"># Named inputs -&gt; return dictionary</span>
-<span class="ne">&gt; </span><span class="mi">13453</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">  </span><span class="mi">13454</span> 
-<span class="g g-Whitespace">  </span><span class="mi">13455</span>     <span class="k">def</span> <span class="nf">buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="nn">File ~/opt/anaconda3/envs/idaes/lib/python3.10/site-packages/casadi/casadi.py:7772,</span> in <span class="ni">Function.__call__</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">7769</span>       <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">7770</span>   <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">7771</span> <span class="c1"># Named inputs -&gt; return dictionary</span>
+<span class="ne">-&gt; </span><span class="mi">7772</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
-<span class="nn">~/anaconda3/envs/idaes_pse/lib/python3.7/site-packages/casadi/casadi.py</span> in <span class="ni">call</span><span class="nt">(self, *args)</span>
-<span class="g g-Whitespace">  </span><span class="mi">12322</span> 
-<span class="g g-Whitespace">  </span><span class="mi">12323</span>         <span class="s2">&quot;&quot;&quot;</span>
-<span class="ne">&gt; </span><span class="mi">12324</span><span class="s2">         return _casadi.Function_call(self, *args)</span>
-<span class="g g-Whitespace">  </span><span class="mi">12325</span><span class="s2"> </span>
-<span class="g g-Whitespace">  </span><span class="mi">12326</span><span class="s2"> </span>
+<span class="nn">File ~/opt/anaconda3/envs/idaes/lib/python3.10/site-packages/casadi/casadi.py:6945,</span> in <span class="ni">Function.call</span><span class="nt">(self, *args)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6922</span> <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">6923</span>     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">6924</span><span class="sd">     call(Function self, std::vector&lt; casadi::DM,std::allocator&lt; casadi::DM &gt; &gt; const &amp; arg, bool always_inline=False, bool never_inline=False)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6925</span><span class="sd">     call(Function self, std::vector&lt; casadi::SX,std::allocator&lt; casadi::SX &gt; &gt; const &amp; arg, bool always_inline=False, bool never_inline=False)</span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6943</span><span class="sd"> </span>
+<span class="g g-Whitespace">   </span><span class="mi">6944</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">6945</span>     <span class="k">return</span> <span class="n">_casadi</span><span class="o">.</span><span class="n">Function_call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
 
 <span class="ne">RuntimeError</span>: .../casadi/interfaces/sundials/idas_interface.cpp:591: IDASolve returned &quot;IDA_CONV_FAIL&quot;. Consult IDAS documentation.
 </pre></div>
@@ -1086,7 +1097,7 @@ At t = 0 and h = 1.06624e-14, the corrector convergence failed repeatedly or wit
 <p><strong>Warning</strong>: If you run this notebook in Colab, you may get the following runtime error and your kernel may crash:</p>
 <p><img alt="casadi-error-1" src="https://ndcbe.github.io/optimization/_images/casadi-error1.png" /></p>
 <p><img alt="casadi-error-2" src="https://ndcbe.github.io/optimization/_images/casadi-error2.png" /></p>
-<p>Why did the <code class="docutils literal notranslate"><span class="pre">IDAS</span></code> integrator in <code class="docutils literal notranslate"><span class="pre">SUNDIALS</span></code> fail? It is only meant for index 0 or 1 DAEs! Integrating high index DAEs is really hard!</p>
+<p>Why did the <code class="docutils literal notranslate"><span class="pre">IDAS</span></code> integrator in <code class="docutils literal notranslate"><span class="pre">SUNDIALS</span></code> fail? It is <a class="reference external" href="https://groups.google.com/g/casadi-users/c/E02-X6nGVFs">only meant for index 0 or 1 DAEs</a>! Integrating high index DAEs is really hard!</p>
 </section>
 <section id="formulation-2-pure-ode-model">
 <h3><span class="section-number">2.5.3.3. </span>Formulation 2: Pure ODE Model<a class="headerlink" href="#formulation-2-pure-ode-model" title="Permalink to this headline">#</a></h3>
@@ -1315,46 +1326,54 @@ The residual routine or the linear setup or solve routine had a recoverable erro
 </div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">RuntimeError</span><span class="g g-Whitespace">                              </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">4</span><span class="o">-</span><span class="mi">302</span><span class="n">b44bce341</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">79</span>
 <span class="g g-Whitespace">     </span><span class="mi">77</span> <span class="c1"># Solve DAEs</span>
 <span class="g g-Whitespace">     </span><span class="mi">78</span> <span class="n">sim</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">(</span><span class="n">index1</span><span class="p">,</span> <span class="n">package</span><span class="o">=</span><span class="s1">&#39;casadi&#39;</span><span class="p">)</span>
 <span class="ne">---&gt; </span><span class="mi">79</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">profiles</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">numpoints</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">integrator</span><span class="o">=</span><span class="s1">&#39;idas&#39;</span><span class="p">,</span><span class="n">integrator_options</span><span class="o">=</span><span class="n">int_ops</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">80</span> <span class="c1"># tsim, profiles = sim.simulate(numpoints=100, integrator=&#39;collocation&#39;)</span>
 
-<span class="nn">/anaconda3/envs/spring2021/lib/python3.8/site-packages/pyomo/dae/simulator.py</span> in <span class="ni">simulate</span><span class="nt">(self, numpoints, tstep, integrator, varying_inputs, initcon, integrator_options)</span>
-<span class="g g-Whitespace">    </span><span class="mi">905</span>             <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">906</span>                 <span class="n">tsim</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> \
-<span class="ne">--&gt; </span><span class="mi">907</span>                     <span class="bp">self</span><span class="o">.</span><span class="n">_simulate_with_casadi_no_inputs</span><span class="p">(</span><span class="n">initcon</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">908</span>                                                          <span class="n">integrator</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">909</span>                                                          <span class="n">integrator_options</span><span class="p">)</span>
+<span class="nn">File ~/opt/anaconda3/envs/idaes/lib/python3.10/site-packages/pyomo/dae/simulator.py:884,</span> in <span class="ni">Simulator.simulate</span><span class="nt">(self, numpoints, tstep, integrator, varying_inputs, initcon, integrator_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">877</span>         <span class="n">tsim</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> \
+<span class="g g-Whitespace">    </span><span class="mi">878</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_simulate_with_casadi_with_inputs</span><span class="p">(</span><span class="n">initcon</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">879</span>                                                    <span class="n">varying_inputs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">880</span>                                                    <span class="n">integrator</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">881</span>                                                    <span class="n">integrator_options</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">882</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">883</span>         <span class="n">tsim</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> \
+<span class="ne">--&gt; </span><span class="mi">884</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_simulate_with_casadi_no_inputs</span><span class="p">(</span><span class="n">initcon</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">885</span>                                                  <span class="n">integrator</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">886</span>                                                  <span class="n">integrator_options</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">888</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tsim</span> <span class="o">=</span> <span class="n">tsim</span>
+<span class="g g-Whitespace">    </span><span class="mi">889</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simsolution</span> <span class="o">=</span> <span class="n">profile</span>
 
-<span class="nn">/anaconda3/envs/spring2021/lib/python3.8/site-packages/pyomo/dae/simulator.py</span> in <span class="ni">_simulate_with_casadi_no_inputs</span><span class="nt">(self, initcon, tsim, integrator, integrator_options)</span>
-<span class="g g-Whitespace">    </span><span class="mi">967</span>         <span class="n">integrator_options</span><span class="p">[</span><span class="s1">&#39;output_t0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="g g-Whitespace">    </span><span class="mi">968</span>         <span class="n">F</span> <span class="o">=</span> <span class="n">casadi</span><span class="o">.</span><span class="n">integrator</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">integrator</span><span class="p">,</span> <span class="n">dae</span><span class="p">,</span> <span class="n">integrator_options</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">969</span>         <span class="n">sol</span> <span class="o">=</span> <span class="n">F</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="n">initcon</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">970</span>         <span class="n">profile</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;xf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">full</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
-<span class="g g-Whitespace">    </span><span class="mi">971</span> 
+<span class="nn">File ~/opt/anaconda3/envs/idaes/lib/python3.10/site-packages/pyomo/dae/simulator.py:945,</span> in <span class="ni">Simulator._simulate_with_casadi_no_inputs</span><span class="nt">(self, initcon, tsim, integrator, integrator_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">943</span> <span class="n">integrator_options</span><span class="p">[</span><span class="s1">&#39;output_t0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="g g-Whitespace">    </span><span class="mi">944</span> <span class="n">F</span> <span class="o">=</span> <span class="n">casadi</span><span class="o">.</span><span class="n">integrator</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">integrator</span><span class="p">,</span> <span class="n">dae</span><span class="p">,</span> <span class="n">integrator_options</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">945</span> <span class="n">sol</span> <span class="o">=</span> <span class="n">F</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="n">initcon</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">946</span> <span class="n">profile</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;xf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">full</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
+<span class="g g-Whitespace">    </span><span class="mi">948</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_algvars</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
 
-<span class="nn">/anaconda3/envs/spring2021/lib/python3.8/site-packages/casadi/casadi.py</span> in <span class="ni">__call__</span><span class="nt">(self, *args, **kwargs)</span>
-<span class="g g-Whitespace">  </span><span class="mi">13451</span>       <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">  </span><span class="mi">13452</span>     <span class="c1"># Named inputs -&gt; return dictionary</span>
-<span class="ne">&gt; </span><span class="mi">13453</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">  </span><span class="mi">13454</span> 
-<span class="g g-Whitespace">  </span><span class="mi">13455</span>     <span class="k">def</span> <span class="nf">buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="nn">File ~/opt/anaconda3/envs/idaes/lib/python3.10/site-packages/casadi/casadi.py:7772,</span> in <span class="ni">Function.__call__</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">7769</span>       <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">7770</span>   <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">7771</span> <span class="c1"># Named inputs -&gt; return dictionary</span>
+<span class="ne">-&gt; </span><span class="mi">7772</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
-<span class="nn">/anaconda3/envs/spring2021/lib/python3.8/site-packages/casadi/casadi.py</span> in <span class="ni">call</span><span class="nt">(self, *args)</span>
-<span class="g g-Whitespace">  </span><span class="mi">12322</span> 
-<span class="g g-Whitespace">  </span><span class="mi">12323</span>         <span class="s2">&quot;&quot;&quot;</span>
-<span class="ne">&gt; </span><span class="mi">12324</span><span class="s2">         return _casadi.Function_call(self, *args)</span>
-<span class="g g-Whitespace">  </span><span class="mi">12325</span><span class="s2"> </span>
-<span class="g g-Whitespace">  </span><span class="mi">12326</span><span class="s2"> </span>
+<span class="nn">File ~/opt/anaconda3/envs/idaes/lib/python3.10/site-packages/casadi/casadi.py:6945,</span> in <span class="ni">Function.call</span><span class="nt">(self, *args)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6922</span> <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">6923</span>     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">6924</span><span class="sd">     call(Function self, std::vector&lt; casadi::DM,std::allocator&lt; casadi::DM &gt; &gt; const &amp; arg, bool always_inline=False, bool never_inline=False)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6925</span><span class="sd">     call(Function self, std::vector&lt; casadi::SX,std::allocator&lt; casadi::SX &gt; &gt; const &amp; arg, bool always_inline=False, bool never_inline=False)</span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6943</span><span class="sd"> </span>
+<span class="g g-Whitespace">   </span><span class="mi">6944</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">6945</span>     <span class="k">return</span> <span class="n">_casadi</span><span class="o">.</span><span class="n">Function_call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
 
 <span class="ne">RuntimeError</span>: .../casadi/interfaces/sundials/idas_interface.cpp:591: IDACalcIC returned &quot;IDA_NO_RECOVERY&quot;. Consult IDAS documentation.
 </pre></div>
 </div>
 </div>
 </div>
-<p>What happened? Point singularity at <span class="math notranslate nohighlight">\(x=0\)</span>.</p>
+<p>What happened? <a class="reference external" href="https://sourceforge.net/p/casadi/discussion/1271244/thread/1d895c9e/">Point singularity</a> at <span class="math notranslate nohighlight">\(x=0\)</span>.</p>
 <p>Let’s try <span class="math notranslate nohighlight">\(x=0.1\)</span> as the initial point.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1401,38 +1420,47 @@ The residual routine or the linear setup or solve routine had a recoverable erro
 </div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">RuntimeError</span><span class="g g-Whitespace">                              </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">5</span><span class="o">-</span><span class="n">d7e5a0955a84</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span> 
+<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">19</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="n">sim</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">(</span><span class="n">index1_again</span><span class="p">,</span> <span class="n">package</span><span class="o">=</span><span class="s1">&#39;casadi&#39;</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="c1"># Simulator</span>
 <span class="ne">---&gt; </span><span class="mi">19</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">profiles</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">numpoints</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">integrator</span><span class="o">=</span><span class="s1">&#39;idas&#39;</span><span class="p">,</span><span class="n">integrator_options</span><span class="o">=</span><span class="n">int_ops</span><span class="p">)</span>
 
-<span class="nn">/anaconda3/envs/spring2021/lib/python3.8/site-packages/pyomo/dae/simulator.py</span> in <span class="ni">simulate</span><span class="nt">(self, numpoints, tstep, integrator, varying_inputs, initcon, integrator_options)</span>
-<span class="g g-Whitespace">    </span><span class="mi">905</span>             <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">906</span>                 <span class="n">tsim</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> \
-<span class="ne">--&gt; </span><span class="mi">907</span>                     <span class="bp">self</span><span class="o">.</span><span class="n">_simulate_with_casadi_no_inputs</span><span class="p">(</span><span class="n">initcon</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">908</span>                                                          <span class="n">integrator</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">909</span>                                                          <span class="n">integrator_options</span><span class="p">)</span>
+<span class="nn">File ~/opt/anaconda3/envs/idaes/lib/python3.10/site-packages/pyomo/dae/simulator.py:884,</span> in <span class="ni">Simulator.simulate</span><span class="nt">(self, numpoints, tstep, integrator, varying_inputs, initcon, integrator_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">877</span>         <span class="n">tsim</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> \
+<span class="g g-Whitespace">    </span><span class="mi">878</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_simulate_with_casadi_with_inputs</span><span class="p">(</span><span class="n">initcon</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">879</span>                                                    <span class="n">varying_inputs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">880</span>                                                    <span class="n">integrator</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">881</span>                                                    <span class="n">integrator_options</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">882</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">883</span>         <span class="n">tsim</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> \
+<span class="ne">--&gt; </span><span class="mi">884</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_simulate_with_casadi_no_inputs</span><span class="p">(</span><span class="n">initcon</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">885</span>                                                  <span class="n">integrator</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">886</span>                                                  <span class="n">integrator_options</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">888</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tsim</span> <span class="o">=</span> <span class="n">tsim</span>
+<span class="g g-Whitespace">    </span><span class="mi">889</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simsolution</span> <span class="o">=</span> <span class="n">profile</span>
 
-<span class="nn">/anaconda3/envs/spring2021/lib/python3.8/site-packages/pyomo/dae/simulator.py</span> in <span class="ni">_simulate_with_casadi_no_inputs</span><span class="nt">(self, initcon, tsim, integrator, integrator_options)</span>
-<span class="g g-Whitespace">    </span><span class="mi">967</span>         <span class="n">integrator_options</span><span class="p">[</span><span class="s1">&#39;output_t0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="g g-Whitespace">    </span><span class="mi">968</span>         <span class="n">F</span> <span class="o">=</span> <span class="n">casadi</span><span class="o">.</span><span class="n">integrator</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">integrator</span><span class="p">,</span> <span class="n">dae</span><span class="p">,</span> <span class="n">integrator_options</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">969</span>         <span class="n">sol</span> <span class="o">=</span> <span class="n">F</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="n">initcon</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">970</span>         <span class="n">profile</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;xf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">full</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
-<span class="g g-Whitespace">    </span><span class="mi">971</span> 
+<span class="nn">File ~/opt/anaconda3/envs/idaes/lib/python3.10/site-packages/pyomo/dae/simulator.py:945,</span> in <span class="ni">Simulator._simulate_with_casadi_no_inputs</span><span class="nt">(self, initcon, tsim, integrator, integrator_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">943</span> <span class="n">integrator_options</span><span class="p">[</span><span class="s1">&#39;output_t0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="g g-Whitespace">    </span><span class="mi">944</span> <span class="n">F</span> <span class="o">=</span> <span class="n">casadi</span><span class="o">.</span><span class="n">integrator</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">integrator</span><span class="p">,</span> <span class="n">dae</span><span class="p">,</span> <span class="n">integrator_options</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">945</span> <span class="n">sol</span> <span class="o">=</span> <span class="n">F</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="n">initcon</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">946</span> <span class="n">profile</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;xf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">full</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
+<span class="g g-Whitespace">    </span><span class="mi">948</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_algvars</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
 
-<span class="nn">/anaconda3/envs/spring2021/lib/python3.8/site-packages/casadi/casadi.py</span> in <span class="ni">__call__</span><span class="nt">(self, *args, **kwargs)</span>
-<span class="g g-Whitespace">  </span><span class="mi">13451</span>       <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">  </span><span class="mi">13452</span>     <span class="c1"># Named inputs -&gt; return dictionary</span>
-<span class="ne">&gt; </span><span class="mi">13453</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">  </span><span class="mi">13454</span> 
-<span class="g g-Whitespace">  </span><span class="mi">13455</span>     <span class="k">def</span> <span class="nf">buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="nn">File ~/opt/anaconda3/envs/idaes/lib/python3.10/site-packages/casadi/casadi.py:7772,</span> in <span class="ni">Function.__call__</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">7769</span>       <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">7770</span>   <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">7771</span> <span class="c1"># Named inputs -&gt; return dictionary</span>
+<span class="ne">-&gt; </span><span class="mi">7772</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
-<span class="nn">/anaconda3/envs/spring2021/lib/python3.8/site-packages/casadi/casadi.py</span> in <span class="ni">call</span><span class="nt">(self, *args)</span>
-<span class="g g-Whitespace">  </span><span class="mi">12322</span> 
-<span class="g g-Whitespace">  </span><span class="mi">12323</span>         <span class="s2">&quot;&quot;&quot;</span>
-<span class="ne">&gt; </span><span class="mi">12324</span><span class="s2">         return _casadi.Function_call(self, *args)</span>
-<span class="g g-Whitespace">  </span><span class="mi">12325</span><span class="s2"> </span>
-<span class="g g-Whitespace">  </span><span class="mi">12326</span><span class="s2"> </span>
+<span class="nn">File ~/opt/anaconda3/envs/idaes/lib/python3.10/site-packages/casadi/casadi.py:6945,</span> in <span class="ni">Function.call</span><span class="nt">(self, *args)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6922</span> <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">6923</span>     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">6924</span><span class="sd">     call(Function self, std::vector&lt; casadi::DM,std::allocator&lt; casadi::DM &gt; &gt; const &amp; arg, bool always_inline=False, bool never_inline=False)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6925</span><span class="sd">     call(Function self, std::vector&lt; casadi::SX,std::allocator&lt; casadi::SX &gt; &gt; const &amp; arg, bool always_inline=False, bool never_inline=False)</span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6943</span><span class="sd"> </span>
+<span class="g g-Whitespace">   </span><span class="mi">6944</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">6945</span>     <span class="k">return</span> <span class="n">_casadi</span><span class="o">.</span><span class="n">Function_call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
 
 <span class="ne">RuntimeError</span>: .../casadi/interfaces/sundials/idas_interface.cpp:591: IDACalcIC returned &quot;IDA_NO_RECOVERY&quot;. Consult IDAS documentation.
 </pre></div>
@@ -1501,44 +1529,172 @@ The residual routine or the linear setup or solve routine had a recoverable erro
 </div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">RuntimeError</span><span class="g g-Whitespace">                              </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">6</span><span class="o">-</span><span class="mi">1</span><span class="n">f152c98c30e</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span> 
+<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">line</span> <span class="mi">24</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="n">int_ops2</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;print_stats&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s2">&quot;abstol&quot;</span><span class="p">:</span><span class="mf">1E-6</span><span class="p">,</span><span class="s2">&quot;reltol&quot;</span><span class="p">:</span><span class="mf">1E-4</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span>             <span class="s2">&quot;verbose&quot;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s2">&quot;calc_ic&quot;</span><span class="p">:</span><span class="kc">True</span><span class="p">}</span>
 <span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="c1"># Simulator</span>
 <span class="ne">---&gt; </span><span class="mi">24</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">profiles</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">numpoints</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">integrator</span><span class="o">=</span><span class="s1">&#39;idas&#39;</span><span class="p">,</span><span class="n">integrator_options</span><span class="o">=</span><span class="n">int_ops2</span><span class="p">)</span>
 
-<span class="nn">/anaconda3/envs/spring2021/lib/python3.8/site-packages/pyomo/dae/simulator.py</span> in <span class="ni">simulate</span><span class="nt">(self, numpoints, tstep, integrator, varying_inputs, initcon, integrator_options)</span>
-<span class="g g-Whitespace">    </span><span class="mi">905</span>             <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">906</span>                 <span class="n">tsim</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> \
-<span class="ne">--&gt; </span><span class="mi">907</span>                     <span class="bp">self</span><span class="o">.</span><span class="n">_simulate_with_casadi_no_inputs</span><span class="p">(</span><span class="n">initcon</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">908</span>                                                          <span class="n">integrator</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">909</span>                                                          <span class="n">integrator_options</span><span class="p">)</span>
+<span class="nn">File ~/opt/anaconda3/envs/idaes/lib/python3.10/site-packages/pyomo/dae/simulator.py:884,</span> in <span class="ni">Simulator.simulate</span><span class="nt">(self, numpoints, tstep, integrator, varying_inputs, initcon, integrator_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">877</span>         <span class="n">tsim</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> \
+<span class="g g-Whitespace">    </span><span class="mi">878</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_simulate_with_casadi_with_inputs</span><span class="p">(</span><span class="n">initcon</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">879</span>                                                    <span class="n">varying_inputs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">880</span>                                                    <span class="n">integrator</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">881</span>                                                    <span class="n">integrator_options</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">882</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">883</span>         <span class="n">tsim</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> \
+<span class="ne">--&gt; </span><span class="mi">884</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_simulate_with_casadi_no_inputs</span><span class="p">(</span><span class="n">initcon</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">885</span>                                                  <span class="n">integrator</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">886</span>                                                  <span class="n">integrator_options</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">888</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tsim</span> <span class="o">=</span> <span class="n">tsim</span>
+<span class="g g-Whitespace">    </span><span class="mi">889</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simsolution</span> <span class="o">=</span> <span class="n">profile</span>
 
-<span class="nn">/anaconda3/envs/spring2021/lib/python3.8/site-packages/pyomo/dae/simulator.py</span> in <span class="ni">_simulate_with_casadi_no_inputs</span><span class="nt">(self, initcon, tsim, integrator, integrator_options)</span>
-<span class="g g-Whitespace">    </span><span class="mi">967</span>         <span class="n">integrator_options</span><span class="p">[</span><span class="s1">&#39;output_t0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="g g-Whitespace">    </span><span class="mi">968</span>         <span class="n">F</span> <span class="o">=</span> <span class="n">casadi</span><span class="o">.</span><span class="n">integrator</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">integrator</span><span class="p">,</span> <span class="n">dae</span><span class="p">,</span> <span class="n">integrator_options</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">969</span>         <span class="n">sol</span> <span class="o">=</span> <span class="n">F</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="n">initcon</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">970</span>         <span class="n">profile</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;xf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">full</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
-<span class="g g-Whitespace">    </span><span class="mi">971</span> 
+<span class="nn">File ~/opt/anaconda3/envs/idaes/lib/python3.10/site-packages/pyomo/dae/simulator.py:945,</span> in <span class="ni">Simulator._simulate_with_casadi_no_inputs</span><span class="nt">(self, initcon, tsim, integrator, integrator_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">943</span> <span class="n">integrator_options</span><span class="p">[</span><span class="s1">&#39;output_t0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="g g-Whitespace">    </span><span class="mi">944</span> <span class="n">F</span> <span class="o">=</span> <span class="n">casadi</span><span class="o">.</span><span class="n">integrator</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">integrator</span><span class="p">,</span> <span class="n">dae</span><span class="p">,</span> <span class="n">integrator_options</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">945</span> <span class="n">sol</span> <span class="o">=</span> <span class="n">F</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="n">initcon</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">946</span> <span class="n">profile</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;xf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">full</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
+<span class="g g-Whitespace">    </span><span class="mi">948</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_algvars</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
 
-<span class="nn">/anaconda3/envs/spring2021/lib/python3.8/site-packages/casadi/casadi.py</span> in <span class="ni">__call__</span><span class="nt">(self, *args, **kwargs)</span>
-<span class="g g-Whitespace">  </span><span class="mi">13451</span>       <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">  </span><span class="mi">13452</span>     <span class="c1"># Named inputs -&gt; return dictionary</span>
-<span class="ne">&gt; </span><span class="mi">13453</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">  </span><span class="mi">13454</span> 
-<span class="g g-Whitespace">  </span><span class="mi">13455</span>     <span class="k">def</span> <span class="nf">buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="nn">File ~/opt/anaconda3/envs/idaes/lib/python3.10/site-packages/casadi/casadi.py:7772,</span> in <span class="ni">Function.__call__</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">7769</span>       <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">7770</span>   <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">7771</span> <span class="c1"># Named inputs -&gt; return dictionary</span>
+<span class="ne">-&gt; </span><span class="mi">7772</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
-<span class="nn">/anaconda3/envs/spring2021/lib/python3.8/site-packages/casadi/casadi.py</span> in <span class="ni">call</span><span class="nt">(self, *args)</span>
-<span class="g g-Whitespace">  </span><span class="mi">12322</span> 
-<span class="g g-Whitespace">  </span><span class="mi">12323</span>         <span class="s2">&quot;&quot;&quot;</span>
-<span class="ne">&gt; </span><span class="mi">12324</span><span class="s2">         return _casadi.Function_call(self, *args)</span>
-<span class="g g-Whitespace">  </span><span class="mi">12325</span><span class="s2"> </span>
-<span class="g g-Whitespace">  </span><span class="mi">12326</span><span class="s2"> </span>
+<span class="nn">File ~/opt/anaconda3/envs/idaes/lib/python3.10/site-packages/casadi/casadi.py:6945,</span> in <span class="ni">Function.call</span><span class="nt">(self, *args)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6922</span> <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">6923</span>     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">6924</span><span class="sd">     call(Function self, std::vector&lt; casadi::DM,std::allocator&lt; casadi::DM &gt; &gt; const &amp; arg, bool always_inline=False, bool never_inline=False)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6925</span><span class="sd">     call(Function self, std::vector&lt; casadi::SX,std::allocator&lt; casadi::SX &gt; &gt; const &amp; arg, bool always_inline=False, bool never_inline=False)</span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6943</span><span class="sd"> </span>
+<span class="g g-Whitespace">   </span><span class="mi">6944</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">6945</span>     <span class="k">return</span> <span class="n">_casadi</span><span class="o">.</span><span class="n">Function_call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
 
 <span class="ne">RuntimeError</span>: .../casadi/interfaces/sundials/idas_interface.cpp:591: IDACalcIC returned &quot;IDA_NO_RECOVERY&quot;. Consult IDAS documentation.
 </pre></div>
 </div>
 </div>
 </div>
+<p>Hmm, this does not make sense. Perhaps there is something subtle wrong with the model.</p>
+<p>Let’s try solving the model with Ipopt after discretizing with collocation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># discretize the model</span>
+<span class="n">index1_take_two</span><span class="o">.</span><span class="n">Obj</span> <span class="o">=</span> <span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># Add a dummy objective</span>
+<span class="n">discretizer</span> <span class="o">=</span> <span class="n">TransformationFactory</span><span class="p">(</span><span class="s1">&#39;dae.collocation&#39;</span><span class="p">)</span>
+<span class="n">discretizer</span><span class="o">.</span><span class="n">apply_to</span><span class="p">(</span><span class="n">index1_take_two</span><span class="p">,</span><span class="n">nfe</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span><span class="n">scheme</span><span class="o">=</span><span class="s1">&#39;LAGRANGE-RADAU&#39;</span><span class="p">,</span><span class="n">ncp</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># initialize</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">index1_take_two</span><span class="o">.</span><span class="n">t</span><span class="p">:</span>
+    <span class="n">index1_take_two</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">small_number</span>
+    <span class="n">index1_take_two</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">small_number</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">index1_take_two</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">index1_take_two</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">index1_take_two</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">t</span><span class="p">]()</span><span class="o">*</span><span class="n">index1_take_two</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="n">t</span><span class="p">]()</span><span class="o">/</span><span class="n">index1_take_two</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">]()</span>
+    <span class="n">index1_take_two</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">index1_take_two</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="n">t</span><span class="p">]()</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">index1_take_two</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]()</span><span class="o">**</span><span class="mi">2</span>
+        <span class="o">+</span> <span class="n">index1_take_two</span><span class="o">.</span><span class="n">g</span><span class="o">*</span><span class="n">index1_take_two</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">]())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># solve the discretized model</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;max_iter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">index1_take_two</span><span class="p">,</span><span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: max_iter=300
+
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+
+This version of Ipopt was compiled from source code available at
+    https://github.com/IDAES/Ipopt as part of the Institute for the Design of
+    Advanced Energy Systems Process Systems Engineering Framework (IDAES PSE
+    Framework) Copyright (c) 2018-2019. See https://github.com/IDAES/idaes-pse.
+
+This version of Ipopt was compiled using HSL, a collection of Fortran codes
+    for large-scale scientific computation.  All technical papers, sales and
+    publicity material resulting from use of the HSL codes within IPOPT must
+    contain the following acknowledgement:
+        HSL, a collection of Fortran codes for large-scale scientific
+        computation. See http://www.hsl.rl.ac.uk.
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:     1186
+Number of nonzeros in inequality constraint Jacobian.:        0
+Number of nonzeros in Lagrangian Hessian.............:      368
+
+Total number of variables............................:      322
+                     variables with only lower bounds:        0
+                variables with lower and upper bounds:        0
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:      320
+Total number of inequality constraints...............:        0
+        inequality constraints with only lower bounds:        0
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        0
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  1.0000000e+00 9.07e-01 0.00e+00  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1  1.0000000e+00 3.29e-01 1.89e-04  -1.7 1.14e+00  -4.0 1.00e+00 1.00e+00h  1
+   2  1.0000000e+00 1.72e-01 8.57e-04  -1.7 4.16e-01  -3.6 1.00e+00 1.00e+00h  1
+   3  1.0000000e+00 1.72e-01 8.43e-04  -2.5 2.05e+02  -4.1 1.00e+00 2.44e-04h 13
+   4  1.0000000e+00 8.00e-02 3.19e-04  -2.5 3.03e-01  -3.6 1.00e+00 1.00e+00h  1
+   5  1.0000000e+00 1.50e-01 1.98e-04  -2.5 6.09e-01    -  1.00e+00 1.00e+00h  1
+   6  1.0000000e+00 3.53e-02 4.96e-05  -2.5 1.88e-01    -  1.00e+00 1.00e+00h  1
+   7  1.0000000e+00 8.82e-03 1.24e-05  -2.5 9.41e-02    -  1.00e+00 1.00e+00h  1
+   8  1.0000000e+00 2.20e-03 3.10e-06  -3.8 4.70e-02    -  1.00e+00 1.00e+00h  1
+   9  1.0000000e+00 5.51e-04 7.74e-07  -3.8 2.35e-02    -  1.00e+00 1.00e+00h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  10  1.0000000e+00 1.38e-04 1.94e-07  -5.7 1.18e-02    -  1.00e+00 1.00e+00h  1
+  11  1.0000000e+00 3.45e-05 4.84e-08  -5.7 5.88e-03    -  1.00e+00 1.00e+00h  1
+  12  1.0000000e+00 8.61e-06 1.21e-08  -5.7 2.94e-03    -  1.00e+00 1.00e+00h  1
+  13  1.0000000e+00 2.15e-06 3.02e-09  -8.6 1.47e-03    -  1.00e+00 1.00e+00h  1
+  14  1.0000000e+00 5.38e-07 7.56e-10  -8.6 7.35e-04    -  1.00e+00 1.00e+00h  1
+  15  1.0000000e+00 1.35e-07 1.89e-10  -8.6 3.67e-04    -  1.00e+00 1.00e+00h  1
+  16  1.0000000e+00 3.36e-08 4.73e-11  -8.6 1.84e-04    -  1.00e+00 1.00e+00h  1
+  17  1.0000000e+00 8.41e-09 1.18e-11  -8.6 9.19e-05    -  1.00e+00 1.00e+00h  1
+
+Number of Iterations....: 17
+
+                                   (scaled)                 (unscaled)
+Objective...............:   1.0000000000000000e+00    1.0000000000000000e+00
+Dual infeasibility......:   1.1815139891865322e-11    1.1815139891865322e-11
+Constraint violation....:   8.4114327569828617e-09    8.4114327569828617e-09
+Complementarity.........:   0.0000000000000000e+00    0.0000000000000000e+00
+Overall NLP error.......:   8.4114327569828617e-09    8.4114327569828617e-09
+
+
+Number of objective function evaluations             = 30
+Number of objective gradient evaluations             = 18
+Number of equality constraint evaluations            = 31
+Number of inequality constraint evaluations          = 0
+Number of equality constraint Jacobian evaluations   = 18
+Number of inequality constraint Jacobian evaluations = 0
+Number of Lagrangian Hessian evaluations             = 17
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.012
+Total CPU secs in NLP function evaluations           =      0.001
+
+EXIT: Optimal Solution Found.
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Problem&#39;: [{&#39;Lower bound&#39;: -inf, &#39;Upper bound&#39;: inf, &#39;Number of objectives&#39;: 1, &#39;Number of constraints&#39;: 320, &#39;Number of variables&#39;: 322, &#39;Sense&#39;: &#39;unknown&#39;}], &#39;Solver&#39;: [{&#39;Status&#39;: &#39;ok&#39;, &#39;Message&#39;: &#39;Ipopt 3.13.2\\x3a Optimal Solution Found&#39;, &#39;Termination condition&#39;: &#39;optimal&#39;, &#39;Id&#39;: 0, &#39;Error rc&#39;: 0, &#39;Time&#39;: 0.03801298141479492}], &#39;Solution&#39;: [OrderedDict([(&#39;number of solutions&#39;, 0), (&#39;number of solutions displayed&#39;, 0)])]}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Take away: There is something strange with formulation 3 that is causing the numeric integrator to fail. We can still solve this problem after discretizing.</p>
 </section>
 <section id="formulation-4-index-1-dae-model">
 <h3><span class="section-number">2.5.3.5. </span>Formulation 4: Index-1 DAE Model<a class="headerlink" href="#formulation-4-index-1-dae-model" title="Permalink to this headline">#</a></h3>
@@ -1638,15 +1794,15 @@ Number of error test failures: 3
 Method order used on the last internal step: 5
 Method order to be used on the next internal step: 5
 Actual value of initial step size: 7.90569e-09
-Step size taken on the last internal step: 0.0120795
-Step size to be attempted on the next internal step: 0.0120795
-Current internal time reached: 0.0120795
+Step size taken on the last internal step: 0.0120796
+Step size to be attempted on the next internal step: 0.0120796
+Current internal time reached: 0.0120796
 Number of nonlinear iterations performed: 483
 Number of nonlinear convergence failures: 0
 </pre></div>
 </div>
-<img alt="../../_images/DAE-modeling_30_1.png" src="../../_images/DAE-modeling_30_1.png" />
-<img alt="../../_images/DAE-modeling_30_2.png" src="../../_images/DAE-modeling_30_2.png" />
+<img alt="../../_images/DAE-modeling_34_1.png" src="../../_images/DAE-modeling_34_1.png" />
+<img alt="../../_images/DAE-modeling_34_2.png" src="../../_images/DAE-modeling_34_2.png" />
 </div>
 </div>
 </section>

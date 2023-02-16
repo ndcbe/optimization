@@ -143,10 +143,10 @@ The project proposal should be 1 to 3 pages and includes the following sections.
 
 **Introduction** (1 paragraph):
 1.	Motivate the project and provide context for an interdisciplinary audience.
-2.	Project type A or B: What are you trying to accomplish with optimization?
-3.	Project type C: Why is the algorithm important? What type of problems is it used for?
-4.	Project type D or E: What skills do you anticipate your educational material will help future classes master? Why is this important?
-5.	What is the final deliverable for this project? What defines “success”?
+2.	Option 2 (new Pyomo example) or Option 3: What are you trying to accomplish with optimization?
+3.	Option 2 (new algorithm): Why is the algorithm important? What type of problems is it used for?
+4.	Option 1: What skills do you anticipate your educational material will help future classes master? Why is this important?
+5.	All: What is the final deliverable for this project? What defines “success”?
 
 **Details** (1/2 to 1 page):
 

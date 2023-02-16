@@ -143,10 +143,10 @@ The project proposal should be 1 to 3 pages and includes the following sections.
 
 **Introduction** (1 paragraph):
 1.	Motivate the project and provide context for an interdisciplinary audience.
-2.	Project type A or B: What are you trying to accomplish with optimization?
-3.	Project type C: Why is the algorithm important? What type of problems is it used for?
-4.	Project type D or E: What skills do you anticipate your educational material will help future classes master? Why is this important?
-5.	What is the final deliverable for this project? What defines “success”?
+2.	Option 2 (new Pyomo example) or Option 3: What are you trying to accomplish with optimization?
+3.	Option 2 (new algorithm): Why is the algorithm important? What type of problems is it used for?
+4.	Option 1: What skills do you anticipate your educational material will help future classes master? Why is this important?
+5.	All: What is the final deliverable for this project? What defines “success”?
 
 **Details** (1/2 to 1 page):
 
@@ -194,10 +194,10 @@ Describe in 1 paragraph the new content you plan to add to one of the notebooks.
 2.	Is your project feasible to finish by May?
 3.	What parts of the project do you anticipate will be most challenging?
 4.	Based on the lecture schedule in the syllabus, will you need to learn material before the rest of the class? If so, factor this into your weekly goals.
-5.	How can you structure your project to have the model ready by the progress report (~10 hours of technical work)? This will ensure you have enough time to focus on analysis and refinement.
+5.	Options 2 and 3: How can you structure your project to have the model or algorithm prototype ready by the progress report (~10 hours of technical work)? This will ensure you have enough time to focus on analysis and refinement.
 
 **New Technical Expertise** (few sentences):
-Highlight the new technical expertise are you going to learn/refine/master through this project. In this context, new means knowledge or skills related to computational optimization that you were unaware of or had not mastered before the start of the semester.
+Highlight the new technical expertise are you going to learn/refine/master through this project. In this context, *new* means knowledge or skills related to computational optimization that you were unaware of or had not mastered before the start of the semester.
 
 **References**:
 Please choose a reference style consistent with journals in your field of study.
@@ -220,7 +220,7 @@ About 1 month into the project, you should be about 30% to 40% done with the pro
 * Explain any changes to the project scope. What was the original final deliverable? What is the new final deliverable?
 
 **References**
-* If needed to support the other two sections
+* As needed to support the other sections
 
 **Draft Notebook(s) or Report**:
 * Explain the complete mathematical model (option 2: new example, option 3: research) or algorithm (option 2: theory).

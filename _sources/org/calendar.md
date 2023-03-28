@@ -13,7 +13,8 @@
 | Friday, February 24, 2023 | [](../notebooks/assignments/Algorithms1.ipynb) |
 | Friday, March 3, 2023 | [](../notebooks/assignments/Algorithms2.ipynb) |
 | Friday, March 10, 2023 | [](../notebooks/assignments/Algorithms3.ipynb) |
-| Friday, March 31, 2023 | Semester Project: Status Update |
+| Friday, April 7, 2023 | Semester Project: Status Update |
+| Tuesday, April 11, 2023 | Peer Review Due (noon ET) |
 | Monday, April 24, 2023 | Semester Project: Draft Notebook/Report Due |
 | Wednesday, April 26, 2023 | Semester Project: Peer Review Due |
 | Wednesday, May 3, 2023 | Semester Project: Notebook/Report Due |
@@ -55,11 +56,11 @@ All assignments are due at 5pm unless otherwise noted.
 | | [](../notebooks/4/NLP-Diagnostics.ipynb) |
 | Tuesday, April 04, 2023 | [](../notebooks/4/Second-Order.ipynb) |
 | Thursday, April 06, 2023 | [](../notebooks/4/Interior-Point1.ipynb) |
-| Tuesday, April 11, 2023 | [](../notebooks/4/Interior-Point2.ipynb) |
-| Thursday, April 13, 2023 | Multi-Objective Optimization |
-| Tuesday, April 18, 2023 | [](../notebooks/5/MILP.ipynb) |
+| Tuesday, April 11, 2023 | In-class semeser project peer review 1 |
+| Thursday, April 13, 2023 | [](../notebooks/4/Interior-Point2.ipynb) |
+| Tuesday, April 18, 2023 | Multi-Objective Optimization |
+| Thursday, April 20, 2023 | [](../notebooks/5/MILP.ipynb) |
 | | [](../notebooks/5/MINLP-Algorithms.ipynb) |
-| Thursday, April 20, 2023 | [](../notebooks/5/Global-Opt.ipynb) |
-| Tuesday, April 25, 2023 | Optimization with Embedded ML Models or Pyomo.DoE tutorial |
-| Thursday, April 27, 2023 | In-class semester project peer review |
+| Tuesday, April 25, 2023 | [](../notebooks/5/Global-Opt.ipynb) |
+| Thursday, April 27, 2023 | In-class semester project peer review 2 |
 | Tuesday, May 02, 2023 | Semester review, last minute project questions |

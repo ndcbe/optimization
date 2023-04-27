@@ -31,11 +31,11 @@ Select your new branch from the dropdown menu. Then navigate to the `/notebooks/
 
 ![](/media/contrib_instructions/upload-notebook.png)
 
-## Step 4: Upload any Image Files
+## Step 5: Upload any Image Files
 
 First, rename any of your image files (recommended formats: `.png`, `.jpeg`, `.jpg`) to contain a few descriptive words. You may use `-` instead of spaces. For example, `constraint_set_visualization.png`.
 
-Select your new branch from the dropdown menu. Then navigate to the `/notebooks/contrib-dev` folder and choose the **Upload files button**. IMPORTANT: The screenshot below shows the files being added to the branch `main`. Instead, you should select the branch you created in Step 3.
+Select your new branch from the dropdown menu. Then navigate to the `/media/contrib` folder and choose the **Upload files button**. IMPORTANT: The screenshot below shows the files being added to the branch `main`. Instead, you should select the branch you created in Step 3.
 
 ![](/media/contrib_instructions/upload-figures.png)
 
@@ -51,8 +51,10 @@ This should take you to a screen with the title **Open a pull request**:
 
 ![](/media/contrib_instructions/pull-request2.png)
 
-Make sure you see **main <-- your branch name**. Then add a descriptive comment (what did you change) and click **Create pull request**.
+Make sure you see **contributed_notebooks** in the base repository **<-- your branch name** in your fork repository. Then add a descriptive comment (what did you change) and click **Create pull request**.
 
 Tag `@adowling2` in the comments of your pull request.
 
-### Step 6: Run JypyterBook to Publish to the Class Website
+### Step 7: Run JypyterBook to Publish to the Class Website
+
+Prof. Dowling will take care of this step.

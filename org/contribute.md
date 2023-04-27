@@ -48,7 +48,7 @@ First, rename any of your image files (recommended formats: `.png`, `.jpeg`, `.j
 
 Select your new branch from the dropdown menu. Then navigate to the `/media/contrib` folder and choose the **Upload files button**. IMPORTANT: The screenshot below shows the files being added to the branch `main`. Instead, you should select the branch you created in Step 3.
 
-![](/media/contrib_instructions/upload-figures.png)
+![](/media/contrib_instructions/upload-images.png)
 
 ## Step 6: Create a Pull Request
 

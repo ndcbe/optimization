@@ -1,0 +1,1 @@
+This folder contains contributed images/figures from students.

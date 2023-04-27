@@ -29,7 +29,7 @@ First, rename your `.ipynb` file to contain a few descriptive words. You may use
 
 Select your new branch from the dropdown menu. Then navigate to the `/notebooks/contrib-dev` folder and choose the **Upload files button**.
 
-![](/media/contrib_instructions/upload-files.png)
+![](/media/contrib_instructions/upload-files1.png)
 
 ### Step 5: Create a Pull Request
 

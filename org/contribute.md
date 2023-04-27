@@ -27,13 +27,21 @@ To create a branch, type a meaningful name such as your project description or y
 
 First, rename your `.ipynb` file to contain a few descriptive words. You may use `-` instead of spaces. For example, `Systems-Bio-Regression.ipynb`.
 
-Select your new branch from the dropdown menu. Then navigate to the `/notebooks/contrib-dev` folder and choose the **Upload files button**.
+Select your new branch from the dropdown menu. Then navigate to the `/notebooks/contrib-dev` folder and choose the **Upload files button**. IMPORTANT: The screenshot below shows the files being added to the branch `main`. Instead, you should select the branch you created in Step 3.
 
-![](/media/contrib_instructions/upload-files1.png)
+![](/media/contrib_instructions/upload-notebook.png)
 
-### Step 5: Create a Pull Request
+## Step 4: Upload any Image Files
 
-On the [main class repository](https://github.com/ndcbe/data-and-computing), create a pull request to merge your branch on your fork into the `contributed-notebooks` branch on the main class repository. After uploading the new notebook file to your branch, you should see an orange/yellow box with your branch name.
+First, rename any of your image files (recommended formats: `.png`, `.jpeg`, `.jpg`) to contain a few descriptive words. You may use `-` instead of spaces. For example, `constraint_set_visualization.png`.
+
+Select your new branch from the dropdown menu. Then navigate to the `/notebooks/contrib-dev` folder and choose the **Upload files button**. IMPORTANT: The screenshot below shows the files being added to the branch `main`. Instead, you should select the branch you created in Step 3.
+
+![](/media/contrib_instructions/upload-figures.png)
+
+## Step 6: Create a Pull Request
+
+On the [main class repository](https://github.com/ndcbe/optimization), create a pull request to merge your branch on your fork into the `contributed-notebooks` branch on the main class repository. After uploading the new notebook file to your branch, you should see an orange/yellow box with your branch name.
 
 ![](/media/contrib_instructions/pull-request1.png)
 

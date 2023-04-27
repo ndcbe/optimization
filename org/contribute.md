@@ -38,15 +38,15 @@ To create a branch, type a meaningful name such as your project description or y
 
 First, rename your `.ipynb` file to contain a few descriptive words. You may use `-` instead of spaces. For example, `Systems-Bio-Regression.ipynb`.
 
-Select your new branch from the dropdown menu. Then navigate to the `/notebooks/contrib-dev` folder and choose the **Upload files button**. IMPORTANT: The screenshot below shows the files being added to the branch `main`. Instead, you should select the branch you created in Step 3.
+Select your new branch from the dropdown menu. Then navigate to the `/notebooks/contrib-dev` folder and choose the **Upload files button**.
 
 ![](/media/contrib_instructions/upload-notebook.png)
 
 ## Step 5: Upload any Image Files
 
-First, rename any of your image files (recommended formats: `.png`, `.jpeg`, `.jpg`) to contain a few descriptive words. You may use `-` instead of spaces. For example, `constraint_set_visualization.png`.
+First, rename any of your image files (recommended formats: `.png`, `.jpeg`, `.jpg`) to contain a few descriptive words. You may use `-` or `_` instead of spaces. For example, `constraint_set_visualization.png`.
 
-Select your new branch from the dropdown menu. Then navigate to the `/media/contrib` folder and choose the **Upload files button**. IMPORTANT: The screenshot below shows the files being added to the branch `main`. Instead, you should select the branch you created in Step 3.
+Select your new branch from the dropdown menu. Then navigate to the `/media/contrib` folder and choose the **Upload files button**.
 
 ![](/media/contrib_instructions/upload-images.png)
 

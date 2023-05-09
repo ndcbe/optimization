@@ -1,6 +1,8 @@
 # Nonlinear and Stochastic Optimization
 
-CBE/ACMS 40499 and 60499 at U. Notre Dame
+CBE/ACMS 40499 and 60499 at the University of Notre Dame
+
+Prof. Alexander Dowling (dowlinglab.nd.edu)
 
 https://ndcbe.github.io/optimization
 

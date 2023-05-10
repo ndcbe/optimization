@@ -1,0 +1,1593 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>3.3. Dynamic Optimization with Collocation and Pyomo.DAE &#8212; Nonlinear and Stochastic Optimization</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.4. Dynamic Optimization with Pyomo.DAE: An Example" href="PyomoDAE_example.html" />
+    <link rel="prev" title="3.2. Numeric Integration for DAEs" href="DAE_numeric_integration.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/cbe_logo.jpg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Nonlinear and Stochastic Optimization</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Nonlinear and Stochastic Optimization
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Organization
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../org/intro.html">
+   Welcome
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../org/syllabus.html">
+     Syllabus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../org/calendar.html">
+     Spring 2023 Calendar
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../org/semester_project.html">
+     Semester Project
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../org/contribute.html">
+     Contribution Instructions
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../org/assignments.html">
+   Assignments
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/Pyomo1.html">
+     Pyomo Homework 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/Pyomo2.html">
+     Pyomo Homework 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/Pyomo3.html">
+     Pyomo Homework 3
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">
+     Pyomo Mini-Project: Receding Horizon Stochastic Control
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/Algorithms1.html">
+     Algorithms Homework 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/Algorithms2.html">
+     Algorithms Homework 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/Algorithms3.html">
+     Algorithms Homework 3
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../assignments/Algorithms4.html">
+     Algorithms Homework 4: Interior Point Methods
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Optimization Modeling in Pyomo
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../1/getting-started.html">
+   1. Getting Started with Pyomo
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../1/Local-Install.html">
+     1.1. Local Installation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../1/Optimization-Modeling.html">
+     1.2. Optimization Modeling with Applications
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../1/Pyomo-Introduction.html">
+     1.3. Your First Optimization Problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../1/LP-NLP.html">
+     1.4. Continuous Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../1/IP.html">
+     1.5. Integer Programs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">
+     1.6. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../2/logic.html">
+   2. Logical Modeling
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/Logical_Modeling_GDP.html">
+     2.1. Logical Modeling and Generalized Disjunctive Programs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">
+     2.2. Modeling Disjunctions through the Strip Packing Problem
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="dynamics.html">
+   3. Dynamic Optimization
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="DAE_background.html">
+     3.1. Differential Algebraic Equations (DAEs)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="DAE_numeric_integration.html">
+     3.2. Numeric Integration for DAEs
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     3.3. Dynamic Optimization with Collocation and Pyomo.DAE
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="PyomoDAE_example.html">
+     3.4. Dynamic Optimization with Pyomo.DAE: An Example
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../4/uncertainty.html">
+   4. Optimization Under Uncertainty
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/SP.html">
+     4.1. Stochastic Programming
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../4/RiskMeasures.html">
+     4.2. Risk Measures and Portfolio Optimization
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../5/data.html">
+   5. Data Science and Applied Statistics
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../5/Parmest-tutorial.html">
+     5.1. Parameter estimation with
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       parmest
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../5/Parmest-generate-data.html">
+     5.2. Supplementary material: data for parmest tutorial
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">
+     5.3. Reactor Kinetics Example for Pyomo.DoE Tutorial
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Algorithms and Theory
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../6/unconstrained.html">
+   6. Unconstrained Nonlinear Optimization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../6/Math-Primer.html">
+     6.1. Linear Algebra Review and SciPy Basics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../6/Math-Primer-2.html">
+     6.2. Mathematics Primer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../6/Optimality.html">
+     6.3. Unconstrained Optimality Conditions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../6/Newton-Methods.html">
+     6.4. Newton-type Methods for Unconstrained Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../6/Quasi-Newton-Methods.html">
+     6.5. Quasi-Newton Methods for Unconstrained Optimization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../6/Globalization.html">
+     6.6. Descent and Globalization
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../7/constrained.html">
+   7. Constrained Nonlinear Optimization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../7/Convexity.html">
+     7.1. Convexity Revisited
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../7/Local-Optimality.html">
+     7.2. Local Optimality Conditions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../7/KKT-Multipliers.html">
+     7.3. Analysis of KKT Conditions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../7/Constraint-Qualifications.html">
+     7.4. Constraint Qualifications
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../7/Second-Order.html">
+     7.5. Second Order Optimality Conditions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../7/NLP-Diagnostics.html">
+     7.6. NLP Diagnostics with Degeneracy Hunter
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../7/Interior-Point1.html">
+     7.7. Simple Netwon Method for Equality Constrained NLPs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../7/Interior-Point2.html">
+     7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../8/special-topics.html">
+   8. Special Topics
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../8/MILP.html">
+     8.1. Integer Programming with Simple Branch and Bound
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../8/MINLP-Algorithms.html">
+     8.2. MINLP Algorithms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../8/Global-Opt.html">
+     8.3. Deterministic Global Optimization
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Student Contributions
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../contrib/dfo.html">
+   Derivative-Free Optimization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+  <label for="toctree-checkbox-11">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../contrib/Bayesian_Optimization1.html">
+     Bayesian Optimization Tutorial 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../contrib/Bayesian_Optimization2.html">
+     Bayesian Optimization Tutorial 2
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../contrib/sgd.html">
+   Stochastic Gradient Descent
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+  <label for="toctree-checkbox-12">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-1.html">
+     Stochastic Gradient Descent Tutorial 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-2.html">
+     Stochastic Gradient Descent Tutorial 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-3.html">
+     Stochastic Gradient Descent Tutorial 3
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../contrib/data.html">
+   Machine Learning and Applied Statistics
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+  <label for="toctree-checkbox-13">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../contrib/EM-MAP.html">
+     Expectation Maximization Algorithm and MAP Estimation
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/ndcbe/optimization/master?urlpath=tree/notebooks/3/PyomoDAE_theory.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/3/PyomoDAE_theory.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="headerbtn__text-container">Colab</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/ndcbe/optimization"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/3/PyomoDAE_theory.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../_sources/notebooks/3/PyomoDAE_theory.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#notebook-context">
+   3.3.1. Notebook Context
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#quadrature-methods">
+   3.3.2. Quadrature Methods
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#main-idea">
+     3.3.2.1. Main Idea
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#recall-the-degree-and-order-of-a-polynomial">
+     3.3.2.2. Recall: The degree and order of a polynomial
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#gauss-legendre-quadrature">
+     3.3.2.3. Gauss-Legendre Quadrature
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#why-2l-1">
+     3.3.2.4. Why
+     <span class="math notranslate nohighlight">
+      \(2L-1\)
+     </span>
+     ?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-to-determine-the-nodes-and-weights">
+     3.3.2.5. How to determine the nodes and weights?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#code">
+     3.3.2.6. Code
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#visualize-weights">
+     3.3.2.7. Visualize Weights
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#polynomial-example">
+     3.3.2.8. Polynomial Example
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#generalization">
+     3.3.2.9. Generalization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#radau-quadrature">
+     3.3.2.10. Radau Quadrature
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#differential-equations">
+     3.3.2.11. Differential Equations
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#collocation-methods">
+   3.3.3. Collocation Methods
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#what-is-a-collocation-method">
+     3.3.3.1. What is a Collocation Method?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#derivation-of-collocation-methods">
+     3.3.3.2. Derivation of Collocation Methods
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#collocation-with-orthogonal-polynomials">
+     3.3.3.3. Collocation with Orthogonal Polynomials
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#applications-to-runge-kutta">
+     3.3.3.4. Applications to Runge-Kutta
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-final-key-note">
+     3.3.3.5. A Final Key Note
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Dynamic Optimization with Collocation and Pyomo.DAE</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#notebook-context">
+   3.3.1. Notebook Context
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#quadrature-methods">
+   3.3.2. Quadrature Methods
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#main-idea">
+     3.3.2.1. Main Idea
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#recall-the-degree-and-order-of-a-polynomial">
+     3.3.2.2. Recall: The degree and order of a polynomial
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#gauss-legendre-quadrature">
+     3.3.2.3. Gauss-Legendre Quadrature
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#why-2l-1">
+     3.3.2.4. Why
+     <span class="math notranslate nohighlight">
+      \(2L-1\)
+     </span>
+     ?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-to-determine-the-nodes-and-weights">
+     3.3.2.5. How to determine the nodes and weights?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#code">
+     3.3.2.6. Code
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#visualize-weights">
+     3.3.2.7. Visualize Weights
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#polynomial-example">
+     3.3.2.8. Polynomial Example
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#generalization">
+     3.3.2.9. Generalization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#radau-quadrature">
+     3.3.2.10. Radau Quadrature
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#differential-equations">
+     3.3.2.11. Differential Equations
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#collocation-methods">
+   3.3.3. Collocation Methods
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#what-is-a-collocation-method">
+     3.3.3.1. What is a Collocation Method?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#derivation-of-collocation-methods">
+     3.3.3.2. Derivation of Collocation Methods
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#collocation-with-orthogonal-polynomials">
+     3.3.3.3. Collocation with Orthogonal Polynomials
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#applications-to-runge-kutta">
+     3.3.3.4. Applications to Runge-Kutta
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-final-key-note">
+     3.3.3.5. A Final Key Note
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="dynamic-optimization-with-collocation-and-pyomo-dae">
+<h1><span class="section-number">3.3. </span>Dynamic Optimization with Collocation and Pyomo.DAE<a class="headerlink" href="#dynamic-optimization-with-collocation-and-pyomo-dae" title="Permalink to this headline">#</a></h1>
+<p><strong>Prepared by:</strong> Prof. Alexander Dowling, Molly Dougher (<a class="reference external" href="mailto:mdoughe6&#37;&#52;&#48;nd&#46;edu">mdoughe6<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2023)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="k">if</span> <span class="s2">&quot;google.colab&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+    <span class="o">!</span>wget <span class="s2">&quot;https://raw.githubusercontent.com/ndcbe/CBE60499/main/notebooks/helper.py&quot;</span>
+    <span class="kn">import</span> <span class="nn">helper</span>
+    <span class="c1">#!pip install casadi</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">install_idaes</span><span class="p">()</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">install_ipopt</span><span class="p">()</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2023-05-04 21:32:38--  https://raw.githubusercontent.com/ndcbe/CBE60499/main/notebooks/helper.py
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.109.133, 185.199.110.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 7171 (7.0K) [text/plain]
+Saving to: ‘helper.py’
+
+helper.py           100%[===================&gt;]   7.00K  --.-KB/s    in 0s      
+
+2023-05-04 21:32:38 (45.6 MB/s) - ‘helper.py’ saved [7171/7171]
+
+Installing idaes via pip...
+idaes was successfully installed
+Running idaes get-extensions to install Ipopt, k_aug, and more...
+Ipopt 3.13.2 (x86_64-pc-linux-gnu), ASL(20190605)
+
+[K_AUG] 0.1.0, Part of the IDAES PSE framework
+Please visit https://idaes.org/ (x86_64-pc-linux-gnu), ASL(20190605)
+
+Couenne 0.5.8 -- an Open-Source solver for Mixed Integer Nonlinear Optimization
+Mailing list: couenne@list.coin-or.org
+Instructions: http://www.coin-or.org/Couenne
+couenne (x86_64-pc-linux-gnu), ASL(20190605)
+
+Bonmin 1.8.8 using Cbc 2.10.8 and Ipopt 3.13.2
+bonmin (x86_64-pc-linux-gnu), ASL(20190605)
+
+Ipopt 3.13.3 (x86_64-pc-linux-gnu), ASL(20190605)
+
+ipopt was successfully installed
+k_aug was successfuly installed
+cbc was successfuly installed
+clp was successfuly installed
+bonmin was successfuly installed
+couenne was successfuly installed
+ipopt_l1 was successfuly installed
+ 
+</pre></div>
+</div>
+</div>
+</div>
+<section id="notebook-context">
+<h2><span class="section-number">3.3.1. </span>Notebook Context<a class="headerlink" href="#notebook-context" title="Permalink to this headline">#</a></h2>
+<p><em>Summary information taken from Section 10.1 of Biegler (2010)</em></p>
+<p>As seen in the previous notebooks (2.5 and 2.6), DAEs have a vast range of applications. The goal of this section is to provide the necessary theoretical background to now look at dynamic optimization of an NLP without an embedded DAE solver (Biegler Chapter 10). A multiperiod problem is considered with piecewise polynomial elements representing different states, leading to a discretization that is the same as the Runge-Kutta methods (Biegler Chapter 9).</p>
+</section>
+<section id="quadrature-methods">
+<h2><span class="section-number">3.3.2. </span>Quadrature Methods<a class="headerlink" href="#quadrature-methods" title="Permalink to this headline">#</a></h2>
+<p>First, the relevent background on quadrature is provided so that it can be applied to the following derivation of collocation methods. These topics are applied to an example in the next section on the website. See the following resources for further information on quadrature methods:</p>
+<ul class="simple">
+<li><p>Chapter 9 in <a class="reference external" href="https://epubs.siam.org/doi/book/10.1137/1.9780898719383">Biegler (2010)</a></p></li>
+<li><p>Chapter 17 in <a class="reference external" href="https://www.sciencedirect.com/book/9780128122532/computational-nuclear-engineering-and-radiological-science-using-python">McClarren (2018)</a></p></li>
+</ul>
+<section id="main-idea">
+<h3><span class="section-number">3.3.2.1. </span>Main Idea<a class="headerlink" href="#main-idea" title="Permalink to this headline">#</a></h3>
+<p>The quadrature rule approximates the integral <span class="math notranslate nohighlight">\(I\)</span> with weighted sum of function evaluations:</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation*}
+I := \int_{-1}^{1} f(x) dx \approx \underbrace{\sum_{l=1}^{L} w_l f(x_l)}_{\text{quadrature rule}}
+\end{equation*}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x_l\)</span> are nodes (also known as abscissas)</p></li>
+<li><p><span class="math notranslate nohighlight">\(w_l\)</span> are weights</p></li>
+<li><p><span class="math notranslate nohighlight">\(n\)</span> number of nodes and weights</p></li>
+</ul>
+<p>Central questions:</p>
+<ul class="simple">
+<li><p>How to choose <em>nodes</em> and <em>weights</em>?</p></li>
+<li><p>How does this choice impact approximation error?</p></li>
+<li><p>How does <span class="math notranslate nohighlight">\(n\)</span> impact approximation error?</p></li>
+</ul>
+</section>
+<section id="recall-the-degree-and-order-of-a-polynomial">
+<h3><span class="section-number">3.3.2.2. </span>Recall: The degree and order of a polynomial<a class="headerlink" href="#recall-the-degree-and-order-of-a-polynomial" title="Permalink to this headline">#</a></h3>
+<p>Consider the polynomial:</p>
+<div class="math notranslate nohighlight">
+\[p(t) = a_0 + a_1 t + ... + a_K t^K.\]</div>
+<p><span class="math notranslate nohighlight">\(p(t)\)</span> is said to be of <strong>order K+1</strong> as it has K+1 coefficients <span class="math notranslate nohighlight">\(a_0, ... a_K\)</span>.</p>
+<p>The <strong>degree</strong> of the polynomial is the highest power with a non-zero coefficient. Thus if <span class="math notranslate nohighlight">\(a_K \neq 0\)</span>, then <span class="math notranslate nohighlight">\(p(t)\)</span> is degree K.</p>
+</section>
+<section id="gauss-legendre-quadrature">
+<h3><span class="section-number">3.3.2.3. </span>Gauss-Legendre Quadrature<a class="headerlink" href="#gauss-legendre-quadrature" title="Permalink to this headline">#</a></h3>
+<p>For a <em>specific choice of nodes and weights</em>, the quadrature rule <span class="math notranslate nohighlight">\(\sum_{l=1}^{L} w_l f(x_l)\)</span> is exact for integral <span class="math notranslate nohighlight">\(I\)</span> if <span class="math notranslate nohighlight">\(f(x)\)</span> is a polynomial of degree <span class="math notranslate nohighlight">\(2L-1\)</span> or less. This specific case is the <strong>optimal</strong> (most accurate) rule known as the Gauss-Legendre quadrature.</p>
+<p>The weights and nodes are given for <span class="math notranslate nohighlight">\(L\)</span> up to 8:</p>
+<table>
+<tbody><tr><td>$L$</td><td>$x_l$</td><td>$w_l$</td></tr></tbody>
+<tbody><tr><td>1</td><td>0</td><td>2.0000000000000000000000000</td></tr></tbody>
+<tbody><tr><td>2</td><td>±0.5773502691896257645091488</td><td>1.0000000000000000000000000</td></tr></tbody><p></p><tbody><tr><td rowspan="2">3</td><td>0</td><td>0.8888888888888888888888889</td></tr><tr><td>±0.7745966692414833770358531</td><td>0.5555555555555555555555556</td></tr></tbody><p></p><tbody><tr><td rowspan="2">4</td><td>±0.3399810435848562648026658</td><td>0.6521451548625461426269361</td></tr><tr><td>±0.8611363115940525752239465</td><td>0.3478548451374538573730639</td></tr></tbody><p></p><tbody><tr><td rowspan="3">5</td><td>0</td><td>0.5688888888888888888888889</td></tr><tr><td>±0.5384693101056830910363144</td><td>0.4786286704993664680412915</td></tr><tr><td>±0.9061798459386639927976269</td><td>0.2369268850561890875142640</td></tr></tbody><p></p><tbody><tr><td rowspan="3">6</td><td>±0.2386191860831969086305017</td><td>0.4679139345726910473898703</td></tr><tr><td>±0.6612093864662645136613996</td><td>0.3607615730481386075698335</td></tr><tr><td>±0.9324695142031520278123016</td><td>0.1713244923791703450402961</td></tr></tbody><p></p><tbody><tr><td rowspan="4">7</td><td>0</td><td>0.4179591836734693877551020</td></tr><tr><td>±0.4058451513773971669066064</td><td>0.3818300505051189449503698</td></tr><tr><td>±0.7415311855993944398638648</td><td>0.2797053914892766679014678</td></tr><tr><td>±0.9491079123427585245261897</td><td>0.1294849661688696932706114</td></tr></tbody><p></p><tbody><tr><td rowspan="4">8</td><td>±0.1834346424956498049394761</td><td>0.3626837833783619829651504</td></tr><tr><td>±0.5255324099163289858177390</td><td>0.3137066458778872873379622</td></tr><tr><td>±0.7966664774136267395915539</td><td>0.2223810344533744705443560</td></tr><tr><td>±0.9602898564975362316835609</td><td>0.1012285362903762591525314</td></tr></tbody>
+</table></section>
+<section id="why-2l-1">
+<h3><span class="section-number">3.3.2.4. </span>Why <span class="math notranslate nohighlight">\(2L-1\)</span>?<a class="headerlink" href="#why-2l-1" title="Permalink to this headline">#</a></h3>
+<p>Let <span class="math notranslate nohighlight">\(f(x) = a_{2L-1} x^{2L-1} + a_{2L-2} x^{2L-2} + ... + a_{1} x^1 + a_{0}\)</span></p>
+<p>This polynomial has <span class="math notranslate nohighlight">\(2L\)</span> coefficients. Likewise, <span class="math notranslate nohighlight">\(\int f(x)dx\)</span> has <span class="math notranslate nohighlight">\(2L\)</span> coefficients plus the constant of integration. This is the same number of degrees of freedom we have in choosing the <em>weights</em> and <em>nodes</em>.</p>
+</section>
+<section id="how-to-determine-the-nodes-and-weights">
+<h3><span class="section-number">3.3.2.5. </span>How to determine the nodes and weights?<a class="headerlink" href="#how-to-determine-the-nodes-and-weights" title="Permalink to this headline">#</a></h3>
+<p>One way to derive the Gauss-Legendre quadrature rules is by looking at the integral generic monomials of degree 0 up to <span class="math notranslate nohighlight">\(2L-1\)</span> and setting each equal to the <span class="math notranslate nohighlight">\(L\)</span> point Gauss-Legendre quadrature rule:
+$<span class="math notranslate nohighlight">\( \int\limits_{-1}^{1} dx\, a_0 x^0 =  a_0\sum_{l=1}^L w_l x_l^0,\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\( \int\limits_{-1}^{1} dx\, a_1 x^1 = a_1\sum_{l=1}^L w_l x_l^1,\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\( \vdots \)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\( \int\limits_{-1}^{1} dx\, a_{2L-1} x^{2L-1} = a_{2L-1}\sum_{l=1}^L w_l x_l^{2L-1}.\)</span><span class="math notranslate nohighlight">\(
+Notice that the \)</span>a_i<span class="math notranslate nohighlight">\( **constants cancel out** of each equation so they do not matter. This system is \)</span>2L<span class="math notranslate nohighlight">\( equations with \)</span>L<span class="math notranslate nohighlight">\( weights, \)</span>w_l<span class="math notranslate nohighlight">\(, and \)</span>L<span class="math notranslate nohighlight">\( nodes, \)</span>x_l$. We could solve these equations to get the weights and nodes, though this is not how it is done in practice generally—this is accomplished by using the theory of orthogonal polynomials.</p>
+</section>
+<section id="code">
+<h3><span class="section-number">3.3.2.6. </span>Code<a class="headerlink" href="#code" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">GLQuad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span><span class="n">dataReturn</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the Gauss-Legendre Quadrature estimate </span>
+<span class="sd">    of the integral of f(x) from -1 to 1</span>
+<span class="sd">    Inputs:</span>
+<span class="sd">    f:   name of function to integrate</span>
+<span class="sd">    L:   Order of integration rule (8 or less)</span>
+<span class="sd">    dataReturn:   determines whether weights and xs are returned</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    G-L Quadrature estimate&quot;&quot;&quot;</span>
+    
+    <span class="c1"># Set bound on L</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">L</span><span class="o">&gt;=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Enumerate over L to define weights and x in each scenario</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">L</span><span class="o">==</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span>
+        <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">L</span><span class="o">==</span><span class="mi">2</span><span class="p">):</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">3.0</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">3.0</span><span class="p">)])</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">L</span><span class="o">==</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.8888888888888888888888889</span><span class="p">,</span>
+                            <span class="mf">0.5555555555555555555555556</span><span class="p">,</span>
+                            <span class="mf">0.5555555555555555555555556</span><span class="p">])</span>
+        <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="o">-</span><span class="mf">0.7745966692414833770358531</span><span class="p">,</span>
+                       <span class="mf">0.7745966692414833770358531</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">L</span><span class="o">==</span><span class="mi">4</span><span class="p">):</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.6521451548625461426269361</span><span class="p">,</span><span class="mf">0.6521451548625461426269361</span><span class="p">,</span>
+                            <span class="mf">0.3478548451374538573730639</span><span class="p">,</span><span class="mf">0.3478548451374538573730639</span><span class="p">])</span>
+        <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.3399810435848562648026658</span><span class="p">,</span> <span class="mf">0.3399810435848562648026658</span><span class="p">,</span>
+                       <span class="o">-</span><span class="mf">0.8611363115940525752239465</span><span class="p">,</span> <span class="mf">0.8611363115940525752239465</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">L</span><span class="o">==</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5688888888888888888888889</span><span class="p">,</span>
+                            <span class="mf">0.4786286704993664680412915</span><span class="p">,</span><span class="mf">0.4786286704993664680412915</span><span class="p">,</span>
+                            <span class="mf">0.2369268850561890875142640</span><span class="p">,</span><span class="mf">0.2369268850561890875142640</span><span class="p">])</span>
+        <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="o">-</span><span class="mf">0.5384693101056830910363144</span><span class="p">,</span><span class="mf">0.5384693101056830910363144</span><span class="p">,</span>
+                       <span class="o">-</span><span class="mf">0.9061798459386639927976269</span><span class="p">,</span><span class="mf">0.9061798459386639927976269</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">L</span><span class="o">==</span><span class="mi">6</span><span class="p">):</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.4679139345726910473898703</span><span class="p">,</span><span class="mf">0.4679139345726910473898703</span><span class="p">,</span>
+                            <span class="mf">0.3607615730481386075698335</span><span class="p">,</span><span class="mf">0.3607615730481386075698335</span><span class="p">,</span>
+                            <span class="mf">0.1713244923791703450402961</span><span class="p">,</span><span class="mf">0.1713244923791703450402961</span><span class="p">])</span>
+        <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.2386191860831969086305017</span><span class="p">,</span> <span class="mf">0.2386191860831969086305017</span><span class="p">,</span>
+                       <span class="o">-</span><span class="mf">0.6612093864662645136613996</span><span class="p">,</span> <span class="mf">0.6612093864662645136613996</span><span class="p">,</span>
+                       <span class="o">-</span><span class="mf">0.9324695142031520278123016</span><span class="p">,</span> <span class="mf">0.9324695142031520278123016</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">L</span><span class="o">==</span><span class="mi">7</span><span class="p">):</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.4179591836734693877551020</span><span class="p">,</span>
+                            <span class="mf">0.3818300505051189449503698</span><span class="p">,</span><span class="mf">0.3818300505051189449503698</span><span class="p">,</span>
+                            <span class="mf">0.2797053914892766679014678</span><span class="p">,</span><span class="mf">0.2797053914892766679014678</span><span class="p">,</span>
+                            <span class="mf">0.1294849661688696932706114</span><span class="p">,</span><span class="mf">0.1294849661688696932706114</span><span class="p">])</span>
+        <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="o">-</span><span class="mf">0.4058451513773971669066064</span><span class="p">,</span><span class="mf">0.4058451513773971669066064</span><span class="p">,</span>
+                       <span class="o">-</span><span class="mf">0.7415311855993944398638648</span><span class="p">,</span><span class="mf">0.7415311855993944398638648</span><span class="p">,</span>
+                       <span class="o">-</span><span class="mf">0.9491079123427585245261897</span><span class="p">,</span><span class="mf">0.9491079123427585245261897</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">L</span><span class="o">==</span><span class="mi">8</span><span class="p">):</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.3626837833783619829651504</span><span class="p">,</span><span class="mf">0.3626837833783619829651504</span><span class="p">,</span>
+                            <span class="mf">0.3137066458778872873379622</span><span class="p">,</span><span class="mf">0.3137066458778872873379622</span><span class="p">,</span>
+                            <span class="mf">0.2223810344533744705443560</span><span class="p">,</span><span class="mf">0.2223810344533744705443560</span><span class="p">,</span>
+                            <span class="mf">0.1012285362903762591525314</span><span class="p">,</span><span class="mf">0.1012285362903762591525314</span><span class="p">])</span>
+        <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.1834346424956498049394761</span><span class="p">,</span> <span class="mf">0.1834346424956498049394761</span><span class="p">,</span>
+                       <span class="o">-</span><span class="mf">0.5255324099163289858177390</span><span class="p">,</span> <span class="mf">0.5255324099163289858177390</span><span class="p">,</span>
+                       <span class="o">-</span><span class="mf">0.7966664774136267395915539</span><span class="p">,</span> <span class="mf">0.7966664774136267395915539</span><span class="p">,</span>
+                       <span class="o">-</span><span class="mf">0.9602898564975362316835609</span><span class="p">,</span> <span class="mf">0.9602898564975362316835609</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span> <span class="c1">#use numpy&#39;s function</span>
+        <span class="n">xs</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">legendre</span><span class="o">.</span><span class="n">leggauss</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+    
+    <span class="c1"># Calculate the quadrature estimate</span>
+    <span class="n">quad_estimate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="n">xs</span><span class="p">))</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">dataReturn</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">quad_estimate</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">xs</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">quad_estimate</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="visualize-weights">
+<h3><span class="section-number">3.3.2.7. </span>Visualize Weights<a class="headerlink" href="#visualize-weights" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Establish L</span>
+<span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">15</span><span class="p">)</span>
+<span class="c1"># Define a lambda function</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
+
+<span class="c1"># Define the figure</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="c1"># Loop over L</span>
+<span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">L</span><span class="p">:</span>
+    <span class="c1"># Calculate quadrature estimate</span>
+    <span class="n">quad_est</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">xs</span> <span class="o">=</span> <span class="n">GLQuad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">dataReturn</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">levels</span> <span class="o">=</span> <span class="n">weights</span><span class="o">*</span><span class="mi">0</span> <span class="o">+</span> <span class="n">l</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">levels</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">weights</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="c1"># Format the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s2">&quot;in&quot;</span><span class="p">,</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Gauss-Legendre Quadrature Points</span><span class="se">\n</span><span class="s2">Size of Point is Weight&quot;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/PyomoDAE_theory_14_0.png" src="../../_images/PyomoDAE_theory_14_0.png" />
+</div>
+</div>
+</section>
+<section id="polynomial-example">
+<h3><span class="section-number">3.3.2.8. </span>Polynomial Example<a class="headerlink" href="#polynomial-example" title="Permalink to this headline">#</a></h3>
+<p>As a simple demonstration of the Gauss-Legendre quadrature, let’s show that it integrates polynomials of degree <span class="math notranslate nohighlight">\(2L-1\)</span> exactly.  Consider the integral
+$<span class="math notranslate nohighlight">\(\int\limits_{-1}^1 (x+1)^{2L-1}\,dx = \frac{2^{2 L-1}}{L}.\)</span>$</p>
+<p>We can use the GLQuad function to evaluate the error.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">12</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">L</span><span class="p">:</span>
+    
+    <span class="c1"># Create f</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">l</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="c1"># Evaluate exact (analytic) solution</span>
+    <span class="n">integral</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">l</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">l</span>
+    
+    <span class="c1"># Evaluate quadrature rule</span>
+    <span class="n">GLintegral</span> <span class="o">=</span> <span class="n">GLQuad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">l</span><span class="p">)</span>
+    
+    <span class="c1"># Print results</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;L =&quot;</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2"> Estimate is&quot;</span><span class="p">,</span><span class="n">GLintegral</span><span class="p">,</span>
+          <span class="s2">&quot;Exact value is&quot;</span><span class="p">,</span><span class="n">integral</span><span class="p">,</span> 
+          <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Abs. Relative Error is&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">GLintegral</span><span class="o">-</span><span class="n">integral</span><span class="p">)</span><span class="o">/</span><span class="n">integral</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>L = 1 	 Estimate is 2.0 Exact value is 2.0 
+Abs. Relative Error is 0.0
+L = 2 	 Estimate is 3.9999999999999996 Exact value is 4.0 
+Abs. Relative Error is 1.1102230246251565e-16
+L = 3 	 Estimate is 10.666666666666668 Exact value is 10.666666666666666 
+Abs. Relative Error is 1.6653345369377348e-16
+L = 4 	 Estimate is 31.99999999999999 Exact value is 32.0 
+Abs. Relative Error is 3.3306690738754696e-16
+L = 5 	 Estimate is 102.39999999999995 Exact value is 102.4 
+Abs. Relative Error is 5.551115123125783e-16
+L = 6 	 Estimate is 341.33333333333337 Exact value is 341.3333333333333 
+Abs. Relative Error is 1.6653345369377348e-16
+L = 7 	 Estimate is 1170.2857142857135 Exact value is 1170.2857142857142 
+Abs. Relative Error is 5.828670879282072e-16
+L = 8 	 Estimate is 4096.000000000003 Exact value is 4096.0 
+Abs. Relative Error is 6.661338147750939e-16
+L = 9 	 Estimate is 14563.555555555577 Exact value is 14563.555555555555 
+Abs. Relative Error is 1.4988010832439613e-15
+L = 10 	 Estimate is 52428.799999999974 Exact value is 52428.8 
+Abs. Relative Error is 5.551115123125783e-16
+L = 11 	 Estimate is 190650.181818181 Exact value is 190650.18181818182 
+Abs. Relative Error is 4.274358644806853e-15
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="generalization">
+<h3><span class="section-number">3.3.2.9. </span>Generalization<a class="headerlink" href="#generalization" title="Permalink to this headline">#</a></h3>
+<p>We are generally interested in integrals not just over the domain <span class="math notranslate nohighlight">\(x\in [-1,1]\)</span>.  We’ll now make a function that does Gauss-Legendre quadrature over a general range using the formula
+$<span class="math notranslate nohighlight">\(\int_a^b f(x)\,dx = \frac{b-a}{2} \int_{-1}^1 f\left(\frac{b-a}{2}z + \frac{a+b}{2}\right)\,dz.\)</span>$</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generalGL</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">L</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the Gauss-Legendre Quadrature estimate </span>
+<span class="sd">    of the integral of f(x) from a to b</span>
+<span class="sd">    Inputs:</span>
+<span class="sd">    f:   name of function to integrate</span>
+<span class="sd">    a:   lower bound of integral</span>
+<span class="sd">    b:   upper bound of integral</span>
+<span class="sd">    L:   Order of integration rule (8 or less)</span>
+<span class="sd">    Returns:</span>
+<span class="sd">    G-L Quadrature estimate&quot;&quot;&quot;</span>
+    
+    <span class="c1"># Set bound on L</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">L</span><span class="o">&gt;=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Define a re-scaled f</span>
+    <span class="n">f_rescaled</span> <span class="o">=</span> <span class="k">lambda</span>  <span class="n">z</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">z</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">))</span>
+
+    <span class="c1"># Define the integral</span>
+    <span class="n">integral</span> <span class="o">=</span> <span class="n">GLQuad</span><span class="p">(</span><span class="n">f_rescaled</span><span class="p">,</span><span class="n">L</span><span class="p">)</span>
+
+    <span class="c1"># Calculate the G-L quadrature estimate</span>
+    <span class="k">return</span> <span class="n">integral</span><span class="o">*</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s show that this version integrates polynomials of degree <span class="math notranslate nohighlight">\(2L-1\)</span> exactly.  Consider the integral
+$<span class="math notranslate nohighlight">\(\int\limits_{-3}^2 (x+1)^{2L-1}\,dx = \frac{9^L-4^L}{2 L}.\)</span>$</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="c1"># Loop over L to calculate the integral and the G-L estimate</span>
+<span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">L</span><span class="p">:</span>
+    <span class="c1"># Define a lambda function</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">l</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># Calculate the integral</span>
+    <span class="n">integral</span> <span class="o">=</span> <span class="p">(</span><span class="mi">9</span><span class="o">**</span><span class="n">l</span><span class="o">-</span><span class="mi">4</span><span class="o">**</span><span class="n">l</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">l</span><span class="p">)</span>
+    <span class="c1"># Calculate the estimate</span>
+    <span class="n">GLintegral</span> <span class="o">=</span> <span class="n">generalGL</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">l</span><span class="p">)</span>
+    <span class="c1"># Print statement for the error comparison</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;L =&quot;</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2"> Estimate is&quot;</span><span class="p">,</span><span class="n">GLintegral</span><span class="p">,</span>
+          <span class="s2">&quot;Exact value is&quot;</span><span class="p">,</span><span class="n">integral</span><span class="p">,</span> 
+          <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Abs. Relative Error is&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">GLintegral</span><span class="o">-</span><span class="n">integral</span><span class="p">)</span><span class="o">/</span><span class="n">integral</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>L = 1 	 Estimate is 2.5 Exact value is 2.5 
+Abs. Relative Error is 0.0
+L = 2 	 Estimate is 16.249999999999996 Exact value is 16.25 
+Abs. Relative Error is 2.1862853408003084e-16
+L = 3 	 Estimate is 110.83333333333336 Exact value is 110.83333333333333 
+Abs. Relative Error is 2.5643647606379557e-16
+L = 4 	 Estimate is 788.1249999999999 Exact value is 788.125 
+Abs. Relative Error is 1.4424975444455643e-16
+L = 5 	 Estimate is 5802.500000000002 Exact value is 5802.5 
+Abs. Relative Error is 3.1348374037843283e-16
+L = 6 	 Estimate is 43945.4166666667 Exact value is 43945.416666666664 
+Abs. Relative Error is 8.278403262589113e-16
+L = 7 	 Estimate is 340470.35714285733 Exact value is 340470.35714285716 
+Abs. Relative Error is 5.128874777992276e-16
+L = 8 	 Estimate is 2686324.0625 Exact value is 2686324.0625 
+Abs. Relative Error is 0.0
+L = 9 	 Estimate is 21508796.944444507 Exact value is 21508796.944444444 
+Abs. Relative Error is 2.9443736549946913e-15
+L = 10 	 Estimate is 174286791.24999988 Exact value is 174286791.25 
+Abs. Relative Error is 6.839835003892255e-16
+L = 11 	 Estimate is 1426221150.2272635 Exact value is 1426221150.2272727 
+Abs. Relative Error is 6.5195531446713024e-15
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="radau-quadrature">
+<h3><span class="section-number">3.3.2.10. </span>Radau Quadrature<a class="headerlink" href="#radau-quadrature" title="Permalink to this headline">#</a></h3>
+<p>Sometimes we desire either:</p>
+<ul class="simple">
+<li><p>The first node is at the beginning of the interval, i.e., <span class="math notranslate nohighlight">\(x_1 = -1\)</span> or</p></li>
+<li><p>The last node is at the end of the interval, i.e., <span class="math notranslate nohighlight">\(x_{L} = 1\)</span>.</p></li>
+</ul>
+<p>This is known as <strong>Gauss-Radu quadrature</strong>. The remaining nodes and weights are chosen optimally; thus, Radu quadrature <em>exactly</em> integrates <em>all</em> polynomials of degree <span class="math notranslate nohighlight">\(2L-2\)</span> or less. Specifying one of the nodes leaves only <span class="math notranslate nohighlight">\(2L-1\)</span> degrees of freedom.</p>
+<p>More info: <a class="reference external" href="http://mathworld.wolfram.com/RadauQuadrature.html">http://mathworld.wolfram.com/RadauQuadrature.html</a></p>
+</section>
+<section id="differential-equations">
+<h3><span class="section-number">3.3.2.11. </span>Differential Equations<a class="headerlink" href="#differential-equations" title="Permalink to this headline">#</a></h3>
+<p>Consider solving the differential equation</p>
+<div class="math notranslate nohighlight">
+\[\dot{x} = f(t,x), \quad x(t_0) = x_0,\]</div>
+<p>to determine <span class="math notranslate nohighlight">\(x(t_f)\)</span>. This can be expressed as an integral:</p>
+<div class="math notranslate nohighlight">
+\[x(t_f) = \int_{t_0}^{t_f} \frac{dx}{dt} dt + x_0 = \underbrace{\int_{t_0}^{t_f} f(t, x(t)) dt}_{\text{quadrature rule}} + x_0\]</div>
+<p>Thus, Runge-Kutta methods can be interpreted as a quadrature rule.</p>
+</section>
+</section>
+<section id="collocation-methods">
+<h2><span class="section-number">3.3.3. </span>Collocation Methods<a class="headerlink" href="#collocation-methods" title="Permalink to this headline">#</a></h2>
+<p>See the following resources for more information on collocation:</p>
+<ul class="simple">
+<li><p>Chapter 10 in <a class="reference external" href="https://epubs.siam.org/doi/book/10.1137/1.9780898719383">Biegler (2010)</a></p></li>
+</ul>
+<section id="what-is-a-collocation-method">
+<h3><span class="section-number">3.3.3.1. </span>What is a Collocation Method?<a class="headerlink" href="#what-is-a-collocation-method" title="Permalink to this headline">#</a></h3>
+<p><a class="reference external" href="https://encyclopediaofmath.org/wiki/Collocation_method">https://encyclopediaofmath.org/wiki/Collocation_method</a></p>
+<p>Collocation methods are relevant to DAE systems because they are a way of numerically solving integral and differential equations. Given <span class="math notranslate nohighlight">\(n\)</span> points (i.e., collocation points), the solution can be approximated such that conditions are satisfied at each collocation point. Then the approximate solution exists as a system of <span class="math notranslate nohighlight">\(n\)</span> equations.</p>
+</section>
+<section id="derivation-of-collocation-methods">
+<h3><span class="section-number">3.3.3.2. </span>Derivation of Collocation Methods<a class="headerlink" href="#derivation-of-collocation-methods" title="Permalink to this headline">#</a></h3>
+<p><em>Derivations are followed from Section 10.2 of Biegler (2010).</em></p>
+<p>Consider the following multiperiod dynamic optimization problem (8.5).</p>
+<p>\begin{aligned}
+\min &amp; \sum_{l=1}^{N_T} \Phi^l\left(z^l\left(t_l\right), y^l\left(t_l\right), u^l\left(t_l\right), p^l\right) \
+\text { s.t. } &amp; \frac{d z^l}{d t}=f^l\left(z^l(t), y^l(t), u^l(t), p^l\right), \quad z^l\left(t_{l-1}\right)=z_0^l, \
+&amp; g^l\left(z^l(t), y^l(t), u^l(t), p^l\right)=0, \
+&amp; u_L^l \leq u^l(t) \leq u_U^l, \
+&amp; p_L^l \leq p^l \leq p_U^l, \
+&amp; y_L^l \leq y^l(t) \leq y_U^l, \
+&amp; z_L^l \leq z^l(t) \leq z_U^l, \quad t \in\left(t_{l-1}, t_l\right], l=1, \ldots, N_T, \
+&amp; h\left(p, z_0^1, z^1\left(t_1\right), z_0^2, z^2\left(t_2\right), \ldots, z_0^{N_T}, z^{N_T}\left(t_{N_T}\right)\right)=0
+\end{aligned}</p>
+<p>The periods (<span class="math notranslate nohighlight">\(l\)</span>) can be represented by finite elements in time (<span class="math notranslate nohighlight">\(t\)</span>) and the state (<span class="math notranslate nohighlight">\(z\)</span>) and control variables (<span class="math notranslate nohighlight">\(u\)</span>) can be represented with polynomials (Figure 10.1).</p>
+<p><img alt="BieglerFigure10.1" src="https://github.com/mollydougher/optimization/blob/dougher-final-project/media/contrib/BieglerFigure10.1.png?raw=true" /></p>
+<p>The collocation method can be developed by solving the differential equation (<span class="math notranslate nohighlight">\( dz/dt \)</span>) at specific time points. For example, Figure 10.1 shows the state variable approximation for a single finite element:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-870e4635-0cd9-4210-9c63-a2e623ec2f8f">
+<span class="eqno">(3.11)<a class="headerlink" href="#equation-870e4635-0cd9-4210-9c63-a2e623ec2f8f" title="Permalink to this equation">#</a></span>\[\begin{align}
+z^k(t) = \alpha_0 + \alpha_1t + ... + \alpha_kt^k 
+\end{align}\]</div>
+<p>where <span class="math notranslate nohighlight">\( \alpha_n \)</span> are constants in the power series. This profile can also be represented as a Lagrange interpolation polynomial. Choosing <span class="math notranslate nohighlight">\(K+1\)</span> interpolation points within element <span class="math notranslate nohighlight">\(i\)</span>, the state can be represented as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-5f8a3e71-d28b-4831-847b-52aac4962b73">
+<span class="eqno">(3.12)<a class="headerlink" href="#equation-5f8a3e71-d28b-4831-847b-52aac4962b73" title="Permalink to this equation">#</a></span>\[\begin{align}
+&amp; t = t_{i-1} + h_i\tau , \\
+&amp; z^k(t) = \sum_{j=0}^K \ell_j(\tau)z_{ij} , \\
+&amp; \text{for } t \in [t_{i-1},t_i] \text{ and } \tau \in [0,1] , \\
+&amp; \text{where } \ell_j(\tau) = \prod_{k=0,\neq j}^K \frac{(\tau-\tau_k)}{(\tau_j-\tau_k)} \\
+&amp; \tau_0=0 \\
+&amp; \tau_j&lt;\tau_{j+1}, \\
+&amp; j=0,...,K-1 , \\
+&amp; \text{and } h_i \text{ is the length of element } i. \\
+\end{align}\]</div>
+<p>The key property of this polynomial is that
+<span class="math notranslate nohighlight">\( z^K(t_{ij})=z_{ij} \)</span> where <span class="math notranslate nohighlight">\( t_{ij}=t_{i-1} + \tau_j h_i \)</span>.</p>
+<p>We can do the same thing for the time derivative of the state (Lagrange polynomial with K interpolation points):</p>
+<div class="amsmath math notranslate nohighlight" id="equation-517b5dd6-d39f-4299-bd65-ff5c3cdcb0da">
+<span class="eqno">(3.13)<a class="headerlink" href="#equation-517b5dd6-d39f-4299-bd65-ff5c3cdcb0da" title="Permalink to this equation">#</a></span>\[\begin{align}
+z^k(t) = z_{i-1} + h_i \sum_{j=1}^K \Omega_j(\tau) \dot{z}_{ij} ,
+\end{align}\]</div>
+<p>where <span class="math notranslate nohighlight">\(z_{i-1}\)</span> represents the differential state at the beginning of element <span class="math notranslate nohighlight">\(i\)</span>, <span class="math notranslate nohighlight">\(\dot{z}_{ij}\)</span> is the time derivative, and <span class="math notranslate nohighlight">\(\Omega_j(\tau)\)</span> is a <span class="math notranslate nohighlight">\(K^{th}\)</span> order polynomial that satisfies:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-724f8378-1b8e-4dac-84a6-924745fac137">
+<span class="eqno">(3.14)<a class="headerlink" href="#equation-724f8378-1b8e-4dac-84a6-924745fac137" title="Permalink to this equation">#</a></span>\[\begin{align}
+\Omega_j(\tau)=\int_0^{\tau}\ell_j(\tau')d\tau', \text{ }t \in [t_{i-1},t_i], \text{ }\tau \in [0,1]. 
+\end{align}\]</div>
+<p>Note that this is equivalent to the implcit Runge-Kutta (IRK) representation, where <span class="math notranslate nohighlight">\(n_s=k\)</span>, <span class="math notranslate nohighlight">\(C_k=\tau_k\)</span>, <span class="math notranslate nohighlight">\(a_{kj}=\Omega_j(\tau_k)\)</span>, and <span class="math notranslate nohighlight">\(b_k=\Omega_k(1)\)</span>. We can obtain <span class="math notranslate nohighlight">\(\ell_j\)</span> and <span class="math notranslate nohighlight">\(\Omega_j\)</span> from Gauss quadrature.</p>
+<p>Collocation equations can be found by substituting the polynomial into the differential equation (<span class="math notranslate nohighlight">\( dz/dt \)</span>). The algebraic equations must hold at each interpolation point <span class="math notranslate nohighlight">\(\tau_j\)</span>. The collocation equations for the Lagrange polynomial are:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-afdd105b-178b-4328-bf9b-09e9568fd63d">
+<span class="eqno">(3.15)<a class="headerlink" href="#equation-afdd105b-178b-4328-bf9b-09e9568fd63d" title="Permalink to this equation">#</a></span>\[\begin{align}
+\sum_{j=0}^K z_{ij} \frac{d\ell_j(\tau_k)}{d\tau}=h_i f(z_{ik},t_{ik}), \text{ } k=1,...,K.
+\end{align}\]</div>
+</section>
+<section id="collocation-with-orthogonal-polynomials">
+<h3><span class="section-number">3.3.3.3. </span>Collocation with Orthogonal Polynomials<a class="headerlink" href="#collocation-with-orthogonal-polynomials" title="Permalink to this headline">#</a></h3>
+<p>With the interpolation points <span class="math notranslate nohighlight">\(\tau_k\)</span> known, then the collocation equations  become algebraic. Now <span class="math notranslate nohighlight">\(\tau_k\)</span> must be determined such that the approximation is most accurate. Representing the solution as an integral:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-72eb24e0-a003-41dc-8790-18aa92b6146c">
+<span class="eqno">(3.16)<a class="headerlink" href="#equation-72eb24e0-a003-41dc-8790-18aa92b6146c" title="Permalink to this equation">#</a></span>\[\begin{align}
+z(t_i) = z(t_{i-1}) + \int_{t_{i-1}}^{t_i} f(z(t),t)dt ,
+\end{align}\]</div>
+<p>the numerical solution is the quadrautre formula:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-5189f678-f845-4650-a582-3ba8ef4f2861">
+<span class="eqno">(3.17)<a class="headerlink" href="#equation-5189f678-f845-4650-a582-3ba8ef4f2861" title="Permalink to this equation">#</a></span>\[\begin{align}
+&amp; z(t_i) = z(t_{i-1}) + \sum_{j=1}^K \omega_j h_i f(z(t_{ij}), t_{ij}),
+&amp; t_{ij} = t_{i-1} + h_i \tau_j 
+\end{align}\]</div>
+<blockquote>
+<div><p><strong>Theorem 10.1</strong>: The quadrature formula (above) provides the exact solution to the integral (above) if <span class="math notranslate nohighlight">\(f(z(t),t)\)</span> is a polynomial in <span class="math notranslate nohighlight">\(t\)</span> of order <span class="math notranslate nohighlight">\(2K\)</span> and <span class="math notranslate nohighlight">\(\tau_j\)</span> are the roots of a <span class="math notranslate nohighlight">\(K\)</span>th degree polynomial, <span class="math notranslate nohighlight">\(P_K(\tau)\)</span> with the property:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-6f6df439-63ec-42c8-9b5e-998d43dae0d1">
+<span class="eqno">(3.18)<a class="headerlink" href="#equation-6f6df439-63ec-42c8-9b5e-998d43dae0d1" title="Permalink to this equation">#</a></span>\[\begin{align}
+&amp; \int_0^1 P_j(\tau) P_{j'}(\tau)d\tau,
+&amp; j=0,...,K-1, 
+&amp; \text{ } j'=1,...,K, 
+&amp; \text{for indices } j \neq j'.
+\end{align}\]</div>
+</div></blockquote>
+<p>This theorem justifies choosing the collocation points (<span class="math notranslate nohighlight">\(\tau_j\)</span>) as the roots of <span class="math notranslate nohighlight">\(P_K(\tau)\)</span>. <span class="math notranslate nohighlight">\(P_K(\tau)\)</span> is the shifted Gauss-Legendre polynomial that has the orthogonality property as shown by the result of the theorem. This polynomal can be broadly classified as a Gauss-Jacobi polynomial. See Section 10.2.2 of Biegler for more information.</p>
+<p>Using the roots of the Gauss-Jacobi polynomials as collocation points leads to the following results:</p>
+<ul class="simple">
+<li><p>Gauss-Legrende collocation leads to trucation error of <span class="math notranslate nohighlight">\(O(h^{2k})\)</span></p></li>
+<li><p>Gauss-Radau collocation leads to trucation error of <span class="math notranslate nohighlight">\(O(h^{2k-1})\)</span></p></li>
+</ul>
+<p>Generally, Gauss-Legendre and Radau collocation are compatible with NLP formulations.</p>
+</section>
+<section id="applications-to-runge-kutta">
+<h3><span class="section-number">3.3.3.4. </span>Applications to Runge-Kutta<a class="headerlink" href="#applications-to-runge-kutta" title="Permalink to this headline">#</a></h3>
+<p>When the Runge-Kutta basis is applied, the collocation method is seen to be an IRK method, leading to the following properties (established in Biegler Section 9.2):</p>
+<ul class="simple">
+<li><p>Collocation methods are A-stable (absolute stability) and Gauss-Legrende and Radau collocation are AN-stable (algebraically stable). Therefore,  <span class="math notranslate nohighlight">\(h_i\)</span> has no stability limit (for stiff problems). This means large time steps <span class="math notranslate nohighlight">\(h_i\)</span> can be used in systems where steady state components are captured and there are slow time scales.</p></li>
+<li><p>Radau collaction has stiff decay. Therefore, if your problem is stiff, try Radau collocation first.</p></li>
+<li><p>Gauss-Legendre and Radau collocation methods have high-order error. (Here, order refers to <span class="math notranslate nohighlight">\(z_i\)</span>.)</p></li>
+</ul>
+</section>
+<section id="a-final-key-note">
+<h3><span class="section-number">3.3.3.5. </span>A Final Key Note<a class="headerlink" href="#a-final-key-note" title="Permalink to this headline">#</a></h3>
+<p>Continuity is enforced in states accross finite element boundaries, NOT controls or algebraic variables.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./notebooks/3"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="DAE_numeric_integration.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">3.2. </span>Numeric Integration for DAEs</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="PyomoDAE_example.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3.4. </span>Dynamic Optimization with Pyomo.DAE: An Example</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Alexander Dowling, et al.<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

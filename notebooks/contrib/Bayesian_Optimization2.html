@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bayesian Optimization Tutorial 2 &#8212; Nonlinear and Stochastic Optimization</title>
     
   <!-- Loaded before other Sphinx assets -->
@@ -21,7 +20,7 @@
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
@@ -37,7 +36,7 @@
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -960,14 +959,14 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="bayesian-optimization-tutorial-2">
+  <div class="tex2jax_ignore mathjax_ignore section" id="bayesian-optimization-tutorial-2">
 <h1>Bayesian Optimization Tutorial 2<a class="headerlink" href="#bayesian-optimization-tutorial-2" title="Permalink to this headline">#</a></h1>
 <p><strong>Prepared by:</strong> <a class="reference external" href="https://github.com/Gregory-Cooper">Greg Cooper</a> (<a class="reference external" href="mailto:gcooper2&#37;&#52;&#48;nd&#46;edu">gcooper2<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2023)</p>
-<section id="history-and-motivation">
+<div class="section" id="history-and-motivation">
 <h2>History and Motivation<a class="headerlink" href="#history-and-motivation" title="Permalink to this headline">#</a></h2>
 <br>
-Baysian statistics is a subset of statistics that flips the interpretation of probability.  It was developed by Thomas Bayes in 1763, where he ponders the question of conditional probability (if one fact is know, whats are the odds of a future event). Classically probability considers probability to be the frequency that events occur while Baysian probability has come to represent not a frequency, but a degree of belief in an event occuring.  This is a nuanced and important distinction that allows for powerful insights and methods.  Together we will build up our understanding on Baysian statistics and look at one of these exciting methods called Baysian optimization.</section>
-<section id="bayes-rule">
+Baysian statistics is a subset of statistics that flips the interpretation of probability.  It was developed by Thomas Bayes in 1763, where he ponders the question of conditional probability (if one fact is know, whats are the odds of a future event). Classically probability considers probability to be the frequency that events occur while Baysian probability has come to represent not a frequency, but a degree of belief in an event occuring.  This is a nuanced and important distinction that allows for powerful insights and methods.  Together we will build up our understanding on Baysian statistics and look at one of these exciting methods called Baysian optimization.</div>
+<div class="section" id="bayes-rule">
 <h2>Bayes Rule<a class="headerlink" href="#bayes-rule" title="Permalink to this headline">#</a></h2>
 <br>
 Bayes Rule is the concept of getting the probability of an event given prior knowledge of the events / conditions that inform the outcome. The rule can be mathmatically written as follows : <br>
@@ -979,8 +978,8 @@ Bayes Rule is the concept of getting the probability of an event given prior kno
 <li><p>P(B|A)	=	probability of B given A is true</p></li>
 <li><p>P(A), P(B)	=	the independent probabilities of A and B</p></li>
 </ul>
-</section>
-<section id="an-example">
+</div>
+<div class="section" id="an-example">
 <h2>An Example<a class="headerlink" href="#an-example" title="Permalink to this headline">#</a></h2>
 <br>
 How can we apply and understand this rule.  Let's look at some practical applications of the rule.  One of the most common examples is in the medical setting regarding testing for illness.  If one supposes that there is a medical test that will correctly report a positive case 80% if you have the illness.  However, if you are not sick, that same test has a 30% chance of still reporting a positive case.  Now consider a population that has 500 sick individuals and 2000 healthy individuals.  Bayes rules lets us generate a number that says given you have a positive from this test, what are the odds (belief) you are sick.  Lets apply the formula below:<br>
@@ -997,8 +996,8 @@ $<span class="math notranslate nohighlight">\({P(A | B)} = \frac{P(B | A) * P(A)
 \)</span><span class="math notranslate nohighlight">\({P(A | B) = .4} = \frac{.8 * 500/2500}{500/2500*.8+2000/2500*.3}\)</span>$
 <br>
 So there is a 40% chance that if you recieve a positive test you are actually sick. This seems counter intuitive in that you got a postive result saying you are sick.  However, baye’s rule factors in the idea that the population and the general amount of error in the test actually make it more likely that your are healthy and recieve a false positve because there are far more healthy people than there are sick ones.  Therefore, it is about weighing the proportions of the health and sick against the how well the test preforms.</p>
-</section>
-<section id="tree-diagram">
+</div>
+<div class="section" id="tree-diagram">
 <h2>Tree Diagram<a class="headerlink" href="#tree-diagram" title="Permalink to this headline">#</a></h2>
 <br>
 Another way to visually understand the rule is to look at a tree diagram.  This intuitively helps show how the probability partitions<div class="cell docutils container">
@@ -1078,8 +1077,8 @@ We now know that we just normalize the 2 situations this occurs or .0675/(.0675+
 </div>
 </div>
 <p><br>Looking at this figure, it becomes clear the the probability of an “combined” event is the probability of one x other, ie 4/5 * 7/10 is the probability of one and the other occuring.  Because we limit ourself to the idea that the result is positive, you just need to normalize the situations where positive is one of the joint outcomes, here sick positive and healthy positive.  This gives the odds that given positive that you are sick.  Therefore, Bayes rule can be seen as partitioning the probabilities of events given some condition</p>
-</section>
-<section id="problem-1">
+</div>
+<div class="section" id="problem-1">
 <h2>Problem 1<a class="headerlink" href="#problem-1" title="Permalink to this headline">#</a></h2>
 <p>On a game show, a contestant can select one of four boxes.</p>
 <ul class="simple">
@@ -1096,8 +1095,8 @@ We now know that we just normalize the 2 situations this occurs or .0675/(.0675+
 </div>
 </div>
 </div>
-</section>
-<section id="extending-bayes-rule">
+</div>
+<div class="section" id="extending-bayes-rule">
 <h2>Extending Bayes Rule<a class="headerlink" href="#extending-bayes-rule" title="Permalink to this headline">#</a></h2>
 <p>We can further extend Bayes Rule by adding another condition to the problem.  This will have the effect of extending the conditional to be given via 2 aspects.  This makes the ideas and results more useful in more general cases.  This also helps to partition the</p>
 <p>Suppose a factory produces light bulbs, which are either “Standard” or “Premium”. 90% of the bulbs produced are Standard and the remaining 10% are Premium. Defective bulbs are produced 10% of the time for Standard bulbs and 25% of the time for Premium bulbs.</p>
@@ -1227,8 +1226,8 @@ We now know that we just normalize the 2 situations this occurs or .0675/(.0675+
 </div>
 </div>
 </div>
-</section>
-<section id="talk-on-baysian-extensions-networks-uses-more-applications">
+</div>
+<div class="section" id="talk-on-baysian-extensions-networks-uses-more-applications">
 <h2>Talk on Baysian extensions (networks, uses, more applications)<a class="headerlink" href="#talk-on-baysian-extensions-networks-uses-more-applications" title="Permalink to this headline">#</a></h2>
 <p>Now that we have understood the heart of bayes rule in the simpliest cases, we can look at how it has been extended to more complex and powerful tools.  Below are some examples with a brief summary.</p>
 <ul class="simple">
@@ -1237,12 +1236,12 @@ We now know that we just normalize the 2 situations this occurs or .0675/(.0675+
 <li><p>Bayesian belief networks extend the idea of Bayesian networks by allowing for cycles in the graph, which enables them to model feedback loops and other types of dependencies that cannot be represented using a directed acyclic graph. Bayesian belief networks are widely used in decision-making and risk analysis, and they have applications in fields such as finance, engineering, and environmental science.</p></li>
 </ul>
 <p>This is all to say the rule can be used generally to build up and make some very powerful models.</p>
-</section>
-<section id="baysian-optimization">
+</div>
+<div class="section" id="baysian-optimization">
 <h2>Baysian Optimization<a class="headerlink" href="#baysian-optimization" title="Permalink to this headline">#</a></h2>
 <p>Now we come to the heart of the notebook, Baysian Optimization which focuses on extending the rule to optimize algorithms that are hard to evaluate.  It uses a probabilistic model of the objective function to guide the search for the optimal set of input parameters. The algorithm iteratively samples input parameters and updates the probabilistic model to predict the next best set of parameters to evaluate, until the optimal set of input parameters is found. Bayesian optimization is widely used in machine learning and other domains for hyperparameter tuning and experimental design.</p>
 <p>Before we can fully understand Baysian Optimization, we need to understand the idea of a Gaussian Process.  A Gaussian Process is a collection of random variables, any finite number of which have a joint Gaussian distribution.  This means that the joint distribution of any finite number of variables is multivariate normal.  This is a very powerful tool because it allows us to model a function as a collection of random variables.  This is useful because we can then use the Gaussian Process to model the objective function that we are trying to optimize.  This is the heart of Baysian Optimization.</p>
-<section id="gaussian-process">
+<div class="section" id="gaussian-process">
 <h3>Gaussian Process<a class="headerlink" href="#gaussian-process" title="Permalink to this headline">#</a></h3>
 <p>A Gaussian process is a stochastic process with a Gaussian distribution. It is a generalization of the multivariate normal distribution to infinite dimensions. A Gaussian process is fully specified by its mean function and covariance function. The mean function is a function that maps each input point to a real number, and the covariance function is a function that maps two input points to a real number. The covariance function specifies the covariance between the outputs of the Gaussian process at the two input points. The covariance function is also known as the kernel function, and it is used to define the smoothness of the Gaussian process. The mean function and covariance function are often chosen to be linear combinations of a set of basis functions, which are also known as kernels. The Gaussian process is then defined as:</p>
 <p><span class="math notranslate nohighlight">\(y \sim \mathcal{GP}(m(x), k(x, x'))\)</span></p>
@@ -1269,8 +1268,8 @@ We now know that we just normalize the 2 situations this occurs or .0675/(.0675+
 ​</p>
 <p>​</p>
 <p>where <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> is a vector of observed function values, <span class="math notranslate nohighlight">\(\mathbf{k}* = [k(\mathbf{x}1, \mathbf{x}), k(\mathbf{x}2, \mathbf{x}), \ldots, k(\mathbf{x}n, \mathbf{x}*)]^T\)</span> is a vector of kernel evaluations between the observed input locations <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> and the new input locations <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, and <span class="math notranslate nohighlight">\(k(\mathbf{X}_, \mathbf{X}*)\)</span> is the kernel matrix evaluated at the new input locations. The covariance matrix <span class="math notranslate nohighlight">\(\mathbf{K}*\)</span> represents the uncertainty in the predicted function values at the new input locations.</p>
-</section>
-<section id="acquisition-function">
+</div>
+<div class="section" id="acquisition-function">
 <h3>Acquisition Function<a class="headerlink" href="#acquisition-function" title="Permalink to this headline">#</a></h3>
 <p>The acquisition function is a function that is used to determine the next set of parameters to evalute in the objective function.  The aquisition function measures the added benefit of each point in the space and selects the next best one.  How best is determined depends on what the aquisition function is.  This is often balancing the trade off between exploring the space and also exploiting the current knowledge of the objective function.  The most common aquisition function is the Expected Improvement (EI) function.  The EI function is defined as:</p>
 <p>Intuitively</p>
@@ -1286,8 +1285,8 @@ We now know that we just normalize the 2 situations this occurs or .0675/(.0675+
 <li><p>Probability of Improvement (PI): <span class="math notranslate nohighlight">\(x_{n+1} = \text{argmax}_{x\in\mathcal{X}} \text{PI}_n(x)\)</span>, where <span class="math notranslate nohighlight">\(\text{PI}_n(x) = P\left(f(x) &gt; f{\text{best}} - \delta\right)\)</span>, and <span class="math notranslate nohighlight">\(\delta\)</span> is a small positive constant that controls the trade-off between exploration and exploitation.</p></li>
 </ol>
 <p>(Note that this math becomes more involved depending on the specifics of your GP kernal and what you are optimizing exactly.  However, these equations are best for the general case.)</p>
-</section>
-<section id="how-it-works">
+</div>
+<div class="section" id="how-it-works">
 <h3>How it works<a class="headerlink" href="#how-it-works" title="Permalink to this headline">#</a></h3>
 <p>Bayesian optimization is a sequential model-based optimization technique for optimizing expensive-to-evaluate black-box functions. It is particularly useful when the objective function is expensive to evaluate, since it minimizes the number of evaluations needed to find the optimal solution.</p>
 <p>The main idea behind Bayesian optimization is to build a surrogate model of the objective function, which is used to select the next point to evaluate. The surrogate model is typically a Gaussian process, which provides a probabilistic model of the objective function and its uncertainty.</p>
@@ -1303,9 +1302,9 @@ We now know that we just normalize the 2 situations this occurs or .0675/(.0675+
 </ol>
 <p>Repeat steps 1-4 until a termination criterion is met, such as a maximum number of iterations or a convergence threshold.</p>
 <p>Bayesian optimization is a powerful and flexible optimization technique that can handle a wide variety of objective functions and constraints. However, it can be computationally expensive and requires careful tuning of the surrogate model and acquisition function to achieve good performance.</p>
-</section>
-</section>
-<section id="an-example-of-baysian-optimization">
+</div>
+</div>
+<div class="section" id="an-example-of-baysian-optimization">
 <h2>An example of Baysian Optimization<a class="headerlink" href="#an-example-of-baysian-optimization" title="Permalink to this headline">#</a></h2>
 <p>Lets start by defining a simple objective function to optimize.  This represents a 1-D case of a function or process that we are trying to find the max of.  Generally, we may not be able to know this function, but for the sake of learning we will here.  We will define our (pseudo) black box model as:</p>
 <div class="math notranslate nohighlight">
@@ -1626,8 +1625,8 @@ Real optimal value is 0.6, y=1.4012902947102333
 </div>
 </div>
 <p>A lot closer to the 1.4, but this is due the stocastic nature of the process.  If more smapling is done, the closer to the true optimal we will get.  Note that above will only sample in the region of interest generally.  This allows us to cut the cost down of evaluating the function.  This is the main benefit of BO.  The combination of the surrogate model and the acquisition function allows us to do this.  The surrogate model allows us to predict the function in the space, and the acquisition function allows us to sample the space in a more intelligent way.  This allows us to find the optimal faster and with less samples.</p>
-</section>
-<section id="more-realistic-example">
+</div>
+<div class="section" id="more-realistic-example">
 <h2>More realistic example<a class="headerlink" href="#more-realistic-example" title="Permalink to this headline">#</a></h2>
 <p>Now that we have covered the basic process of baysian optimization, lets try to apply it to a more realistic example and learn about the types of acquisition functions on the way.  We will use the same process as above, but we will now use a 2D function to represent the land with different diamond diposits.  The function is defined as :</p>
 <div class="math notranslate nohighlight">
@@ -1968,13 +1967,13 @@ Best x is [0.19191919 0.7979798 ], best y is 2.717369476477992
 </div>
 </div>
 <p>So it appaers that all the functions are able to find the optimal of the diamond distribtion.  However, it took significantly less time of upper confidence bound as it found it in the almost first iteration.  The other two required 100 iterations to find the optimal.  It also appears that they had the same learning curve, such that they chose the same points during the iterations.  Going back to our orginal description, this may mean that the function was smooth enough for the UCB to preform the best.</p>
-</section>
-<section id="references">
+</div>
+<div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
 <p>Agnihotri, Apoorv, and Nipun Batra. “Exploring Bayesian Optimization.” Distill, 23 Sept. 2021, <a class="reference external" href="https://distill.pub/2020/bayesian-optimization/">https://distill.pub/2020/bayesian-optimization/</a>.</p>
 <p>Brownlee, Jason. “How to Implement Bayesian Optimization from Scratch in Python.” <a class="reference external" href="http://MachineLearningMastery.com">MachineLearningMastery.com</a>, 21 Aug. 2020, <a class="reference external" href="https://machinelearningmastery.com/what-is-bayesian-optimization/">https://machinelearningmastery.com/what-is-bayesian-optimization/</a>.</p>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

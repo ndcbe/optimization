@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>4.2. Risk Measures and Portfolio Optimization &#8212; Nonlinear and Stochastic Optimization</title>
     
   <!-- Loaded before other Sphinx assets -->
@@ -21,7 +20,7 @@
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
@@ -37,7 +36,7 @@
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -1302,16 +1301,16 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="risk-measures-and-portfolio-optimization">
+  <div class="tex2jax_ignore mathjax_ignore section" id="risk-measures-and-portfolio-optimization">
 <h1><span class="section-number">4.2. </span>Risk Measures and Portfolio Optimization<a class="headerlink" href="#risk-measures-and-portfolio-optimization" title="Permalink to this headline">#</a></h1>
 <p><strong>Prepared by:</strong> Madelynn Watson (<a class="reference external" href="mailto:mwatson4&#37;&#52;&#48;nd&#46;edu">mwatson4<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2023)</p>
-<section id="introduction">
+<div class="section" id="introduction">
 <h2><span class="section-number">4.2.1. </span>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
 <p>In engineering, a common objective for optimization problems is maximizing overall profit; however, typically, static market prices are considered for different commodities which do not reflect actual market behavior. Failing to account for this uncertainty can lead to risk-inclined investments. Markowitz initially developed portfolio optimization in 1959 to de-risk financial asset portfolio returns in volatile market situations. In this framework proposed by Markowitz, a multi-objective optimization problem is considered where the expected value of the portfolio return is maximized, and the financial risk is minimized by selecting “weights” or quantities of each asset [1]. One challenge in this framework is how to quantify the financial risk. Throughout this notebook, we will examine five different risk measures (mean-variance (MV), mean-absolute deviation (MAD), Minmax (MM), value-at-risk (VaR), and conditional value-at-risk (CVaR)) and demonstrate their use in a motivating example for product portfolio optimization.</p>
-</section>
-<section id="common-risk-measures-for-portfolio-optimization">
+</div>
+<div class="section" id="common-risk-measures-for-portfolio-optimization">
 <h2><span class="section-number">4.2.2. </span>Common Risk Measures for Portfolio Optimization<a class="headerlink" href="#common-risk-measures-for-portfolio-optimization" title="Permalink to this headline">#</a></h2>
-<section id="mean-variance-mv-1-2">
+<div class="section" id="mean-variance-mv-1-2">
 <h3><span class="section-number">4.2.2.1. </span>Mean-Variance (MV) [1,2]<a class="headerlink" href="#mean-variance-mv-1-2" title="Permalink to this headline">#</a></h3>
 <p>MV was the original quantifier of risk used by Markowitz in 1959. Here the risk is defined as the variance for a given expected return. The mathematical model is detailed in the following equations where <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(x_j\)</span> represent the quantity of assets i and j, and <span class="math notranslate nohighlight">\(\sigma_{i,j}\)</span> represents the covariance of asset i and j.</p>
 <div class="amsmath math notranslate nohighlight">
@@ -1319,12 +1318,12 @@ title="Print to PDF"
 MV = \sum_{i=1}^{n} \sum_{j=1}^{n} \sigma_{i,j} x_i x_j 
 \end{align*}\]</div>
 <p>Although MV is easy to implement for simple portfolio problems, the computation of the covariance matrix makes it challenging to implement on large-scale problems. Additionally, if data is not normally distributed (a common challenge with real data) and there lies asymmetry in the probability distribution leading to a need for different risk measures to better quantify the risk-return tradeoffs.</p>
-<section id="literature-examples-using-mv">
+<div class="section" id="literature-examples-using-mv">
 <h4><span class="section-number">4.2.2.1.1. </span>Literature Examples Using MV<a class="headerlink" href="#literature-examples-using-mv" title="Permalink to this headline">#</a></h4>
 <div class="csl-entry">Xu, D., Bai, Z., Jin, X., Yang, X., Chen, S., &#38; Zhou, M. (2022). A mean-variance portfolio optimization approach for high-renewable energy hub. <i>Applied Energy</i>, <i>325</i>. https://doi.org/10.1016/j.apenergy.2022.119888</div>
-<div class="csl-entry">Chen, W., Zhang, H., Mehlawat, M. K., &#38; Jia, L. (2021). Mean–variance portfolio optimization using machine learning-based stock price prediction. <i>Applied Soft Computing</i>, <i>100</i>. https://doi.org/10.1016/j.asoc.2020.106943</div></section>
-</section>
-<section id="mean-absolute-deviation-mad-1-3">
+<div class="csl-entry">Chen, W., Zhang, H., Mehlawat, M. K., &#38; Jia, L. (2021). Mean–variance portfolio optimization using machine learning-based stock price prediction. <i>Applied Soft Computing</i>, <i>100</i>. https://doi.org/10.1016/j.asoc.2020.106943</div></div>
+</div>
+<div class="section" id="mean-absolute-deviation-mad-1-3">
 <h3><span class="section-number">4.2.2.2. </span>Mean-Absolute Deviation (MAD) [1,3]<a class="headerlink" href="#mean-absolute-deviation-mad-1-3" title="Permalink to this headline">#</a></h3>
 <p>MAD was proposed by Konno and Yamazaki in 1991. The MAD model is a variant of the MV model in which the measure of risk is replaced by the absolute deviation. The mathematical model is detailed in the following equations where <span class="math notranslate nohighlight">\(x_j\)</span> represents the quantity of asset j and <span class="math notranslate nohighlight">\(R_j\)</span> represents the return of asset j.</p>
 <div class="amsmath math notranslate nohighlight">
@@ -1332,16 +1331,16 @@ MV = \sum_{i=1}^{n} \sum_{j=1}^{n} \sigma_{i,j} x_i x_j
 MAD = E \left[ \mid \sum_{j=1}^{n} R_j x_j -E \left[ \sum_{j=1}^{n} R_j x_j \right] \mid \right]
 \end{align*}\]</div>
 <p>MAD can be employed for large-scale and highly diversified portfolio selection problems. One drawback of this risk measure is that it penalizes both positive and negative deviations.</p>
-<section id="graphical-representation-3">
+<div class="section" id="graphical-representation-3">
 <h4><span class="section-number">4.2.2.2.1. </span>Graphical Representation [3]<a class="headerlink" href="#graphical-representation-3" title="Permalink to this headline">#</a></h4>
 <p><img alt="mad.png" src="https://ndcbe.github.io/optimization/_images/contrib/mad_diagram.png" /></p>
-</section>
-<section id="literature-examples-using-mad">
+</div>
+<div class="section" id="literature-examples-using-mad">
 <h4><span class="section-number">4.2.2.2.2. </span>Literature Examples Using MAD<a class="headerlink" href="#literature-examples-using-mad" title="Permalink to this headline">#</a></h4>
 <div class="csl-entry">Hosseini-Nodeh, Z., Khanjani-Shiraz, R., &#38; Pardalos, P. M. (2023). Portfolio optimization using robust mean absolute deviation model: Wasserstein metric approach. <i>Finance Research Letters</i>. https://doi.org/10.1016/j.frl.2023.103735</div>
-<div class="csl-entry">Ferreira, L., Borenstein, D., Righi, M. B., &#38; de Almeida Filho, A. T. (2018). A fuzzy hybrid integrated framework for portfolio optimization in private banking. <i>Expert Systems with Applications</i>, <i>92</i>, 350–362. https://doi.org/10.1016/j.eswa.2017.09.055</div></section>
-</section>
-<section id="minimax-mm-1">
+<div class="csl-entry">Ferreira, L., Borenstein, D., Righi, M. B., &#38; de Almeida Filho, A. T. (2018). A fuzzy hybrid integrated framework for portfolio optimization in private banking. <i>Expert Systems with Applications</i>, <i>92</i>, 350–362. https://doi.org/10.1016/j.eswa.2017.09.055</div></div>
+</div>
+<div class="section" id="minimax-mm-1">
 <h3><span class="section-number">4.2.2.3. </span>Minimax (MM) [1]<a class="headerlink" href="#minimax-mm-1" title="Permalink to this headline">#</a></h3>
 <p>MM uses the minimum return as a measure of risk. In scenarios where the asset returns are multivariate and normally distributed, both MM and MV lead to the same result. This risk measure is simply shown below, where <span class="math notranslate nohighlight">\(M_p\)</span> represents the minimum portfolio return.</p>
 <div class="amsmath math notranslate nohighlight">
@@ -1351,12 +1350,12 @@ MM = M_p
 <p>MM has certain advantages when the returns are not normally distributed. Additionally, MM is fast due to its property of linear
 programming and can be employed for more complex models and constraints. One of the
 disadvantages of MM is its sensitivity to outliers. Hence, it cannot be used when the historical data is missing.</p>
-<section id="literature-examples-using-mm">
+<div class="section" id="literature-examples-using-mm">
 <h4><span class="section-number">4.2.2.3.1. </span>Literature Examples Using MM<a class="headerlink" href="#literature-examples-using-mm" title="Permalink to this headline">#</a></h4>
 <div class="csl-entry">Li, B., Sun, Y., Aw, G., &#38; Teo, K. L. (2019). Uncertain portfolio optimization problem under a minimax risk measure. <i>Applied Mathematical Modelling</i>, <i>76</i>, 274–281. https://doi.org/10.1016/j.apm.2019.06.019</div>
-<div class="csl-entry">Polak, G. G., Rogers, D. F., &#38; Sweeney, D. J. (2010). Risk management strategies via minimax portfolio optimization. <i>European Journal of Operational Research</i>, <i>207</i>(1), 409–419. https://doi.org/10.1016/j.ejor.2010.04.025</div></section>
-</section>
-<section id="value-at-risk-var-1-4">
+<div class="csl-entry">Polak, G. G., Rogers, D. F., &#38; Sweeney, D. J. (2010). Risk management strategies via minimax portfolio optimization. <i>European Journal of Operational Research</i>, <i>207</i>(1), 409–419. https://doi.org/10.1016/j.ejor.2010.04.025</div></div>
+</div>
+<div class="section" id="value-at-risk-var-1-4">
 <h3><span class="section-number">4.2.2.4. </span>Value-at-Risk (VaR) [1,4]<a class="headerlink" href="#value-at-risk-var-1-4" title="Permalink to this headline">#</a></h3>
 <p>VaR is a measure of how the market value of an asset is likely to reduce over a period of time under certain market
 conditions. VaR requires the determination of three parameters (i) time horizon, (ii) confidence level
@@ -1367,11 +1366,11 @@ VaR_{\beta} = \max V \\
 s.t.  \sum_{j=1}^{N} 1 \left[ V - R_j \right] \leq (1-\beta)N
 \end{align*}\]</div>
 <p>VaR can be misleading as it does not consider the worst-case loss. Additionally, VaR Jorion is discrete in nature and difficult to implement mathematically.</p>
-<section id="literature-examples-using-var">
+<div class="section" id="literature-examples-using-var">
 <h4><span class="section-number">4.2.2.4.1. </span>Literature Examples Using VaR<a class="headerlink" href="#literature-examples-using-var" title="Permalink to this headline">#</a></h4>
-<div class="csl-entry">al Janabi, M. A. M., Ferrer, R., &#38; Shahzad, S. J. H. (2019). Liquidity-adjusted value-at-risk optimization of a multi-asset portfolio using a vine copula approach. <i>Physica A: Statistical Mechanics and Its Applications</i>, <i>536</i>. https://doi.org/10.1016/j.physa.2019.122579</div></section>
-</section>
-<section id="conditional-value-at-risk-cvar-1-4">
+<div class="csl-entry">al Janabi, M. A. M., Ferrer, R., &#38; Shahzad, S. J. H. (2019). Liquidity-adjusted value-at-risk optimization of a multi-asset portfolio using a vine copula approach. <i>Physica A: Statistical Mechanics and Its Applications</i>, <i>536</i>. https://doi.org/10.1016/j.physa.2019.122579</div></div>
+</div>
+<div class="section" id="conditional-value-at-risk-cvar-1-4">
 <h3><span class="section-number">4.2.2.5. </span>Conditional Value-at-Risk (CVaR) [1,4]<a class="headerlink" href="#conditional-value-at-risk-cvar-1-4" title="Permalink to this headline">#</a></h3>
 <p>CVaR is a scenario-based approach where the condition associated with VaR is the weighted average of VaR and losses exceeding VaR. This quantity represents the expected value of the 100(1-β) % worst scenarios at a given confidence level β. CVaR is an alternative to VaR that is more sensitive to the shape of the tail of the scenario distribution. Additionally, CVaR is a coherent and convex measure of risk.</p>
 <div class="amsmath math notranslate nohighlight">
@@ -1379,29 +1378,29 @@ s.t.  \sum_{j=1}^{N} 1 \left[ V - R_j \right] \leq (1-\beta)N
 CVaR_{\beta} = VaR_{\beta} - \frac{1}{(1-\beta)N}  \sum_{j=1}^{N} max \left[ 0, VaR_{\beta} - R_j \right]
 \end{align*}\]</div>
 <p>One disadvantage of CVaR is that it cannot indicate the maximum loss that can be incurred.</p>
-<section id="graphical-representation-4">
+<div class="section" id="graphical-representation-4">
 <h4><span class="section-number">4.2.2.5.1. </span>Graphical Representation [4]<a class="headerlink" href="#graphical-representation-4" title="Permalink to this headline">#</a></h4>
 <p><img alt="cvar.PNG" src="https://ndcbe.github.io/optimization/_images/contrib/cvar_diagram.png" /></p>
 <p>*<em>In this figure EP represents the expected value of the profit distribution (average profit) where profit is representative of the portfolio return</em></p>
-</section>
-<section id="literature-examples-using-cvar">
+</div>
+<div class="section" id="literature-examples-using-cvar">
 <h4><span class="section-number">4.2.2.5.2. </span>Literature Examples Using CVaR<a class="headerlink" href="#literature-examples-using-cvar" title="Permalink to this headline">#</a></h4>
 <div class="csl-entry">Mutran, V. M., Ribeiro, C. O., Nascimento, C. A. O., &#38; Chachuat, B. (2020). Risk-conscious optimization model to support bioenergy investments in the Brazilian sugarcane industry. <i>Applied Energy</i>, <i>258</i>. https://doi.org/10.1016/j.apenergy.2019.113978</div>
-<div class="csl-entry">Xuan, A., Shen, X., Guo, Q., &#38; Sun, H. (2021). A conditional value-at-risk based planning model for integrated energy system with energy storage and renewables. <i>Applied Energy</i>, <i>294</i>. https://doi.org/10.1016/j.apenergy.2021.116971</div></section>
-</section>
-</section>
-<section id="motivating-example-product-portfolio-optimization-in-the-brazilian-sugarcane-industry">
+<div class="csl-entry">Xuan, A., Shen, X., Guo, Q., &#38; Sun, H. (2021). A conditional value-at-risk based planning model for integrated energy system with energy storage and renewables. <i>Applied Energy</i>, <i>294</i>. https://doi.org/10.1016/j.apenergy.2021.116971</div></div>
+</div>
+</div>
+<div class="section" id="motivating-example-product-portfolio-optimization-in-the-brazilian-sugarcane-industry">
 <h2><span class="section-number">4.2.3. </span>Motivating Example: Product Portfolio Optimization in the Brazilian Sugarcane Industry<a class="headerlink" href="#motivating-example-product-portfolio-optimization-in-the-brazilian-sugarcane-industry" title="Permalink to this headline">#</a></h2>
 <p>Brazil is the world leader in sugar production and exportation. In 2015, sugarcane GDP reached US$ 28.5 billion, with a production scale that achieved more than 30 million tons of sugar and 21 million cubic meters of ethanol [5]. The price of ethanol in Brazil is limited by the domestic price of oil and international fuel market conditions, and sugar prices are defined at the international commodity market. Weather conditions, international sugar prices, and instability of governmental fuel policies and subsidies create huge uncertainties in these markets [6]. Therefore, it is essential to quantify the financial risk from these volatile markets. Here we use portfolio optimization and three different risk measures to mitigate the impacts of financial risk in this industry by changing the sugarcane mill product portfolio.</p>
-<section id="problem-definition">
+<div class="section" id="problem-definition">
 <h3><span class="section-number">4.2.3.1. </span>Problem Definition<a class="headerlink" href="#problem-definition" title="Permalink to this headline">#</a></h3>
 <p>For this problem, we model a sugarcane mill that can produce sugar, ethanol, and electricity with the ability to sell electricity to free and regulated markets. The overall capacity of the sugarcane mill is 3,000,000 tonnes of sugarcane, and conversion and cost data are provided.</p>
-</section>
-<section id="process-flow-diagram">
+</div>
+<div class="section" id="process-flow-diagram">
 <h3><span class="section-number">4.2.3.2. </span>Process Flow Diagram<a class="headerlink" href="#process-flow-diagram" title="Permalink to this headline">#</a></h3>
 <p><img alt="op1.jpg" src="https://ndcbe.github.io/optimization/_images/contrib/process_PFD.jpg" /></p>
-</section>
-<section id="process-model">
+</div>
+<div class="section" id="process-model">
 <h3><span class="section-number">4.2.3.3. </span>Process Model<a class="headerlink" href="#process-model" title="Permalink to this headline">#</a></h3>
 <p><em><strong>Sets</strong></em></p>
 <div class="amsmath math notranslate nohighlight">
@@ -1448,8 +1447,8 @@ x_{reg} + x_{free} = x_{el-r}
 profit_{q} = \sum_{c \in C} x_{p} \cdot HP_{q,c} + x_{reg} \cdot \pi_{reg} - \sum_{s \in S} x_{s} \cdot PC_{s} \ \ \forall \ \ q \in Q\\
 Eprofit = \frac{1}{Q} \sum_{q \in Q} profit_{q} \\ 
 \end{align*}\]</div>
-</section>
-<section id="degree-of-freedom-dof-analysis">
+</div>
+<div class="section" id="degree-of-freedom-dof-analysis">
 <h3><span class="section-number">4.2.3.4. </span>Degree of Freedom (DOF) Analysis<a class="headerlink" href="#degree-of-freedom-dof-analysis" title="Permalink to this headline">#</a></h3>
 <p><strong>Number of Variables</strong></p>
 <div class="amsmath math notranslate nohighlight">
@@ -1474,8 +1473,8 @@ DOF = Variables - Constraints \\
 DOF = 10 + Q + 1 - 7 - Q - 1 \\
 DOF = 3
 \end{align*}\]</div>
-</section>
-<section id="visualize-input-data">
+</div>
+<div class="section" id="visualize-input-data">
 <h3><span class="section-number">4.2.3.5. </span>Visualize Input Data<a class="headerlink" href="#visualize-input-data" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1586,8 +1585,8 @@ k_aug was successfully installed
 <img alt="../../_images/RiskMeasures_45_2.png" src="../../_images/RiskMeasures_45_2.png" />
 </div>
 </div>
-</section>
-<section id="define-base-model-in-pyomo">
+</div>
+<div class="section" id="define-base-model-in-pyomo">
 <h3><span class="section-number">4.2.3.6. </span>Define Base Model in Pyomo<a class="headerlink" href="#define-base-model-in-pyomo" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1731,8 +1730,8 @@ k_aug was successfully installed
 </div>
 </div>
 </div>
-</section>
-<section id="maximize-profit-only-no-risk-measure">
+</div>
+<div class="section" id="maximize-profit-only-no-risk-measure">
 <h3><span class="section-number">4.2.3.7. </span>Maximize Profit Only (No Risk Measure)<a class="headerlink" href="#maximize-profit-only-no-risk-measure" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1773,10 +1772,10 @@ Electricity to Regulated Market 0.0 MWh
 </div>
 </div>
 </div>
-</section>
-<section id="visualize-results">
+</div>
+<div class="section" id="visualize-results">
 <h3><span class="section-number">4.2.3.8. </span>Visualize Results<a class="headerlink" href="#visualize-results" title="Permalink to this headline">#</a></h3>
-<section id="profit-distribution">
+<div class="section" id="profit-distribution">
 <h4><span class="section-number">4.2.3.8.1. </span>Profit Distribution<a class="headerlink" href="#profit-distribution" title="Permalink to this headline">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1830,8 +1829,8 @@ Difference: 103.78 M USD
 </div>
 </div>
 </div>
-</section>
-<section id="product-distribution">
+</div>
+<div class="section" id="product-distribution">
 <h4><span class="section-number">4.2.3.8.2. </span>Product Distribution<a class="headerlink" href="#product-distribution" title="Permalink to this headline">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1853,12 +1852,12 @@ Difference: 103.78 M USD
 <img alt="../../_images/RiskMeasures_54_0.png" src="../../_images/RiskMeasures_54_0.png" />
 </div>
 </div>
-</section>
-</section>
-</section>
-<section id="solve-model-with-risk-measures">
+</div>
+</div>
+</div>
+<div class="section" id="solve-model-with-risk-measures">
 <h2><span class="section-number">4.2.4. </span>Solve Model with Risk Measures<a class="headerlink" href="#solve-model-with-risk-measures" title="Permalink to this headline">#</a></h2>
-<section id="formulate-the-mv-objective">
+<div class="section" id="formulate-the-mv-objective">
 <h3><span class="section-number">4.2.4.1. </span>Formulate the MV Objective<a class="headerlink" href="#formulate-the-mv-objective" title="Permalink to this headline">#</a></h3>
 <p><em><strong>Additional Parameters</strong></em></p>
 <div class="amsmath math notranslate nohighlight">
@@ -1875,7 +1874,7 @@ r^{lin} &amp; = \frac{HP_{q+\Delta q} - HP_q}{HP_q}  \ for \ c \in C
 \[\begin{align*}
 minimize \ MV = \sum_{i=1}^{n} \sum_{j=1}^{n} \sigma_{i,j} x_i x_j 
 \end{align*}\]</div>
-<section id="calculate-the-covariance-matrix">
+<div class="section" id="calculate-the-covariance-matrix">
 <h4><span class="section-number">4.2.4.1.1. </span>Calculate the Covariance Matrix<a class="headerlink" href="#calculate-the-covariance-matrix" title="Permalink to this headline">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1944,11 +1943,11 @@ Electricity to Regulated Market 157023.45 MWh
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="id1">
+</div>
+</div>
+<div class="section" id="id1">
 <h3><span class="section-number">4.2.4.2. </span>Visualize Results<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
-<section id="id2">
+<div class="section" id="id2">
 <h4><span class="section-number">4.2.4.2.1. </span>Profit Distribution<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1998,8 +1997,8 @@ Difference: 91.68 M USD
 </div>
 </div>
 </div>
-</section>
-<section id="id3">
+</div>
+<div class="section" id="id3">
 <h4><span class="section-number">4.2.4.2.2. </span>Product Distribution<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2021,9 +2020,9 @@ Difference: 91.68 M USD
 <img alt="../../_images/RiskMeasures_65_0.png" src="../../_images/RiskMeasures_65_0.png" />
 </div>
 </div>
-</section>
-</section>
-<section id="formulate-the-mad-objective">
+</div>
+</div>
+<div class="section" id="formulate-the-mad-objective">
 <h3><span class="section-number">4.2.4.3. </span>Formulate the MAD Objective<a class="headerlink" href="#formulate-the-mad-objective" title="Permalink to this headline">#</a></h3>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
@@ -2080,10 +2079,10 @@ Electricity to Regulated Market 158108.57 MWh
 </div>
 </div>
 </div>
-</section>
-<section id="id4">
+</div>
+<div class="section" id="id4">
 <h3><span class="section-number">4.2.4.4. </span>Visualize Results<a class="headerlink" href="#id4" title="Permalink to this headline">#</a></h3>
-<section id="id5">
+<div class="section" id="id5">
 <h4><span class="section-number">4.2.4.4.1. </span>Profit Distribution<a class="headerlink" href="#id5" title="Permalink to this headline">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2133,8 +2132,8 @@ Difference: 89.68 M USD
 </div>
 </div>
 </div>
-</section>
-<section id="id6">
+</div>
+<div class="section" id="id6">
 <h4><span class="section-number">4.2.4.4.2. </span>Product Distribution<a class="headerlink" href="#id6" title="Permalink to this headline">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2156,9 +2155,9 @@ Difference: 89.68 M USD
 <img alt="../../_images/RiskMeasures_73_0.png" src="../../_images/RiskMeasures_73_0.png" />
 </div>
 </div>
-</section>
-</section>
-<section id="formulate-the-cvar-objective">
+</div>
+</div>
+<div class="section" id="formulate-the-cvar-objective">
 <h3><span class="section-number">4.2.4.5. </span>Formulate the CVaR Objective<a class="headerlink" href="#formulate-the-cvar-objective" title="Permalink to this headline">#</a></h3>
 <p><em><strong>Additional Parameters</strong></em></p>
 <div class="amsmath math notranslate nohighlight">
@@ -2243,10 +2242,10 @@ Electricity to Regulated Market 159000.0 MWh
 </div>
 </div>
 </div>
-</section>
-<section id="id7">
+</div>
+<div class="section" id="id7">
 <h3><span class="section-number">4.2.4.6. </span>Visualize Results<a class="headerlink" href="#id7" title="Permalink to this headline">#</a></h3>
-<section id="id8">
+<div class="section" id="id8">
 <h4><span class="section-number">4.2.4.6.1. </span>Profit Distribution<a class="headerlink" href="#id8" title="Permalink to this headline">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2296,8 +2295,8 @@ Difference: 93.76 M USD
 </div>
 </div>
 </div>
-</section>
-<section id="id9">
+</div>
+<div class="section" id="id9">
 <h4><span class="section-number">4.2.4.6.2. </span>Product Distribution<a class="headerlink" href="#id9" title="Permalink to this headline">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2319,12 +2318,12 @@ Difference: 93.76 M USD
 <img alt="../../_images/RiskMeasures_81_0.png" src="../../_images/RiskMeasures_81_0.png" />
 </div>
 </div>
-</section>
-</section>
-</section>
-<section id="conclusion">
+</div>
+</div>
+</div>
+<div class="section" id="conclusion">
 <h2><span class="section-number">4.2.5. </span>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">#</a></h2>
-<section id="final-results-comparison">
+<div class="section" id="final-results-comparison">
 <h3><span class="section-number">4.2.5.1. </span>Final Results Comparison<a class="headerlink" href="#final-results-comparison" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2356,20 +2355,20 @@ Difference: 93.76 M USD
 <img alt="../../_images/RiskMeasures_84_0.png" src="../../_images/RiskMeasures_84_0.png" />
 </div>
 </div>
-</section>
-<section id="discussion-questions">
+</div>
+<div class="section" id="discussion-questions">
 <h3><span class="section-number">4.2.5.2. </span>Discussion Questions<a class="headerlink" href="#discussion-questions" title="Permalink to this headline">#</a></h3>
-</section>
-</section>
-<section id="references">
+</div>
+</div>
+<div class="section" id="references">
 <h2><span class="section-number">4.2.6. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
 <div class="csl-entry"> [1] Gunjan, A., &#38; Bhattacharyya, S. (2022). A brief review of portfolio optimization techniques. <i>Artificial Intelligence Review</i>. https://doi.org/10.1007/s10462-022-10273-7</div>
 <div class="csl-entry"> [2] Markowitz, H. (1959). Portfolio selection, efficient diversification of investments. Wiley, New York
 <div class="csl-entry"> [3] Konno, H., &#38; Koshizuka, T. (2005). Mean-absolute deviation model. <i>IIE Transactions (Institute of Industrial Engineers)</i>, <i>37</i>(10), 893–900. https://doi.org/10.1080/07408170591007786</div>
 <div class="csl-entry"> [4] Mutran, V. M., Ribeiro, C. O., Nascimento, C. A. O., &#38; Chachuat, B. (2020). Risk-conscious optimization model to support bioenergy investments in the Brazilian sugarcane industry. <i>Applied Energy</i>, <i>258</i>. https://doi.org/10.1016/j.apenergy.2019.113978</div>
 <div class="csl-entry"> [5] Li, L., Lin, J., Wu, N., Xie, S., Meng, C., Zheng, Y., Wang, X., &#38; Zhao, Y. (2022). Review and outlook on the international renewable energy development. In <i>Energy and Built Environment</i> (Vol. 3, Issue 2, pp. 139–157). KeAi Communications Co. https://doi.org/10.1016/j.enbenv.2020.12.002</div>
-<div class="csl-entry"> [6] Oliveira, S. M. de, Ribeiro, C. de O., &#38; Cicogna, M. P. V. (2018). Uncertainty effects on production mix and on hedging decisions: The case of Brazilian ethanol and sugar. <i>Energy Economics</i>, <i>70</i>, 516–524. https://doi.org/10.1016/j.eneco.2018.01.025</div></section>
-</section>
+<div class="csl-entry"> [6] Oliveira, S. M. de, Ribeiro, C. de O., &#38; Cicogna, M. P. V. (2018). Uncertainty effects on production mix and on hedging decisions: The case of Brazilian ethanol and sugar. <i>Energy Economics</i>, <i>70</i>, 516–524. https://doi.org/10.1016/j.eneco.2018.01.025</div></div>
+</div>
 
     <script type="text/x-thebe-config">
     {

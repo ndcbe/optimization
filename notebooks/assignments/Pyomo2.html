@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pyomo Homework 2 &#8212; Nonlinear and Stochastic Optimization</title>
     
   <!-- Loaded before other Sphinx assets -->
@@ -21,7 +20,7 @@
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
@@ -37,7 +36,7 @@
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -958,7 +957,7 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="pyomo-homework-2">
+  <div class="tex2jax_ignore mathjax_ignore section" id="pyomo-homework-2">
 <h1>Pyomo Homework 2<a class="headerlink" href="#pyomo-homework-2" title="Permalink to this headline">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -985,9 +984,9 @@ title="Print to PDF"
 </div>
 </div>
 <p>Special thanks to the Pyomo team for create these excercises as part of their excellent PyomoFest workshop.</p>
-<section id="some-advanced-pyomo-tricks">
+<div class="section" id="some-advanced-pyomo-tricks">
 <h2>Some Advanced Pyomo Tricks<a class="headerlink" href="#some-advanced-pyomo-tricks" title="Permalink to this headline">#</a></h2>
-<section id="using-the-decorator-notation-for-rules">
+<div class="section" id="using-the-decorator-notation-for-rules">
 <h3>Using the decorator notation for rules<a class="headerlink" href="#using-the-decorator-notation-for-rules" title="Permalink to this headline">#</a></h3>
 <p>Alternative notation for declaring and defining Pyomo components using decorators exists. Starting with the warehouse location problem code below, change the model to use the decorator notation.</p>
 <div class="cell docutils container">
@@ -1046,8 +1045,8 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-</section>
-<section id="changing-parameter-values">
+</div>
+<div class="section" id="changing-parameter-values">
 <h3>Changing parameter values<a class="headerlink" href="#changing-parameter-values" title="Permalink to this headline">#</a></h3>
 <p>A parameter can be specified to be mutable. This tells Pyomo that the value of the parameter may change in the future, and allows the user to change the parameter value and resolve the problem without the need to rebuild the entire model each time. We will use this functionality to find a better solution to the knapsack problem. We would like to find when the wrench becomes valuable enough to be a part of the optimal solution. Create a Pyomo Parameter for the value of the items, make it mutable, and then write a loop that prints the solution for different wrench values.</p>
 <div class="cell docutils container">
@@ -1080,8 +1079,8 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-</section>
-<section id="integer-cuts">
+</div>
+<div class="section" id="integer-cuts">
 <h3>Integer cuts<a class="headerlink" href="#integer-cuts" title="Permalink to this headline">#</a></h3>
 <p>Often, it can be important to find not only the “best” solution, but a number of solutions that are equally optimal, or close to optimal. For discrete optimization problems, this can be done using something known as an integer cut. Consider again the knapsack problem where the choice of which items to select is a discrete variable <span class="math notranslate nohighlight">\(x_i \forall i \in A\)</span>. Let <span class="math notranslate nohighlight">\(x_i^*\)</span> be a particular set of <span class="math notranslate nohighlight">\(x\)</span> values we want to remove from the feasible solution space. We define an integer cut using two sets. The first set <span class="math notranslate nohighlight">\(S_0\)</span> contains the indices for those variables whose current solution is 0, and the second set <span class="math notranslate nohighlight">\(S_1\)</span> consists of indices for those variables whose current solution is 1. Given these two sets, an integer cut constraint that would prevent such a solution from appearing again is defined by,</p>
 <p><span class="math notranslate nohighlight">\(\sum_{i \in S_0}x[i] + \sum_{i \in S_1}(1-x_i) \geq 1\)</span></p>
@@ -1117,8 +1116,8 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-</section>
-<section id="putting-it-all-together-lot-sizing-example-hart-et-al-2017">
+</div>
+<div class="section" id="putting-it-all-together-lot-sizing-example-hart-et-al-2017">
 <h3>Putting it all together: Lot sizing example (Hart et al., 2017)<a class="headerlink" href="#putting-it-all-together-lot-sizing-example-hart-et-al-2017" title="Permalink to this headline">#</a></h3>
 <p>We will now write a complete model from scratch using a well-known multi-period optimization problem for optimal lot-sizing adapted from Hagen et al. (2001) shown below.</p>
 <p><span class="math notranslate nohighlight">\(\min \sum_{t \in T}c_ty_t+h_t^+I_t^+ +h_t^-I_t^-\)</span></p>
@@ -1195,11 +1194,11 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="nonlinear-programs-initial-and-problem-formulation-are-very-important">
+</div>
+</div>
+<div class="section" id="nonlinear-programs-initial-and-problem-formulation-are-very-important">
 <h2>Nonlinear programs: initial and problem formulation are very important!<a class="headerlink" href="#nonlinear-programs-initial-and-problem-formulation-are-very-important" title="Permalink to this headline">#</a></h2>
-<section id="alternative-initialization">
+<div class="section" id="alternative-initialization">
 <h3>Alternative initialization<a class="headerlink" href="#alternative-initialization" title="Permalink to this headline">#</a></h3>
 <p>Effective initialization can be critical for solving nonlinear problems, since they can have several local solutions and numerical diffculties. Solve the <a class="reference external" href="https://en.wikipedia.org/wiki/Rosenbrock_function">Rosenbrock problem</a> using different initial values for the x variables. Write a loop that varies the initial value from 2.0 to 6.0, solves the problem, and prints the solution for each iteration of the loop.</p>
 <div class="cell docutils container">
@@ -1223,8 +1222,8 @@ title="Print to PDF"
 </div>
 </div>
 <p>As elaborated here, the <a class="reference external" href="https://en.wikipedia.org/wiki/Rosenbrock_function">Rosenbrock problem</a> is a classic “hard” test case for optimization algorithms. Your results may surprise you (and show the effectiveness of Pyomo and Ipopt!).</p>
-</section>
-<section id="evaluation-errors">
+</div>
+<div class="section" id="evaluation-errors">
 <h3>Evaluation errors<a class="headerlink" href="#evaluation-errors" title="Permalink to this headline">#</a></h3>
 <p>Consider the following problem with <strong>initial values</strong> <span class="math notranslate nohighlight">\(x\)</span>=5, <span class="math notranslate nohighlight">\(y\)</span>=5.</p>
 <p><span class="math notranslate nohighlight">\(\min_{x,y} f(x,y)=(x-1.01)^2+y^2\)</span></p>
@@ -1281,8 +1280,8 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-</section>
-<section id="alternative-formulations">
+</div>
+<div class="section" id="alternative-formulations">
 <h3>Alternative formulations<a class="headerlink" href="#alternative-formulations" title="Permalink to this headline">#</a></h3>
 <p>Consider the following problem with initial values <span class="math notranslate nohighlight">\(x\)</span>=5, <span class="math notranslate nohighlight">\(y\)</span>=5.</p>
 <p><span class="math notranslate nohighlight">\(\min_{x,y} f(x,y)=(x-1.01)^2+y^2\)</span></p>
@@ -1301,7 +1300,7 @@ title="Print to PDF"
 </ol>
 <p>s.t. <span class="math notranslate nohighlight">\(y=x-1\)</span></p>
 <p>Implement Pyomo models for each formulation and solve with IPOPT.</p>
-<section id="formulation-1">
+<div class="section" id="formulation-1">
 <h4>Formulation 1<a class="headerlink" href="#formulation-1" title="Permalink to this headline">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1310,8 +1309,8 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-</section>
-<section id="formulation-2">
+</div>
+<div class="section" id="formulation-2">
 <h4>Formulation 2<a class="headerlink" href="#formulation-2" title="Permalink to this headline">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1320,8 +1319,8 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-</section>
-<section id="formulation-3">
+</div>
+<div class="section" id="formulation-3">
 <h4>Formulation 3<a class="headerlink" href="#formulation-3" title="Permalink to this headline">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1343,9 +1342,9 @@ title="Print to PDF"
 </div>
 <p><strong>Discussion</strong></p>
 <p><em>Fill in here</em></p>
-</section>
-</section>
-<section id="reactor-design-problem-hart-et-al-2017-bequette-2003">
+</div>
+</div>
+<div class="section" id="reactor-design-problem-hart-et-al-2017-bequette-2003">
 <h3>Reactor design problem (Hart et al., 2017; Bequette, 2003)<a class="headerlink" href="#reactor-design-problem-hart-et-al-2017-bequette-2003" title="Permalink to this headline">#</a></h3>
 <p>Here we will consider a chemical reactor designed to produce product B from reactant A using a reaction scheme known as the Van de Vusse reaction:</p>
 <p><span class="math notranslate nohighlight">\(A \overset{k_1}{\rightarrow} B \overset{k_2}{\rightarrow} C\)</span></p>
@@ -1374,9 +1373,9 @@ Hart, W. E., Laird, C. D., Watson, J. P., Woodruff, D. L., Hackebeil, G. A., Nic
 </div>
 </div>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

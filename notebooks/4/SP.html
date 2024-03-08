@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>4.1. Stochastic Programming &#8212; Nonlinear and Stochastic Optimization</title>
     
   <!-- Loaded before other Sphinx assets -->
@@ -21,7 +20,7 @@
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
@@ -37,7 +36,7 @@
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -924,7 +923,7 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="stochastic-programming">
+  <div class="tex2jax_ignore mathjax_ignore section" id="stochastic-programming">
 <h1><span class="section-number">4.1. </span>Stochastic Programming<a class="headerlink" href="#stochastic-programming" title="Permalink to this headline">#</a></h1>
 <p>This notebook was prepared by <a class="reference external" href="https://github.com/jialuw96">Jialu Wang</a> at the University of Notre Dame.</p>
 <p>Stochastic programming optimizes when some parameters are uncertain, but defined with a probability distribution. It is opposed to deterministic programming where all parameters are known.</p>
@@ -939,25 +938,25 @@ title="Print to PDF"
 <p><span class="math notranslate nohighlight">\(\min E[f(x,y,\Xi)]\)</span></p>
 <p><span class="math notranslate nohighlight">\(\ \ \ \ \ \  g(x,y,\Xi) \leq 0\)</span></p>
 <p><span class="math notranslate nohighlight">\(\ \ \ \ \ \  u(x,y,\Xi) = 0\)</span></p>
-<section id="key-concepts">
+<div class="section" id="key-concepts">
 <h2><span class="section-number">4.1.1. </span>Key Concepts<a class="headerlink" href="#key-concepts" title="Permalink to this headline">#</a></h2>
-<section id="infinite-dimensional-formulation">
+<div class="section" id="infinite-dimensional-formulation">
 <h3><span class="section-number">4.1.1.1. </span>Infinite Dimensional Formulation<a class="headerlink" href="#infinite-dimensional-formulation" title="Permalink to this headline">#</a></h3>
 <p>Continuous random variables have the key property:</p>
 <p><span class="math notranslate nohighlight">\(0 \leq p(\xi) \leq 1\)</span> for all <span class="math notranslate nohighlight">\(\xi \in \Theta\)</span></p>
 <p><span class="math notranslate nohighlight">\(\int p(\xi) d\xi = 1\)</span></p>
 <p>The expectation is formed as:</p>
 <p><span class="math notranslate nohighlight">\(E_{\Xi} = \int_{\Xi} f(\xi) P_{\Xi}(\xi) d\xi\)</span></p>
-</section>
-<section id="discrete-finite-dimensional-approximations">
+</div>
+<div class="section" id="discrete-finite-dimensional-approximations">
 <h3><span class="section-number">4.1.1.2. </span>Discrete (Finite Dimensional) Approximations<a class="headerlink" href="#discrete-finite-dimensional-approximations" title="Permalink to this headline">#</a></h3>
 <p>Discrete random variables have the key property:</p>
 <p><span class="math notranslate nohighlight">\(0 \leq p(\xi) \leq 1\)</span> for all <span class="math notranslate nohighlight">\(\xi \in \Theta\)</span></p>
 <p><span class="math notranslate nohighlight">\(\sum p(\xi) = 1\)</span></p>
 <p>The expectation of it:</p>
 <p><span class="math notranslate nohighlight">\(E_{\Xi} = \sum_{\Xi} f(\xi) w(\xi)\)</span></p>
-</section>
-<section id="sample-average-approximation">
+</div>
+<div class="section" id="sample-average-approximation">
 <h3><span class="section-number">4.1.1.3. </span>Sample Average Approximation<a class="headerlink" href="#sample-average-approximation" title="Permalink to this headline">#</a></h3>
 <p>Sample average approximation (SAA) method is an approach for solving stochastic optimization problems by Monte Carlo simulation. It approximates the expected objective function of the stochastic problem by a sample average estimate derived from a random sample. The resulting sample average approximation problem is then solved by deterministic optimization techniques.</p>
 <p>Consider a stochastic program in the following form:</p>
@@ -965,8 +964,8 @@ title="Print to PDF"
 <p>The optimal solution <span class="math notranslate nohighlight">\(x^*\)</span> will have optimal value <span class="math notranslate nohighlight">\(z^*\)</span>. SAA consider a sample <span class="math notranslate nohighlight">\({\xi^i}\)</span> of independent observations of <span class="math notranslate nohighlight">\(\xi\)</span>:</p>
 <p><span class="math notranslate nohighlight">\(z^{\nu} = \inf \frac{1}{\nu} \sum_{i=1}^{\nu} g(x,\xi^i)\)</span></p>
 <p>Where <span class="math notranslate nohighlight">\(x^{\nu}\)</span> is the random vector of solutions with independent random samples, <span class="math notranslate nohighlight">\(\xi^i\)</span>, <span class="math notranslate nohighlight">\(i=1,...,\nu\)</span>.</p>
-</section>
-<section id="sparse-grids-worst-case">
+</div>
+<div class="section" id="sparse-grids-worst-case">
 <h3><span class="section-number">4.1.1.4. </span>Sparse Grids (Worst Case)<a class="headerlink" href="#sparse-grids-worst-case" title="Permalink to this headline">#</a></h3>
 <p>Instead of Monte carlo sampling, sparse grids can be used to obtain efficient characterizations of the integrals in stochastic programs. Many computational problems are solved on full grids. While this is feasible if the dimentionality <span class="math notranslate nohighlight">\(d\)</span> of the problem is low, 2 or 3, full grids become very expensive when facing a higher dimentional problem <span class="math notranslate nohighlight">\(d&gt;4\)</span>. This is due to the curse of dimensionality, which states that the complexity of full grids grows exponentially with <span class="math notranslate nohighlight">\(d\)</span>.</p>
 <p>Sparse grids defeat the curse of dimentionality and allow the solution of the problems with much smaller effort. It is constructed by extending one-dimensional quadrature rules to higher dimensions. Gaussian quadrature rule is one of these rules to approximate the definite integral of a function. It is usually a weighted sum of function values at specified points within the domain of integration, stated as:</p>
@@ -1071,9 +1070,9 @@ The area calculated by Gauss rule: [0.66666667]
 <p>The following figure shows sparse grid on the top, and Monte Carlo samples on the bottom. Left graphs contain 441 scenarios, and the right graphs contain 1073 scenarios. Sparse grids can efficiently cover the domain and lead to higher convergence rates.</p>
 <p><img alt="sg1" src="https://ndcbe.github.io/optimization/_images/sg-1.png" /></p>
 <p>Figure from [2]</p>
-</section>
-</section>
-<section id="farmers-example">
+</div>
+</div>
+<div class="section" id="farmers-example">
 <h2><span class="section-number">4.1.2. </span>Farmers Example<a class="headerlink" href="#farmers-example" title="Permalink to this headline">#</a></h2>
 <p><img alt="ex1" src="https://ndcbe.github.io/optimization/_images/farmer1.png" />
 <img alt="ex1.1" src="https://ndcbe.github.io/optimization/_images/farmer2.png" />
@@ -1141,7 +1140,7 @@ The area calculated by Gauss rule: [0.66666667]
 </div>
 </div>
 </div>
-<section id="perfect-information">
+<div class="section" id="perfect-information">
 <h3><span class="section-number">4.1.2.1. </span>Perfect information<a class="headerlink" href="#perfect-information" title="Permalink to this headline">#</a></h3>
 <p>With the ‘perfect’ information shown in the table above, the optimization problem is formed as:</p>
 <p><img alt="ex1.2" src="https://ndcbe.github.io/optimization/_images/farmer2-0.png" /></p>
@@ -1294,8 +1293,8 @@ Overall profit: $ 59950.0
 <p><img alt="ex1.2" src="https://ndcbe.github.io/optimization/_images/farmer2-2.png" /></p>
 <p>The solutions again seem natural. When yields are high, smaller surfaces are needed to raise the minimum requirements in wheat and corn and the sugar beet quota. The remaining land is devoted to wheat, whose extra production is sold. When yields are low, larger surfaces are needed to raise the minimum requirements and the sugar beet quota.</p>
 <p>Unfortunately, weather conditions cannot be accurately predicted six months ahead. The farmer must make up his mind without perfect information on yields!</p>
-</section>
-<section id="include-uncertainty-in-the-two-stage-stochastic-program">
+</div>
+<div class="section" id="include-uncertainty-in-the-two-stage-stochastic-program">
 <h3><span class="section-number">4.1.2.2. </span>Include uncertainty in the two-stage stochastic program<a class="headerlink" href="#include-uncertainty-in-the-two-stage-stochastic-program" title="Permalink to this headline">#</a></h3>
 <p>Now the farmer wants to assess the benefits and losses of each decision in each situation.</p>
 <p>Decisions on land assignment (<span class="math notranslate nohighlight">\(x_1\)</span>, <span class="math notranslate nohighlight">\(x_2\)</span>, <span class="math notranslate nohighlight">\(x_3\)</span>) have to be taken now, but sales and purchases (<span class="math notranslate nohighlight">\(w_i, i=1,...,4\)</span>, <span class="math notranslate nohighlight">\(y_j, j=1,2\)</span>) depend on the yields. This forms the two-stage stochastic program:</p>
@@ -1470,8 +1469,8 @@ Overall profit: $ 108390.0
 <p><img alt="ex1.2" src="https://ndcbe.github.io/optimization/_images/farmer2-4.png" /></p>
 <p>Such a model of a stochastic decision program is known as the <span class="math notranslate nohighlight">\(extensive\)</span> <span class="math notranslate nohighlight">\(form\)</span> of the stochastic program because it explicitly describes the second-stage decision variables for all scenarios.</p>
 <p>This solution illustrates that it is impossible to find a solution that is ideal under all circumstances under uncertainty.</p>
-</section>
-<section id="evpi-and-vss">
+</div>
+<div class="section" id="evpi-and-vss">
 <h3><span class="section-number">4.1.2.3. </span>EVPI and VSS<a class="headerlink" href="#evpi-and-vss" title="Permalink to this headline">#</a></h3>
 <p>Suppose yields vary over years but are cyclical. A year with above average yields is always followed by a year with average yields and then a year with below average yields. The farmer would take optimal solutions as given in perfect information chapter repectively. The mean profit in the long run will be the mean of the three figures, namely $115,406 per year.</p>
 <p>Now assume again the yields vary over years but on a random basis. The farmer does not get prior information on the yields. So, the best he can do in the long run is to take the solution as given in the two-stage stochastic program. The difference between this figure and the value in the case of perfect information is <span class="math notranslate nohighlight">\(the\)</span> <span class="math notranslate nohighlight">\(expected\)</span> <span class="math notranslate nohighlight">\(value\)</span> <span class="math notranslate nohighlight">\(of\)</span> <span class="math notranslate nohighlight">\(perfect\)</span> <span class="math notranslate nohighlight">\(information\)</span> (EVPI). It represents the loss of profit due to the presence of uncertainty.</p>
@@ -1510,8 +1509,8 @@ VSS: 1150.0010277524998
 </div>
 </div>
 <p><span class="math notranslate nohighlight">\(EVPI\)</span> measures the value of knowing the future with certainty, while <span class="math notranslate nohighlight">\(VSS\)</span> assesses the value of knowing and using distributions on future outcomes.</p>
-</section>
-<section id="reference">
+</div>
+<div class="section" id="reference">
 <h3><span class="section-number">4.1.2.4. </span>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">#</a></h3>
 <p>Biegler, L.T., 2010. Nonlinear programming: concepts, algorithms, and applications to chemical processes. Society for Industrial and Applied Mathematics.</p>
 <p>Birge, J.R. and Louveaux, F., 2011. Introduction to stochastic programming. Springer Science &amp; Business Media.</p>
@@ -1521,9 +1520,9 @@ VSS: 1150.0010277524998
 <p>Figures from:</p>
 <p>[1] By Paolostar - Own work, CC BY-SA 4.0, <a class="reference external" href="https://commons.wikimedia.org/w/index.php?curid=46820806">https://commons.wikimedia.org/w/index.php?curid=46820806</a></p>
 <p>[2] Renteria, J.A., Cao, Y., Dowling, A.W. and Zavala, V.M., 2018. Optimal pid controller tuning using stochastic programming techniques. AIChE Journal, 64(8), pp.2997-3010.</p>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>3.3. Dynamic Optimization with Collocation and Pyomo.DAE &#8212; Nonlinear and Stochastic Optimization</title>
     
   <!-- Loaded before other Sphinx assets -->
@@ -21,7 +20,7 @@
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
@@ -37,7 +36,7 @@
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -1022,7 +1021,7 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="dynamic-optimization-with-collocation-and-pyomo-dae">
+  <div class="tex2jax_ignore mathjax_ignore section" id="dynamic-optimization-with-collocation-and-pyomo-dae">
 <h1><span class="section-number">3.3. </span>Dynamic Optimization with Collocation and Pyomo.DAE<a class="headerlink" href="#dynamic-optimization-with-collocation-and-pyomo-dae" title="Permalink to this headline">#</a></h1>
 <p><strong>Prepared by:</strong> Prof. Alexander Dowling, Molly Dougher (<a class="reference external" href="mailto:mdoughe6&#37;&#52;&#48;nd&#46;edu">mdoughe6<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2023)</p>
 <div class="cell docutils container">
@@ -1081,19 +1080,19 @@ ipopt_l1 was successfuly installed
 </div>
 </div>
 </div>
-<section id="notebook-context">
+<div class="section" id="notebook-context">
 <h2><span class="section-number">3.3.1. </span>Notebook Context<a class="headerlink" href="#notebook-context" title="Permalink to this headline">#</a></h2>
 <p><em>Summary information taken from Section 10.1 of Biegler (2010)</em></p>
 <p>As seen in the previous notebooks (2.5 and 2.6), DAEs have a vast range of applications. The goal of this section is to provide the necessary theoretical background to now look at dynamic optimization of an NLP without an embedded DAE solver (Biegler Chapter 10). A multiperiod problem is considered with piecewise polynomial elements representing different states, leading to a discretization that is the same as the Runge-Kutta methods (Biegler Chapter 9).</p>
-</section>
-<section id="quadrature-methods">
+</div>
+<div class="section" id="quadrature-methods">
 <h2><span class="section-number">3.3.2. </span>Quadrature Methods<a class="headerlink" href="#quadrature-methods" title="Permalink to this headline">#</a></h2>
 <p>First, the relevent background on quadrature is provided so that it can be applied to the following derivation of collocation methods. These topics are applied to an example in the next section on the website. See the following resources for further information on quadrature methods:</p>
 <ul class="simple">
 <li><p>Chapter 9 in <a class="reference external" href="https://epubs.siam.org/doi/book/10.1137/1.9780898719383">Biegler (2010)</a></p></li>
 <li><p>Chapter 17 in <a class="reference external" href="https://www.sciencedirect.com/book/9780128122532/computational-nuclear-engineering-and-radiological-science-using-python">McClarren (2018)</a></p></li>
 </ul>
-<section id="main-idea">
+<div class="section" id="main-idea">
 <h3><span class="section-number">3.3.2.1. </span>Main Idea<a class="headerlink" href="#main-idea" title="Permalink to this headline">#</a></h3>
 <p>The quadrature rule approximates the integral <span class="math notranslate nohighlight">\(I\)</span> with weighted sum of function evaluations:</p>
 <div class="math notranslate nohighlight">
@@ -1112,16 +1111,16 @@ I := \int_{-1}^{1} f(x) dx \approx \underbrace{\sum_{l=1}^{L} w_l f(x_l)}_{\text
 <li><p>How does this choice impact approximation error?</p></li>
 <li><p>How does <span class="math notranslate nohighlight">\(n\)</span> impact approximation error?</p></li>
 </ul>
-</section>
-<section id="recall-the-degree-and-order-of-a-polynomial">
+</div>
+<div class="section" id="recall-the-degree-and-order-of-a-polynomial">
 <h3><span class="section-number">3.3.2.2. </span>Recall: The degree and order of a polynomial<a class="headerlink" href="#recall-the-degree-and-order-of-a-polynomial" title="Permalink to this headline">#</a></h3>
 <p>Consider the polynomial:</p>
 <div class="math notranslate nohighlight">
 \[p(t) = a_0 + a_1 t + ... + a_K t^K.\]</div>
 <p><span class="math notranslate nohighlight">\(p(t)\)</span> is said to be of <strong>order K+1</strong> as it has K+1 coefficients <span class="math notranslate nohighlight">\(a_0, ... a_K\)</span>.</p>
 <p>The <strong>degree</strong> of the polynomial is the highest power with a non-zero coefficient. Thus if <span class="math notranslate nohighlight">\(a_K \neq 0\)</span>, then <span class="math notranslate nohighlight">\(p(t)\)</span> is degree K.</p>
-</section>
-<section id="gauss-legendre-quadrature">
+</div>
+<div class="section" id="gauss-legendre-quadrature">
 <h3><span class="section-number">3.3.2.3. </span>Gauss-Legendre Quadrature<a class="headerlink" href="#gauss-legendre-quadrature" title="Permalink to this headline">#</a></h3>
 <p>For a <em>specific choice of nodes and weights</em>, the quadrature rule <span class="math notranslate nohighlight">\(\sum_{l=1}^{L} w_l f(x_l)\)</span> is exact for integral <span class="math notranslate nohighlight">\(I\)</span> if <span class="math notranslate nohighlight">\(f(x)\)</span> is a polynomial of degree <span class="math notranslate nohighlight">\(2L-1\)</span> or less. This specific case is the <strong>optimal</strong> (most accurate) rule known as the Gauss-Legendre quadrature.</p>
 <p>The weights and nodes are given for <span class="math notranslate nohighlight">\(L\)</span> up to 8:</p>
@@ -1129,13 +1128,13 @@ I := \int_{-1}^{1} f(x) dx \approx \underbrace{\sum_{l=1}^{L} w_l f(x_l)}_{\text
 <tbody><tr><td>$L$</td><td>$x_l$</td><td>$w_l$</td></tr></tbody>
 <tbody><tr><td>1</td><td>0</td><td>2.0000000000000000000000000</td></tr></tbody>
 <tbody><tr><td>2</td><td>±0.5773502691896257645091488</td><td>1.0000000000000000000000000</td></tr></tbody><p></p><tbody><tr><td rowspan="2">3</td><td>0</td><td>0.8888888888888888888888889</td></tr><tr><td>±0.7745966692414833770358531</td><td>0.5555555555555555555555556</td></tr></tbody><p></p><tbody><tr><td rowspan="2">4</td><td>±0.3399810435848562648026658</td><td>0.6521451548625461426269361</td></tr><tr><td>±0.8611363115940525752239465</td><td>0.3478548451374538573730639</td></tr></tbody><p></p><tbody><tr><td rowspan="3">5</td><td>0</td><td>0.5688888888888888888888889</td></tr><tr><td>±0.5384693101056830910363144</td><td>0.4786286704993664680412915</td></tr><tr><td>±0.9061798459386639927976269</td><td>0.2369268850561890875142640</td></tr></tbody><p></p><tbody><tr><td rowspan="3">6</td><td>±0.2386191860831969086305017</td><td>0.4679139345726910473898703</td></tr><tr><td>±0.6612093864662645136613996</td><td>0.3607615730481386075698335</td></tr><tr><td>±0.9324695142031520278123016</td><td>0.1713244923791703450402961</td></tr></tbody><p></p><tbody><tr><td rowspan="4">7</td><td>0</td><td>0.4179591836734693877551020</td></tr><tr><td>±0.4058451513773971669066064</td><td>0.3818300505051189449503698</td></tr><tr><td>±0.7415311855993944398638648</td><td>0.2797053914892766679014678</td></tr><tr><td>±0.9491079123427585245261897</td><td>0.1294849661688696932706114</td></tr></tbody><p></p><tbody><tr><td rowspan="4">8</td><td>±0.1834346424956498049394761</td><td>0.3626837833783619829651504</td></tr><tr><td>±0.5255324099163289858177390</td><td>0.3137066458778872873379622</td></tr><tr><td>±0.7966664774136267395915539</td><td>0.2223810344533744705443560</td></tr><tr><td>±0.9602898564975362316835609</td><td>0.1012285362903762591525314</td></tr></tbody>
-</table></section>
-<section id="why-2l-1">
+</table></div>
+<div class="section" id="why-2l-1">
 <h3><span class="section-number">3.3.2.4. </span>Why <span class="math notranslate nohighlight">\(2L-1\)</span>?<a class="headerlink" href="#why-2l-1" title="Permalink to this headline">#</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(f(x) = a_{2L-1} x^{2L-1} + a_{2L-2} x^{2L-2} + ... + a_{1} x^1 + a_{0}\)</span></p>
 <p>This polynomial has <span class="math notranslate nohighlight">\(2L\)</span> coefficients. Likewise, <span class="math notranslate nohighlight">\(\int f(x)dx\)</span> has <span class="math notranslate nohighlight">\(2L\)</span> coefficients plus the constant of integration. This is the same number of degrees of freedom we have in choosing the <em>weights</em> and <em>nodes</em>.</p>
-</section>
-<section id="how-to-determine-the-nodes-and-weights">
+</div>
+<div class="section" id="how-to-determine-the-nodes-and-weights">
 <h3><span class="section-number">3.3.2.5. </span>How to determine the nodes and weights?<a class="headerlink" href="#how-to-determine-the-nodes-and-weights" title="Permalink to this headline">#</a></h3>
 <p>One way to derive the Gauss-Legendre quadrature rules is by looking at the integral generic monomials of degree 0 up to <span class="math notranslate nohighlight">\(2L-1\)</span> and setting each equal to the <span class="math notranslate nohighlight">\(L\)</span> point Gauss-Legendre quadrature rule:
 $<span class="math notranslate nohighlight">\( \int\limits_{-1}^{1} dx\, a_0 x^0 =  a_0\sum_{l=1}^L w_l x_l^0,\)</span><span class="math notranslate nohighlight">\(
@@ -1143,8 +1142,8 @@ $<span class="math notranslate nohighlight">\( \int\limits_{-1}^{1} dx\, a_0 x^0
 \)</span><span class="math notranslate nohighlight">\( \vdots \)</span><span class="math notranslate nohighlight">\(
 \)</span><span class="math notranslate nohighlight">\( \int\limits_{-1}^{1} dx\, a_{2L-1} x^{2L-1} = a_{2L-1}\sum_{l=1}^L w_l x_l^{2L-1}.\)</span><span class="math notranslate nohighlight">\(
 Notice that the \)</span>a_i<span class="math notranslate nohighlight">\( **constants cancel out** of each equation so they do not matter. This system is \)</span>2L<span class="math notranslate nohighlight">\( equations with \)</span>L<span class="math notranslate nohighlight">\( weights, \)</span>w_l<span class="math notranslate nohighlight">\(, and \)</span>L<span class="math notranslate nohighlight">\( nodes, \)</span>x_l$. We could solve these equations to get the weights and nodes, though this is not how it is done in practice generally—this is accomplished by using the theory of orthogonal polynomials.</p>
-</section>
-<section id="code">
+</div>
+<div class="section" id="code">
 <h3><span class="section-number">3.3.2.6. </span>Code<a class="headerlink" href="#code" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1224,8 +1223,8 @@ Notice that the \)</span>a_i<span class="math notranslate nohighlight">\( **cons
 </div>
 </div>
 </div>
-</section>
-<section id="visualize-weights">
+</div>
+<div class="section" id="visualize-weights">
 <h3><span class="section-number">3.3.2.7. </span>Visualize Weights<a class="headerlink" href="#visualize-weights" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1257,8 +1256,8 @@ Notice that the \)</span>a_i<span class="math notranslate nohighlight">\( **cons
 <img alt="../../_images/PyomoDAE_theory_14_0.png" src="../../_images/PyomoDAE_theory_14_0.png" />
 </div>
 </div>
-</section>
-<section id="polynomial-example">
+</div>
+<div class="section" id="polynomial-example">
 <h3><span class="section-number">3.3.2.8. </span>Polynomial Example<a class="headerlink" href="#polynomial-example" title="Permalink to this headline">#</a></h3>
 <p>As a simple demonstration of the Gauss-Legendre quadrature, let’s show that it integrates polynomials of degree <span class="math notranslate nohighlight">\(2L-1\)</span> exactly.  Consider the integral
 $<span class="math notranslate nohighlight">\(\int\limits_{-1}^1 (x+1)^{2L-1}\,dx = \frac{2^{2 L-1}}{L}.\)</span>$</p>
@@ -1311,8 +1310,8 @@ Abs. Relative Error is 4.274358644806853e-15
 </div>
 </div>
 </div>
-</section>
-<section id="generalization">
+</div>
+<div class="section" id="generalization">
 <h3><span class="section-number">3.3.2.9. </span>Generalization<a class="headerlink" href="#generalization" title="Permalink to this headline">#</a></h3>
 <p>We are generally interested in integrals not just over the domain <span class="math notranslate nohighlight">\(x\in [-1,1]\)</span>.  We’ll now make a function that does Gauss-Legendre quadrature over a general range using the formula
 $<span class="math notranslate nohighlight">\(\int_a^b f(x)\,dx = \frac{b-a}{2} \int_{-1}^1 f\left(\frac{b-a}{2}z + \frac{a+b}{2}\right)\,dz.\)</span>$</p>
@@ -1392,8 +1391,8 @@ Abs. Relative Error is 6.5195531446713024e-15
 </div>
 </div>
 </div>
-</section>
-<section id="radau-quadrature">
+</div>
+<div class="section" id="radau-quadrature">
 <h3><span class="section-number">3.3.2.10. </span>Radau Quadrature<a class="headerlink" href="#radau-quadrature" title="Permalink to this headline">#</a></h3>
 <p>Sometimes we desire either:</p>
 <ul class="simple">
@@ -1402,8 +1401,8 @@ Abs. Relative Error is 6.5195531446713024e-15
 </ul>
 <p>This is known as <strong>Gauss-Radu quadrature</strong>. The remaining nodes and weights are chosen optimally; thus, Radu quadrature <em>exactly</em> integrates <em>all</em> polynomials of degree <span class="math notranslate nohighlight">\(2L-2\)</span> or less. Specifying one of the nodes leaves only <span class="math notranslate nohighlight">\(2L-1\)</span> degrees of freedom.</p>
 <p>More info: <a class="reference external" href="http://mathworld.wolfram.com/RadauQuadrature.html">http://mathworld.wolfram.com/RadauQuadrature.html</a></p>
-</section>
-<section id="differential-equations">
+</div>
+<div class="section" id="differential-equations">
 <h3><span class="section-number">3.3.2.11. </span>Differential Equations<a class="headerlink" href="#differential-equations" title="Permalink to this headline">#</a></h3>
 <p>Consider solving the differential equation</p>
 <div class="math notranslate nohighlight">
@@ -1412,20 +1411,20 @@ Abs. Relative Error is 6.5195531446713024e-15
 <div class="math notranslate nohighlight">
 \[x(t_f) = \int_{t_0}^{t_f} \frac{dx}{dt} dt + x_0 = \underbrace{\int_{t_0}^{t_f} f(t, x(t)) dt}_{\text{quadrature rule}} + x_0\]</div>
 <p>Thus, Runge-Kutta methods can be interpreted as a quadrature rule.</p>
-</section>
-</section>
-<section id="collocation-methods">
+</div>
+</div>
+<div class="section" id="collocation-methods">
 <h2><span class="section-number">3.3.3. </span>Collocation Methods<a class="headerlink" href="#collocation-methods" title="Permalink to this headline">#</a></h2>
 <p>See the following resources for more information on collocation:</p>
 <ul class="simple">
 <li><p>Chapter 10 in <a class="reference external" href="https://epubs.siam.org/doi/book/10.1137/1.9780898719383">Biegler (2010)</a></p></li>
 </ul>
-<section id="what-is-a-collocation-method">
+<div class="section" id="what-is-a-collocation-method">
 <h3><span class="section-number">3.3.3.1. </span>What is a Collocation Method?<a class="headerlink" href="#what-is-a-collocation-method" title="Permalink to this headline">#</a></h3>
 <p><a class="reference external" href="https://encyclopediaofmath.org/wiki/Collocation_method">https://encyclopediaofmath.org/wiki/Collocation_method</a></p>
 <p>Collocation methods are relevant to DAE systems because they are a way of numerically solving integral and differential equations. Given <span class="math notranslate nohighlight">\(n\)</span> points (i.e., collocation points), the solution can be approximated such that conditions are satisfied at each collocation point. Then the approximate solution exists as a system of <span class="math notranslate nohighlight">\(n\)</span> equations.</p>
-</section>
-<section id="derivation-of-collocation-methods">
+</div>
+<div class="section" id="derivation-of-collocation-methods">
 <h3><span class="section-number">3.3.3.2. </span>Derivation of Collocation Methods<a class="headerlink" href="#derivation-of-collocation-methods" title="Permalink to this headline">#</a></h3>
 <p><em>Derivations are followed from Section 10.2 of Biegler (2010).</em></p>
 <p>Consider the following multiperiod dynamic optimization problem (8.5).</p>
@@ -1442,13 +1441,13 @@ Abs. Relative Error is 6.5195531446713024e-15
 <p>The periods (<span class="math notranslate nohighlight">\(l\)</span>) can be represented by finite elements in time (<span class="math notranslate nohighlight">\(t\)</span>) and the state (<span class="math notranslate nohighlight">\(z\)</span>) and control variables (<span class="math notranslate nohighlight">\(u\)</span>) can be represented with polynomials (Figure 10.1).</p>
 <p><img alt="BieglerFigure10.1" src="https://github.com/mollydougher/optimization/blob/dougher-final-project/media/contrib/BieglerFigure10.1.png?raw=true" /></p>
 <p>The collocation method can be developed by solving the differential equation (<span class="math notranslate nohighlight">\( dz/dt \)</span>) at specific time points. For example, Figure 10.1 shows the state variable approximation for a single finite element:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-870e4635-0cd9-4210-9c63-a2e623ec2f8f">
-<span class="eqno">(3.11)<a class="headerlink" href="#equation-870e4635-0cd9-4210-9c63-a2e623ec2f8f" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-84ba9af3-5693-40e9-a6ea-ebf708e0da44">
+<span class="eqno">(3.11)<a class="headerlink" href="#equation-84ba9af3-5693-40e9-a6ea-ebf708e0da44" title="Permalink to this equation">#</a></span>\[\begin{align}
 z^k(t) = \alpha_0 + \alpha_1t + ... + \alpha_kt^k 
 \end{align}\]</div>
 <p>where <span class="math notranslate nohighlight">\( \alpha_n \)</span> are constants in the power series. This profile can also be represented as a Lagrange interpolation polynomial. Choosing <span class="math notranslate nohighlight">\(K+1\)</span> interpolation points within element <span class="math notranslate nohighlight">\(i\)</span>, the state can be represented as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5f8a3e71-d28b-4831-847b-52aac4962b73">
-<span class="eqno">(3.12)<a class="headerlink" href="#equation-5f8a3e71-d28b-4831-847b-52aac4962b73" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-1b8d77f6-f048-437d-b32d-365ba4a55f59">
+<span class="eqno">(3.12)<a class="headerlink" href="#equation-1b8d77f6-f048-437d-b32d-365ba4a55f59" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp; t = t_{i-1} + h_i\tau , \\
 &amp; z^k(t) = \sum_{j=0}^K \ell_j(\tau)z_{ij} , \\
 &amp; \text{for } t \in [t_{i-1},t_i] \text{ and } \tau \in [0,1] , \\
@@ -1461,39 +1460,39 @@ z^k(t) = \alpha_0 + \alpha_1t + ... + \alpha_kt^k
 <p>The key property of this polynomial is that
 <span class="math notranslate nohighlight">\( z^K(t_{ij})=z_{ij} \)</span> where <span class="math notranslate nohighlight">\( t_{ij}=t_{i-1} + \tau_j h_i \)</span>.</p>
 <p>We can do the same thing for the time derivative of the state (Lagrange polynomial with K interpolation points):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-517b5dd6-d39f-4299-bd65-ff5c3cdcb0da">
-<span class="eqno">(3.13)<a class="headerlink" href="#equation-517b5dd6-d39f-4299-bd65-ff5c3cdcb0da" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-c6c65571-00ac-4fdf-b758-8b7c19ab473b">
+<span class="eqno">(3.13)<a class="headerlink" href="#equation-c6c65571-00ac-4fdf-b758-8b7c19ab473b" title="Permalink to this equation">#</a></span>\[\begin{align}
 z^k(t) = z_{i-1} + h_i \sum_{j=1}^K \Omega_j(\tau) \dot{z}_{ij} ,
 \end{align}\]</div>
 <p>where <span class="math notranslate nohighlight">\(z_{i-1}\)</span> represents the differential state at the beginning of element <span class="math notranslate nohighlight">\(i\)</span>, <span class="math notranslate nohighlight">\(\dot{z}_{ij}\)</span> is the time derivative, and <span class="math notranslate nohighlight">\(\Omega_j(\tau)\)</span> is a <span class="math notranslate nohighlight">\(K^{th}\)</span> order polynomial that satisfies:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-724f8378-1b8e-4dac-84a6-924745fac137">
-<span class="eqno">(3.14)<a class="headerlink" href="#equation-724f8378-1b8e-4dac-84a6-924745fac137" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-2ac771f7-1624-4f88-839e-5fc45a65c206">
+<span class="eqno">(3.14)<a class="headerlink" href="#equation-2ac771f7-1624-4f88-839e-5fc45a65c206" title="Permalink to this equation">#</a></span>\[\begin{align}
 \Omega_j(\tau)=\int_0^{\tau}\ell_j(\tau')d\tau', \text{ }t \in [t_{i-1},t_i], \text{ }\tau \in [0,1]. 
 \end{align}\]</div>
 <p>Note that this is equivalent to the implcit Runge-Kutta (IRK) representation, where <span class="math notranslate nohighlight">\(n_s=k\)</span>, <span class="math notranslate nohighlight">\(C_k=\tau_k\)</span>, <span class="math notranslate nohighlight">\(a_{kj}=\Omega_j(\tau_k)\)</span>, and <span class="math notranslate nohighlight">\(b_k=\Omega_k(1)\)</span>. We can obtain <span class="math notranslate nohighlight">\(\ell_j\)</span> and <span class="math notranslate nohighlight">\(\Omega_j\)</span> from Gauss quadrature.</p>
 <p>Collocation equations can be found by substituting the polynomial into the differential equation (<span class="math notranslate nohighlight">\( dz/dt \)</span>). The algebraic equations must hold at each interpolation point <span class="math notranslate nohighlight">\(\tau_j\)</span>. The collocation equations for the Lagrange polynomial are:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-afdd105b-178b-4328-bf9b-09e9568fd63d">
-<span class="eqno">(3.15)<a class="headerlink" href="#equation-afdd105b-178b-4328-bf9b-09e9568fd63d" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-75bb136a-9353-4e5e-b96c-2b45cac2f67d">
+<span class="eqno">(3.15)<a class="headerlink" href="#equation-75bb136a-9353-4e5e-b96c-2b45cac2f67d" title="Permalink to this equation">#</a></span>\[\begin{align}
 \sum_{j=0}^K z_{ij} \frac{d\ell_j(\tau_k)}{d\tau}=h_i f(z_{ik},t_{ik}), \text{ } k=1,...,K.
 \end{align}\]</div>
-</section>
-<section id="collocation-with-orthogonal-polynomials">
+</div>
+<div class="section" id="collocation-with-orthogonal-polynomials">
 <h3><span class="section-number">3.3.3.3. </span>Collocation with Orthogonal Polynomials<a class="headerlink" href="#collocation-with-orthogonal-polynomials" title="Permalink to this headline">#</a></h3>
 <p>With the interpolation points <span class="math notranslate nohighlight">\(\tau_k\)</span> known, then the collocation equations  become algebraic. Now <span class="math notranslate nohighlight">\(\tau_k\)</span> must be determined such that the approximation is most accurate. Representing the solution as an integral:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-72eb24e0-a003-41dc-8790-18aa92b6146c">
-<span class="eqno">(3.16)<a class="headerlink" href="#equation-72eb24e0-a003-41dc-8790-18aa92b6146c" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-1bdc51c4-b7ef-4c93-a062-5cf6f1649424">
+<span class="eqno">(3.16)<a class="headerlink" href="#equation-1bdc51c4-b7ef-4c93-a062-5cf6f1649424" title="Permalink to this equation">#</a></span>\[\begin{align}
 z(t_i) = z(t_{i-1}) + \int_{t_{i-1}}^{t_i} f(z(t),t)dt ,
 \end{align}\]</div>
 <p>the numerical solution is the quadrautre formula:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5189f678-f845-4650-a582-3ba8ef4f2861">
-<span class="eqno">(3.17)<a class="headerlink" href="#equation-5189f678-f845-4650-a582-3ba8ef4f2861" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-09086ae5-43dd-4812-bba9-ebfb0b33b910">
+<span class="eqno">(3.17)<a class="headerlink" href="#equation-09086ae5-43dd-4812-bba9-ebfb0b33b910" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp; z(t_i) = z(t_{i-1}) + \sum_{j=1}^K \omega_j h_i f(z(t_{ij}), t_{ij}),
 &amp; t_{ij} = t_{i-1} + h_i \tau_j 
 \end{align}\]</div>
 <blockquote>
 <div><p><strong>Theorem 10.1</strong>: The quadrature formula (above) provides the exact solution to the integral (above) if <span class="math notranslate nohighlight">\(f(z(t),t)\)</span> is a polynomial in <span class="math notranslate nohighlight">\(t\)</span> of order <span class="math notranslate nohighlight">\(2K\)</span> and <span class="math notranslate nohighlight">\(\tau_j\)</span> are the roots of a <span class="math notranslate nohighlight">\(K\)</span>th degree polynomial, <span class="math notranslate nohighlight">\(P_K(\tau)\)</span> with the property:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6f6df439-63ec-42c8-9b5e-998d43dae0d1">
-<span class="eqno">(3.18)<a class="headerlink" href="#equation-6f6df439-63ec-42c8-9b5e-998d43dae0d1" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-7bfb1794-af5b-4511-9207-ef447a5aaf58">
+<span class="eqno">(3.18)<a class="headerlink" href="#equation-7bfb1794-af5b-4511-9207-ef447a5aaf58" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp; \int_0^1 P_j(\tau) P_{j'}(\tau)d\tau,
 &amp; j=0,...,K-1, 
 &amp; \text{ } j'=1,...,K, 
@@ -1507,8 +1506,8 @@ z(t_i) = z(t_{i-1}) + \int_{t_{i-1}}^{t_i} f(z(t),t)dt ,
 <li><p>Gauss-Radau collocation leads to trucation error of <span class="math notranslate nohighlight">\(O(h^{2k-1})\)</span></p></li>
 </ul>
 <p>Generally, Gauss-Legendre and Radau collocation are compatible with NLP formulations.</p>
-</section>
-<section id="applications-to-runge-kutta">
+</div>
+<div class="section" id="applications-to-runge-kutta">
 <h3><span class="section-number">3.3.3.4. </span>Applications to Runge-Kutta<a class="headerlink" href="#applications-to-runge-kutta" title="Permalink to this headline">#</a></h3>
 <p>When the Runge-Kutta basis is applied, the collocation method is seen to be an IRK method, leading to the following properties (established in Biegler Section 9.2):</p>
 <ul class="simple">
@@ -1516,13 +1515,13 @@ z(t_i) = z(t_{i-1}) + \int_{t_{i-1}}^{t_i} f(z(t),t)dt ,
 <li><p>Radau collaction has stiff decay. Therefore, if your problem is stiff, try Radau collocation first.</p></li>
 <li><p>Gauss-Legendre and Radau collocation methods have high-order error. (Here, order refers to <span class="math notranslate nohighlight">\(z_i\)</span>.)</p></li>
 </ul>
-</section>
-<section id="a-final-key-note">
+</div>
+<div class="section" id="a-final-key-note">
 <h3><span class="section-number">3.3.3.5. </span>A Final Key Note<a class="headerlink" href="#a-final-key-note" title="Permalink to this headline">#</a></h3>
 <p>Continuity is enforced in states accross finite element boundaries, NOT controls or algebraic variables.</p>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

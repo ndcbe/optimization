@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>2.1. Logical Modeling and Generalized Disjunctive Programs &#8212; Nonlinear and Stochastic Optimization</title>
     
   <!-- Loaded before other Sphinx assets -->
@@ -20,7 +21,7 @@
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
@@ -36,7 +37,7 @@
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -997,14 +998,14 @@ title="Print to PDF"
                 
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="logical-modeling-and-generalized-disjunctive-programs">
+  <section class="tex2jax_ignore mathjax_ignore" id="logical-modeling-and-generalized-disjunctive-programs">
 <h1><span class="section-number">2.1. </span>Logical Modeling and Generalized Disjunctive Programs<a class="headerlink" href="#logical-modeling-and-generalized-disjunctive-programs" title="Permalink to this headline">#</a></h1>
 <p><strong>Prepared by:</strong> Prof. Alexander Dowling (<a class="reference external" href="mailto:adowling&#37;&#52;&#48;nd&#46;edu">adowling<span>&#64;</span>nd<span>&#46;</span>edu</a>), <a class="reference external" href="https://github.com/hglynch">Hailey Lynch</a> (<a class="reference external" href="mailto:hlynch&#37;&#52;&#48;nd&#46;edu">hlynch<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2023)</p>
-<div class="section" id="introduction-and-learning-objectives">
+<section id="introduction-and-learning-objectives">
 <h2><span class="section-number">2.1.1. </span>Introduction and Learning Objectives<a class="headerlink" href="#introduction-and-learning-objectives" title="Permalink to this headline">#</a></h2>
 <p>This notebook introduces generalized disjunctive programs through an example in Pyomo.GDP. Students will learn concepts related to Logical Modeling and Modeling Disjunctions in this notebook. These techniques will be applied to the Reactor Problem and then implemented into Pyomo. Critical thinking discussion questions will be included to connect concepts from CBE 60499.</p>
-</div>
-<div class="section" id="import-modules">
+</section>
+<section id="import-modules">
 <h2><span class="section-number">2.1.2. </span>Import Modules<a class="headerlink" href="#import-modules" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1073,11 +1074,11 @@ Checking for ./figures/strip_packing.png
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="logical-modeling">
+</section>
+<section id="logical-modeling">
 <h2><span class="section-number">2.1.3. </span>Logical Modeling<a class="headerlink" href="#logical-modeling" title="Permalink to this headline">#</a></h2>
 <p>First we will look at important logic notation that is commonly used in logical modeling. This will enable us to convert logical expressions such as <strong>disjunctive clauses</strong> (<span class="math notranslate nohighlight">\(Q_i = P_1 \lor P_2 \ \lor ... \lor \ P_r\)</span>) into <strong>conjuctive normal form</strong> (<span class="math notranslate nohighlight">\(Q_1 \land Q_2 \ \land ... \land \ Q_s\)</span>).</p>
-<div class="section" id="symbolic-logic-notation">
+<section id="symbolic-logic-notation">
 <h3><span class="section-number">2.1.3.1. </span>Symbolic Logic Notation<a class="headerlink" href="#symbolic-logic-notation" title="Permalink to this headline">#</a></h3>
 <table class="colwidths-auto table">
 <thead>
@@ -1106,30 +1107,30 @@ Checking for ./figures/strip_packing.png
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="logical-statements-and-conjuctive-normal-form">
+</section>
+<section id="logical-statements-and-conjuctive-normal-form">
 <h3><span class="section-number">2.1.3.2. </span>Logical Statements and Conjuctive Normal Form<a class="headerlink" href="#logical-statements-and-conjuctive-normal-form" title="Permalink to this headline">#</a></h3>
 <p><em>The following excerpts are from Section 15.7 in Biegler, Grossmann, and Westerberg (1997).</em></p>
 <p>The three step procedure below shows how to convert logical statements into conjuctive normal form:</p>
 <ol>
   <li>Replace the implication by its equivalent disjunction:
-<div class="amsmath math notranslate nohighlight" id="equation-a539153e-86e1-4197-ae3f-22287b052cd2">
-<span class="eqno">(2.1)<a class="headerlink" href="#equation-a539153e-86e1-4197-ae3f-22287b052cd2" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-8530af97-e75a-4a76-a8cd-eb1b4eb1cb19">
+<span class="eqno">(2.1)<a class="headerlink" href="#equation-8530af97-e75a-4a76-a8cd-eb1b4eb1cb19" title="Permalink to this equation">#</a></span>\[\begin{equation}
   P_{1} \Rightarrow P_{2} \Leftrightarrow \neg P_{1} \lor P_{2} \tag{15.18}
   \end{equation}\]</div>
   <li>Distribute the negation by applying DeMorgan's Theorem:
-<div class="amsmath math notranslate nohighlight" id="equation-37bf46f2-a02d-45bd-a503-5c1ebad2d278">
-<span class="eqno">(2.2)<a class="headerlink" href="#equation-37bf46f2-a02d-45bd-a503-5c1ebad2d278" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-62acdc12-bdfc-4562-ae50-8002d62e6ad1">
+<span class="eqno">(2.2)<a class="headerlink" href="#equation-62acdc12-bdfc-4562-ae50-8002d62e6ad1" title="Permalink to this equation">#</a></span>\[\begin{equation}
   \neg (P_{1} \land P_{2}) \Leftrightarrow \neg P_{1} \lor \neg P_{2}\tag{15.19}
   \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-1e1f35ce-c2cc-4d98-b8ca-abf8917e84ca">
-<span class="eqno">(2.3)<a class="headerlink" href="#equation-1e1f35ce-c2cc-4d98-b8ca-abf8917e84ca" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-485a9607-e35a-4d67-b051-6bf29be207fc">
+<span class="eqno">(2.3)<a class="headerlink" href="#equation-485a9607-e35a-4d67-b051-6bf29be207fc" title="Permalink to this equation">#</a></span>\[\begin{equation}
   \neg (P_{1} \lor P_{2}) \Leftrightarrow \neg P_{1} \land \neg P_{2}\tag{15.20}
   \end{equation}\]</div>
   </li>
   <li>Recursively distribute the $\textbf{OR}$ over the $\textbf{AND}$ by using the following equivalence:
-<div class="amsmath math notranslate nohighlight" id="equation-6ead1d0a-31ba-46a8-96b0-8a5c22b3257f">
-<span class="eqno">(2.4)<a class="headerlink" href="#equation-6ead1d0a-31ba-46a8-96b0-8a5c22b3257f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-5f3419ae-986b-4d8c-b1df-351d161763aa">
+<span class="eqno">(2.4)<a class="headerlink" href="#equation-5f3419ae-986b-4d8c-b1df-351d161763aa" title="Permalink to this equation">#</a></span>\[\begin{equation}
   (P_{1} \land P_{2}) \lor P_{3} \Leftrightarrow (P_{1} \lor P_{3}) \land (P_{2} \lor P_{3})\tag{15.21}
   \end{equation}\]</div>
   </li>
@@ -1171,15 +1172,15 @@ Checking for ./figures/strip_packing.png
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div class="section" id="modeling-disjunctions">
+</section>
+</section>
+<section id="modeling-disjunctions">
 <h2><span class="section-number">2.1.4. </span>Modeling Disjunctions<a class="headerlink" href="#modeling-disjunctions" title="Permalink to this headline">#</a></h2>
 <p>When modeling disjunctions, we will have to represent logical constraints that involve continuous variables.</p>
-<div class="section" id="general-notation">
+<section id="general-notation">
 <h3><span class="section-number">2.1.4.1. </span>General Notation<a class="headerlink" href="#general-notation" title="Permalink to this headline">#</a></h3>
-<div class="amsmath math notranslate nohighlight" id="equation-96ed48f5-42ff-4d99-9d1b-e30abda74c88">
-<span class="eqno">(2.5)<a class="headerlink" href="#equation-96ed48f5-42ff-4d99-9d1b-e30abda74c88" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-669f6b1c-513f-49b3-98db-e3a2d966e0c7">
+<span class="eqno">(2.5)<a class="headerlink" href="#equation-669f6b1c-513f-49b3-98db-e3a2d966e0c7" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \lor_{i \in D_{R}}
 \begin{bmatrix}
 Y_{ik}\\
@@ -1215,12 +1216,12 @@ c_{k} = \mu_{ik}
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div class="section" id="example-the-reactor-problem">
+</section>
+</section>
+<section id="example-the-reactor-problem">
 <h2><span class="section-number">2.1.5. </span>Example: The Reactor Problem<a class="headerlink" href="#example-the-reactor-problem" title="Permalink to this headline">#</a></h2>
 <p><em>The following excerpts are from Section 15.8 in Biegler, Grossmann, and Westerberg (1997).</em></p>
-<div class="section" id="problem-statement">
+<section id="problem-statement">
 <h3><span class="section-number">2.1.5.1. </span>Problem Statement<a class="headerlink" href="#problem-statement" title="Permalink to this headline">#</a></h3>
 <p>This modeling disjunctions example involves selecting between two reactors:</p>
 <ul class="simple">
@@ -1228,16 +1229,16 @@ c_{k} = \mu_{ik}
 <li><p>If <em>reactor 2</em> is selected, then pressure <span class="math notranslate nohighlight">\(P\)</span> must be between <span class="math notranslate nohighlight">\(20\)</span> and <span class="math notranslate nohighlight">\(30\)</span> atmospheres.</p></li>
 </ul>
 <p><strong>Linear Disjunction Form:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-c6c15db4-6372-4c9f-9fb3-a23659b86554">
-<span class="eqno">(2.6)<a class="headerlink" href="#equation-c6c15db4-6372-4c9f-9fb3-a23659b86554" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-4f2aa5c2-7dd1-4f62-867c-c78ffa34a2c2">
+<span class="eqno">(2.6)<a class="headerlink" href="#equation-4f2aa5c2-7dd1-4f62-867c-c78ffa34a2c2" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \lor_{i \in D}
 \begin{bmatrix}
 A_{i}x \leq b_{i}(x)
 \end{bmatrix}
 \end{equation}\]</div>
 <p><strong>Applied to the Reactor Problem:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-e9cb5449-4510-4f28-83e2-d5840918d9e7">
-<span class="eqno">(2.7)<a class="headerlink" href="#equation-e9cb5449-4510-4f28-83e2-d5840918d9e7" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-048675ea-a5a0-4b1e-857c-0a44cd136389">
+<span class="eqno">(2.7)<a class="headerlink" href="#equation-048675ea-a5a0-4b1e-857c-0a44cd136389" title="Permalink to this equation">#</a></span>\[\begin{equation}
   \begin{bmatrix}
     y_1\\
     P \leq 10\\
@@ -1250,8 +1251,8 @@ A_{i}x \leq b_{i}(x)
   \end{bmatrix}
 \end{equation}\]</div>
 <p><br> where <span class="math notranslate nohighlight">\(y_{1}\)</span> represents <em>reactor 1</em> and <span class="math notranslate nohighlight">\(y_{2}\)</span> represents <em>reactor 2</em>.</p>
-</div>
-<div class="section" id="define-model-in-pyomo-with-gdp">
+</section>
+<section id="define-model-in-pyomo-with-gdp">
 <h3><span class="section-number">2.1.5.2. </span>Define Model in Pyomo with GDP<a class="headerlink" href="#define-model-in-pyomo-with-gdp" title="Permalink to this headline">#</a></h3>
 <p>First we will define the model (including disjunctions) for the Reactor Problem in Pyomo.</p>
 <div class="cell docutils container">
@@ -1310,32 +1311,32 @@ A_{i}x \leq b_{i}(x)
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="transform-and-solve-with-big-m-relaxation">
+</section>
+<section id="transform-and-solve-with-big-m-relaxation">
 <h3><span class="section-number">2.1.5.3. </span>Transform and Solve with Big-M Relaxation<a class="headerlink" href="#transform-and-solve-with-big-m-relaxation" title="Permalink to this headline">#</a></h3>
 <p><em>The following excerpts are from Section 15.8 in Biegler, Grossmann, and
 Westerberg (1997).</em></p>
 <p>Use “Big-M” constraints to convert linear disjunctions into mixed-integer constraints to represent logic with continuous variables.</p>
-</div>
-<div class="section" id="big-m-relaxation-approach">
+</section>
+<section id="big-m-relaxation-approach">
 <h3><span class="section-number">2.1.5.4. </span>Big-M Relaxation Approach<a class="headerlink" href="#big-m-relaxation-approach" title="Permalink to this headline">#</a></h3>
 <p><strong>General Notation:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-744e4c28-67ed-41ba-abf4-731224e698cf">
-<span class="eqno">(2.8)<a class="headerlink" href="#equation-744e4c28-67ed-41ba-abf4-731224e698cf" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-4d05dfb6-ff82-42ea-a77d-93477994719f">
+<span class="eqno">(2.8)<a class="headerlink" href="#equation-4d05dfb6-ff82-42ea-a77d-93477994719f" title="Permalink to this equation">#</a></span>\[\begin{equation}
 A_{i}(x) \leq b_{i} + M_{i}(1-y_{i})  \ , \  \forall i \in D
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-e7a29784-4a4a-4ef6-844e-9f5a440d5518">
-<span class="eqno">(2.9)<a class="headerlink" href="#equation-e7a29784-4a4a-4ef6-844e-9f5a440d5518" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-431c1f1b-059f-4c6e-91c2-51c4bd1d546b">
+<span class="eqno">(2.9)<a class="headerlink" href="#equation-431c1f1b-059f-4c6e-91c2-51c4bd1d546b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \sum_{i \in D} y_{i} = 1
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-0f04c6cb-e1d8-4b56-ba96-153640e35ec5">
-<span class="eqno">(2.10)<a class="headerlink" href="#equation-0f04c6cb-e1d8-4b56-ba96-153640e35ec5" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-51d207ec-bb41-41ee-b1c2-b689be3da9e5">
+<span class="eqno">(2.10)<a class="headerlink" href="#equation-51d207ec-bb41-41ee-b1c2-b689be3da9e5" title="Permalink to this equation">#</a></span>\[\begin{equation}
 y_{i} \in \{0,1) \ , \  \forall i \in D
 \end{equation}\]</div>
 <br>
 <p><strong>Applied to the Reactor Problem:</strong> <br></p>
-<div class="amsmath math notranslate nohighlight" id="equation-f1c2895c-e1b2-45f9-a4ee-5747e2d35d16">
-<span class="eqno">(2.11)<a class="headerlink" href="#equation-f1c2895c-e1b2-45f9-a4ee-5747e2d35d16" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-feea2f58-45a4-44e2-a91e-266b86d86ba4">
+<span class="eqno">(2.11)<a class="headerlink" href="#equation-feea2f58-45a4-44e2-a91e-266b86d86ba4" title="Permalink to this equation">#</a></span>\[\begin{equation}
   P \leq 10 + M_{1}(1-y_{1})\\
   -P \leq -5 + M_{1}(1-y_{1})\\
   P \leq 30 + M_{2}(1-y_{2})\\
@@ -1353,8 +1354,8 @@ Considering the special case where <span class="math notranslate nohighlight">\(
 <li><p>If <span class="math notranslate nohighlight">\(M\)</span> is too <strong>small</strong>, we can get unintended bounds.</p></li>
 </ul>
 <p><strong>Big-M is the best to use if the problem is small.</strong></p>
-</div>
-<div class="section" id="big-m-implementation-in-pyomo">
+</section>
+<section id="big-m-implementation-in-pyomo">
 <h3><span class="section-number">2.1.5.5. </span>Big-M Implementation in Pyomo<a class="headerlink" href="#big-m-implementation-in-pyomo" title="Permalink to this headline">#</a></h3>
 <p>First we will create and print the model.</p>
 <div class="cell docutils container">
@@ -1836,39 +1837,39 @@ P : Reactor pressure (atm)
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="transform-and-solve-with-convex-hull-relaxation">
+</section>
+<section id="transform-and-solve-with-convex-hull-relaxation">
 <h3><span class="section-number">2.1.5.6. </span>Transform and Solve with Convex Hull Relaxation<a class="headerlink" href="#transform-and-solve-with-convex-hull-relaxation" title="Permalink to this headline">#</a></h3>
 <p><em>The following excerpts are from Section 15.8 in Biegler, Grossmann, and Westerberg (1997).</em></p>
 <p>Convex hull can be used if we don’t want to implement Big-M parameters. This approach requires separating the continuous variables into its components.</p>
-</div>
-<div class="section" id="convex-hull-relaxation-approach">
+</section>
+<section id="convex-hull-relaxation-approach">
 <h3><span class="section-number">2.1.5.7. </span>Convex Hull Relaxation Approach<a class="headerlink" href="#convex-hull-relaxation-approach" title="Permalink to this headline">#</a></h3>
 <p><strong>General Notation:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-1b7f4037-f489-44d3-894f-18beb8a797c4">
-<span class="eqno">(2.12)<a class="headerlink" href="#equation-1b7f4037-f489-44d3-894f-18beb8a797c4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-665903e8-6add-4b51-bc1c-76a67f21ee49">
+<span class="eqno">(2.12)<a class="headerlink" href="#equation-665903e8-6add-4b51-bc1c-76a67f21ee49" title="Permalink to this equation">#</a></span>\[\begin{equation}
 x = \sum_{i \in D} z_{i}
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-6e0e6558-5e54-4e67-ae9a-f6b7dcfcd891">
-<span class="eqno">(2.13)<a class="headerlink" href="#equation-6e0e6558-5e54-4e67-ae9a-f6b7dcfcd891" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-fe6d5602-9357-4fcc-838b-3462ed33fce3">
+<span class="eqno">(2.13)<a class="headerlink" href="#equation-fe6d5602-9357-4fcc-838b-3462ed33fce3" title="Permalink to this equation">#</a></span>\[\begin{equation}
 A_{i} z_{i} \leq b_{i}y_{i}  \ , \ \forall i \in D
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-561b3d4e-b92a-438c-a5e8-b22e157ad656">
-<span class="eqno">(2.14)<a class="headerlink" href="#equation-561b3d4e-b92a-438c-a5e8-b22e157ad656" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-ff6e7c0f-24c1-4927-812f-fb428ed1352f">
+<span class="eqno">(2.14)<a class="headerlink" href="#equation-ff6e7c0f-24c1-4927-812f-fb428ed1352f" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \sum_{i \in D} y_{i} = 1
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-cb595289-fa4e-4ea3-ab9c-160d3decb030">
-<span class="eqno">(2.15)<a class="headerlink" href="#equation-cb595289-fa4e-4ea3-ab9c-160d3decb030" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-fad834ef-6c1b-464e-8e05-853cf91186ff">
+<span class="eqno">(2.15)<a class="headerlink" href="#equation-fad834ef-6c1b-464e-8e05-853cf91186ff" title="Permalink to this equation">#</a></span>\[\begin{equation}
 0 \leq z_{i} \leq Uy_{i}  \ , \ \forall i \in D
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-6d7c2101-dcdd-497b-a840-8397820e12d3">
-<span class="eqno">(2.16)<a class="headerlink" href="#equation-6d7c2101-dcdd-497b-a840-8397820e12d3" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-d90b343b-a6a1-4acf-abd5-573cbfae3aed">
+<span class="eqno">(2.16)<a class="headerlink" href="#equation-d90b343b-a6a1-4acf-abd5-573cbfae3aed" title="Permalink to this equation">#</a></span>\[\begin{equation}
 y_{i} = \{0,1) \ , \ \forall i \in D
 \end{equation}\]</div>
 <p><span class="math notranslate nohighlight">\(z_{i}\)</span>: continuous variables separated into as many new variables as there are terms for the disjunctions.</p>
 <p><strong>Applied to the Reactor Problem:</strong> <br></p>
-<div class="amsmath math notranslate nohighlight" id="equation-06718e35-6311-4ae4-bdc9-e4f08bb57a3b">
-<span class="eqno">(2.17)<a class="headerlink" href="#equation-06718e35-6311-4ae4-bdc9-e4f08bb57a3b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-96432d84-d7a9-4432-a94c-1f5990c688f3">
+<span class="eqno">(2.17)<a class="headerlink" href="#equation-96432d84-d7a9-4432-a94c-1f5990c688f3" title="Permalink to this equation">#</a></span>\[\begin{equation}
   P = P_{1} + P_{2} \\
   P_{1} \leq 10y_{1}\\
   P_{2} \leq 30y_{2} \\
@@ -1880,8 +1881,8 @@ y_{i} = \{0,1) \ , \ \forall i \in D
 <p>(+) Constraints do not require Big-M parameters which produce a tight linear programming relaxation. <br>
 (–) A larger number of variables and constraints is required.</p>
 <p><strong>Convex hull is better to use over Big-M if the problem is large.</strong></p>
-</div>
-<div class="section" id="convex-hull-implementation-in-pyomo">
+</section>
+<section id="convex-hull-implementation-in-pyomo">
 <h3><span class="section-number">2.1.5.8. </span>Convex Hull Implementation in Pyomo<a class="headerlink" href="#convex-hull-implementation-in-pyomo" title="Permalink to this headline">#</a></h3>
 <p>We will repeat the procedure above but using Convex Hull now.</p>
 <div class="cell docutils container">
@@ -1975,9 +1976,9 @@ P : Reactor pressure (atm)
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="discussion-questions">
+</section>
+</section>
+<section id="discussion-questions">
 <h2><span class="section-number">2.1.6. </span>Discussion Questions<a class="headerlink" href="#discussion-questions" title="Permalink to this headline">#</a></h2>
 <ol class="simple">
 <li><p>How do we create a system to go from logical expressions to linear constraints?</p></li>
@@ -1998,8 +1999,8 @@ P : Reactor pressure (atm)
 </div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

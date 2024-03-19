@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>1.6. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example &#8212; Nonlinear and Stochastic Optimization</title>
     
   <!-- Loaded before other Sphinx assets -->
@@ -20,7 +21,7 @@
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
@@ -36,7 +37,7 @@
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -1127,7 +1128,7 @@ title="Print to PDF"
                 
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="minutes-to-pyomo-an-energy-storage-model-predictive-control-example">
+  <section class="tex2jax_ignore mathjax_ignore" id="minutes-to-pyomo-an-energy-storage-model-predictive-control-example">
 <h1><span class="section-number">1.6. </span>60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example<a class="headerlink" href="#minutes-to-pyomo-an-energy-storage-model-predictive-control-example" title="Permalink to this headline">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1160,9 +1161,9 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-<div class="section" id="problem-setup">
+<section id="problem-setup">
 <h2><span class="section-number">1.6.1. </span>Problem Setup<a class="headerlink" href="#problem-setup" title="Permalink to this headline">#</a></h2>
-<div class="section" id="background">
+<section id="background">
 <h3><span class="section-number">1.6.1.1. </span>Background<a class="headerlink" href="#background" title="Permalink to this headline">#</a></h3>
 <p>In many regions of the world, including the US, electricity generation is scheduled through wholesale electricity markets. Individual generators (resources) transmit information about their operating costs and constraints to the market via a bid. The market operator then solves an optimization problem (e.g., the unit commitment problem) to minimize the total electricity generator cost. The market operator decides which generators to dispatch during each hour to satisfy the forecasted demand while honoring limitations for each generator (e.g., maximum ramp rate, the required time for start-up/shutdown, etc.).</p>
 <p><img alt="US_markets" src="https://www.ferc.gov/sites/default/files/2020-06/map-overview-electric.jpg" /></p>
@@ -1171,8 +1172,8 @@ title="Print to PDF"
 <li><p><a class="reference external" href="https://www.ferc.gov/industries-data/market-assessments/electric-power-markets">https://www.ferc.gov/industries-data/market-assessments/electric-power-markets</a></p></li>
 <li><p><a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0306261916318487">https://www.sciencedirect.com/science/article/pii/S0306261916318487</a></p></li>
 </ul>
-</div>
-<div class="section" id="pandas-and-energy-prices">
+</section>
+<section id="pandas-and-energy-prices">
 <h3><span class="section-number">1.6.1.2. </span>Pandas and Energy Prices<a class="headerlink" href="#pandas-and-energy-prices" title="Permalink to this headline">#</a></h3>
 <p>The CSV (comma separated value) file <code class="docutils literal notranslate"><span class="pre">Prices_DAM_ALTA2G_7_B1.csv</span></code> contains price data for a single location in California for an entire year. The prices are set every hour and have units $/MWh. We will use the package <code class="docutils literal notranslate"><span class="pre">pandas</span></code> to import and analyze the data.</p>
 <div class="cell docutils container">
@@ -1353,22 +1354,22 @@ title="Print to PDF"
 <p class="admonition-title"><b>Activity</b></p>
 <p>What are 1 or 2 interesting observations from these plots?</p>
 </div>
-</div>
-<div class="section" id="optimization-mathematical-model">
+</section>
+<section id="optimization-mathematical-model">
 <h3><span class="section-number">1.6.1.3. </span>Optimization Mathematical Model<a class="headerlink" href="#optimization-mathematical-model" title="Permalink to this headline">#</a></h3>
 <p><em>Energy (price) arbitrage</em> is the idea of using energy storage (e.g., a battery) to take advantage of the significant daily energy price swings. This gives rise to many analysis questions including:</p>
 <p><em>If a battery energy storage system perfectly timed it’s energy purchases and sales (i.e., it could perfectly forecast the market price), how much money could it make from energy arbitrage?</em></p>
 <p>We can answer this question using mathematical/computational optimization!</p>
 <p>Let’s start by drawing a picture.</p>
 <p><img alt="battery-optimization" src="https://ndcbe.github.io/optimization/_images/battery.png" /></p>
-<div class="section" id="sets">
+<section id="sets">
 <h4><span class="section-number">1.6.1.3.1. </span>Sets<a class="headerlink" href="#sets" title="Permalink to this headline">#</a></h4>
 <p>Let’s say we want to define our optimization problem over a 24 hour window. The day-ahead market sets the energy prices in 1-hour intervals. We’ll define the set</p>
 <div class="math notranslate nohighlight">
 \[\mathcal{T} = \{0, 1, ..., N\}\]</div>
 <p>for time where <span class="math notranslate nohighlight">\(N = 24\)</span> for a 24-hour planning horizon. For convienence, we’ll also define <span class="math notranslate nohighlight">\(\mathcal{T}' := \mathcal{T} / \{0\}\)</span>, which is the original set <span class="math notranslate nohighlight">\(\mathcal{T}\)</span> substract subset <span class="math notranslate nohighlight">\(\{0\}\)</span>.</p>
-</div>
-<div class="section" id="variables">
+</section>
+<section id="variables">
 <h4><span class="section-number">1.6.1.3.2. </span>Variables<a class="headerlink" href="#variables" title="Permalink to this headline">#</a></h4>
 <p>Next, let’s identify the variables in the optimization problem:</p>
 <ul class="simple">
@@ -1377,8 +1378,8 @@ title="Print to PDF"
 <li><p><span class="math notranslate nohighlight">\(c_t\)</span>, battery charge power (purchased from the market) during time interval [t-1, t), units: MW</p></li>
 </ul>
 <p>Notice how all of these variables are indexed by the timestep <span class="math notranslate nohighlight">\(t\)</span>. We’ll write in the model <span class="math notranslate nohighlight">\(t \in \mathcal{T}'\)</span></p>
-</div>
-<div class="section" id="parameters">
+</section>
+<section id="parameters">
 <h4><span class="section-number">1.6.1.3.3. </span>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">#</a></h4>
 <p>Parameters are data that are constant during the optimization problem. Here we have:</p>
 <ul class="simple">
@@ -1390,8 +1391,8 @@ title="Print to PDF"
 <li><p><span class="math notranslate nohighlight">\(E_{0}\)</span> Energy in storage at time <span class="math notranslate nohighlight">\(t=0\)</span>, units: MWh</p></li>
 <li><p><span class="math notranslate nohighlight">\(\Delta t = 1\)</span> hour, Timestep for grid decisions and prices (fixed)</p></li>
 </ul>
-</div>
-<div class="section" id="objective-and-constraints">
+</section>
+<section id="objective-and-constraints">
 <h4><span class="section-number">1.6.1.3.4. </span>Objective and Constraints<a class="headerlink" href="#objective-and-constraints" title="Permalink to this headline">#</a></h4>
 <p>Finally, we’ll identify the objective, which is the function to improve, and the mathematical constraints. Below is the full mathematical model for the problem:</p>
 <div class="math notranslate nohighlight">
@@ -1409,9 +1410,9 @@ title="Print to PDF"
 <p class="admonition-title"><b>Activity</b></p>
 <p>Write on paper a 1-sentence description for each equation.</p>
 </div>
-</div>
-</div>
-<div class="section" id="degree-of-freedom-analysis">
+</section>
+</section>
+<section id="degree-of-freedom-analysis">
 <h3><span class="section-number">1.6.1.4. </span>Degree of Freedom Analysis<a class="headerlink" href="#degree-of-freedom-analysis" title="Permalink to this headline">#</a></h3>
 <p>Before we program our model in Pyomo, it is <em>very important</em> to first perform a degree of freedom analysis. Here are the steps:</p>
 <ul class="simple">
@@ -1425,15 +1426,15 @@ title="Print to PDF"
 <p class="admonition-title"><b>Activity</b></p>
 <p>Perform degree of freedom analysis.</p>
 </div>
-</div>
-</div>
-<div class="section" id="pyomo-modeling-components">
+</section>
+</section>
+<section id="pyomo-modeling-components">
 <h2><span class="section-number">1.6.2. </span>Pyomo Modeling Components<a class="headerlink" href="#pyomo-modeling-components" title="Permalink to this headline">#</a></h2>
 <div class="admonition danger">
 <p class="admonition-title">Note</p>
 <p><b>Important</b>: Do NOT implement an optimization model in Pyomo (or any other software) until you have written it on paper and performed degree of freedom analysis, as done above. Be sure to resolve any doubts, questions, or concerns while your model is still on paper. When applying optimization to a problem, a majority of the mistakes happen at the problem formulation step. So do not rush it!</p>
 </div>
-<div class="section" id="create-concretemodel">
+<section id="create-concretemodel">
 <h3><span class="section-number">1.6.2.1. </span>Create <code class="docutils literal notranslate"><span class="pre">ConcreteModel</span></code><a class="headerlink" href="#create-concretemodel" title="Permalink to this headline">#</a></h3>
 <p>We will start by creating a concrete Pyomo model. Recall, Pyomo is an object-oriented algebriac modeling language. The line below creates an instance of the ConcreteModel class.</p>
 <div class="cell docutils container">
@@ -1445,8 +1446,8 @@ title="Print to PDF"
 </div>
 <p>For those unfamilar with object-oriented programming, <code class="docutils literal notranslate"><span class="pre">m</span></code> is a container to define an optimization model. It includes a bunch of functionality to interface with different optimization solvers, perform diagnostics, and inspect the solution.</p>
 <p>Pyomo also supports abstract models, but we will stick with concrete models this semester. See the Pyomo textbook for more details if you are curious.</p>
-</div>
-<div class="section" id="id1">
+</section>
+<section id="id1">
 <h3><span class="section-number">1.6.2.2. </span>Sets<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
 <p>We start by declaring a set for time. From above, recall we want to index all of the variables and constraints over the set</p>
 <div class="math notranslate nohighlight">
@@ -1465,8 +1466,8 @@ title="Print to PDF"
 </div>
 </div>
 <p>Some Pyomo modelers prefer to use all capital names for sets; this is a personal preference.</p>
-</div>
-<div class="section" id="id2">
+</section>
+<section id="id2">
 <h3><span class="section-number">1.6.2.3. </span>Variables<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h3>
 <p>Next, we can declare our three variables: <span class="math notranslate nohighlight">\(E_t\)</span>, <span class="math notranslate nohighlight">\(c_t\)</span>, <span class="math notranslate nohighlight">\(d_t\)</span></p>
 <div class="cell docutils container">
@@ -1489,8 +1490,8 @@ title="Print to PDF"
 <p>The following table (Hart et al., 2017) shows the options for the <code class="docutils literal notranslate"><span class="pre">within</span></code>/<code class="docutils literal notranslate"><span class="pre">domain</span></code> variable keyword:</p>
 <p><img alt="pyomo-var-domain" src="https://ndcbe.github.io/optimization/_images/pyomo-table-4.2.png" /></p>
 <p>In the example above, <code class="docutils literal notranslate"><span class="pre">domain=pyo.NonNegativeReals</span></code> is not needs, as we are specifying stricker bounds. It is included above to show the syntax.</p>
-</div>
-<div class="section" id="parameters-constants-data">
+</section>
+<section id="parameters-constants-data">
 <h3><span class="section-number">1.6.2.4. </span>Parameters (Constants / Data)<a class="headerlink" href="#parameters-constants-data" title="Permalink to this headline">#</a></h3>
 <p>The next step is to define the parameter data: <span class="math notranslate nohighlight">\(\pi_t\)</span> (energy prices), <span class="math notranslate nohighlight">\(\eta\)</span> (round trip efficiency) and <span class="math notranslate nohighlight">\(E_0\)</span> (intial energy storage level).</p>
 <div class="cell docutils container">
@@ -1817,8 +1818,8 @@ title="Print to PDF"
 <p class="admonition-title">Note</p>
 <p><b>Tip</b>: When initializing variables and parameters with a pandas DataFrame, always convert to dictionary and check the keys. Often incorrectly loaded data is the root cause of unexpected errors or strange results. Checking the keys while building the model helps prevent these mistakes.</p>
 </div>
-</div>
-<div class="section" id="objectives">
+</section>
+<section id="objectives">
 <h3><span class="section-number">1.6.2.5. </span>Objectives<a class="headerlink" href="#objectives" title="Permalink to this headline">#</a></h3>
 <p>Next, we will declare the objective function in Pyomo. Below are two equally valid syntax optimizations.</p>
 <div class="cell docutils container">
@@ -1841,8 +1842,8 @@ title="Print to PDF"
 </div>
 <p>The following table (Hart et al., 2017) summarizes the keyword arguments for <code class="docutils literal notranslate"><span class="pre">Objective</span></code>:</p>
 <p><img alt="pyomo-objective-arguments" src="https://ndcbe.github.io/optimization/_images/pyomo-table-4.3.png" /></p>
-</div>
-<div class="section" id="constraints">
+</section>
+<section id="constraints">
 <h3><span class="section-number">1.6.2.6. </span>Constraints<a class="headerlink" href="#constraints" title="Permalink to this headline">#</a></h3>
 <p>Now let’s add the last model component: the constraints.</p>
 <div class="cell docutils container">
@@ -1876,8 +1877,8 @@ title="Print to PDF"
 <p class="admonition-title"><b>Activity</b></p>
 <p>Compare the two model equations above to the optimization formulation below. Notice the one-to-one corespondance between the equality constraints in the mathematical formulation (below) and calls to <tt>pyo.Constraint</tt>. Also notice the sets used to create the Pyomo model are listed next to each constraint in the mathematical model. Once you learn the Pyomo syntax, translated a mathematical model into code is easy!</p>
 </div>
-</div>
-<div class="section" id="printing-the-model">
+</section>
+<section id="printing-the-model">
 <h3><span class="section-number">1.6.2.7. </span>Printing the Model<a class="headerlink" href="#printing-the-model" title="Permalink to this headline">#</a></h3>
 <p>Here is the optimization model, reproduced from above for convenience:</p>
 <div class="math notranslate nohighlight">
@@ -2063,8 +2064,8 @@ title="Print to PDF"
 <p class="admonition-title"><b>Activity</b></p>
 <p>Does our Pyomo model match the optimization mathematical model (equations above)? How did we incorporate the inequality constraints into the Pyomo model?</p>
 </div>
-</div>
-<div class="section" id="another-approach-build-the-model-in-a-function">
+</section>
+<section id="another-approach-build-the-model-in-a-function">
 <h3><span class="section-number">1.6.2.8. </span>Another Approach: Build the Model in a Function<a class="headerlink" href="#another-approach-build-the-model-in-a-function" title="Permalink to this headline">#</a></h3>
 <p>To emphasize the tutorial nature of this example, we build the model on piece at a time above. An often preferred approach is to define a Python function that builds the model, such as the one below.</p>
 <div class="admonition note">
@@ -2148,12 +2149,12 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="calling-optimization-solver">
+</section>
+</section>
+<section id="calling-optimization-solver">
 <h2><span class="section-number">1.6.3. </span>Calling Optimization Solver<a class="headerlink" href="#calling-optimization-solver" title="Permalink to this headline">#</a></h2>
 <p>Now that our Pyomo model is complete, we can numerically solve the model!</p>
-<div class="section" id="solverfactory-and-solver-options">
+<section id="solverfactory-and-solver-options">
 <h3><span class="section-number">1.6.3.1. </span><code class="docutils literal notranslate"><span class="pre">SolverFactory</span></code> and Solver Options<a class="headerlink" href="#solverfactory-and-solver-options" title="Permalink to this headline">#</a></h3>
 <p>Algebraic Modeling Languages, including Pyomo, allow us to define optimization problems is a general, solver agnostic way. This means we can quickly swap between solvers.</p>
 <p>We will start by using Ipopt. First, we will create an instance of the <code class="docutils literal notranslate"><span class="pre">SolverFactory</span></code>:</p>
@@ -2256,8 +2257,8 @@ EXIT: Optimal Solution Found.
 </div>
 </div>
 <p>The keyword argument <code class="docutils literal notranslate"><span class="pre">tee=True</span></code> tells the solve to dispaly its output to the screen.</p>
-</div>
-<div class="section" id="interpreting-ipopt-output-verifying-degree-of-freedom-analysis">
+</section>
+<section id="interpreting-ipopt-output-verifying-degree-of-freedom-analysis">
 <h3><span class="section-number">1.6.3.2. </span>Interpreting Ipopt Output - Verifying Degree of Freedom Analysis<a class="headerlink" href="#interpreting-ipopt-output-verifying-degree-of-freedom-analysis" title="Permalink to this headline">#</a></h3>
 <p>Your Ipopt output should include the following:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Number</span> <span class="n">of</span> <span class="n">nonzeros</span> <span class="ow">in</span> <span class="n">equality</span> <span class="n">constraint</span> <span class="n">Jacobian</span><span class="o">...</span><span class="p">:</span>       <span class="mi">96</span>
@@ -2279,8 +2280,8 @@ EXIT: Optimal Solution Found.
 <p class="admonition-title"><b>Activity</b></p>
 <p>Compare this output to your degree of freedom analysis.</p>
 </div>
-</div>
-<div class="section" id="try-another-solver">
+</section>
+<section id="try-another-solver">
 <h3><span class="section-number">1.6.3.3. </span>Try Another Solver<a class="headerlink" href="#try-another-solver" title="Permalink to this headline">#</a></h3>
 <p>Let’s see how easy it is to switch to another solver with Pyomo.</p>
 <div class="admonition note">
@@ -2326,9 +2327,9 @@ Writing basic solution to &#39;/var/folders/xy/24xvnyss36v3d8mw68tygxdw0000gp/T/
 </div>
 </div>
 <p>Notice we used <code class="docutils literal notranslate"><span class="pre">solver2</span></code>, which is an instance of <code class="docutils literal notranslate"><span class="pre">SolverFactory</span></code> for the solver <code class="docutils literal notranslate"><span class="pre">glpk</span></code>. But we reused model <code class="docutils literal notranslate"><span class="pre">m</span></code>. This means the solver <code class="docutils literal notranslate"><span class="pre">glpk</span></code> used the solution from <code class="docutils literal notranslate"><span class="pre">ipopt</span></code> as its initial point.</p>
-</div>
-</div>
-<div class="section" id="inspecting-the-solution">
+</section>
+</section>
+<section id="inspecting-the-solution">
 <h2><span class="section-number">1.6.4. </span>Inspecting the Solution<a class="headerlink" href="#inspecting-the-solution" title="Permalink to this headline">#</a></h2>
 <p>We can inspect the entire model solution using <code class="docutils literal notranslate"><span class="pre">pprint()</span></code>.</p>
 <div class="cell docutils container">
@@ -2499,7 +2500,7 @@ Writing basic solution to &#39;/var/folders/xy/24xvnyss36v3d8mw68tygxdw0000gp/T/
 </div>
 </div>
 <p>The solution is stored in the <code class="docutils literal notranslate"><span class="pre">value</span></code> column. This is helpful for debugging small models but tendious overwise.</p>
-<div class="section" id="extracting-solution-from-pyomo">
+<section id="extracting-solution-from-pyomo">
 <h3><span class="section-number">1.6.4.1. </span>Extracting Solution from Pyomo<a class="headerlink" href="#extracting-solution-from-pyomo" title="Permalink to this headline">#</a></h3>
 <p>A key advantage of Pyomo is that it is an Algebriac Modeling Language in Python. So let’s use Python to analyze the solution! The code below extracts the values of the variables into three lists.</p>
 <div class="cell docutils container">
@@ -2561,8 +2562,8 @@ Writing basic solution to &#39;/var/folders/xy/24xvnyss36v3d8mw68tygxdw0000gp/T/
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="visualizing-the-solution">
+</section>
+<section id="visualizing-the-solution">
 <h3><span class="section-number">1.6.4.2. </span>Visualizing the Solution<a class="headerlink" href="#visualizing-the-solution" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2616,17 +2617,17 @@ Writing basic solution to &#39;/var/folders/xy/24xvnyss36v3d8mw68tygxdw0000gp/T/
 <p class="admonition-title"><b>Activity</b></p>
 <p>Improve the formatting of the plots using the code from the top of the notebook (pandas section).</p>
 </div>
-</div>
-<div class="section" id="accessing-dual-variables">
+</section>
+<section id="accessing-dual-variables">
 <h3><span class="section-number">1.6.4.3. </span>Accessing Dual Variables<a class="headerlink" href="#accessing-dual-variables" title="Permalink to this headline">#</a></h3>
 <p>Coming Soon! This will get updated sometime during the first month. We will revisit dual variables later in the semester after introducing some optimization theory concepts.</p>
-</div>
-</div>
-<div class="section" id="references">
+</section>
+</section>
+<section id="references">
 <h2><span class="section-number">1.6.5. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
 <p>All tables are from Chapter 4 of Hart, W. E., Laird, C. D., Watson, J. P., Woodruff, D. L., Hackebeil, G. A., Nicholson, B. L., &amp; Siirola, J. D. (2017). <em>Pyomo-Optimization Modeling in Python</em> (Vol. 67). Berlin: Springer. <a class="reference external" href="https://www.springer.com/gp/book/9783319588193">https://www.springer.com/gp/book/9783319588193</a></p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

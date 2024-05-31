@@ -1,48 +1,60 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" data-content_root="" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>6.2. Mathematics Primer &#8212; Nonlinear and Stochastic Optimization</title>
-    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="../../_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
-    
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../../_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -52,972 +64,487 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/6/Math-Primer-2';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="6.3. Unconstrained Optimality Conditions" href="Optimality.html" />
     <link rel="prev" title="6.1. Linear Algebra Review and SciPy Basics" href="Math-Primer.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-<!-- Checkboxes to toggle the left sidebar -->
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
-<label class="overlay overlay-navbar" for="__navigation">
-    <div class="visually-hidden">Toggle navigation sidebar</div>
-</label>
-<!-- Checkboxes to toggle the in-page toc -->
-<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
-<label class="overlay overlay-pagetoc" for="__page-toc">
-    <div class="visually-hidden">Toggle in-page Table of Contents</div>
-</label>
-<!-- Headers at the top -->
-<div class="announcement header-item noprint"></div>
-<div class="header header-item noprint"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
 
-    
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
 
-    <div class="container-xl">
-      <div class="row">
-          
-<!-- Sidebar -->
-<div class="bd-sidebar noprint" id="site-navigation">
-    <div class="bd-sidebar__content">
-        <div class="bd-sidebar__top"><div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../../index.html">
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <header>
+  
+    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    </div>
+  
+  </header>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="../../_static/cbe_logo.jpg" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Nonlinear and Stochastic Optimization</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
+    
+    
+    <img src="../../_static/cbe_logo.jpg" class="logo__image only-light" alt="Nonlinear and Stochastic Optimization - Home"/>
+    <script>document.write(`<img src="../../_static/cbe_logo.jpg" class="logo__image only-dark" alt="Nonlinear and Stochastic Optimization - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../../intro.html">
-                    Nonlinear and Stochastic Optimization
+                    Optimization for Decision Science
                 </a>
             </li>
         </ul>
-        <p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Organization
- </span>
-</p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../org/intro.html">
-   Welcome
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../org/syllabus.html">
-     Syllabus
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../org/calendar.html">
-     Spring 2023 Calendar
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../org/semester_project.html">
-     Semester Project
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../org/contribute.html">
-     Contribution Instructions
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../org/assignments.html">
-   Assignments
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Pyomo1.html">
-     Pyomo Homework 1
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Pyomo2.html">
-     Pyomo Homework 2
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Pyomo3.html">
-     Pyomo Homework 3
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">
-     Pyomo Mini-Project: Receding Horizon Stochastic Control
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Algorithms1.html">
-     Algorithms Homework 1
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Algorithms2.html">
-     Algorithms Homework 2
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Algorithms3.html">
-     Algorithms Homework 3
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Algorithms4.html">
-     Algorithms Homework 4: Interior Point Methods
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Spring 2023 Calendar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Optimization Modeling in Pyomo
- </span>
-</p>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms1.html">Algorithms Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms2.html">Algorithms Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4: Interior Point Methods</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../1/getting-started.html">
-   1. Getting Started with Pyomo
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/Local-Install.html">
-     1.1. Local Installation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/Optimization-Modeling.html">
-     1.2. Optimization Modeling with Applications
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/Pyomo-Introduction.html">
-     1.3. Your First Optimization Problem
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/LP-NLP.html">
-     1.4. Continuous Optimization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/IP.html">
-     1.5. Integer Programs
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">
-     1.6. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../2/logic.html">
-   2. Logical Modeling
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../2/Logical_Modeling_GDP.html">
-     2.1. Logical Modeling and Generalized Disjunctive Programs
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">
-     2.2. Modeling Disjunctions through the Strip Packing Problem
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../3/dynamics.html">
-   3. Dynamic Optimization
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-  <label for="toctree-checkbox-5">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../3/DAE_background.html">
-     3.1. Differential Algebraic Equations (DAEs)
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../3/DAE_numeric_integration.html">
-     3.2. Numeric Integration for DAEs
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../3/PyomoDAE_theory.html">
-     3.3. Dynamic Optimization with Collocation and Pyomo.DAE
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../3/PyomoDAE_example.html">
-     3.4. Dynamic Optimization with Pyomo.DAE: An Example
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../4/uncertainty.html">
-   4. Optimization Under Uncertainty
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-  <label for="toctree-checkbox-6">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../4/SP.html">
-     4.1. Stochastic Programming
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../4/RiskMeasures.html">
-     4.2. Risk Measures and Portfolio Optimization
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../5/data.html">
-   5. Data Science and Applied Statistics
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-  <label for="toctree-checkbox-7">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../5/Parmest-tutorial.html">
-     5.1. Parameter estimation with
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       parmest
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../5/Parmest-generate-data.html">
-     5.2. Supplementary material: data for parmest tutorial
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">
-     5.3. Reactor Kinetics Example for Pyomo.DoE Tutorial
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/LP-NLP.html">1.4. Continuous Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.5. Integer Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.6. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Algorithms and Theory
- </span>
-</p>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_background.html">3.1. Differential Algebraic Equations (DAEs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_numeric_integration.html">3.2. Numeric Integration for DAEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_theory.html">3.3. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_example.html">3.4. Dynamic Optimization with Pyomo.DAE: An Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.2. Risk Measures and Portfolio Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Reactor Kinetics Example for Pyomo.DoE Tutorial</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active has-children">
-  <a class="reference internal" href="unconstrained.html">
-   6. Unconstrained Nonlinear Optimization
-  </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-  <label for="toctree-checkbox-8">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="Math-Primer.html">
-     6.1. Linear Algebra Review and SciPy Basics
-    </a>
-   </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     6.2. Mathematics Primer
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="Optimality.html">
-     6.3. Unconstrained Optimality Conditions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="Newton-Methods.html">
-     6.4. Newton-type Methods for Unconstrained Optimization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="Quasi-Newton-Methods.html">
-     6.5. Quasi-Newton Methods for Unconstrained Optimization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="Globalization.html">
-     6.6. Descent and Globalization
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../7/constrained.html">
-   7. Constrained Nonlinear Optimization
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-  <label for="toctree-checkbox-9">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Convexity.html">
-     7.1. Convexity Revisited
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Local-Optimality.html">
-     7.2. Local Optimality Conditions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/KKT-Multipliers.html">
-     7.3. Analysis of KKT Conditions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Constraint-Qualifications.html">
-     7.4. Constraint Qualifications
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Second-Order.html">
-     7.5. Second Order Optimality Conditions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/NLP-Diagnostics.html">
-     7.6. NLP Diagnostics with Degeneracy Hunter
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Interior-Point1.html">
-     7.7. Simple Netwon Method for Equality Constrained NLPs
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Interior-Point2.html">
-     7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../8/special-topics.html">
-   8. Special Topics
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
-  <label for="toctree-checkbox-10">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../8/MILP.html">
-     8.1. Integer Programming with Simple Branch and Bound
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../8/MINLP-Algorithms.html">
-     8.2. MINLP Algorithms
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../8/Global-Opt.html">
-     8.3. Deterministic Global Optimization
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="unconstrained.html">6. Unconstrained Nonlinear Optimization</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Math-Primer.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.2. Mathematics Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Newton-Methods.html">6.4. Newton-type Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Globalization.html">6.6. Descent and Globalization</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Student Contributions
- </span>
-</p>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Constraint-Qualifications.html">7.4. Constraint Qualifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Second-Order.html">7.5. Second Order Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/NLP-Diagnostics.html">7.6. NLP Diagnostics with Degeneracy Hunter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../contrib/dfo.html">
-   Derivative-Free Optimization
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
-  <label for="toctree-checkbox-11">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../contrib/Bayesian_Optimization1.html">
-     Bayesian Optimization Tutorial 1
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../contrib/Bayesian_Optimization2.html">
-     Bayesian Optimization Tutorial 2
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../contrib/sgd.html">
-   Stochastic Gradient Descent
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
-  <label for="toctree-checkbox-12">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-1.html">
-     Stochastic Gradient Descent Tutorial 1
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-2.html">
-     Stochastic Gradient Descent Tutorial 2
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-3.html">
-     Stochastic Gradient Descent Tutorial 3
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../contrib/data.html">
-   Machine Learning and Applied Statistics
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
-  <label for="toctree-checkbox-13">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../contrib/EM-MAP.html">
-     Expectation Maximization Algorithm and MAP Estimation
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/dfo.html">Derivative-Free Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/sgd.html">Stochastic Gradient Descent</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/data.html">Machine Learning and Applied Statistics</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
+</ul>
+</li>
 </ul>
 
     </div>
 </nav></div>
-        <div class="bd-sidebar__bottom">
-             <!-- To handle the deprecated key -->
-            
-            <div class="navbar_extra_footer">
-            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-            </div>
-            
-        </div>
     </div>
-    <div id="rtd-footer-container"></div>
-</div>
-
-
-          
-
-
-          
-<!-- A tiny helper pixel to detect if we've scrolled -->
-<div class="sbt-scroll-pixel-helper"></div>
-<!-- Main content -->
-<div class="col py-0 content-container">
-    
-    <div class="header-article row sticky-top noprint">
-        
-
-
-
-<div class="col py-1 d-flex header-article-main">
-    <div class="header-article__left">
-        
-        <label for="__navigation"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="right"
-title="Toggle navigation"
->
   
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-bars"></i>
-  </span>
-
-</label>
-
-        
-    </div>
-    <div class="header-article__right">
-<div class="menu-dropdown menu-dropdown-launch-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Launch interactive content">
-      <i class="fas fa-rocket"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://mybinder.org/v2/gh/ndcbe/optimization/master?urlpath=tree/notebooks/6/Math-Primer-2.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Binder"
->
   
-
-<span class="headerbtn__icon-container">
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
   
-    <img src="../../_static/images/logo_binder.svg">
-  </span>
-<span class="headerbtn__text-container">Binder</span>
-</a>
+  <div id="rtd-footer-container"></div>
 
-      </li>
+
+      </div>
       
-      <li>
-        <a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/6/Math-Primer-2.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Colab"
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/6/Math-Primer-2.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   
     <img src="../../_static/images/logo_colab.png">
   </span>
-<span class="headerbtn__text-container">Colab</span>
+<span class="btn__text-container">Colab</span>
 </a>
-
-      </li>
+</li>
       
-    </ul>
-  </div>
+  </ul>
 </div>
 
-<button onclick="toggleFullScreen()"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="bottom"
-title="Fullscreen mode"
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/6/Math-Primer-2.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/6/Math-Primer-2.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
   <i class="fas fa-expand"></i>
   </span>
 
 </button>
 
-<div class="menu-dropdown menu-dropdown-repository-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Source repositories">
-      <i class="fab fa-github"></i>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://github.com/ndcbe/optimization"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Source repository"
->
-  
+`);
+</script>
 
-<span class="headerbtn__icon-container">
-  <i class="fab fa-github"></i>
-  </span>
-<span class="headerbtn__text-container">repository</span>
-</a>
 
-      </li>
-      
-      <li>
-        <a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/6/Math-Primer-2.html&body=Your%20issue%20content%20here."
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Open an issue"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-lightbulb"></i>
-  </span>
-<span class="headerbtn__text-container">open issue</span>
-</a>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-
-<div class="menu-dropdown menu-dropdown-download-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Download this page">
-      <i class="fas fa-download"></i>
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="../../_sources/notebooks/6/Math-Primer-2.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Download source file"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="headerbtn__text-container">.ipynb</span>
-</a>
-
-      </li>
-      
-      <li>
-        
-<button onclick="printPdf(this)"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="left"
-title="Print to PDF"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="headerbtn__text-container">.pdf</span>
-</button>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
-  </span>
-
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
 </label>
-
+</div></div>
+      
     </div>
+  
 </div>
-
-<!-- Table of contents -->
-<div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
-    </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#eigenvalues-and-quadratic-programs">
-   6.2.1. Eigenvalues and Quadratic Programs
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#analysis-algorithm">
-     6.2.1.1. Analysis Algorithm
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#excercise-2-8-in-biegler-2010">
-     6.2.1.2. Excercise 2.8 in Biegler (2010)
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#activity-1">
-     6.2.1.3. Activity 1
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#activity-2">
-     6.2.1.4. Activity 2
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#classifying-functions-key-concepts-from-real-analysis">
-   6.2.2. Classifying Functions (Key Concepts from Real Analysis)
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#taylor-series-approximation">
-   6.2.3. Taylor Series Approximation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#finite-difference-approximation">
-   6.2.4. Finite Difference Approximation
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#forward-finite-difference">
-     6.2.4.1. Forward Finite Difference
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#backward-finite-difference">
-     6.2.4.2. Backward Finite Difference
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#central-finite-difference">
-     6.2.4.3. Central Finite Difference
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#activity">
-     6.2.4.4. Activity
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#original-f-x-e-x-at-x-1">
-       6.2.4.4.1. Original:
-       <span class="math notranslate nohighlight">
-        \(f(x) = e^{x}\)
-       </span>
-       at
-       <span class="math notranslate nohighlight">
-        \(x=1\)
-       </span>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#variant-f-x-e-x-at-x-10">
-       6.2.4.4.2. Variant:
-       <span class="math notranslate nohighlight">
-        \(f(x) = e^{x}\)
-       </span>
-       at
-       <span class="math notranslate nohighlight">
-        \(x=10\)
-       </span>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#your-own-test-function">
-       6.2.4.4.3. Your own test function
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#discussion">
-       6.2.4.4.4. Discussion
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
-</ul>
-
-    </nav>
 </div>
-    </div>
-    <div class="article row">
-        <div class="col pl-md-3 pl-lg-5 content-container">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Mathematics Primer</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#eigenvalues-and-quadratic-programs">
-   6.2.1. Eigenvalues and Quadratic Programs
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#analysis-algorithm">
-     6.2.1.1. Analysis Algorithm
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#excercise-2-8-in-biegler-2010">
-     6.2.1.2. Excercise 2.8 in Biegler (2010)
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#activity-1">
-     6.2.1.3. Activity 1
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#activity-2">
-     6.2.1.4. Activity 2
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#classifying-functions-key-concepts-from-real-analysis">
-   6.2.2. Classifying Functions (Key Concepts from Real Analysis)
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#taylor-series-approximation">
-   6.2.3. Taylor Series Approximation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#finite-difference-approximation">
-   6.2.4. Finite Difference Approximation
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#forward-finite-difference">
-     6.2.4.1. Forward Finite Difference
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#backward-finite-difference">
-     6.2.4.2. Backward Finite Difference
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#central-finite-difference">
-     6.2.4.3. Central Finite Difference
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#activity">
-     6.2.4.4. Activity
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#original-f-x-e-x-at-x-1">
-       6.2.4.4.1. Original:
-       <span class="math notranslate nohighlight">
-        \(f(x) = e^{x}\)
-       </span>
-       at
-       <span class="math notranslate nohighlight">
-        \(x=1\)
-       </span>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#variant-f-x-e-x-at-x-10">
-       6.2.4.4.2. Variant:
-       <span class="math notranslate nohighlight">
-        \(f(x) = e^{x}\)
-       </span>
-       at
-       <span class="math notranslate nohighlight">
-        \(x=10\)
-       </span>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#your-own-test-function">
-       6.2.4.4.3. Your own test function
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#discussion">
-       6.2.4.4.4. Discussion
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
-</ul>
+              
+              
 
-                        </nav>
-                    </div>
-                </div>
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Mathematics Primer</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
             </div>
-            <main id="main-content" role="main">
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eigenvalues-and-quadratic-programs">6.2.1. Eigenvalues and Quadratic Programs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-algorithm">6.2.1.1. Analysis Algorithm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#excercise-2-8-in-biegler-2010">6.2.1.2. Excercise 2.8 in Biegler (2010)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activity-1">6.2.1.3. Activity 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activity-2">6.2.1.4. Activity 2</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classifying-functions-key-concepts-from-real-analysis">6.2.2. Classifying Functions (Key Concepts from Real Analysis)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#taylor-series-approximation">6.2.3. Taylor Series Approximation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finite-difference-approximation">6.2.4. Finite Difference Approximation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-finite-difference">6.2.4.1. Forward Finite Difference</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#backward-finite-difference">6.2.4.2. Backward Finite Difference</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#central-finite-difference">6.2.4.3. Central Finite Difference</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activity">6.2.4.4. Activity</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#original-f-x-e-x-at-x-1">6.2.4.4.1. Original: <span class="math notranslate nohighlight">\(f(x) = e^{x}\)</span> at <span class="math notranslate nohighlight">\(x=1\)</span></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#variant-f-x-e-x-at-x-10">6.2.4.4.2. Variant: <span class="math notranslate nohighlight">\(f(x) = e^{x}\)</span> at <span class="math notranslate nohighlight">\(x=10\)</span></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#your-own-test-function">6.2.4.4.3. Your own test function</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion">6.2.4.4.4. Discussion</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
                 
-              <div>
-                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
   <section class="tex2jax_ignore mathjax_ignore" id="mathematics-primer">
-<h1><span class="section-number">6.2. </span>Mathematics Primer<a class="headerlink" href="#mathematics-primer" title="Permalink to this headline">#</a></h1>
+<h1><span class="section-number">6.2. </span>Mathematics Primer<a class="headerlink" href="#mathematics-primer" title="Permalink to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load required Python libraries.</span>
@@ -1031,18 +558,18 @@ title="Print to PDF"
 </div>
 </div>
 <section id="eigenvalues-and-quadratic-programs">
-<h2><span class="section-number">6.2.1. </span>Eigenvalues and Quadratic Programs<a class="headerlink" href="#eigenvalues-and-quadratic-programs" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.2.1. </span>Eigenvalues and Quadratic Programs<a class="headerlink" href="#eigenvalues-and-quadratic-programs" title="Permalink to this heading">#</a></h2>
 <p><strong>Main Idea</strong>: By looking at an unconstrained quadratic optimization problem, we will see how the eigenvalues tell us about the curvature (second derivatives) and help us classify the stationary points.</p>
 <p><strong>Reference</strong>: Section <em>2.2.2 Quadratic Forms</em> in Biegler (2010)</p>
 <p><img alt="Book" src="https://ndcbe.github.io/optimization/_images/quad1.png" /></p>
 <section id="analysis-algorithm">
-<h3><span class="section-number">6.2.1.1. </span>Analysis Algorithm<a class="headerlink" href="#analysis-algorithm" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">6.2.1.1. </span>Analysis Algorithm<a class="headerlink" href="#analysis-algorithm" title="Permalink to this heading">#</a></h3>
 <p>We will start by defining a functon for our classification procedure.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The main event</span>
 <span class="k">def</span> <span class="nf">quad_analyze</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Analyze the stationary points of a quadratic objective.</span>
 <span class="sd">    </span>
 <span class="sd">    Inputs:</span>
@@ -1155,7 +682,7 @@ title="Print to PDF"
 </div>
 </section>
 <section id="excercise-2-8-in-biegler-2010">
-<h3><span class="section-number">6.2.1.2. </span>Excercise 2.8 in Biegler (2010)<a class="headerlink" href="#excercise-2-8-in-biegler-2010" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">6.2.1.2. </span>Excercise 2.8 in Biegler (2010)<a class="headerlink" href="#excercise-2-8-in-biegler-2010" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1200,12 +727,12 @@ f&#39;(x*) =
  [2.22044605e-16 2.22044605e-16] 
 </pre></div>
 </div>
-<img alt="../../_images/Math-Primer-2_8_1.png" src="../../_images/Math-Primer-2_8_1.png" />
+<img alt="../../_images/7f370ed1acf661cd2d6aca7716f828ce9774662d5f7ed9409e20d9cf24da6e0f.png" src="../../_images/7f370ed1acf661cd2d6aca7716f828ce9774662d5f7ed9409e20d9cf24da6e0f.png" />
 </div>
 </div>
 </section>
 <section id="activity-1">
-<h3><span class="section-number">6.2.1.3. </span>Activity 1<a class="headerlink" href="#activity-1" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">6.2.1.3. </span>Activity 1<a class="headerlink" href="#activity-1" title="Permalink to this heading">#</a></h3>
 <p>Classify the stationary point for <span class="math notranslate nohighlight">\(f(x) = x_1 + x_2\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1249,12 +776,12 @@ f&#39;(x*) =
  [1. 1.] 
 </pre></div>
 </div>
-<img alt="../../_images/Math-Primer-2_10_1.png" src="../../_images/Math-Primer-2_10_1.png" />
+<img alt="../../_images/3e64d16e8d9d7ae2264047d1247b6c0a52b70a57b260adec6ad216a4d83adf1d.png" src="../../_images/3e64d16e8d9d7ae2264047d1247b6c0a52b70a57b260adec6ad216a4d83adf1d.png" />
 </div>
 </div>
 </section>
 <section id="activity-2">
-<h3><span class="section-number">6.2.1.4. </span>Activity 2<a class="headerlink" href="#activity-2" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">6.2.1.4. </span>Activity 2<a class="headerlink" href="#activity-2" title="Permalink to this heading">#</a></h3>
 <p>Classify the stationary point for <span class="math notranslate nohighlight">\(f(x) = x_1^2 + x_2^2 - 2x_1 x_2 + 0 x_1 - 0 x_2\)</span> + 3.</p>
 <p>Hint: <span class="math notranslate nohighlight">\(B\)</span> needs to be symmetric.</p>
 <div class="cell docutils container">
@@ -1297,19 +824,19 @@ f&#39;(x*) =
  [0. 0.] 
 </pre></div>
 </div>
-<img alt="../../_images/Math-Primer-2_13_1.png" src="../../_images/Math-Primer-2_13_1.png" />
+<img alt="../../_images/fa00591318b7f99dc2d5dded7ce3ffe436aa68e56b04ccc05b7f053acf5aef31.png" src="../../_images/fa00591318b7f99dc2d5dded7ce3ffe436aa68e56b04ccc05b7f053acf5aef31.png" />
 </div>
 </div>
 </section>
 </section>
 <section id="classifying-functions-key-concepts-from-real-analysis">
-<h2><span class="section-number">6.2.2. </span>Classifying Functions (Key Concepts from Real Analysis)<a class="headerlink" href="#classifying-functions-key-concepts-from-real-analysis" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.2.2. </span>Classifying Functions (Key Concepts from Real Analysis)<a class="headerlink" href="#classifying-functions-key-concepts-from-real-analysis" title="Permalink to this heading">#</a></h2>
 </section>
 <section id="taylor-series-approximation">
-<h2><span class="section-number">6.2.3. </span>Taylor Series Approximation<a class="headerlink" href="#taylor-series-approximation" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.2.3. </span>Taylor Series Approximation<a class="headerlink" href="#taylor-series-approximation" title="Permalink to this heading">#</a></h2>
 </section>
 <section id="finite-difference-approximation">
-<h2><span class="section-number">6.2.4. </span>Finite Difference Approximation<a class="headerlink" href="#finite-difference-approximation" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.2.4. </span>Finite Difference Approximation<a class="headerlink" href="#finite-difference-approximation" title="Permalink to this heading">#</a></h2>
 <p><strong>Main Idea</strong>: This example complements in class example where we use Taylor series expansions to estimate trunction error for forward, backward, and central finite difference formulas. We will revisit finite difference formulas again in a few lectures.</p>
 <p>Consider the following test function:
 $<span class="math notranslate nohighlight">\( f(x) = e^{x} \)</span>$</p>
@@ -1339,7 +866,7 @@ $<span class="math notranslate nohighlight">\( f(x) = e^{x} \)</span>$</p>
 </div>
 </div>
 <section id="forward-finite-difference">
-<h3><span class="section-number">6.2.4.1. </span>Forward Finite Difference<a class="headerlink" href="#forward-finite-difference" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">6.2.4.1. </span>Forward Finite Difference<a class="headerlink" href="#forward-finite-difference" title="Permalink to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
 \[ f'_f(a) = \frac{f(a+\epsilon) - f(a)}{\epsilon} \]</div>
 <div class="cell docutils container">
@@ -1364,12 +891,12 @@ $<span class="math notranslate nohighlight">\( f(x) = e^{x} \)</span>$</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/Math-Primer-2_21_0.png" src="../../_images/Math-Primer-2_21_0.png" />
+<img alt="../../_images/9d9ef6a970d18ed83cdbf0a1292db6387c3f0344303369fed074a5f42e06a0d6.png" src="../../_images/9d9ef6a970d18ed83cdbf0a1292db6387c3f0344303369fed074a5f42e06a0d6.png" />
 </div>
 </div>
 </section>
 <section id="backward-finite-difference">
-<h3><span class="section-number">6.2.4.2. </span>Backward Finite Difference<a class="headerlink" href="#backward-finite-difference" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">6.2.4.2. </span>Backward Finite Difference<a class="headerlink" href="#backward-finite-difference" title="Permalink to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
 \[ f'_b(a) = \frac{f(a) - f(a - \epsilon)}{-\epsilon} \]</div>
 <div class="cell docutils container">
@@ -1395,12 +922,12 @@ $<span class="math notranslate nohighlight">\( f(x) = e^{x} \)</span>$</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/Math-Primer-2_23_0.png" src="../../_images/Math-Primer-2_23_0.png" />
+<img alt="../../_images/1bb731911bbefe310f6b9698a531154ad8607877cb20596dbcad1b49f679b0e7.png" src="../../_images/1bb731911bbefe310f6b9698a531154ad8607877cb20596dbcad1b49f679b0e7.png" />
 </div>
 </div>
 </section>
 <section id="central-finite-difference">
-<h3><span class="section-number">6.2.4.3. </span>Central Finite Difference<a class="headerlink" href="#central-finite-difference" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">6.2.4.3. </span>Central Finite Difference<a class="headerlink" href="#central-finite-difference" title="Permalink to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
 \[ f'_c(a) = \frac{f(a+\epsilon) - f(a - \epsilon)}{2 \epsilon} \]</div>
 <div class="cell docutils container">
@@ -1427,37 +954,37 @@ $<span class="math notranslate nohighlight">\( f(x) = e^{x} \)</span>$</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/Math-Primer-2_25_0.png" src="../../_images/Math-Primer-2_25_0.png" />
+<img alt="../../_images/15bc69a41d35bb5c0f305334194f35b5800bbe2139b25809cd484455a979d344.png" src="../../_images/15bc69a41d35bb5c0f305334194f35b5800bbe2139b25809cd484455a979d344.png" />
 </div>
 </div>
 </section>
 <section id="activity">
-<h3><span class="section-number">6.2.4.4. </span>Activity<a class="headerlink" href="#activity" title="Permalink to this headline">#</a></h3>
-<ol class="simple">
+<h3><span class="section-number">6.2.4.4. </span>Activity<a class="headerlink" href="#activity" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
 <li><p>Record the results for the test function <span class="math notranslate nohighlight">\(f(x) = e^x\)</span> at <span class="math notranslate nohighlight">\(x=1\)</span>.</p></li>
 <li><p>Try the point <span class="math notranslate nohighlight">\(x=10\)</span> and record the results.</p></li>
 <li><p>Try a different test function.</p></li>
 </ol>
 <section id="original-f-x-e-x-at-x-1">
-<h4><span class="section-number">6.2.4.4.1. </span>Original: <span class="math notranslate nohighlight">\(f(x) = e^{x}\)</span> at <span class="math notranslate nohighlight">\(x=1\)</span><a class="headerlink" href="#original-f-x-e-x-at-x-1" title="Permalink to this headline">#</a></h4>
+<h4><span class="section-number">6.2.4.4.1. </span>Original: <span class="math notranslate nohighlight">\(f(x) = e^{x}\)</span> at <span class="math notranslate nohighlight">\(x=1\)</span><a class="headerlink" href="#original-f-x-e-x-at-x-1" title="Permalink to this heading">#</a></h4>
 <p><strong>Forward</strong>: Lowest absolute error of <span class="math notranslate nohighlight">\(10^{-8}\)</span> at <span class="math notranslate nohighlight">\(\epsilon\)</span> = <span class="math notranslate nohighlight">\(10^{-8}\)</span></p>
 <p><strong>Backward</strong>: Lowest absolute error of <span class="math notranslate nohighlight">\(10^{-8}\)</span> at <span class="math notranslate nohighlight">\(\epsilon\)</span> = <span class="math notranslate nohighlight">\(10^{-8}\)</span></p>
 <p><strong>Central</strong>: Lowest absolute error of <span class="math notranslate nohighlight">\(10^{-10}\)</span> at <span class="math notranslate nohighlight">\(\epsilon\)</span> = <span class="math notranslate nohighlight">\(10^{-6}\)</span></p>
 </section>
 <section id="variant-f-x-e-x-at-x-10">
-<h4><span class="section-number">6.2.4.4.2. </span>Variant: <span class="math notranslate nohighlight">\(f(x) = e^{x}\)</span> at <span class="math notranslate nohighlight">\(x=10\)</span><a class="headerlink" href="#variant-f-x-e-x-at-x-10" title="Permalink to this headline">#</a></h4>
+<h4><span class="section-number">6.2.4.4.2. </span>Variant: <span class="math notranslate nohighlight">\(f(x) = e^{x}\)</span> at <span class="math notranslate nohighlight">\(x=10\)</span><a class="headerlink" href="#variant-f-x-e-x-at-x-10" title="Permalink to this heading">#</a></h4>
 <p><strong>Forward</strong>: Lowest absolute error of <span class="math notranslate nohighlight">\(10^{-8}\)</span> at <span class="math notranslate nohighlight">\(\epsilon\)</span> = <span class="math notranslate nohighlight">\(10^{-8}\)</span></p>
 <p><strong>Backward</strong>: Lowest absolute error of <span class="math notranslate nohighlight">\(10^{-8}\)</span> at <span class="math notranslate nohighlight">\(\epsilon\)</span> = <span class="math notranslate nohighlight">\(10^{-8}\)</span></p>
 <p><strong>Central</strong>: Lowest absolute error of <span class="math notranslate nohighlight">\(10^{-10}\)</span> at <span class="math notranslate nohighlight">\(\epsilon\)</span> = <span class="math notranslate nohighlight">\(10^{-6}\)</span></p>
 </section>
 <section id="your-own-test-function">
-<h4><span class="section-number">6.2.4.4.3. </span>Your own test function<a class="headerlink" href="#your-own-test-function" title="Permalink to this headline">#</a></h4>
+<h4><span class="section-number">6.2.4.4.3. </span>Your own test function<a class="headerlink" href="#your-own-test-function" title="Permalink to this heading">#</a></h4>
 <p><strong>Forward</strong>: Lowest absolute error of … at <span class="math notranslate nohighlight">\(\epsilon\)</span> = …</p>
 <p><strong>Backward</strong>:</p>
 <p><strong>Central</strong>:</p>
 </section>
 <section id="discussion">
-<h4><span class="section-number">6.2.4.4.4. </span>Discussion<a class="headerlink" href="#discussion" title="Permalink to this headline">#</a></h4>
+<h4><span class="section-number">6.2.4.4.4. </span>Discussion<a class="headerlink" href="#discussion" title="Permalink to this heading">#</a></h4>
 <p>Are there any general trends from these (limited) computational experiments?</p>
 <p>What is the best <span class="math notranslate nohighlight">\(\epsilon\)</span> for an arbitrary function?</p>
 </section>
@@ -1477,7 +1004,7 @@ $<span class="math notranslate nohighlight">\( f(x) = e^{x} \)</span>$</p>
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./notebooks/6"
         },
         predefinedOutput: true
@@ -1485,50 +1012,124 @@ $<span class="math notranslate nohighlight">\( f(x) = e^{x} \)</span>$</p>
     </script>
     <script>kernelName = 'python3'</script>
 
-              </div>
+                </article>
               
-            </main>
-            <footer class="footer-article noprint">
-                
-    <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="Math-Primer.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">6.1. </span>Linear Algebra Review and SciPy Basics</p>
-        </div>
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Math-Primer.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">6.1. </span>Linear Algebra Review and SciPy Basics</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="Optimality.html" title="next page">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="Optimality.html"
+       title="next page">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title"><span class="section-number">6.3. </span>Unconstrained Optimality Conditions</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
-            </footer>
-        </div>
-    </div>
-    <div class="footer-content row">
-        <footer class="col footer"><p>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eigenvalues-and-quadratic-programs">6.2.1. Eigenvalues and Quadratic Programs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-algorithm">6.2.1.1. Analysis Algorithm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#excercise-2-8-in-biegler-2010">6.2.1.2. Excercise 2.8 in Biegler (2010)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activity-1">6.2.1.3. Activity 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activity-2">6.2.1.4. Activity 2</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classifying-functions-key-concepts-from-real-analysis">6.2.2. Classifying Functions (Key Concepts from Real Analysis)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#taylor-series-approximation">6.2.3. Taylor Series Approximation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finite-difference-approximation">6.2.4. Finite Difference Approximation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-finite-difference">6.2.4.1. Forward Finite Difference</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#backward-finite-difference">6.2.4.2. Backward Finite Difference</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#central-finite-difference">6.2.4.3. Central Finite Difference</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activity">6.2.4.4. Activity</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#original-f-x-e-x-at-x-1">6.2.4.4.1. Original: <span class="math notranslate nohighlight">\(f(x) = e^{x}\)</span> at <span class="math notranslate nohighlight">\(x=1\)</span></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#variant-f-x-e-x-at-x-10">6.2.4.4.2. Variant: <span class="math notranslate nohighlight">\(f(x) = e^{x}\)</span> at <span class="math notranslate nohighlight">\(x=10\)</span></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#your-own-test-function">6.2.4.4.3. Your own test function</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion">6.2.4.4.4. Discussion</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
   
-    By Alexander Dowling, et al.<br/>
-  
-      &copy; Copyright 2022.<br/>
-</p>
-        </footer>
-    </div>
+  <div class="footer-item">
     
+<p class="component-author">
+By Alexander Dowling, et al.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
 </div>
+          </footer>
+        
 
-
-      </div>
+      </main>
     </div>
+  </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
 
-
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>

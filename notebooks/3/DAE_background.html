@@ -1,48 +1,60 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" data-content_root="" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>3.1. Differential Algebraic Equations (DAEs) &#8212; Nonlinear and Stochastic Optimization</title>
-    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="../../_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
-    
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../../_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -52,938 +64,492 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/3/DAE_background';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="3.2. Numeric Integration for DAEs" href="DAE_numeric_integration.html" />
     <link rel="prev" title="3. Dynamic Optimization" href="dynamics.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-<!-- Checkboxes to toggle the left sidebar -->
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
-<label class="overlay overlay-navbar" for="__navigation">
-    <div class="visually-hidden">Toggle navigation sidebar</div>
-</label>
-<!-- Checkboxes to toggle the in-page toc -->
-<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
-<label class="overlay overlay-pagetoc" for="__page-toc">
-    <div class="visually-hidden">Toggle in-page Table of Contents</div>
-</label>
-<!-- Headers at the top -->
-<div class="announcement header-item noprint"></div>
-<div class="header header-item noprint"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
 
-    
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
 
-    <div class="container-xl">
-      <div class="row">
-          
-<!-- Sidebar -->
-<div class="bd-sidebar noprint" id="site-navigation">
-    <div class="bd-sidebar__content">
-        <div class="bd-sidebar__top"><div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../../index.html">
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <header>
+  
+    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    </div>
+  
+  </header>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="../../_static/cbe_logo.jpg" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Nonlinear and Stochastic Optimization</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
+    
+    
+    <img src="../../_static/cbe_logo.jpg" class="logo__image only-light" alt="Nonlinear and Stochastic Optimization - Home"/>
+    <script>document.write(`<img src="../../_static/cbe_logo.jpg" class="logo__image only-dark" alt="Nonlinear and Stochastic Optimization - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../../intro.html">
-                    Nonlinear and Stochastic Optimization
+                    Optimization for Decision Science
                 </a>
             </li>
         </ul>
-        <p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Organization
- </span>
-</p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../org/intro.html">
-   Welcome
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../org/syllabus.html">
-     Syllabus
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../org/calendar.html">
-     Spring 2023 Calendar
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../org/semester_project.html">
-     Semester Project
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../org/contribute.html">
-     Contribution Instructions
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../org/assignments.html">
-   Assignments
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Pyomo1.html">
-     Pyomo Homework 1
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Pyomo2.html">
-     Pyomo Homework 2
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Pyomo3.html">
-     Pyomo Homework 3
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">
-     Pyomo Mini-Project: Receding Horizon Stochastic Control
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Algorithms1.html">
-     Algorithms Homework 1
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Algorithms2.html">
-     Algorithms Homework 2
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Algorithms3.html">
-     Algorithms Homework 3
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Algorithms4.html">
-     Algorithms Homework 4: Interior Point Methods
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Spring 2023 Calendar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Optimization Modeling in Pyomo
- </span>
-</p>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms1.html">Algorithms Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms2.html">Algorithms Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4: Interior Point Methods</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../1/getting-started.html">
-   1. Getting Started with Pyomo
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/Local-Install.html">
-     1.1. Local Installation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/Optimization-Modeling.html">
-     1.2. Optimization Modeling with Applications
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/Pyomo-Introduction.html">
-     1.3. Your First Optimization Problem
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/LP-NLP.html">
-     1.4. Continuous Optimization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/IP.html">
-     1.5. Integer Programs
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">
-     1.6. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../2/logic.html">
-   2. Logical Modeling
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../2/Logical_Modeling_GDP.html">
-     2.1. Logical Modeling and Generalized Disjunctive Programs
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">
-     2.2. Modeling Disjunctions through the Strip Packing Problem
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 current active has-children">
-  <a class="reference internal" href="dynamics.html">
-   3. Dynamic Optimization
-  </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-  <label for="toctree-checkbox-5">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul class="current">
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     3.1. Differential Algebraic Equations (DAEs)
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="DAE_numeric_integration.html">
-     3.2. Numeric Integration for DAEs
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="PyomoDAE_theory.html">
-     3.3. Dynamic Optimization with Collocation and Pyomo.DAE
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="PyomoDAE_example.html">
-     3.4. Dynamic Optimization with Pyomo.DAE: An Example
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../4/uncertainty.html">
-   4. Optimization Under Uncertainty
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-  <label for="toctree-checkbox-6">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../4/SP.html">
-     4.1. Stochastic Programming
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../4/RiskMeasures.html">
-     4.2. Risk Measures and Portfolio Optimization
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../5/data.html">
-   5. Data Science and Applied Statistics
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-  <label for="toctree-checkbox-7">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../5/Parmest-tutorial.html">
-     5.1. Parameter estimation with
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       parmest
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../5/Parmest-generate-data.html">
-     5.2. Supplementary material: data for parmest tutorial
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">
-     5.3. Reactor Kinetics Example for Pyomo.DoE Tutorial
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/LP-NLP.html">1.4. Continuous Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.5. Integer Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.6. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Algorithms and Theory
- </span>
-</p>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../6/unconstrained.html">
-   6. Unconstrained Nonlinear Optimization
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-  <label for="toctree-checkbox-8">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../6/Math-Primer.html">
-     6.1. Linear Algebra Review and SciPy Basics
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../6/Math-Primer-2.html">
-     6.2. Mathematics Primer
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../6/Optimality.html">
-     6.3. Unconstrained Optimality Conditions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../6/Newton-Methods.html">
-     6.4. Newton-type Methods for Unconstrained Optimization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../6/Quasi-Newton-Methods.html">
-     6.5. Quasi-Newton Methods for Unconstrained Optimization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../6/Globalization.html">
-     6.6. Descent and Globalization
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../7/constrained.html">
-   7. Constrained Nonlinear Optimization
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-  <label for="toctree-checkbox-9">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Convexity.html">
-     7.1. Convexity Revisited
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Local-Optimality.html">
-     7.2. Local Optimality Conditions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/KKT-Multipliers.html">
-     7.3. Analysis of KKT Conditions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Constraint-Qualifications.html">
-     7.4. Constraint Qualifications
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Second-Order.html">
-     7.5. Second Order Optimality Conditions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/NLP-Diagnostics.html">
-     7.6. NLP Diagnostics with Degeneracy Hunter
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Interior-Point1.html">
-     7.7. Simple Netwon Method for Equality Constrained NLPs
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Interior-Point2.html">
-     7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../8/special-topics.html">
-   8. Special Topics
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
-  <label for="toctree-checkbox-10">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../8/MILP.html">
-     8.1. Integer Programming with Simple Branch and Bound
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../8/MINLP-Algorithms.html">
-     8.2. MINLP Algorithms
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../8/Global-Opt.html">
-     8.3. Deterministic Global Optimization
-    </a>
-   </li>
-  </ul>
- </li>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Student Contributions
- </span>
-</p>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="dynamics.html">3. Dynamic Optimization</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.1. Differential Algebraic Equations (DAEs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DAE_numeric_integration.html">3.2. Numeric Integration for DAEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PyomoDAE_theory.html">3.3. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PyomoDAE_example.html">3.4. Dynamic Optimization with Pyomo.DAE: An Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.2. Risk Measures and Portfolio Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Reactor Kinetics Example for Pyomo.DoE Tutorial</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../contrib/dfo.html">
-   Derivative-Free Optimization
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
-  <label for="toctree-checkbox-11">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../contrib/Bayesian_Optimization1.html">
-     Bayesian Optimization Tutorial 1
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../contrib/Bayesian_Optimization2.html">
-     Bayesian Optimization Tutorial 2
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../contrib/sgd.html">
-   Stochastic Gradient Descent
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
-  <label for="toctree-checkbox-12">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-1.html">
-     Stochastic Gradient Descent Tutorial 1
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-2.html">
-     Stochastic Gradient Descent Tutorial 2
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-3.html">
-     Stochastic Gradient Descent Tutorial 3
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../contrib/data.html">
-   Machine Learning and Applied Statistics
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
-  <label for="toctree-checkbox-13">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../contrib/EM-MAP.html">
-     Expectation Maximization Algorithm and MAP Estimation
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Newton-Methods.html">6.4. Newton-type Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Constraint-Qualifications.html">7.4. Constraint Qualifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Second-Order.html">7.5. Second Order Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/NLP-Diagnostics.html">7.6. NLP Diagnostics with Degeneracy Hunter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/dfo.html">Derivative-Free Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/sgd.html">Stochastic Gradient Descent</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/data.html">Machine Learning and Applied Statistics</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
+</ul>
+</li>
 </ul>
 
     </div>
 </nav></div>
-        <div class="bd-sidebar__bottom">
-             <!-- To handle the deprecated key -->
-            
-            <div class="navbar_extra_footer">
-            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-            </div>
-            
-        </div>
     </div>
-    <div id="rtd-footer-container"></div>
-</div>
-
-
-          
-
-
-          
-<!-- A tiny helper pixel to detect if we've scrolled -->
-<div class="sbt-scroll-pixel-helper"></div>
-<!-- Main content -->
-<div class="col py-0 content-container">
-    
-    <div class="header-article row sticky-top noprint">
-        
-
-
-
-<div class="col py-1 d-flex header-article-main">
-    <div class="header-article__left">
-        
-        <label for="__navigation"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="right"
-title="Toggle navigation"
->
   
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-bars"></i>
-  </span>
-
-</label>
-
-        
-    </div>
-    <div class="header-article__right">
-<div class="menu-dropdown menu-dropdown-launch-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Launch interactive content">
-      <i class="fas fa-rocket"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://mybinder.org/v2/gh/ndcbe/optimization/master?urlpath=tree/notebooks/3/DAE_background.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Binder"
->
   
-
-<span class="headerbtn__icon-container">
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
   
-    <img src="../../_static/images/logo_binder.svg">
-  </span>
-<span class="headerbtn__text-container">Binder</span>
-</a>
+  <div id="rtd-footer-container"></div>
 
-      </li>
+
+      </div>
       
-      <li>
-        <a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/3/DAE_background.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Colab"
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/3/DAE_background.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   
     <img src="../../_static/images/logo_colab.png">
   </span>
-<span class="headerbtn__text-container">Colab</span>
+<span class="btn__text-container">Colab</span>
 </a>
-
-      </li>
+</li>
       
-    </ul>
-  </div>
+  </ul>
 </div>
 
-<button onclick="toggleFullScreen()"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="bottom"
-title="Fullscreen mode"
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/3/DAE_background.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/3/DAE_background.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
   <i class="fas fa-expand"></i>
   </span>
 
 </button>
 
-<div class="menu-dropdown menu-dropdown-repository-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Source repositories">
-      <i class="fab fa-github"></i>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://github.com/ndcbe/optimization"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Source repository"
->
-  
+`);
+</script>
 
-<span class="headerbtn__icon-container">
-  <i class="fab fa-github"></i>
-  </span>
-<span class="headerbtn__text-container">repository</span>
-</a>
 
-      </li>
-      
-      <li>
-        <a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/3/DAE_background.html&body=Your%20issue%20content%20here."
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Open an issue"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-lightbulb"></i>
-  </span>
-<span class="headerbtn__text-container">open issue</span>
-</a>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-
-<div class="menu-dropdown menu-dropdown-download-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Download this page">
-      <i class="fas fa-download"></i>
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="../../_sources/notebooks/3/DAE_background.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Download source file"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="headerbtn__text-container">.ipynb</span>
-</a>
-
-      </li>
-      
-      <li>
-        
-<button onclick="printPdf(this)"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="left"
-title="Print to PDF"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="headerbtn__text-container">.pdf</span>
-</button>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
-  </span>
-
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
 </label>
-
+</div></div>
+      
     </div>
+  
 </div>
-
-<!-- Table of contents -->
-<div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
-    </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#external-documentaiton-for-libraries-used">
-   3.1.1. External Documentaiton for libraries used
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#dynamic-optimization-overview">
-   3.1.2. Dynamic Optimization Overview
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#introduction-to-dynamic-optimization">
-     3.1.2.1. Introduction to Dynamic Optimization
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#general-breakdown-of-daes">
-   3.1.3. General Breakdown of DAEs
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#daes-as-boundary-value-problems">
-   3.1.4. DAEs as Boundary Value Problems
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#dae-optimization">
-   3.1.5. DAE Optimization
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#handling-path-constraints">
-   3.1.6. Handling Path Constraints
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#dae-index-and-index-reduction">
-     3.1.6.1. DAE Index and Index Reduction
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pendulum-model-and-index-reduction">
-     3.1.6.2. Pendulum model and index reduction
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#formulation-1-index-3-dae">
-     3.1.6.3. Formulation 1: Index-3 DAE
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#formulation-2-pure-ode-model-index-0-example">
-     3.1.6.4. Formulation 2: Pure ODE Model/ Index-0 Example
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#formulation-3-index-1-dae-model">
-     3.1.6.5. Formulation 3: Index-1 DAE Model
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#formulation-4-index-1-dae-model">
-     3.1.6.6. Formulation 4: Index-1 DAE Model
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#take-away-messages">
-   3.1.7. 2.4.4 Take Away Messages
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#important-topics-from-the-textbook">
-   3.1.8. Important Topics from the Textbook
-  </a>
- </li>
-</ul>
-
-    </nav>
 </div>
-    </div>
-    <div class="article row">
-        <div class="col pl-md-3 pl-lg-5 content-container">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Differential Algebraic Equations (DAEs)</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#external-documentaiton-for-libraries-used">
-   3.1.1. External Documentaiton for libraries used
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#dynamic-optimization-overview">
-   3.1.2. Dynamic Optimization Overview
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#introduction-to-dynamic-optimization">
-     3.1.2.1. Introduction to Dynamic Optimization
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#general-breakdown-of-daes">
-   3.1.3. General Breakdown of DAEs
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#daes-as-boundary-value-problems">
-   3.1.4. DAEs as Boundary Value Problems
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#dae-optimization">
-   3.1.5. DAE Optimization
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#handling-path-constraints">
-   3.1.6. Handling Path Constraints
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#dae-index-and-index-reduction">
-     3.1.6.1. DAE Index and Index Reduction
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pendulum-model-and-index-reduction">
-     3.1.6.2. Pendulum model and index reduction
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#formulation-1-index-3-dae">
-     3.1.6.3. Formulation 1: Index-3 DAE
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#formulation-2-pure-ode-model-index-0-example">
-     3.1.6.4. Formulation 2: Pure ODE Model/ Index-0 Example
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#formulation-3-index-1-dae-model">
-     3.1.6.5. Formulation 3: Index-1 DAE Model
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#formulation-4-index-1-dae-model">
-     3.1.6.6. Formulation 4: Index-1 DAE Model
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#take-away-messages">
-   3.1.7. 2.4.4 Take Away Messages
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#important-topics-from-the-textbook">
-   3.1.8. Important Topics from the Textbook
-  </a>
- </li>
-</ul>
+              
+              
 
-                        </nav>
-                    </div>
-                </div>
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Differential Algebraic Equations (DAEs)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
             </div>
-            <main id="main-content" role="main">
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#external-documentaiton-for-libraries-used">3.1.1. External Documentaiton for libraries used</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-optimization-overview">3.1.2. Dynamic Optimization Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-dynamic-optimization">3.1.2.1. Introduction to Dynamic Optimization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-breakdown-of-daes">3.1.3. General Breakdown of DAEs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#daes-as-boundary-value-problems">3.1.4. DAEs as Boundary Value Problems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dae-optimization">3.1.5. DAE Optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-path-constraints">3.1.6. Handling Path Constraints</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dae-index-and-index-reduction">3.1.6.1. DAE Index and Index Reduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pendulum-model-and-index-reduction">3.1.6.2. Pendulum model and index reduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation-1-index-3-dae">3.1.6.3. Formulation 1: Index-3 DAE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation-2-pure-ode-model-index-0-example">3.1.6.4. Formulation 2: Pure ODE Model/ Index-0 Example</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation-3-index-1-dae-model">3.1.6.5. Formulation 3: Index-1 DAE Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation-4-index-1-dae-model">3.1.6.6. Formulation 4: Index-1 DAE Model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#take-away-messages">3.1.7. 2.4.4 Take Away Messages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#important-topics-from-the-textbook">3.1.8. Important Topics from the Textbook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
                 
-              <div>
-                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
   <section class="tex2jax_ignore mathjax_ignore" id="differential-algebraic-equations-daes">
-<h1><span class="section-number">3.1. </span>Differential Algebraic Equations (DAEs)<a class="headerlink" href="#differential-algebraic-equations-daes" title="Permalink to this headline">#</a></h1>
+<h1><span class="section-number">3.1. </span>Differential Algebraic Equations (DAEs)<a class="headerlink" href="#differential-algebraic-equations-daes" title="Permalink to this heading">#</a></h1>
 <p><strong>Prepared by:</strong> Prof. Alexander Dowling, Myia Dickens (<a class="reference external" href="mailto:mdicken2&#37;&#52;&#48;nd&#46;edu">mdicken2<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2023), Molly Dougher (<a class="reference external" href="mailto:mdoughe6&#37;&#52;&#48;nd&#46;edu">mdoughe6<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2023)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="k">if</span> <span class="s2">&quot;google.colab&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
-    <span class="o">!</span>wget <span class="s2">&quot;https://raw.githubusercontent.com/ndcbe/CBE60499/main/notebooks/helper.py&quot;</span>
+    <span class="o">!</span>wget<span class="w"> </span><span class="s2">&quot;https://raw.githubusercontent.com/ndcbe/CBE60499/main/notebooks/helper.py&quot;</span>
     <span class="kn">import</span> <span class="nn">helper</span>
-    <span class="o">!</span>pip install casadi
+    <span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>casadi
     <span class="n">helper</span><span class="o">.</span><span class="n">install_idaes</span><span class="p">()</span>
     <span class="c1">#helper.install_ipopt()</span>
 <span class="k">else</span><span class="p">:</span>
@@ -1019,7 +585,7 @@ idaes was successfully installed
 </div>
 </div>
 <section id="external-documentaiton-for-libraries-used">
-<h2><span class="section-number">3.1.1. </span>External Documentaiton for libraries used<a class="headerlink" href="#external-documentaiton-for-libraries-used" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.1.1. </span>External Documentaiton for libraries used<a class="headerlink" href="#external-documentaiton-for-libraries-used" title="Permalink to this heading">#</a></h2>
 <p>Pyomo.dae documentation:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://pyomo.readthedocs.io/en/latest/modeling_extensions/dae.html">https://pyomo.readthedocs.io/en/latest/modeling_extensions/dae.html</a></p></li>
@@ -1031,14 +597,14 @@ idaes was successfully installed
 </ul>
 </section>
 <section id="dynamic-optimization-overview">
-<h2><span class="section-number">3.1.2. </span>Dynamic Optimization Overview<a class="headerlink" href="#dynamic-optimization-overview" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.1.2. </span>Dynamic Optimization Overview<a class="headerlink" href="#dynamic-optimization-overview" title="Permalink to this heading">#</a></h2>
 <section id="introduction-to-dynamic-optimization">
-<h3><span class="section-number">3.1.2.1. </span>Introduction to Dynamic Optimization<a class="headerlink" href="#introduction-to-dynamic-optimization" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">3.1.2.1. </span>Introduction to Dynamic Optimization<a class="headerlink" href="#introduction-to-dynamic-optimization" title="Permalink to this heading">#</a></h3>
 <p>Dynamic systems can be found in a wide range of engineering fields and subfields. This section is meant to be an introduction to solve differentiable-algebraic equations (DAEs) with resepct to optimizing dynamic systems. To allow for uniform understanding, the examples and explanations in this notebook will focus on basic physics examples (i.e. the pendulum example) and explanations.</p>
 <p>DAEs are tpyically specified as initial value problems with initial coniditions at zero. These equations are experessed with resepct to an independent variable, <span class="math notranslate nohighlight">\(t\)</span>, and are typically autnomous, or <span class="math notranslate nohighlight">\(t\)</span> does not explicilty appear in the equation.</p>
 <p>DAEs are tpyically of the form:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-61416578-7677-45e8-8904-017f0de0e7db">
-<span class="eqno">(3.1)<a class="headerlink" href="#equation-61416578-7677-45e8-8904-017f0de0e7db" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-1b13511b-1954-4f9b-9d11-da6e27020d1a">
+<span class="eqno">(3.1)<a class="headerlink" href="#equation-1b13511b-1954-4f9b-9d11-da6e27020d1a" title="Permalink to this equation">#</a></span>\[\begin{align}
 F\left(x, \frac{d x}{d t}, u(t), p, t\right)=0, \quad h(x(0))=0
 \end{align}\]</div>
 <p><span class="math notranslate nohighlight">\(x(t)\)</span>: state variables, functions of time</p>
@@ -1050,15 +616,15 @@ F\left(x, \frac{d x}{d t}, u(t), p, t\right)=0, \quad h(x(0))=0
 g(z(t), y(t), u(t), p)=0
 \end{gathered}</p>
 <p>where the state variables <span class="math notranslate nohighlight">\(x(t)\)</span> is partioned into differenetiable varibales, <span class="math notranslate nohighlight">\(z(t)\)</span>, and algebraic variables <span class="math notranslate nohighlight">\(y(t)\)</span>. It is assumed that <span class="math notranslate nohighlight">\(y(t)\)</span> can be solved independetly from <span class="math notranslate nohighlight">\(z(t)\)</span>, <span class="math notranslate nohighlight">\(u(t)\)</span>, and <span class="math notranslate nohighlight">\(p\)</span>, which allows for the DAE to be treated as an ODE of the form:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-4e328ac9-cca7-477c-afdd-50930bf00371">
-<span class="eqno">(3.2)<a class="headerlink" href="#equation-4e328ac9-cca7-477c-afdd-50930bf00371" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-b61b563b-765e-43f0-8fd6-0c1092363ce3">
+<span class="eqno">(3.2)<a class="headerlink" href="#equation-b61b563b-765e-43f0-8fd6-0c1092363ce3" title="Permalink to this equation">#</a></span>\[\begin{align}
 \frac{d z}{d t}=f(z(t), y[z(t),u(t),p], u(t), p)= \bar f(z(t), u(t), p), \quad z(0)=0
 \end{align}\]</div>
 <p>The section, Handling Path Constraints, will explain DAE indexing and how to reduce the index of a DAE to allow it to be treated as an ODE.</p>
 </section>
 </section>
 <section id="general-breakdown-of-daes">
-<h2><span class="section-number">3.1.3. </span>General Breakdown of DAEs<a class="headerlink" href="#general-breakdown-of-daes" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.1.3. </span>General Breakdown of DAEs<a class="headerlink" href="#general-breakdown-of-daes" title="Permalink to this heading">#</a></h2>
 <p>With resepct to constructing DAEs:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(z(t)\)</span>: Differential equations are typically dervied from conservation laws.</p></li>
@@ -1069,17 +635,17 @@ g(z(t), y(t), u(t), p)=0
 </ul>
 </section>
 <section id="daes-as-boundary-value-problems">
-<h2><span class="section-number">3.1.4. </span>DAEs as Boundary Value Problems<a class="headerlink" href="#daes-as-boundary-value-problems" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.1.4. </span>DAEs as Boundary Value Problems<a class="headerlink" href="#daes-as-boundary-value-problems" title="Permalink to this heading">#</a></h2>
 <p>Because DAEs are typically initial value problems, they can also be boundary value problems (BVP), where the initial condition is replaced by bondary conditions. With respect to solving DAE optimization problems, BVP DAEs are of the form:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7f3491a2-1bd7-4cf2-97ef-6637ae1e1e63">
-<span class="eqno">(3.3)<a class="headerlink" href="#equation-7f3491a2-1bd7-4cf2-97ef-6637ae1e1e63" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-55532b41-c407-42c3-a16a-49502af17476">
+<span class="eqno">(3.3)<a class="headerlink" href="#equation-55532b41-c407-42c3-a16a-49502af17476" title="Permalink to this equation">#</a></span>\[\begin{align}
 \frac{d z}{d t}=\hat f(z(t)), \quad h(z(0),z[t_f;z(0)])=0
 \end{align}\]</div>
 <p>In this form the solutions may be nonunique or not exist over a speficied reason; therefore, a key property is finding a locally unique solution, expressed by the theorem:</p>
 <blockquote>
 <div><p><strong>Theorem 8.2</strong>: Consider the BVP DAE with solution <span class="math notranslate nohighlight">\( \hat z(t)\)</span>. Also let <span class="math notranslate nohighlight">\(\bar f(z(t))\)</span> be Lipschitz continuous for all z(t) <span class="math notranslate nohighlight">\(|| z(t) - \hat z(t) || \leq \epsilon\)</span> for some <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> and <span class="math notranslate nohighlight">\(t \in [0, t_f]\)</span>. Then  the solution <span class="math notranslate nohighlight">\(\hat z(t)\)</span> is locally unique if and only if the matrix:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-0cb2f079-a7e1-475f-82dd-9ef66e5d3098">
-<span class="eqno">(3.4)<a class="headerlink" href="#equation-0cb2f079-a7e1-475f-82dd-9ef66e5d3098" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-16dd37db-a6ec-447e-a7af-8d2f9913dfc1">
+<span class="eqno">(3.4)<a class="headerlink" href="#equation-16dd37db-a6ec-447e-a7af-8d2f9913dfc1" title="Permalink to this equation">#</a></span>\[\begin{align}
 Q(t) = \frac{\partial h\left(\hat{z}(0), \hat{z}\left(t_f\right)\right)}{\partial z(0)}+Z(t) \frac{\partial h\left(\hat{z}(0), \hat{z}\left(t_f\right)\right)}{\partial z\left(t_f\right)}
 \end{align}\]</div>
 <p>is nonsingular, where the fundamental solution matrix <span class="math notranslate nohighlight">\(Z(t) = \frac{dz(t_f)}{dz(0)}\)</span> is evaluated at the solution <span class="math notranslate nohighlight">\(\hat z(t)\)</span>.</p>
@@ -1087,7 +653,7 @@ Q(t) = \frac{\partial h\left(\hat{z}(0), \hat{z}\left(t_f\right)\right)}{\partia
 <p>Theorem 8.2 is important when designing DAE constrained optimization problems.</p>
 </section>
 <section id="dae-optimization">
-<h2><span class="section-number">3.1.5. </span>DAE Optimization<a class="headerlink" href="#dae-optimization" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.1.5. </span>DAE Optimization<a class="headerlink" href="#dae-optimization" title="Permalink to this heading">#</a></h2>
 <p>Typically dynamic systems needed to be optimized over multiple periods, <span class="math notranslate nohighlight">\(l = 1,..., N_T\)</span>, in a time range, <span class="math notranslate nohighlight">\(t\)</span>. The model, states, and decisions can change during each period, <span class="math notranslate nohighlight">\(t \in (t_{l-1}, t_l]\)</span> , or over multiple periods. The multiperiod, dynamic optimization problem is of the form:</p>
 <p>\begin{aligned}
 \min &amp; \sum_{l=1}^{N_T} \Phi^l\left(z^l\left(t_l\right), y^l\left(t_l\right), u^l\left(t_l\right), p^l\right) \
@@ -1110,15 +676,15 @@ Q(t) = \frac{\partial h\left(\hat{z}(0), \hat{z}\left(t_f\right)\right)}{\partia
 <p>A desciption and further explanation of these applications can be found in Chapter 8 of the Biegler (2010) textbook.</p>
 </section>
 <section id="handling-path-constraints">
-<h2><span class="section-number">3.1.6. </span>Handling Path Constraints<a class="headerlink" href="#handling-path-constraints" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.1.6. </span>Handling Path Constraints<a class="headerlink" href="#handling-path-constraints" title="Permalink to this heading">#</a></h2>
 <p><em>Information taken from Section 8.4 of Biegler (2010).</em></p>
 <p>The motivation for defining the <em>index</em> of a DAE system starts with considering the general algebraic equality constraint <span class="math notranslate nohighlight">\(g_E(z,y,u,p)=0\)</span>. After the algebraic and control variables are established, deriving the Euler-Lagrange equations requires variable and equation nesting. In order to be nested, the algebraic variables must be able to be implicitly emliminated from their paired algebraic equation. If <span class="math notranslate nohighlight">\(y(t)\)</span> cannot be implicitly eliminated from this algebraic equality, reformulation is needed. This reformulation  begins with establishing an index of a DAE system.</p>
 <section id="dae-index-and-index-reduction">
-<h3><span class="section-number">3.1.6.1. </span>DAE Index and Index Reduction<a class="headerlink" href="#dae-index-and-index-reduction" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">3.1.6.1. </span>DAE Index and Index Reduction<a class="headerlink" href="#dae-index-and-index-reduction" title="Permalink to this heading">#</a></h3>
 <blockquote>
 <div><p><strong>Definition 8.6</strong>: Consider the DAE systems of the form:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-4e53130d-c91d-49ab-8ef8-a32204dac311">
-<span class="eqno">(3.5)<a class="headerlink" href="#equation-4e53130d-c91d-49ab-8ef8-a32204dac311" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-16684b69-5213-4fd6-a421-10b9d3a3a3b9">
+<span class="eqno">(3.5)<a class="headerlink" href="#equation-16684b69-5213-4fd6-a421-10b9d3a3a3b9" title="Permalink to this equation">#</a></span>\[\begin{align}
 F\left(x, \frac{d x}{d t}, u(t), p, t\right)=0, \quad h(x(0))=0
 \end{align}\]</div>
 <p>OR</p>
@@ -1137,11 +703,11 @@ Start with a DAE of the form:</p>
 \frac{d z}{d t}= f(z(t), y(t), u(t), p), \quad z(0)=z_0, \
 g(z(t), y(t), u(t), p)=0.
 \end{gathered}</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Check if the DAE system is index 1. If yes, stop.</p></li>
 </ol>
 </div></blockquote>
-<ol class="simple">
+<ol class="arabic simple" start="2">
 <li><p>Identify a subset of algebraic equations that can be solved for a subset of algebraic variables.</p></li>
 <li><p>Consider the remaining algebraic equations that contain differential variables <span class="math notranslate nohighlight">\(z_j\)</span>. Differentiating these remaining algebraic equations with respect to time leads to terms <span class="math notranslate nohighlight">\(\frac{dz_j}{dt}\)</span> in the differentiated equations.</p></li>
 <li><p>For the differential terms <span class="math notranslate nohighlight">\(\frac{dz_j}{dt}\)</span>, substitute the right-hand sides of the corresponding differential equations <span class="math notranslate nohighlight">\(f_j(z,y,u,p)\)</span> into the differentiated algebraic equations, and eliminate (some of) these differential equations. This leads to new algebraic equations that replace the same number of existing differential equations.</p></li>
@@ -1150,7 +716,7 @@ g(z(t), y(t), u(t), p)=0.
 <p>An example of this algorithm in use can be found within the following pendulum example.</p>
 </section>
 <section id="pendulum-model-and-index-reduction">
-<h3><span class="section-number">3.1.6.2. </span>Pendulum model and index reduction<a class="headerlink" href="#pendulum-model-and-index-reduction" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">3.1.6.2. </span>Pendulum model and index reduction<a class="headerlink" href="#pendulum-model-and-index-reduction" title="Permalink to this heading">#</a></h3>
 <p>Pendulum example:</p>
 <ul class="simple">
 <li><p>Python version of example: <a class="reference external" href="http://apmonitor.com/wiki/index.php/Apps/PendulumMotion">http://apmonitor.com/wiki/index.php/Apps/PendulumMotion</a></p></li>
@@ -1166,15 +732,15 @@ g(z(t), y(t), u(t), p)=0.
 &amp; x^2 + y^2 = 1 \
 \end{aligned}</p>
 <p>To find the index of the DAE system, first take the derivative of the algebraic equation and substitute in for the differential variables:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e8bb6269-545e-40a6-905a-e70f8c9ab6ec">
-<span class="eqno">(3.6)<a class="headerlink" href="#equation-e8bb6269-545e-40a6-905a-e70f8c9ab6ec" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-3d475f02-c634-4b10-b490-0f0517dcec8a">
+<span class="eqno">(3.6)<a class="headerlink" href="#equation-3d475f02-c634-4b10-b490-0f0517dcec8a" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp; x^2 + y^2 = 1 \\
 &amp; 2xx' + 2yy' = 0 \\
 &amp; 2xu + 2yv = 0
 \end{align}\]</div>
 <p>Next, differentiate the obtained equation using the product rule, make similar substitutions, and rearrange:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-33cca9c8-7c71-427a-a30b-5a9f47e4e578">
-<span class="eqno">(3.7)<a class="headerlink" href="#equation-33cca9c8-7c71-427a-a30b-5a9f47e4e578" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-78e25b03-385b-4bcf-880d-adf3bab0f2ed">
+<span class="eqno">(3.7)<a class="headerlink" href="#equation-78e25b03-385b-4bcf-880d-adf3bab0f2ed" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp; 2xu + 2yv = 0 \\
 &amp; 2(xu'+ x'u) + 2(yv' + vy') = 0 \\
 &amp; 2(-Tx^2 + u^2) + 2(y(g-Ty) + v^2) = 0 \\
@@ -1182,8 +748,8 @@ g(z(t), y(t), u(t), p)=0.
 &amp; 2(u^2 + v^2) - 2T(x^2 + y^2) + 2gy = 0
 \end{align}\]</div>
 <p>Finally, implicitly differentiate the obtained equation, make similar substitutions, and rearrange to isolate the <span class="math notranslate nohighlight">\(T'\)</span> term:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e9dbcb38-b93b-4a6c-84f7-55c83bd4cec1">
-<span class="eqno">(3.8)<a class="headerlink" href="#equation-e9dbcb38-b93b-4a6c-84f7-55c83bd4cec1" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-b8da0e4b-24b5-4d38-b795-d265251e929d">
+<span class="eqno">(3.8)<a class="headerlink" href="#equation-b8da0e4b-24b5-4d38-b795-d265251e929d" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp; 2(u^2 + v^2) - 2T(x^2 + y^2) + 2gy = 0 \\
 &amp; 4(uu' + vv') - 4T(xx' + yy') - 2T'(x^2 + y^2) + 2gy' = 0 \\
 &amp; 4(uu' + vv') - 4T(xx' + yy') + 2gy' = 2T'(x^2 + y^2) \\
@@ -1192,13 +758,13 @@ g(z(t), y(t), u(t), p)=0.
 \end{align}\]</div>
 <p>Now the equations are a system of ODEs. Three differentiations were completed, indicating that this is an <strong>Index 3 DAE</strong>.</p>
 <p>To reduce this DAE to index 1, follow Algorithm 8.1. The above analysis shows that this is not an index 1 DAE system. Therefore, the following algebraic equation is identified: <span class="math notranslate nohighlight">\(x^2 + y^2 = 1\)</span>. Differentiate the algebraic equation to yield:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-4f913664-b6ef-44c3-8514-699cbfa14a0c">
-<span class="eqno">(3.9)<a class="headerlink" href="#equation-4f913664-b6ef-44c3-8514-699cbfa14a0c" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-a3e8867c-8b44-4e39-9a48-5f344a10263b">
+<span class="eqno">(3.9)<a class="headerlink" href="#equation-a3e8867c-8b44-4e39-9a48-5f344a10263b" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp; 2xx' + 2yy' = 0\\
 \end{align}\]</div>
 <p>which can be solved for <span class="math notranslate nohighlight">\(x'\)</span>. Substitute for <span class="math notranslate nohighlight">\(x'\)</span> and <span class="math notranslate nohighlight">\(y'\)</span> to yield:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-1c780bd0-4203-4e7b-ac49-da66b4b529fb">
-<span class="eqno">(3.10)<a class="headerlink" href="#equation-1c780bd0-4203-4e7b-ac49-da66b4b529fb" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-ab03ec56-4499-45b0-9d3e-775408d31b4b">
+<span class="eqno">(3.10)<a class="headerlink" href="#equation-ab03ec56-4499-45b0-9d3e-775408d31b4b" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp; 2xu + 2yv = 0\\
 \end{align}\]</div>
 <p>The new DAE system is now:
@@ -1235,7 +801,7 @@ which is an <strong>Index 1 DAE</strong>.</p>
 <span class="c1">## Define function for plotting results</span>
 <span class="k">def</span> <span class="nf">plot_results</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">profiles</span><span class="p">):</span>
 
-    <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    inputs:</span>
 
 <span class="sd">    sim: pyomo.DAE simulator results from a simulation of ODE or DAE</span>
@@ -1305,7 +871,7 @@ which is an <strong>Index 1 DAE</strong>.</p>
 </div>
 </section>
 <section id="formulation-1-index-3-dae">
-<h3><span class="section-number">3.1.6.3. </span>Formulation 1: Index-3 DAE<a class="headerlink" href="#formulation-1-index-3-dae" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">3.1.6.3. </span>Formulation 1: Index-3 DAE<a class="headerlink" href="#formulation-1-index-3-dae" title="Permalink to this heading">#</a></h3>
 <p>Consider the following model:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -1319,7 +885,7 @@ which is an <strong>Index 1 DAE</strong>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_model_index3</span><span class="p">():</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Creates a model to define the Index 3 DAE system.</span>
 
 <span class="sd">    Output: the model, m</span>
@@ -1451,7 +1017,7 @@ At t = 0 and h = 1.06624e-14, the corrector convergence failed repeatedly or wit
 <p>Why did the <code class="docutils literal notranslate"><span class="pre">IDAS</span></code> integrator in <code class="docutils literal notranslate"><span class="pre">SUNDIALS</span></code> fail? It is <a class="reference external" href="https://groups.google.com/g/casadi-users/c/E02-X6nGVFs">only meant for index 0 or 1 DAEs</a>! Integrating high index DAEs is really hard!</p>
 </section>
 <section id="formulation-2-pure-ode-model-index-0-example">
-<h3><span class="section-number">3.1.6.4. </span>Formulation 2: Pure ODE Model/ Index-0 Example<a class="headerlink" href="#formulation-2-pure-ode-model-index-0-example" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">3.1.6.4. </span>Formulation 2: Pure ODE Model/ Index-0 Example<a class="headerlink" href="#formulation-2-pure-ode-model-index-0-example" title="Permalink to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \frac{d x}{dt} &amp;= u \\
@@ -1463,7 +1029,7 @@ At t = 0 and h = 1.06624e-14, the corrector convergence failed repeatedly or wit
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_model_ode</span><span class="p">():</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Creates a model to define the Index 0 DAE system.</span>
 
 <span class="sd">    Output: the model, m</span>
@@ -1551,8 +1117,8 @@ Number of nonlinear iterations performed: 240
 Number of nonlinear convergence failures: 0
 </pre></div>
 </div>
-<img alt="../../_images/DAE_background_15_1.png" src="../../_images/DAE_background_15_1.png" />
-<img alt="../../_images/DAE_background_15_2.png" src="../../_images/DAE_background_15_2.png" />
+<img alt="../../_images/d1109fca5579b0e946e9fd0355adfd8216d7dbc637627a016b27b44df8d78fff.png" src="../../_images/d1109fca5579b0e946e9fd0355adfd8216d7dbc637627a016b27b44df8d78fff.png" />
+<img alt="../../_images/07370f6cce5c4487c3ae17fa74b82a8939f6179af9237d63259a9a19b804219b.png" src="../../_images/07370f6cce5c4487c3ae17fa74b82a8939f6179af9237d63259a9a19b804219b.png" />
 </div>
 </div>
 <p><strong>Discussion</strong></p>
@@ -1561,7 +1127,7 @@ Number of nonlinear convergence failures: 0
 </ul>
 </section>
 <section id="formulation-3-index-1-dae-model">
-<h3><span class="section-number">3.1.6.5. </span>Formulation 3: Index-1 DAE Model<a class="headerlink" href="#formulation-3-index-1-dae-model" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">3.1.6.5. </span>Formulation 3: Index-1 DAE Model<a class="headerlink" href="#formulation-3-index-1-dae-model" title="Permalink to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \frac{d y}{dt} &amp;= v \\
@@ -1572,14 +1138,14 @@ Number of nonlinear convergence failures: 0
 \end{align}\end{split}\]</div>
 <p>(This reformulation is NOT unique… could have written <span class="math notranslate nohighlight">\(\frac{dx}{dt}\)</span> and <span class="math notranslate nohighlight">\(\frac{du}{dt}\)</span> instead.)</p>
 <p>Consistent initial conditions:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Specify <span class="math notranslate nohighlight">\(y(0)\)</span> and <span class="math notranslate nohighlight">\(v(0)\)</span>.</p></li>
 <li><p>Solve for <span class="math notranslate nohighlight">\(x(0)\)</span>, <span class="math notranslate nohighlight">\(u(0)\)</span>, and <span class="math notranslate nohighlight">\(T(0)\)</span></p></li>
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_model_index1</span><span class="p">():</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Creates a model to define the Index 1 DAE system.</span>
 
 <span class="sd">    Output: the model, m</span>
@@ -1636,7 +1202,7 @@ Number of nonlinear convergence failures: 0
     <span class="k">return</span> <span class="n">m</span>
 
 <span class="k">def</span> <span class="nf">index1_check_constraints</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Check if the three constraints are feasible.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Check if the three constraints are feasible.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Constraint 1:&quot;</span><span class="p">)</span>
@@ -1944,7 +1510,7 @@ Constraint 3:
 <span class="ne">----&gt; </span><span class="mi">4</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">index1_take_two</span><span class="p">,</span><span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="nn">/usr/local/lib/python3.10/dist-packages/pyomo/opt/base/solvers.py</span> in <span class="ni">solve</span><span class="nt">(self, *args, **kwds)</span>
-<span class="g g-Whitespace">    </span><span class="mi">511</span>         <span class="sd">&quot;&quot;&quot; Solve the problem &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">511</span><span class="w">         </span><span class="sd">&quot;&quot;&quot; Solve the problem &quot;&quot;&quot;</span>
 <span class="g g-Whitespace">    </span><span class="mi">512</span> 
 <span class="ne">--&gt; </span><span class="mi">513</span>         <span class="bp">self</span><span class="o">.</span><span class="n">available</span><span class="p">(</span><span class="n">exception_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">514</span>         <span class="c1">#</span>
@@ -1965,7 +1531,7 @@ Constraint 3:
 <p>Take away: There is something strange with formulation 3 that is causing the numeric integrator to fail. We can still solve this problem after discretizing.</p>
 </section>
 <section id="formulation-4-index-1-dae-model">
-<h3><span class="section-number">3.1.6.6. </span>Formulation 4: Index-1 DAE Model<a class="headerlink" href="#formulation-4-index-1-dae-model" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">3.1.6.6. </span>Formulation 4: Index-1 DAE Model<a class="headerlink" href="#formulation-4-index-1-dae-model" title="Permalink to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \frac{d x}{dt} &amp;= u \\
@@ -1975,14 +1541,14 @@ Constraint 3:
 0 &amp;= (u^2 + v^2) - T (x^2 + y^2) + g y
 \end{align}\end{split}\]</div>
 <p>Consistent initial conditions:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Specify <span class="math notranslate nohighlight">\(x(0)\)</span>, <span class="math notranslate nohighlight">\(u(0)\)</span>, <span class="math notranslate nohighlight">\(y(0)\)</span>, and <span class="math notranslate nohighlight">\(v(0)\)</span>.</p></li>
 <li><p>Solve for <span class="math notranslate nohighlight">\(T(0)\)</span></p></li>
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_model_index1_b</span><span class="p">():</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Creates a model to define the Index 1 DAE system.</span>
 
 <span class="sd">    Output: the model, m</span>
@@ -2074,22 +1640,22 @@ Number of nonlinear iterations performed: 483
 Number of nonlinear convergence failures: 0
 </pre></div>
 </div>
-<img alt="../../_images/DAE_background_30_1.png" src="../../_images/DAE_background_30_1.png" />
-<img alt="../../_images/DAE_background_30_2.png" src="../../_images/DAE_background_30_2.png" />
+<img alt="../../_images/96df79e825839e9c91265ded66aafe79a4741d04c63a5101f6166ed8c8104250.png" src="../../_images/96df79e825839e9c91265ded66aafe79a4741d04c63a5101f6166ed8c8104250.png" />
+<img alt="../../_images/0c2da98dbbe556adc16597c60bb3348785f5de187f6b8646da54cce0ed61911a.png" src="../../_images/0c2da98dbbe556adc16597c60bb3348785f5de187f6b8646da54cce0ed61911a.png" />
 </div>
 </div>
 </section>
 </section>
 <section id="take-away-messages">
-<h2><span class="section-number">3.1.7. </span>2.4.4 Take Away Messages<a class="headerlink" href="#take-away-messages" title="Permalink to this headline">#</a></h2>
-<ol class="simple">
+<h2><span class="section-number">3.1.7. </span>2.4.4 Take Away Messages<a class="headerlink" href="#take-away-messages" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
 <li><p>Differential algebriac equations (DAEs) are really powerful modeling tools.</p></li>
 <li><p>Integrating DAEs requires special care. Make sure your model is index 1.</p></li>
 <li><p>Often there are many ways to reformulate the DAE model. But the numeric integrator only enforces error tolerances on the equations that are explicitly modeled. If an algebriac constraint must be satified to a specific tolerance, include it in the DAE model (as long as it is not high index!).</p></li>
 </ol>
 </section>
 <section id="important-topics-from-the-textbook">
-<h2><span class="section-number">3.1.8. </span>Important Topics from the Textbook<a class="headerlink" href="#important-topics-from-the-textbook" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.1.8. </span>Important Topics from the Textbook<a class="headerlink" href="#important-topics-from-the-textbook" title="Permalink to this heading">#</a></h2>
 <p><strong>Chapter 8: Dynamic Optimization Introduction</strong> (Biegler, 2010)</p>
 <ul class="simple">
 <li><p>Chemical engineering examples</p></li>
@@ -2124,7 +1690,7 @@ Number of nonlinear convergence failures: 0
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./notebooks/3"
         },
         predefinedOutput: true
@@ -2132,50 +1698,121 @@ Number of nonlinear convergence failures: 0
     </script>
     <script>kernelName = 'python3'</script>
 
-              </div>
+                </article>
               
-            </main>
-            <footer class="footer-article noprint">
-                
-    <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="dynamics.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">3. </span>Dynamic Optimization</p>
-        </div>
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="dynamics.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Dynamic Optimization</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="DAE_numeric_integration.html" title="next page">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="DAE_numeric_integration.html"
+       title="next page">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title"><span class="section-number">3.2. </span>Numeric Integration for DAEs</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
-            </footer>
-        </div>
-    </div>
-    <div class="footer-content row">
-        <footer class="col footer"><p>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#external-documentaiton-for-libraries-used">3.1.1. External Documentaiton for libraries used</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-optimization-overview">3.1.2. Dynamic Optimization Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-dynamic-optimization">3.1.2.1. Introduction to Dynamic Optimization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-breakdown-of-daes">3.1.3. General Breakdown of DAEs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#daes-as-boundary-value-problems">3.1.4. DAEs as Boundary Value Problems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dae-optimization">3.1.5. DAE Optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-path-constraints">3.1.6. Handling Path Constraints</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dae-index-and-index-reduction">3.1.6.1. DAE Index and Index Reduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pendulum-model-and-index-reduction">3.1.6.2. Pendulum model and index reduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation-1-index-3-dae">3.1.6.3. Formulation 1: Index-3 DAE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation-2-pure-ode-model-index-0-example">3.1.6.4. Formulation 2: Pure ODE Model/ Index-0 Example</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation-3-index-1-dae-model">3.1.6.5. Formulation 3: Index-1 DAE Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation-4-index-1-dae-model">3.1.6.6. Formulation 4: Index-1 DAE Model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#take-away-messages">3.1.7. 2.4.4 Take Away Messages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#important-topics-from-the-textbook">3.1.8. Important Topics from the Textbook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
   
-    By Alexander Dowling, et al.<br/>
-  
-      &copy; Copyright 2022.<br/>
-</p>
-        </footer>
-    </div>
+  <div class="footer-item">
     
+<p class="component-author">
+By Alexander Dowling, et al.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
 </div>
+          </footer>
+        
 
-
-      </div>
+      </main>
     </div>
+  </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
 
-
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>

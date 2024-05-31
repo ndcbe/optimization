@@ -1,48 +1,60 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" data-content_root="" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Stochastic Gradient Descent Tutorial 1 &#8212; Nonlinear and Stochastic Optimization</title>
-    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="../../_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
-    
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../../_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -52,930 +64,519 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/contrib/Stochastic-Gradient-Descent-1';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Stochastic Gradient Descent Tutorial 2" href="Stochastic-Gradient-Descent-2.html" />
     <link rel="prev" title="Stochastic Gradient Descent" href="sgd.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-<!-- Checkboxes to toggle the left sidebar -->
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
-<label class="overlay overlay-navbar" for="__navigation">
-    <div class="visually-hidden">Toggle navigation sidebar</div>
-</label>
-<!-- Checkboxes to toggle the in-page toc -->
-<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
-<label class="overlay overlay-pagetoc" for="__page-toc">
-    <div class="visually-hidden">Toggle in-page Table of Contents</div>
-</label>
-<!-- Headers at the top -->
-<div class="announcement header-item noprint"></div>
-<div class="header header-item noprint"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
 
-    
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
 
-    <div class="container-xl">
-      <div class="row">
-          
-<!-- Sidebar -->
-<div class="bd-sidebar noprint" id="site-navigation">
-    <div class="bd-sidebar__content">
-        <div class="bd-sidebar__top"><div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../../index.html">
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <header>
+  
+    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    </div>
+  
+  </header>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="../../_static/cbe_logo.jpg" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Nonlinear and Stochastic Optimization</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
+    
+    
+    <img src="../../_static/cbe_logo.jpg" class="logo__image only-light" alt="Nonlinear and Stochastic Optimization - Home"/>
+    <script>document.write(`<img src="../../_static/cbe_logo.jpg" class="logo__image only-dark" alt="Nonlinear and Stochastic Optimization - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../../intro.html">
-                    Nonlinear and Stochastic Optimization
+                    Optimization for Decision Science
                 </a>
             </li>
         </ul>
-        <p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Organization
- </span>
-</p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../org/intro.html">
-   Welcome
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../org/syllabus.html">
-     Syllabus
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../org/calendar.html">
-     Spring 2023 Calendar
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../org/semester_project.html">
-     Semester Project
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../org/contribute.html">
-     Contribution Instructions
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../org/assignments.html">
-   Assignments
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Pyomo1.html">
-     Pyomo Homework 1
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Pyomo2.html">
-     Pyomo Homework 2
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Pyomo3.html">
-     Pyomo Homework 3
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">
-     Pyomo Mini-Project: Receding Horizon Stochastic Control
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Algorithms1.html">
-     Algorithms Homework 1
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Algorithms2.html">
-     Algorithms Homework 2
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Algorithms3.html">
-     Algorithms Homework 3
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Algorithms4.html">
-     Algorithms Homework 4: Interior Point Methods
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Spring 2023 Calendar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Optimization Modeling in Pyomo
- </span>
-</p>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms1.html">Algorithms Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms2.html">Algorithms Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4: Interior Point Methods</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../1/getting-started.html">
-   1. Getting Started with Pyomo
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/Local-Install.html">
-     1.1. Local Installation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/Optimization-Modeling.html">
-     1.2. Optimization Modeling with Applications
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/Pyomo-Introduction.html">
-     1.3. Your First Optimization Problem
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/LP-NLP.html">
-     1.4. Continuous Optimization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/IP.html">
-     1.5. Integer Programs
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">
-     1.6. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../2/logic.html">
-   2. Logical Modeling
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../2/Logical_Modeling_GDP.html">
-     2.1. Logical Modeling and Generalized Disjunctive Programs
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">
-     2.2. Modeling Disjunctions through the Strip Packing Problem
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../3/dynamics.html">
-   3. Dynamic Optimization
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-  <label for="toctree-checkbox-5">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../3/DAE_background.html">
-     3.1. Differential Algebraic Equations (DAEs)
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../3/DAE_numeric_integration.html">
-     3.2. Numeric Integration for DAEs
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../3/PyomoDAE_theory.html">
-     3.3. Dynamic Optimization with Collocation and Pyomo.DAE
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../3/PyomoDAE_example.html">
-     3.4. Dynamic Optimization with Pyomo.DAE: An Example
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../4/uncertainty.html">
-   4. Optimization Under Uncertainty
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-  <label for="toctree-checkbox-6">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../4/SP.html">
-     4.1. Stochastic Programming
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../4/RiskMeasures.html">
-     4.2. Risk Measures and Portfolio Optimization
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../5/data.html">
-   5. Data Science and Applied Statistics
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-  <label for="toctree-checkbox-7">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../5/Parmest-tutorial.html">
-     5.1. Parameter estimation with
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       parmest
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../5/Parmest-generate-data.html">
-     5.2. Supplementary material: data for parmest tutorial
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">
-     5.3. Reactor Kinetics Example for Pyomo.DoE Tutorial
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/LP-NLP.html">1.4. Continuous Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.5. Integer Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.6. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Algorithms and Theory
- </span>
-</p>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_background.html">3.1. Differential Algebraic Equations (DAEs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_numeric_integration.html">3.2. Numeric Integration for DAEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_theory.html">3.3. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_example.html">3.4. Dynamic Optimization with Pyomo.DAE: An Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.2. Risk Measures and Portfolio Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Reactor Kinetics Example for Pyomo.DoE Tutorial</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../6/unconstrained.html">
-   6. Unconstrained Nonlinear Optimization
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-  <label for="toctree-checkbox-8">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../6/Math-Primer.html">
-     6.1. Linear Algebra Review and SciPy Basics
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../6/Math-Primer-2.html">
-     6.2. Mathematics Primer
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../6/Optimality.html">
-     6.3. Unconstrained Optimality Conditions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../6/Newton-Methods.html">
-     6.4. Newton-type Methods for Unconstrained Optimization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../6/Quasi-Newton-Methods.html">
-     6.5. Quasi-Newton Methods for Unconstrained Optimization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../6/Globalization.html">
-     6.6. Descent and Globalization
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../7/constrained.html">
-   7. Constrained Nonlinear Optimization
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-  <label for="toctree-checkbox-9">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Convexity.html">
-     7.1. Convexity Revisited
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Local-Optimality.html">
-     7.2. Local Optimality Conditions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/KKT-Multipliers.html">
-     7.3. Analysis of KKT Conditions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Constraint-Qualifications.html">
-     7.4. Constraint Qualifications
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Second-Order.html">
-     7.5. Second Order Optimality Conditions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/NLP-Diagnostics.html">
-     7.6. NLP Diagnostics with Degeneracy Hunter
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Interior-Point1.html">
-     7.7. Simple Netwon Method for Equality Constrained NLPs
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Interior-Point2.html">
-     7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../8/special-topics.html">
-   8. Special Topics
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
-  <label for="toctree-checkbox-10">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../8/MILP.html">
-     8.1. Integer Programming with Simple Branch and Bound
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../8/MINLP-Algorithms.html">
-     8.2. MINLP Algorithms
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../8/Global-Opt.html">
-     8.3. Deterministic Global Optimization
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Newton-Methods.html">6.4. Newton-type Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Student Contributions
- </span>
-</p>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Constraint-Qualifications.html">7.4. Constraint Qualifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Second-Order.html">7.5. Second Order Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/NLP-Diagnostics.html">7.6. NLP Diagnostics with Degeneracy Hunter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="dfo.html">
-   Derivative-Free Optimization
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
-  <label for="toctree-checkbox-11">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="Bayesian_Optimization1.html">
-     Bayesian Optimization Tutorial 1
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="Bayesian_Optimization2.html">
-     Bayesian Optimization Tutorial 2
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 current active has-children">
-  <a class="reference internal" href="sgd.html">
-   Stochastic Gradient Descent
-  </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
-  <label for="toctree-checkbox-12">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul class="current">
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     Stochastic Gradient Descent Tutorial 1
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="Stochastic-Gradient-Descent-2.html">
-     Stochastic Gradient Descent Tutorial 2
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="Stochastic-Gradient-Descent-3.html">
-     Stochastic Gradient Descent Tutorial 3
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="data.html">
-   Machine Learning and Applied Statistics
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
-  <label for="toctree-checkbox-13">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="EM-MAP.html">
-     Expectation Maximization Algorithm and MAP Estimation
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="dfo.html">Derivative-Free Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="sgd.html">Stochastic Gradient Descent</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Stochastic Gradient Descent Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="data.html">Machine Learning and Applied Statistics</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
+</ul>
+</li>
 </ul>
 
     </div>
 </nav></div>
-        <div class="bd-sidebar__bottom">
-             <!-- To handle the deprecated key -->
-            
-            <div class="navbar_extra_footer">
-            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-            </div>
-            
-        </div>
     </div>
-    <div id="rtd-footer-container"></div>
-</div>
-
-
-          
-
-
-          
-<!-- A tiny helper pixel to detect if we've scrolled -->
-<div class="sbt-scroll-pixel-helper"></div>
-<!-- Main content -->
-<div class="col py-0 content-container">
-    
-    <div class="header-article row sticky-top noprint">
-        
-
-
-
-<div class="col py-1 d-flex header-article-main">
-    <div class="header-article__left">
-        
-        <label for="__navigation"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="right"
-title="Toggle navigation"
->
   
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-bars"></i>
-  </span>
-
-</label>
-
-        
-    </div>
-    <div class="header-article__right">
-<div class="menu-dropdown menu-dropdown-launch-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Launch interactive content">
-      <i class="fas fa-rocket"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://mybinder.org/v2/gh/ndcbe/optimization/master?urlpath=tree/notebooks/contrib/Stochastic-Gradient-Descent-1.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Binder"
->
   
-
-<span class="headerbtn__icon-container">
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
   
-    <img src="../../_static/images/logo_binder.svg">
-  </span>
-<span class="headerbtn__text-container">Binder</span>
-</a>
+  <div id="rtd-footer-container"></div>
 
-      </li>
+
+      </div>
       
-      <li>
-        <a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/contrib/Stochastic-Gradient-Descent-1.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Colab"
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/contrib/Stochastic-Gradient-Descent-1.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   
     <img src="../../_static/images/logo_colab.png">
   </span>
-<span class="headerbtn__text-container">Colab</span>
+<span class="btn__text-container">Colab</span>
 </a>
-
-      </li>
+</li>
       
-    </ul>
-  </div>
+  </ul>
 </div>
 
-<button onclick="toggleFullScreen()"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="bottom"
-title="Fullscreen mode"
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/contrib/Stochastic-Gradient-Descent-1.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/contrib/Stochastic-Gradient-Descent-1.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
   <i class="fas fa-expand"></i>
   </span>
 
 </button>
 
-<div class="menu-dropdown menu-dropdown-repository-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Source repositories">
-      <i class="fab fa-github"></i>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://github.com/ndcbe/optimization"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Source repository"
->
-  
+`);
+</script>
 
-<span class="headerbtn__icon-container">
-  <i class="fab fa-github"></i>
-  </span>
-<span class="headerbtn__text-container">repository</span>
-</a>
 
-      </li>
-      
-      <li>
-        <a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/contrib/Stochastic-Gradient-Descent-1.html&body=Your%20issue%20content%20here."
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Open an issue"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-lightbulb"></i>
-  </span>
-<span class="headerbtn__text-container">open issue</span>
-</a>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-
-<div class="menu-dropdown menu-dropdown-download-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Download this page">
-      <i class="fas fa-download"></i>
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="../../_sources/notebooks/contrib/Stochastic-Gradient-Descent-1.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Download source file"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="headerbtn__text-container">.ipynb</span>
-</a>
-
-      </li>
-      
-      <li>
-        
-<button onclick="printPdf(this)"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="left"
-title="Print to PDF"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="headerbtn__text-container">.pdf</span>
-</button>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
-  </span>
-
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
 </label>
-
+</div></div>
+      
     </div>
+  
 </div>
-
-<!-- Table of contents -->
-<div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
-    </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#introduction">
-   <strong>
-    1. Introduction
-   </strong>
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#objective">
-     1-1. Objective
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#formulation-algorithm">
-     1-2. Formulation &amp; Algorithm
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#functions">
-     1-3. Functions
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sgd-vs-bgd-vs-mbgd">
-   <strong>
-    2. SGD
-   </strong>
-   vs
-   <strong>
-    BGD
-   </strong>
-   vs
-   <strong>
-    mBGD
-   </strong>
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#problem-1-small-dataset-100-data">
-     2-1. Problem 1 - Small Dataset (100 Data)
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#problem-1-bigger-dataset-10000-data">
-     2-2. Problem 1 - Bigger Dataset (10000 Data)
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#references">
-   <strong>
-    3. References
-   </strong>
-  </a>
- </li>
-</ul>
-
-    </nav>
 </div>
-    </div>
-    <div class="article row">
-        <div class="col pl-md-3 pl-lg-5 content-container">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Stochastic Gradient Descent Tutorial 1</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#introduction">
-   <strong>
-    1. Introduction
-   </strong>
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#objective">
-     1-1. Objective
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#formulation-algorithm">
-     1-2. Formulation &amp; Algorithm
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#functions">
-     1-3. Functions
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sgd-vs-bgd-vs-mbgd">
-   <strong>
-    2. SGD
-   </strong>
-   vs
-   <strong>
-    BGD
-   </strong>
-   vs
-   <strong>
-    mBGD
-   </strong>
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#problem-1-small-dataset-100-data">
-     2-1. Problem 1 - Small Dataset (100 Data)
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#problem-1-bigger-dataset-10000-data">
-     2-2. Problem 1 - Bigger Dataset (10000 Data)
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#references">
-   <strong>
-    3. References
-   </strong>
-  </a>
- </li>
-</ul>
+              
+              
 
-                        </nav>
-                    </div>
-                </div>
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Stochastic Gradient Descent Tutorial 1</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
             </div>
-            <main id="main-content" role="main">
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction"><strong>1. Introduction</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#objective">1-1. Objective</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation-algorithm">1-2. Formulation &amp; Algorithm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">1-3. Functions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sgd-vs-bgd-vs-mbgd"><strong>2. SGD</strong> vs <strong>BGD</strong> vs <strong>mBGD</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-small-dataset-100-data">2-1. Problem 1 - Small Dataset (100 Data)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-bigger-dataset-10000-data">2-2. Problem 1 - Bigger Dataset (10000 Data)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references"><strong>3. References</strong></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
                 
-              <div>
-                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
   <section class="tex2jax_ignore mathjax_ignore" id="stochastic-gradient-descent-tutorial-1">
-<h1>Stochastic Gradient Descent Tutorial 1<a class="headerlink" href="#stochastic-gradient-descent-tutorial-1" title="Permalink to this headline">#</a></h1>
+<h1>Stochastic Gradient Descent Tutorial 1<a class="headerlink" href="#stochastic-gradient-descent-tutorial-1" title="Permalink to this heading">#</a></h1>
 <p><strong>Prepared by:</strong> Reza Farzad (<a class="reference external" href="mailto:rfarzad&#37;&#52;&#48;nd&#46;edu">rfarzad<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2023)</p>
 <section id="introduction">
-<h2><strong>1. Introduction</strong><a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
+<h2><strong>1. Introduction</strong><a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
 <p>In optimization, the goal is to find the argument corresponding to the minimum loss function. A loss function with two arguments is a surface in 3d space and the objective is to find the lowest point of this surface. One way is to use gradient descent (GD or Batch Gradient Descent or <strong>BGD</strong>) and go toward the lowest point by detecting the sharpest slope using the entire dataset to compute the loss function. Another method is the pure Stochastic Gradient Descent (<strong>SGD</strong>) that is another iterative optimization method through which the algorithm uses only a single sample for loss function computation to speed up the process. This algorithm starts from a random point on a function and travels down its slope in steps until it reaches the lowest point of that function. The third method which is called mini-Batch Gradient Descent (<strong>mBGD</strong>) is a cross-over between BGD and SGD. This method which is widely used in training deep neural network is a balance between BGD and pure SGD. This method is widely used, especially in machine learning since it is efficient (less memory, fast computation) and easy to apply (most of the time the second and third methods both are called SGD). The final goal of this project is to create a notebook that helps students know these methods, their differences, and how to use them for possible problems through simple examples and step-by-step algorithms.</p>
 <section id="objective">
-<h3>1-1. Objective<a class="headerlink" href="#objective" title="Permalink to this headline">#</a></h3>
+<h3>1-1. Objective<a class="headerlink" href="#objective" title="Permalink to this heading">#</a></h3>
 <p>The goal is to compare three different kinds of Gradient Descent &amp; how to compute the following loss function (using least square error) based on them:
 $<span class="math notranslate nohighlight">\(l(\theta) = \sum_{i=1}^{k} (y_i - f(x_i, \theta))^2\)</span>$</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Batch Gradient Descent (<strong>BGD</strong> or <strong>GD</strong>): The algorithm uses the entire dataset to compute the loss function, i.e., k = N is the total number of data (population).</p></li>
 <li><p>Stochastic Gradient Descent (<strong>SGD</strong>): The algorithm uses only one sample for loss computation to speed up the process, i.e., k = 1.</p></li>
 <li><p>Mini-Batch Gradient Descent (<strong>mBGD</strong>): The cross-over between GD and SGD, i.e., 1 &lt; k &lt; N is a sample of dataset.</p></li>
 </ol>
 </section>
 <section id="formulation-algorithm">
-<h3>1-2. Formulation &amp; Algorithm<a class="headerlink" href="#formulation-algorithm" title="Permalink to this headline">#</a></h3>
+<h3>1-2. Formulation &amp; Algorithm<a class="headerlink" href="#formulation-algorithm" title="Permalink to this heading">#</a></h3>
 <p><strong>1-2-1. Formulation:</strong></p>
 <p>Typically, the problem is formulated as an optimization problem:
 $$</p>
-<div class="amsmath math notranslate nohighlight" id="equation-906b5b5f-3e62-4080-8d16-4a3aaa9b5a36">
-<span class="eqno">(4)<a class="headerlink" href="#equation-906b5b5f-3e62-4080-8d16-4a3aaa9b5a36" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-603a3e4e-cd6b-4756-af4f-bfdf3de2ad12">
+<span class="eqno">(4)<a class="headerlink" href="#equation-603a3e4e-cd6b-4756-af4f-bfdf3de2ad12" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \theta_t^* = \arg \underset{\theta}{\min} \frac 1 t \sum_{i=1}^{t} \left(L(f_{\theta}(x_i), y_i) + R(\theta)\right)
 \end{equation}\]</div>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}
 where $t$ is the number of data points, $\theta_t^*$ is the parameter that minimize the empirical cost, $(x_i, y_i)$ are the $i^{th}$ training example, $L(s, y)$ is a loss function which gives small value if $s$ is a good prediction for $y$, and $R(\theta)$ is a regularization function for $\theta$  which typically gives small value for small $\theta$. \\For stochastic gradient descent (SGD) method, let $d=(x, y)$ be one data sample, $l(\theta, d) = L(f_{\theta}(x), y) + R(\theta)$ be the cost of $\theta$ for $d$, $g(\theta, \xi) = \frac{\partial l(\theta, d)}{\partial \theta}$ be the gradient function, and $D_t = (d_1, \cdots, d_t)$ be all the training samples at $t^{th}$ step. The SGD method updates $\theta$ according to its  stochastic gradient:
 \end{aligned}\end{align} \]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-f7ae73f7-54a7-495d-a3cb-801e966a51bc">
-<span class="eqno">(5)<a class="headerlink" href="#equation-f7ae73f7-54a7-495d-a3cb-801e966a51bc" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-ac57052f-f375-4d3c-a303-bc3f2c0a210e">
+<span class="eqno">(5)<a class="headerlink" href="#equation-ac57052f-f375-4d3c-a303-bc3f2c0a210e" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \theta_t = \theta_{t-1} - \gamma_t g(\theta_{t-1}, d_t)
 \end{equation}\]</div>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned} **bold text**
 where $\gamma_t$ is learning rate at the $t^{th}$ step.\\The formulation of gradient descent is very similar to the above equation but focusing on total data samples in each iteration:
 \end{aligned}\end{align} \]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-f76742dd-8f75-4d14-8205-8178fdecaf59">
-<span class="eqno">(6)<a class="headerlink" href="#equation-f76742dd-8f75-4d14-8205-8178fdecaf59" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-b2988aab-a25f-4fcc-8b2f-45d24e98115a">
+<span class="eqno">(6)<a class="headerlink" href="#equation-b2988aab-a25f-4fcc-8b2f-45d24e98115a" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \theta_t = \theta_{t-1} - \gamma_t G(\theta_{t-1})
 \end{equation}\]</div>
 <p>$$</p>
 <p><strong>1-2-2. Algorithm (PseudoCode) for BGD, SGD, &amp; mBGD:</strong></p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Initialize the vector of model parameters <span class="math notranslate nohighlight">\(\boldsymbol\theta = (\theta_1, \cdots, \theta_n)\)</span></p></li>
 <li><p>Define the learning rate <span class="math notranslate nohighlight">\(\gamma_t\)</span>, grad threshold, maximum number of iterations, and the batch size (k):</p></li>
 </ol>
@@ -984,31 +585,31 @@ where $\gamma_t$ is learning rate at the $t^{th}$ step.\\The formulation of grad
 <li><p>If BGD, then k = N, (total number of data)</p></li>
 <li><p>If mBGD, then 1 &lt; k &lt; N, (a sample of dataset)</p></li>
 </ul>
-<ol class="simple">
+<ol class="arabic simple" start="3">
 <li><p>Initialize a vector to save updated parameters  <span class="math notranslate nohighlight">\(\boldsymbol\theta_t\)</span> and their corresponding loss value</p></li>
 <li><p>for t=1:max_iter do</p></li>
 </ol>
 <p>4.1. Choose the k data and call it d</p>
 <p>4-2. Use the parameters to compute the loss function
 $$</p>
-<div class="amsmath math notranslate nohighlight" id="equation-4bd329f8-fb86-4904-9ce7-61dfaa1fb9ab">
-<span class="eqno">(7)<a class="headerlink" href="#equation-4bd329f8-fb86-4904-9ce7-61dfaa1fb9ab" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-37a0ada7-2b32-46f2-abe9-4d91336b376e">
+<span class="eqno">(7)<a class="headerlink" href="#equation-37a0ada7-2b32-46f2-abe9-4d91336b376e" title="Permalink to this equation">#</a></span>\[\begin{equation}
     l(\boldsymbol\theta_{t-1}, d) = \sum_{i=1}^{k} (y_i - f(x_i, \boldsymbol\theta_{t-1}))^2 
 \end{equation}\]</div>
 <div class="math notranslate nohighlight">
 \[
    4-3. Compute the gradient of loss function above with respect to the latest model parameters
 \]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-33f015dc-2a6e-4845-8ab5-eb48fe7ff2ae">
-<span class="eqno">(8)<a class="headerlink" href="#equation-33f015dc-2a6e-4845-8ab5-eb48fe7ff2ae" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-5b860749-cbb9-46f3-a775-5e34d42257e2">
+<span class="eqno">(8)<a class="headerlink" href="#equation-5b860749-cbb9-46f3-a775-5e34d42257e2" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \frac{\partial l(\boldsymbol\theta_{t-1}, d)}{\partial \theta}
 \end{equation}\]</div>
 <div class="math notranslate nohighlight">
 \[
     4-4. Update the parameters
 \]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-058dc79a-d8ab-45b9-9976-aa3c7534f324">
-<span class="eqno">(9)<a class="headerlink" href="#equation-058dc79a-d8ab-45b9-9976-aa3c7534f324" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-60ce85c4-6596-4543-be79-da7176b6a45c">
+<span class="eqno">(9)<a class="headerlink" href="#equation-60ce85c4-6596-4543-be79-da7176b6a45c" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \boldsymbol\theta_t = \boldsymbol\theta_{t-1} - \gamma_t (\frac{\partial l(\boldsymbol\theta_{t-1}, d)}{\partial \theta})
 \end{equation}\]</div>
 <p>$<span class="math notranslate nohighlight">\(
@@ -1017,7 +618,7 @@ $$</p>
 <p>end for loop of step 4</p>
 </section>
 <section id="functions">
-<h3>1-3. Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
+<h3>1-3. Functions<a class="headerlink" href="#functions" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import libraries</span>
@@ -1035,7 +636,7 @@ $$</p>
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">## Calculate gradient with central finite difference</span>
 <span class="k">def</span> <span class="nf">grad_approx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">eps1</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Calculate gradient of function f using central difference formula</span>
 <span class="sd">    </span>
 <span class="sd">    Inputs:</span>
@@ -1263,9 +864,9 @@ $$</p>
 </section>
 </section>
 <section id="sgd-vs-bgd-vs-mbgd">
-<h2><strong>2. SGD</strong> vs <strong>BGD</strong> vs <strong>mBGD</strong><a class="headerlink" href="#sgd-vs-bgd-vs-mbgd" title="Permalink to this headline">#</a></h2>
+<h2><strong>2. SGD</strong> vs <strong>BGD</strong> vs <strong>mBGD</strong><a class="headerlink" href="#sgd-vs-bgd-vs-mbgd" title="Permalink to this heading">#</a></h2>
 <section id="problem-1-small-dataset-100-data">
-<h3>2-1. Problem 1 - Small Dataset (100 Data)<a class="headerlink" href="#problem-1-small-dataset-100-data" title="Permalink to this headline">#</a></h3>
+<h3>2-1. Problem 1 - Small Dataset (100 Data)<a class="headerlink" href="#problem-1-small-dataset-100-data" title="Permalink to this heading">#</a></h3>
 <p><strong>2-1-1. Generate Dataset</strong></p>
 <p>Problem 1 - Nonconvex Input with Convex Loss</p>
 <p>Lets consider a nonconvex cubic function.</p>
@@ -1327,7 +928,7 @@ where, \)</span>\delta$ is a random variable with standard normal probability di
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/Stochastic-Gradient-Descent-1_25_0.png" src="../../_images/Stochastic-Gradient-Descent-1_25_0.png" />
+<img alt="../../_images/1065077981b1311cb4a0e373988f02bcaba83209e017d0e1b8cac04b77fe6963.png" src="../../_images/1065077981b1311cb4a0e373988f02bcaba83209e017d0e1b8cac04b77fe6963.png" />
 </div>
 </div>
 <p><strong>2-1-2. Plot the loss function contours</strong></p>
@@ -1351,8 +952,8 @@ The least square error \)</span>l(\theta)<span class="math notranslate nohighlig
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/Stochastic-Gradient-Descent-1_28_0.png" src="../../_images/Stochastic-Gradient-Descent-1_28_0.png" />
-<img alt="../../_images/Stochastic-Gradient-Descent-1_28_1.png" src="../../_images/Stochastic-Gradient-Descent-1_28_1.png" />
+<img alt="../../_images/12e2596c7ee14f2603faada042c9600fa42fe7be60717bf0a30f7e1e21e48859.png" src="../../_images/12e2596c7ee14f2603faada042c9600fa42fe7be60717bf0a30f7e1e21e48859.png" />
+<img alt="../../_images/64e26fd4205d23ff12246e402d17354d4096e2873420d7686916a56b9a88b50a.png" src="../../_images/64e26fd4205d23ff12246e402d17354d4096e2873420d7686916a56b9a88b50a.png" />
 </div>
 </div>
 <p>Let’s apply the three different types of “Gradient Descent” to minimize the loss function above:</p>
@@ -1914,7 +1515,7 @@ Max iterations reached
 Total time is:  0.7796146869659424
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_32_1.png" src="../../_images/Stochastic-Gradient-Descent-1_32_1.png" />
+<img alt="../../_images/d42712a61a0ee4be048c865d86812be676b6fe4d245d7b6c8c834ed813981a5e.png" src="../../_images/d42712a61a0ee4be048c865d86812be676b6fe4d245d7b6c8c834ed813981a5e.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal solution is: theta0 =  1.0163458431736672 , theta1 =  2.478808831685626
 The corresponding loss function is:  222.73511700400618
 </pre></div>
@@ -2477,7 +2078,7 @@ Max iterations reached
 Total time is:  2.1641643047332764
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_33_1.png" src="../../_images/Stochastic-Gradient-Descent-1_33_1.png" />
+<img alt="../../_images/87be00b64862c2e17cef8390a13b1a3f2bdc8903705d11aaec61bc178a67c0fd.png" src="../../_images/87be00b64862c2e17cef8390a13b1a3f2bdc8903705d11aaec61bc178a67c0fd.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal solution is: theta0 =  1.00135569186099 , theta1 =  0.989616451044002
 The corresponding loss function is:  1.067321064779166
 </pre></div>
@@ -2678,7 +2279,7 @@ Gradient below the specified tolerance
 Total time is:  0.36979031562805176
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_34_1.png" src="../../_images/Stochastic-Gradient-Descent-1_34_1.png" />
+<img alt="../../_images/37cf60ef6a5f19ee4d118b37eaaca89ddb0647d28ffb7b1fcb502172d25550ff.png" src="../../_images/37cf60ef6a5f19ee4d118b37eaaca89ddb0647d28ffb7b1fcb502172d25550ff.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal solution is: theta0 =  1.001354049365295 , theta1 =  0.9894489938894147
 The corresponding loss function is:  1.0673182625203745
 </pre></div>
@@ -3241,8 +2842,8 @@ Gradient below the specified tolerance
  [1.00000000e-03 1.06731826e+00 1.05773211e-01]]
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_35_1.png" src="../../_images/Stochastic-Gradient-Descent-1_35_1.png" />
-<img alt="../../_images/Stochastic-Gradient-Descent-1_35_2.png" src="../../_images/Stochastic-Gradient-Descent-1_35_2.png" />
+<img alt="../../_images/188ff9c564ff92bc483bad7d4ff9eee808831cdab8c0d114dbbc8626ed5a5835.png" src="../../_images/188ff9c564ff92bc483bad7d4ff9eee808831cdab8c0d114dbbc8626ed5a5835.png" />
+<img alt="../../_images/4d0a517ebaf923f2cd1730d7f5c59b37390393dba38f780da5243ca3773d8eef.png" src="../../_images/4d0a517ebaf923f2cd1730d7f5c59b37390393dba38f780da5243ca3773d8eef.png" />
 </div>
 </div>
 <p><strong>2-1-4. SGD: (Batch size = 1)</strong></p>
@@ -3301,7 +2902,7 @@ Gradient below the specified tolerance
 Total time is:  1.7021312713623047
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_38_1.png" src="../../_images/Stochastic-Gradient-Descent-1_38_1.png" />
+<img alt="../../_images/e038831cdf0bb479d81cde4ec889fe4412011086214897c5a7da9f877d313e0b.png" src="../../_images/e038831cdf0bb479d81cde4ec889fe4412011086214897c5a7da9f877d313e0b.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal solution is: theta0 =  0.9952854353527355 , theta1 =  1.5439522770210523
 The corresponding loss function is:  0.32792942437403655
 </pre></div>
@@ -3362,7 +2963,7 @@ The corresponding loss function is:  0.32792942437403655
 Total time is:  1.4233925342559814
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_39_1.png" src="../../_images/Stochastic-Gradient-Descent-1_39_1.png" />
+<img alt="../../_images/30bfc0a5321a35d7a305fc28f43c3e0fc6df7f884247fec07d515b10f546f0f7.png" src="../../_images/30bfc0a5321a35d7a305fc28f43c3e0fc6df7f884247fec07d515b10f546f0f7.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal solution is: theta0 =  1.0096783451667168 , theta1 =  0.9828158198993225
 The corresponding loss function is:  0.016145483538611397
 </pre></div>
@@ -3424,7 +3025,7 @@ Gradient below the specified tolerance
 Total time is:  0.6045074462890625
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_40_1.png" src="../../_images/Stochastic-Gradient-Descent-1_40_1.png" />
+<img alt="../../_images/d1ab4bad8284ecd842ad29ead30ea97c5df6a5a9bdeb442d120b04644bf58aff.png" src="../../_images/d1ab4bad8284ecd842ad29ead30ea97c5df6a5a9bdeb442d120b04644bf58aff.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal solution is: theta0 =  1.0063936241085758 , theta1 =  1.0052836030338979
 The corresponding loss function is:  2.1453765736611015e-12
 </pre></div>
@@ -3915,8 +3516,8 @@ Max iterations reached
  [1.00000000e-02 1.33058920e-02 1.21860695e+00]]
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_41_1.png" src="../../_images/Stochastic-Gradient-Descent-1_41_1.png" />
-<img alt="../../_images/Stochastic-Gradient-Descent-1_41_2.png" src="../../_images/Stochastic-Gradient-Descent-1_41_2.png" />
+<img alt="../../_images/60ef9ada82c1dbce1267e0e62d5e5921a4b8ae4b97e00d1dac22bfed6ec83f32.png" src="../../_images/60ef9ada82c1dbce1267e0e62d5e5921a4b8ae4b97e00d1dac22bfed6ec83f32.png" />
+<img alt="../../_images/1a13ad25622629278f90ffe817d780700c5fd6b2a647f2b4fee152b1efe3cfa0.png" src="../../_images/1a13ad25622629278f90ffe817d780700c5fd6b2a647f2b4fee152b1efe3cfa0.png" />
 </div>
 </div>
 <p><strong>2-1-5. mBGD: (Batch size = 10)</strong></p>
@@ -3975,7 +3576,7 @@ Max iterations reached
 Total time is:  2.0553228855133057
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_44_1.png" src="../../_images/Stochastic-Gradient-Descent-1_44_1.png" />
+<img alt="../../_images/7fba5279f5c14ce107af948f191f8059aabe50db8d4156fb9d34fe3bcf52ea33.png" src="../../_images/7fba5279f5c14ce107af948f191f8059aabe50db8d4156fb9d34fe3bcf52ea33.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal solution is: theta0 =  1.0058133346703757 , theta1 =  1.5385310507014482
 The corresponding loss function is:  3.112445726025017
 </pre></div>
@@ -4036,7 +3637,7 @@ The corresponding loss function is:  3.112445726025017
 Total time is:  2.451550006866455
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_45_1.png" src="../../_images/Stochastic-Gradient-Descent-1_45_1.png" />
+<img alt="../../_images/8112269e3174217c5f5d67469047fb72183491e3d12f80f1b7d96d2f40a8cdaf.png" src="../../_images/8112269e3174217c5f5d67469047fb72183491e3d12f80f1b7d96d2f40a8cdaf.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal solution is: theta0 =  1.0004705293680973 , theta1 =  0.9906660383845045
 The corresponding loss function is:  0.09409211018801161
 </pre></div>
@@ -4097,7 +3698,7 @@ The corresponding loss function is:  0.09409211018801161
 Total time is:  1.9722893238067627
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_46_1.png" src="../../_images/Stochastic-Gradient-Descent-1_46_1.png" />
+<img alt="../../_images/98843f0af370d531fc6e42149611646011107c6f3b9cd8f3801026177cbb7e61.png" src="../../_images/98843f0af370d531fc6e42149611646011107c6f3b9cd8f3801026177cbb7e61.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal solution is: theta0 =  1.0019643156955036 , theta1 =  0.9858846261043579
 The corresponding loss function is:  0.07547499200241083
 </pre></div>
@@ -4581,8 +4182,8 @@ Max iterations reached
  [1.00000000e-03 7.01111728e-02 1.98596048e+00]]
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_47_1.png" src="../../_images/Stochastic-Gradient-Descent-1_47_1.png" />
-<img alt="../../_images/Stochastic-Gradient-Descent-1_47_2.png" src="../../_images/Stochastic-Gradient-Descent-1_47_2.png" />
+<img alt="../../_images/3e8ae3b7c978d631f56a481467c040b8b5e72f752b485f0b6de9a08b7c94604e.png" src="../../_images/3e8ae3b7c978d631f56a481467c040b8b5e72f752b485f0b6de9a08b7c94604e.png" />
+<img alt="../../_images/4265c113d32db62248064830c67c1128841413c0402a7d853175ac06b59b7f5f.png" src="../../_images/4265c113d32db62248064830c67c1128841413c0402a7d853175ac06b59b7f5f.png" />
 </div>
 </div>
 <p><strong>2-1-6. Conclusions:</strong></p>
@@ -4608,7 +4209,7 @@ Max iterations reached
 </ul>
 </section>
 <section id="problem-1-bigger-dataset-10000-data">
-<h3>2-2. Problem 1 - Bigger Dataset (10000 Data)<a class="headerlink" href="#problem-1-bigger-dataset-10000-data" title="Permalink to this headline">#</a></h3>
+<h3>2-2. Problem 1 - Bigger Dataset (10000 Data)<a class="headerlink" href="#problem-1-bigger-dataset-10000-data" title="Permalink to this heading">#</a></h3>
 <p><strong>2-2-1. Generating Data:</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -4635,7 +4236,7 @@ Max iterations reached
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/Stochastic-Gradient-Descent-1_53_0.png" src="../../_images/Stochastic-Gradient-Descent-1_53_0.png" />
+<img alt="../../_images/69e7036c5eb167e6fd8678c3ef393a52e3b23785f295d59b7d09d226bdf92635.png" src="../../_images/69e7036c5eb167e6fd8678c3ef393a52e3b23785f295d59b7d09d226bdf92635.png" />
 </div>
 </div>
 <p><strong>2-2-2. Plot the Loss Function</strong></p>
@@ -4652,8 +4253,8 @@ Max iterations reached
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/Stochastic-Gradient-Descent-1_55_0.png" src="../../_images/Stochastic-Gradient-Descent-1_55_0.png" />
-<img alt="../../_images/Stochastic-Gradient-Descent-1_55_1.png" src="../../_images/Stochastic-Gradient-Descent-1_55_1.png" />
+<img alt="../../_images/af99644b697ab225ca2e21c5a0f40ad956661e740022638051cafef6efd657dc.png" src="../../_images/af99644b697ab225ca2e21c5a0f40ad956661e740022638051cafef6efd657dc.png" />
+<img alt="../../_images/ab98c3df4018c056ef369bdd95f16bf8daafb36680f01b5571b200123fd26abc.png" src="../../_images/ab98c3df4018c056ef369bdd95f16bf8daafb36680f01b5571b200123fd26abc.png" />
 </div>
 </div>
 <p><strong>2-2-3. Compare the Run-Time:</strong></p>
@@ -4721,7 +4322,7 @@ Max iterations reached
 Max iterations reached
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_57_1.png" src="../../_images/Stochastic-Gradient-Descent-1_57_1.png" />
+<img alt="../../_images/11a30c68b6167080608ec1a46dee1f6fd8e87a24bfdfc764d349ee0d7204b90a.png" src="../../_images/11a30c68b6167080608ec1a46dee1f6fd8e87a24bfdfc764d349ee0d7204b90a.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal solution is: theta0 =  1.00396105716062 , theta1 =  1.00335836273951
 The corresponding loss function is:  0.001189718845737115
 
@@ -4729,7 +4330,7 @@ The corresponding loss function is:  0.001189718845737115
 Max iterations reached
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_57_3.png" src="../../_images/Stochastic-Gradient-Descent-1_57_3.png" />
+<img alt="../../_images/389962e132f7333843719615e515334b08637d8007017b32247325c45de3a2a4.png" src="../../_images/389962e132f7333843719615e515334b08637d8007017b32247325c45de3a2a4.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal solution is: theta0 =  0.9923310195398389 , theta1 =  1.0010685523229677
 The corresponding loss function is:  0.03479247571873773
 
@@ -4737,7 +4338,7 @@ The corresponding loss function is:  0.03479247571873773
 Max iterations reached
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_57_5.png" src="../../_images/Stochastic-Gradient-Descent-1_57_5.png" />
+<img alt="../../_images/94050c5a4fc6de75d43131d3482ca93374a5675dc20a7a8cf99176a7bdd8f1d2.png" src="../../_images/94050c5a4fc6de75d43131d3482ca93374a5675dc20a7a8cf99176a7bdd8f1d2.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal solution is: theta0 =  1.000882219575753 , theta1 =  0.9988203154713484
 The corresponding loss function is:  0.07767044430355274
 
@@ -4745,7 +4346,7 @@ The corresponding loss function is:  0.07767044430355274
 Max iterations reached
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_57_7.png" src="../../_images/Stochastic-Gradient-Descent-1_57_7.png" />
+<img alt="../../_images/b25d7a4997131803a9cf6a751e3817706bf6f7f8521b88d5db2aba8e1f458530.png" src="../../_images/b25d7a4997131803a9cf6a751e3817706bf6f7f8521b88d5db2aba8e1f458530.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal solution is: theta0 =  1.0026248380782692 , theta1 =  0.9988697821729882
 The corresponding loss function is:  0.2253242245914549
 
@@ -4753,7 +4354,7 @@ The corresponding loss function is:  0.2253242245914549
 Max iterations reached
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_57_9.png" src="../../_images/Stochastic-Gradient-Descent-1_57_9.png" />
+<img alt="../../_images/e76eb384b051395d98cb3ca0d92a1771fb3a4a72b6f72c805f14135f4ecbeb8e.png" src="../../_images/e76eb384b051395d98cb3ca0d92a1771fb3a4a72b6f72c805f14135f4ecbeb8e.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal solution is: theta0 =  1.0015970758783754 , theta1 =  0.9979817161957738
 The corresponding loss function is:  0.42437606855768406
 
@@ -4761,7 +4362,7 @@ The corresponding loss function is:  0.42437606855768406
 Max iterations reached
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_57_11.png" src="../../_images/Stochastic-Gradient-Descent-1_57_11.png" />
+<img alt="../../_images/47b3b911e991e4c1495d8035de41c92841918b4c93014a024c811edbe8d127ad.png" src="../../_images/47b3b911e991e4c1495d8035de41c92841918b4c93014a024c811edbe8d127ad.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal solution is: theta0 =  1.0052849541769504 , theta1 =  0.9991328571129454
 The corresponding loss function is:  1.0379534182570722
 
@@ -4769,7 +4370,7 @@ The corresponding loss function is:  1.0379534182570722
 Max iterations reached
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_57_13.png" src="../../_images/Stochastic-Gradient-Descent-1_57_13.png" />
+<img alt="../../_images/3bf9a2c1b5fd123dc67816388da2f721c440a5c53ea39ead42a829392fe87d09.png" src="../../_images/3bf9a2c1b5fd123dc67816388da2f721c440a5c53ea39ead42a829392fe87d09.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal solution is: theta0 =  0.9997118035038843 , theta1 =  0.9984465924052177
 The corresponding loss function is:  1.7084133552247633
 
@@ -4777,7 +4378,7 @@ The corresponding loss function is:  1.7084133552247633
 Max iterations reached
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_57_15.png" src="../../_images/Stochastic-Gradient-Descent-1_57_15.png" />
+<img alt="../../_images/f58f1fb76eac7503c65cbdf991d8a6c0eed640821269ae4781721cdf30cd8674.png" src="../../_images/f58f1fb76eac7503c65cbdf991d8a6c0eed640821269ae4781721cdf30cd8674.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal solution is: theta0 =  1.000286807090962 , theta1 =  0.9991798753291548
 The corresponding loss function is:  5.4794432712666765
 
@@ -4785,7 +4386,7 @@ The corresponding loss function is:  5.4794432712666765
 Max iterations reached
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_57_17.png" src="../../_images/Stochastic-Gradient-Descent-1_57_17.png" />
+<img alt="../../_images/baa085ce8fc29ea1afc03fdea26fc17e2455c19325de62ba2f914f7cc220ec2b.png" src="../../_images/baa085ce8fc29ea1afc03fdea26fc17e2455c19325de62ba2f914f7cc220ec2b.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal solution is: theta0 =  1.0029735926578809 , theta1 =  1.000578189031316
 The corresponding loss function is:  9.551803887619446
 
@@ -4793,7 +4394,7 @@ The corresponding loss function is:  9.551803887619446
 Max iterations reached
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_57_19.png" src="../../_images/Stochastic-Gradient-Descent-1_57_19.png" />
+<img alt="../../_images/08e1a7c3c06860508c3b328f163ecb49e1a331a38d642fc9354815865f8ca9b2.png" src="../../_images/08e1a7c3c06860508c3b328f163ecb49e1a331a38d642fc9354815865f8ca9b2.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal solution is: theta0 =  1.0001280895331988 , theta1 =  0.9987308184681254
 The corresponding loss function is:  20.325235470022463
 
@@ -4801,7 +4402,7 @@ The corresponding loss function is:  20.325235470022463
 Max iterations reached
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_57_21.png" src="../../_images/Stochastic-Gradient-Descent-1_57_21.png" />
+<img alt="../../_images/1cdbfba0af9483de2e945f724c12df0b73ece7cd9aefbdc1170c20ab3148087f.png" src="../../_images/1cdbfba0af9483de2e945f724c12df0b73ece7cd9aefbdc1170c20ab3148087f.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal solution is: theta0 =  0.9996794926738057 , theta1 =  0.9993794331325034
 The corresponding loss function is:  50.257707688524796
 
@@ -4810,19 +4411,19 @@ SUCCESS
 Gradient below the specified tolerance
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_57_23.png" src="../../_images/Stochastic-Gradient-Descent-1_57_23.png" />
+<img alt="../../_images/76c446187478af6329b6f6f8ec06565de23975ee105ad6916a4e7e5f62159652.png" src="../../_images/76c446187478af6329b6f6f8ec06565de23975ee105ad6916a4e7e5f62159652.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal solution is: theta0 =  0.9998087560478552 , theta1 =  0.9992893193110319
 The corresponding loss function is:  99.90911449942031
 </pre></div>
 </div>
-<img alt="../../_images/Stochastic-Gradient-Descent-1_57_25.png" src="../../_images/Stochastic-Gradient-Descent-1_57_25.png" />
+<img alt="../../_images/aa95f6e6438eea9b6362a86ba45cca06a227159df73a720a90d15d67ec43f4c9.png" src="../../_images/aa95f6e6438eea9b6362a86ba45cca06a227159df73a720a90d15d67ec43f4c9.png" />
 </div>
 </div>
 <p><strong>2-2-4. Conclusions:</strong></p>
 <ul class="simple">
 <li><p>The fastest convergence for large datasets is to use:</p></li>
 </ul>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>mBGD with a batch size smaller than 10% of dataset size.</p></li>
 <li><p>BGD with the adequately large learning rate.</p></li>
 </ol>
@@ -4832,8 +4433,8 @@ The corresponding loss function is:  99.90911449942031
 </section>
 </section>
 <section id="references">
-<h2><strong>3. References</strong><a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
-<ol class="simple">
+<h2><strong>3. References</strong><a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
 <li><p>Wu, Wei, et al. “Learning dynamics of gradient descent optimization in deep neural networks.” Science China Information Sciences 64 (2021): 1-15.</p></li>
 <li><p>Kwiatkowski, Robert. “Batch, Mini-Batch and Stochastic Gradient Descent for Linear Regression.” towardsdatascience, Jun 15. 2021, <a class="reference external" href="https://towardsdatascience.com/batch-mini-batch-and-stochastic-gradient-descent-for-linear-regression-9fe4eefa637c">https://towardsdatascience.com/batch-mini-batch-and-stochastic-gradient-descent-for-linear-regression-9fe4eefa637c</a>.</p></li>
 </ol>
@@ -4852,7 +4453,7 @@ The corresponding loss function is:  99.90911449942031
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./notebooks/contrib"
         },
         predefinedOutput: true
@@ -4860,50 +4461,114 @@ The corresponding loss function is:  99.90911449942031
     </script>
     <script>kernelName = 'python3'</script>
 
-              </div>
+                </article>
               
-            </main>
-            <footer class="footer-article noprint">
-                
-    <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="sgd.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Stochastic Gradient Descent</p>
-        </div>
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="sgd.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Stochastic Gradient Descent</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="Stochastic-Gradient-Descent-2.html" title="next page">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="Stochastic-Gradient-Descent-2.html"
+       title="next page">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">Stochastic Gradient Descent Tutorial 2</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
-            </footer>
-        </div>
-    </div>
-    <div class="footer-content row">
-        <footer class="col footer"><p>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction"><strong>1. Introduction</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#objective">1-1. Objective</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation-algorithm">1-2. Formulation &amp; Algorithm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">1-3. Functions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sgd-vs-bgd-vs-mbgd"><strong>2. SGD</strong> vs <strong>BGD</strong> vs <strong>mBGD</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-small-dataset-100-data">2-1. Problem 1 - Small Dataset (100 Data)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-bigger-dataset-10000-data">2-2. Problem 1 - Bigger Dataset (10000 Data)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references"><strong>3. References</strong></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
   
-    By Alexander Dowling, et al.<br/>
-  
-      &copy; Copyright 2022.<br/>
-</p>
-        </footer>
-    </div>
+  <div class="footer-item">
     
+<p class="component-author">
+By Alexander Dowling, et al.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
 </div>
+          </footer>
+        
 
-
-      </div>
+      </main>
     </div>
+  </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
 
-
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>

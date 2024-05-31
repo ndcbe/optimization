@@ -1,48 +1,60 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" data-content_root="" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>2.1. Logical Modeling and Generalized Disjunctive Programs &#8212; Nonlinear and Stochastic Optimization</title>
-    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="../../_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
-    
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../../_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -52,967 +64,501 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/2/Logical_Modeling_GDP';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="2.2. Modeling Disjunctions through the Strip Packing Problem" href="Modeling_Disjunctions_Strip_Packing.html" />
     <link rel="prev" title="2. Logical Modeling" href="logic.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-<!-- Checkboxes to toggle the left sidebar -->
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
-<label class="overlay overlay-navbar" for="__navigation">
-    <div class="visually-hidden">Toggle navigation sidebar</div>
-</label>
-<!-- Checkboxes to toggle the in-page toc -->
-<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
-<label class="overlay overlay-pagetoc" for="__page-toc">
-    <div class="visually-hidden">Toggle in-page Table of Contents</div>
-</label>
-<!-- Headers at the top -->
-<div class="announcement header-item noprint"></div>
-<div class="header header-item noprint"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
 
-    
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
 
-    <div class="container-xl">
-      <div class="row">
-          
-<!-- Sidebar -->
-<div class="bd-sidebar noprint" id="site-navigation">
-    <div class="bd-sidebar__content">
-        <div class="bd-sidebar__top"><div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../../index.html">
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <header>
+  
+    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    </div>
+  
+  </header>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="../../_static/cbe_logo.jpg" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Nonlinear and Stochastic Optimization</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
+    
+    
+    <img src="../../_static/cbe_logo.jpg" class="logo__image only-light" alt="Nonlinear and Stochastic Optimization - Home"/>
+    <script>document.write(`<img src="../../_static/cbe_logo.jpg" class="logo__image only-dark" alt="Nonlinear and Stochastic Optimization - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../../intro.html">
-                    Nonlinear and Stochastic Optimization
+                    Optimization for Decision Science
                 </a>
             </li>
         </ul>
-        <p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Organization
- </span>
-</p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../org/intro.html">
-   Welcome
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../org/syllabus.html">
-     Syllabus
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../org/calendar.html">
-     Spring 2023 Calendar
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../org/semester_project.html">
-     Semester Project
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../org/contribute.html">
-     Contribution Instructions
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../org/assignments.html">
-   Assignments
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Pyomo1.html">
-     Pyomo Homework 1
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Pyomo2.html">
-     Pyomo Homework 2
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Pyomo3.html">
-     Pyomo Homework 3
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">
-     Pyomo Mini-Project: Receding Horizon Stochastic Control
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Algorithms1.html">
-     Algorithms Homework 1
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Algorithms2.html">
-     Algorithms Homework 2
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Algorithms3.html">
-     Algorithms Homework 3
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../assignments/Algorithms4.html">
-     Algorithms Homework 4: Interior Point Methods
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Spring 2023 Calendar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Optimization Modeling in Pyomo
- </span>
-</p>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms1.html">Algorithms Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms2.html">Algorithms Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4: Interior Point Methods</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../1/getting-started.html">
-   1. Getting Started with Pyomo
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/Local-Install.html">
-     1.1. Local Installation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/Optimization-Modeling.html">
-     1.2. Optimization Modeling with Applications
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/Pyomo-Introduction.html">
-     1.3. Your First Optimization Problem
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/LP-NLP.html">
-     1.4. Continuous Optimization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/IP.html">
-     1.5. Integer Programs
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">
-     1.6. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 current active has-children">
-  <a class="reference internal" href="logic.html">
-   2. Logical Modeling
-  </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul class="current">
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     2.1. Logical Modeling and Generalized Disjunctive Programs
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="Modeling_Disjunctions_Strip_Packing.html">
-     2.2. Modeling Disjunctions through the Strip Packing Problem
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../3/dynamics.html">
-   3. Dynamic Optimization
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-  <label for="toctree-checkbox-5">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../3/DAE_background.html">
-     3.1. Differential Algebraic Equations (DAEs)
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../3/DAE_numeric_integration.html">
-     3.2. Numeric Integration for DAEs
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../3/PyomoDAE_theory.html">
-     3.3. Dynamic Optimization with Collocation and Pyomo.DAE
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../3/PyomoDAE_example.html">
-     3.4. Dynamic Optimization with Pyomo.DAE: An Example
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../4/uncertainty.html">
-   4. Optimization Under Uncertainty
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-  <label for="toctree-checkbox-6">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../4/SP.html">
-     4.1. Stochastic Programming
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../4/RiskMeasures.html">
-     4.2. Risk Measures and Portfolio Optimization
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../5/data.html">
-   5. Data Science and Applied Statistics
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-  <label for="toctree-checkbox-7">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../5/Parmest-tutorial.html">
-     5.1. Parameter estimation with
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       parmest
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../5/Parmest-generate-data.html">
-     5.2. Supplementary material: data for parmest tutorial
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">
-     5.3. Reactor Kinetics Example for Pyomo.DoE Tutorial
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/LP-NLP.html">1.4. Continuous Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.5. Integer Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.6. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Algorithms and Theory
- </span>
-</p>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../6/unconstrained.html">
-   6. Unconstrained Nonlinear Optimization
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-  <label for="toctree-checkbox-8">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../6/Math-Primer.html">
-     6.1. Linear Algebra Review and SciPy Basics
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../6/Math-Primer-2.html">
-     6.2. Mathematics Primer
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../6/Optimality.html">
-     6.3. Unconstrained Optimality Conditions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../6/Newton-Methods.html">
-     6.4. Newton-type Methods for Unconstrained Optimization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../6/Quasi-Newton-Methods.html">
-     6.5. Quasi-Newton Methods for Unconstrained Optimization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../6/Globalization.html">
-     6.6. Descent and Globalization
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../7/constrained.html">
-   7. Constrained Nonlinear Optimization
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-  <label for="toctree-checkbox-9">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Convexity.html">
-     7.1. Convexity Revisited
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Local-Optimality.html">
-     7.2. Local Optimality Conditions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/KKT-Multipliers.html">
-     7.3. Analysis of KKT Conditions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Constraint-Qualifications.html">
-     7.4. Constraint Qualifications
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Second-Order.html">
-     7.5. Second Order Optimality Conditions
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/NLP-Diagnostics.html">
-     7.6. NLP Diagnostics with Degeneracy Hunter
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Interior-Point1.html">
-     7.7. Simple Netwon Method for Equality Constrained NLPs
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../7/Interior-Point2.html">
-     7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../8/special-topics.html">
-   8. Special Topics
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
-  <label for="toctree-checkbox-10">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../8/MILP.html">
-     8.1. Integer Programming with Simple Branch and Bound
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../8/MINLP-Algorithms.html">
-     8.2. MINLP Algorithms
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../8/Global-Opt.html">
-     8.3. Deterministic Global Optimization
-    </a>
-   </li>
-  </ul>
- </li>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="logic.html">2. Logical Modeling</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Student Contributions
- </span>
-</p>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_background.html">3.1. Differential Algebraic Equations (DAEs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_numeric_integration.html">3.2. Numeric Integration for DAEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_theory.html">3.3. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_example.html">3.4. Dynamic Optimization with Pyomo.DAE: An Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.2. Risk Measures and Portfolio Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Reactor Kinetics Example for Pyomo.DoE Tutorial</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../contrib/dfo.html">
-   Derivative-Free Optimization
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
-  <label for="toctree-checkbox-11">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../contrib/Bayesian_Optimization1.html">
-     Bayesian Optimization Tutorial 1
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../contrib/Bayesian_Optimization2.html">
-     Bayesian Optimization Tutorial 2
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../contrib/sgd.html">
-   Stochastic Gradient Descent
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
-  <label for="toctree-checkbox-12">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-1.html">
-     Stochastic Gradient Descent Tutorial 1
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-2.html">
-     Stochastic Gradient Descent Tutorial 2
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-3.html">
-     Stochastic Gradient Descent Tutorial 3
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../contrib/data.html">
-   Machine Learning and Applied Statistics
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
-  <label for="toctree-checkbox-13">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../contrib/EM-MAP.html">
-     Expectation Maximization Algorithm and MAP Estimation
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Newton-Methods.html">6.4. Newton-type Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Constraint-Qualifications.html">7.4. Constraint Qualifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Second-Order.html">7.5. Second Order Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/NLP-Diagnostics.html">7.6. NLP Diagnostics with Degeneracy Hunter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/dfo.html">Derivative-Free Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/sgd.html">Stochastic Gradient Descent</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/data.html">Machine Learning and Applied Statistics</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
+</ul>
+</li>
 </ul>
 
     </div>
 </nav></div>
-        <div class="bd-sidebar__bottom">
-             <!-- To handle the deprecated key -->
-            
-            <div class="navbar_extra_footer">
-            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-            </div>
-            
-        </div>
     </div>
-    <div id="rtd-footer-container"></div>
-</div>
-
-
-          
-
-
-          
-<!-- A tiny helper pixel to detect if we've scrolled -->
-<div class="sbt-scroll-pixel-helper"></div>
-<!-- Main content -->
-<div class="col py-0 content-container">
-    
-    <div class="header-article row sticky-top noprint">
-        
-
-
-
-<div class="col py-1 d-flex header-article-main">
-    <div class="header-article__left">
-        
-        <label for="__navigation"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="right"
-title="Toggle navigation"
->
   
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-bars"></i>
-  </span>
-
-</label>
-
-        
-    </div>
-    <div class="header-article__right">
-<div class="menu-dropdown menu-dropdown-launch-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Launch interactive content">
-      <i class="fas fa-rocket"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://mybinder.org/v2/gh/ndcbe/optimization/master?urlpath=tree/notebooks/2/Logical_Modeling_GDP.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Binder"
->
   
-
-<span class="headerbtn__icon-container">
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
   
-    <img src="../../_static/images/logo_binder.svg">
-  </span>
-<span class="headerbtn__text-container">Binder</span>
-</a>
+  <div id="rtd-footer-container"></div>
 
-      </li>
+
+      </div>
       
-      <li>
-        <a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/2/Logical_Modeling_GDP.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Colab"
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/2/Logical_Modeling_GDP.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   
     <img src="../../_static/images/logo_colab.png">
   </span>
-<span class="headerbtn__text-container">Colab</span>
+<span class="btn__text-container">Colab</span>
 </a>
-
-      </li>
+</li>
       
-    </ul>
-  </div>
+  </ul>
 </div>
 
-<button onclick="toggleFullScreen()"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="bottom"
-title="Fullscreen mode"
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/2/Logical_Modeling_GDP.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/2/Logical_Modeling_GDP.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
   <i class="fas fa-expand"></i>
   </span>
 
 </button>
 
-<div class="menu-dropdown menu-dropdown-repository-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Source repositories">
-      <i class="fab fa-github"></i>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://github.com/ndcbe/optimization"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Source repository"
->
-  
+`);
+</script>
 
-<span class="headerbtn__icon-container">
-  <i class="fab fa-github"></i>
-  </span>
-<span class="headerbtn__text-container">repository</span>
-</a>
 
-      </li>
-      
-      <li>
-        <a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/2/Logical_Modeling_GDP.html&body=Your%20issue%20content%20here."
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Open an issue"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-lightbulb"></i>
-  </span>
-<span class="headerbtn__text-container">open issue</span>
-</a>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-
-<div class="menu-dropdown menu-dropdown-download-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Download this page">
-      <i class="fas fa-download"></i>
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="../../_sources/notebooks/2/Logical_Modeling_GDP.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Download source file"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="headerbtn__text-container">.ipynb</span>
-</a>
-
-      </li>
-      
-      <li>
-        
-<button onclick="printPdf(this)"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="left"
-title="Print to PDF"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="headerbtn__text-container">.pdf</span>
-</button>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
-  </span>
-
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
 </label>
-
+</div></div>
+      
     </div>
+  
 </div>
-
-<!-- Table of contents -->
-<div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
-    </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#introduction-and-learning-objectives">
-   2.1.1. Introduction and Learning Objectives
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#import-modules">
-   2.1.2. Import Modules
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#logical-modeling">
-   2.1.3. Logical Modeling
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#symbolic-logic-notation">
-     2.1.3.1. Symbolic Logic Notation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#logical-statements-and-conjuctive-normal-form">
-     2.1.3.2. Logical Statements and Conjuctive Normal Form
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#modeling-disjunctions">
-   2.1.4. Modeling Disjunctions
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#general-notation">
-     2.1.4.1. General Notation
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#example-the-reactor-problem">
-   2.1.5. Example: The Reactor Problem
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#problem-statement">
-     2.1.5.1. Problem Statement
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#define-model-in-pyomo-with-gdp">
-     2.1.5.2. Define Model in Pyomo with GDP
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#transform-and-solve-with-big-m-relaxation">
-     2.1.5.3. Transform and Solve with Big-M Relaxation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#big-m-relaxation-approach">
-     2.1.5.4. Big-M Relaxation Approach
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#big-m-implementation-in-pyomo">
-     2.1.5.5. Big-M Implementation in Pyomo
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#transform-and-solve-with-convex-hull-relaxation">
-     2.1.5.6. Transform and Solve with Convex Hull Relaxation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#convex-hull-relaxation-approach">
-     2.1.5.7. Convex Hull Relaxation Approach
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#convex-hull-implementation-in-pyomo">
-     2.1.5.8. Convex Hull Implementation in Pyomo
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#discussion-questions">
-   2.1.6. Discussion Questions
-  </a>
- </li>
-</ul>
-
-    </nav>
 </div>
-    </div>
-    <div class="article row">
-        <div class="col pl-md-3 pl-lg-5 content-container">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Logical Modeling and Generalized Disjunctive Programs</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#introduction-and-learning-objectives">
-   2.1.1. Introduction and Learning Objectives
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#import-modules">
-   2.1.2. Import Modules
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#logical-modeling">
-   2.1.3. Logical Modeling
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#symbolic-logic-notation">
-     2.1.3.1. Symbolic Logic Notation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#logical-statements-and-conjuctive-normal-form">
-     2.1.3.2. Logical Statements and Conjuctive Normal Form
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#modeling-disjunctions">
-   2.1.4. Modeling Disjunctions
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#general-notation">
-     2.1.4.1. General Notation
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#example-the-reactor-problem">
-   2.1.5. Example: The Reactor Problem
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#problem-statement">
-     2.1.5.1. Problem Statement
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#define-model-in-pyomo-with-gdp">
-     2.1.5.2. Define Model in Pyomo with GDP
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#transform-and-solve-with-big-m-relaxation">
-     2.1.5.3. Transform and Solve with Big-M Relaxation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#big-m-relaxation-approach">
-     2.1.5.4. Big-M Relaxation Approach
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#big-m-implementation-in-pyomo">
-     2.1.5.5. Big-M Implementation in Pyomo
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#transform-and-solve-with-convex-hull-relaxation">
-     2.1.5.6. Transform and Solve with Convex Hull Relaxation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#convex-hull-relaxation-approach">
-     2.1.5.7. Convex Hull Relaxation Approach
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#convex-hull-implementation-in-pyomo">
-     2.1.5.8. Convex Hull Implementation in Pyomo
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#discussion-questions">
-   2.1.6. Discussion Questions
-  </a>
- </li>
-</ul>
+              
+              
 
-                        </nav>
-                    </div>
-                </div>
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Logical Modeling and Generalized Disjunctive Programs</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
             </div>
-            <main id="main-content" role="main">
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-and-learning-objectives">2.1.1. Introduction and Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-modules">2.1.2. Import Modules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logical-modeling">2.1.3. Logical Modeling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symbolic-logic-notation">2.1.3.1. Symbolic Logic Notation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#logical-statements-and-conjuctive-normal-form">2.1.3.2. Logical Statements and Conjuctive Normal Form</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modeling-disjunctions">2.1.4. Modeling Disjunctions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#general-notation">2.1.4.1. General Notation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-reactor-problem">2.1.5. Example: The Reactor Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-statement">2.1.5.1. Problem Statement</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-model-in-pyomo-with-gdp">2.1.5.2. Define Model in Pyomo with GDP</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transform-and-solve-with-big-m-relaxation">2.1.5.3. Transform and Solve with Big-M Relaxation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#big-m-relaxation-approach">2.1.5.4. Big-M Relaxation Approach</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#big-m-implementation-in-pyomo">2.1.5.5. Big-M Implementation in Pyomo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transform-and-solve-with-convex-hull-relaxation">2.1.5.6. Transform and Solve with Convex Hull Relaxation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convex-hull-relaxation-approach">2.1.5.7. Convex Hull Relaxation Approach</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convex-hull-implementation-in-pyomo">2.1.5.8. Convex Hull Implementation in Pyomo</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion-questions">2.1.6. Discussion Questions</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
                 
-              <div>
-                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
   <section class="tex2jax_ignore mathjax_ignore" id="logical-modeling-and-generalized-disjunctive-programs">
-<h1><span class="section-number">2.1. </span>Logical Modeling and Generalized Disjunctive Programs<a class="headerlink" href="#logical-modeling-and-generalized-disjunctive-programs" title="Permalink to this headline">#</a></h1>
+<h1><span class="section-number">2.1. </span>Logical Modeling and Generalized Disjunctive Programs<a class="headerlink" href="#logical-modeling-and-generalized-disjunctive-programs" title="Permalink to this heading">#</a></h1>
 <p><strong>Prepared by:</strong> Prof. Alexander Dowling (<a class="reference external" href="mailto:adowling&#37;&#52;&#48;nd&#46;edu">adowling<span>&#64;</span>nd<span>&#46;</span>edu</a>), <a class="reference external" href="https://github.com/hglynch">Hailey Lynch</a> (<a class="reference external" href="mailto:hlynch&#37;&#52;&#48;nd&#46;edu">hlynch<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2023)</p>
 <section id="introduction-and-learning-objectives">
-<h2><span class="section-number">2.1.1. </span>Introduction and Learning Objectives<a class="headerlink" href="#introduction-and-learning-objectives" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.1.1. </span>Introduction and Learning Objectives<a class="headerlink" href="#introduction-and-learning-objectives" title="Permalink to this heading">#</a></h2>
 <p>This notebook introduces generalized disjunctive programs through an example in Pyomo.GDP. Students will learn concepts related to Logical Modeling and Modeling Disjunctions in this notebook. These techniques will be applied to the Reactor Problem and then implemented into Pyomo. Critical thinking discussion questions will be included to connect concepts from CBE 60499.</p>
 </section>
 <section id="import-modules">
-<h2><span class="section-number">2.1.2. </span>Import Modules<a class="headerlink" href="#import-modules" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.1.2. </span>Import Modules<a class="headerlink" href="#import-modules" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Imports</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="k">if</span> <span class="s2">&quot;google.colab&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
-    <span class="o">!</span>wget <span class="s2">&quot;https://raw.githubusercontent.com/ndcbe/CBE60499/main/notebooks/helper.py&quot;</span>
+    <span class="o">!</span>wget<span class="w"> </span><span class="s2">&quot;https://raw.githubusercontent.com/ndcbe/CBE60499/main/notebooks/helper.py&quot;</span>
     <span class="kn">import</span> <span class="nn">helper</span>
     <span class="n">helper</span><span class="o">.</span><span class="n">install_idaes</span><span class="p">()</span>
     <span class="n">helper</span><span class="o">.</span><span class="n">install_ipopt</span><span class="p">()</span>
@@ -1076,11 +622,11 @@ Checking for ./figures/strip_packing.png
 </div>
 </section>
 <section id="logical-modeling">
-<h2><span class="section-number">2.1.3. </span>Logical Modeling<a class="headerlink" href="#logical-modeling" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.1.3. </span>Logical Modeling<a class="headerlink" href="#logical-modeling" title="Permalink to this heading">#</a></h2>
 <p>First we will look at important logic notation that is commonly used in logical modeling. This will enable us to convert logical expressions such as <strong>disjunctive clauses</strong> (<span class="math notranslate nohighlight">\(Q_i = P_1 \lor P_2 \ \lor ... \lor \ P_r\)</span>) into <strong>conjuctive normal form</strong> (<span class="math notranslate nohighlight">\(Q_1 \land Q_2 \ \land ... \land \ Q_s\)</span>).</p>
 <section id="symbolic-logic-notation">
-<h3><span class="section-number">2.1.3.1. </span>Symbolic Logic Notation<a class="headerlink" href="#symbolic-logic-notation" title="Permalink to this headline">#</a></h3>
-<table class="colwidths-auto table">
+<h3><span class="section-number">2.1.3.1. </span>Symbolic Logic Notation<a class="headerlink" href="#symbolic-logic-notation" title="Permalink to this heading">#</a></h3>
+<table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>$<span class="math notranslate nohighlight">\(\text{Logical Operation}\)</span>$</p></th>
 <th class="head"><p>$<span class="math notranslate nohighlight">\(\text{Logical Symbol}\)</span>$</p></th>
@@ -1109,34 +655,34 @@ Checking for ./figures/strip_packing.png
 </table>
 </section>
 <section id="logical-statements-and-conjuctive-normal-form">
-<h3><span class="section-number">2.1.3.2. </span>Logical Statements and Conjuctive Normal Form<a class="headerlink" href="#logical-statements-and-conjuctive-normal-form" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">2.1.3.2. </span>Logical Statements and Conjuctive Normal Form<a class="headerlink" href="#logical-statements-and-conjuctive-normal-form" title="Permalink to this heading">#</a></h3>
 <p><em>The following excerpts are from Section 15.7 in Biegler, Grossmann, and Westerberg (1997).</em></p>
 <p>The three step procedure below shows how to convert logical statements into conjuctive normal form:</p>
 <ol>
   <li>Replace the implication by its equivalent disjunction:
-<div class="amsmath math notranslate nohighlight" id="equation-8530af97-e75a-4a76-a8cd-eb1b4eb1cb19">
-<span class="eqno">(2.1)<a class="headerlink" href="#equation-8530af97-e75a-4a76-a8cd-eb1b4eb1cb19" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-29839a51-c739-4daa-8989-58ffbadbc92f">
+<span class="eqno">(2.1)<a class="headerlink" href="#equation-29839a51-c739-4daa-8989-58ffbadbc92f" title="Permalink to this equation">#</a></span>\[\begin{equation}
   P_{1} \Rightarrow P_{2} \Leftrightarrow \neg P_{1} \lor P_{2} \tag{15.18}
   \end{equation}\]</div>
   <li>Distribute the negation by applying DeMorgan's Theorem:
-<div class="amsmath math notranslate nohighlight" id="equation-62acdc12-bdfc-4562-ae50-8002d62e6ad1">
-<span class="eqno">(2.2)<a class="headerlink" href="#equation-62acdc12-bdfc-4562-ae50-8002d62e6ad1" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-e5ccc617-8b5e-42d5-9ec0-78fedab56971">
+<span class="eqno">(2.2)<a class="headerlink" href="#equation-e5ccc617-8b5e-42d5-9ec0-78fedab56971" title="Permalink to this equation">#</a></span>\[\begin{equation}
   \neg (P_{1} \land P_{2}) \Leftrightarrow \neg P_{1} \lor \neg P_{2}\tag{15.19}
   \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-485a9607-e35a-4d67-b051-6bf29be207fc">
-<span class="eqno">(2.3)<a class="headerlink" href="#equation-485a9607-e35a-4d67-b051-6bf29be207fc" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-a88c88d3-ed22-4f47-965c-4085a71bc044">
+<span class="eqno">(2.3)<a class="headerlink" href="#equation-a88c88d3-ed22-4f47-965c-4085a71bc044" title="Permalink to this equation">#</a></span>\[\begin{equation}
   \neg (P_{1} \lor P_{2}) \Leftrightarrow \neg P_{1} \land \neg P_{2}\tag{15.20}
   \end{equation}\]</div>
   </li>
   <li>Recursively distribute the $\textbf{OR}$ over the $\textbf{AND}$ by using the following equivalence:
-<div class="amsmath math notranslate nohighlight" id="equation-5f3419ae-986b-4d8c-b1df-351d161763aa">
-<span class="eqno">(2.4)<a class="headerlink" href="#equation-5f3419ae-986b-4d8c-b1df-351d161763aa" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-59f36a5f-19a5-4757-bb2e-1d880dcc6c98">
+<span class="eqno">(2.4)<a class="headerlink" href="#equation-59f36a5f-19a5-4757-bb2e-1d880dcc6c98" title="Permalink to this equation">#</a></span>\[\begin{equation}
   (P_{1} \land P_{2}) \lor P_{3} \Leftrightarrow (P_{1} \lor P_{3}) \land (P_{2} \lor P_{3})\tag{15.21}
   \end{equation}\]</div>
   </li>
 </ol>
 <p>Once in conjuctive normal form, we can apply the following rules:</p>
-<table class="colwidths-auto table">
+<table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>$<span class="math notranslate nohighlight">\(\text{Logical Relation}\)</span>$</p></th>
 <th class="head"><p>$<span class="math notranslate nohighlight">\(\text{Comments}\)</span>$</p></th>
@@ -1175,12 +721,12 @@ Checking for ./figures/strip_packing.png
 </section>
 </section>
 <section id="modeling-disjunctions">
-<h2><span class="section-number">2.1.4. </span>Modeling Disjunctions<a class="headerlink" href="#modeling-disjunctions" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.1.4. </span>Modeling Disjunctions<a class="headerlink" href="#modeling-disjunctions" title="Permalink to this heading">#</a></h2>
 <p>When modeling disjunctions, we will have to represent logical constraints that involve continuous variables.</p>
 <section id="general-notation">
-<h3><span class="section-number">2.1.4.1. </span>General Notation<a class="headerlink" href="#general-notation" title="Permalink to this headline">#</a></h3>
-<div class="amsmath math notranslate nohighlight" id="equation-669f6b1c-513f-49b3-98db-e3a2d966e0c7">
-<span class="eqno">(2.5)<a class="headerlink" href="#equation-669f6b1c-513f-49b3-98db-e3a2d966e0c7" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<h3><span class="section-number">2.1.4.1. </span>General Notation<a class="headerlink" href="#general-notation" title="Permalink to this heading">#</a></h3>
+<div class="amsmath math notranslate nohighlight" id="equation-109eca22-ed27-460f-bb7a-633306dd9a67">
+<span class="eqno">(2.5)<a class="headerlink" href="#equation-109eca22-ed27-460f-bb7a-633306dd9a67" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \lor_{i \in D_{R}}
 \begin{bmatrix}
 Y_{ik}\\
@@ -1189,7 +735,7 @@ c_{k} = \mu_{ik}
 \end{bmatrix} \ \ \ , \ \ \ \Omega(Y)= \text{True}
 \end{equation}\]</div>
 <p>where: \</p>
-<table class="colwidths-auto table">
+<table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>$<span class="math notranslate nohighlight">\(\text{Notation}\)</span>$</p></th>
 <th class="head"><p>$<span class="math notranslate nohighlight">\(\text{Definition}\)</span>$</p></th>
@@ -1219,26 +765,26 @@ c_{k} = \mu_{ik}
 </section>
 </section>
 <section id="example-the-reactor-problem">
-<h2><span class="section-number">2.1.5. </span>Example: The Reactor Problem<a class="headerlink" href="#example-the-reactor-problem" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.1.5. </span>Example: The Reactor Problem<a class="headerlink" href="#example-the-reactor-problem" title="Permalink to this heading">#</a></h2>
 <p><em>The following excerpts are from Section 15.8 in Biegler, Grossmann, and Westerberg (1997).</em></p>
 <section id="problem-statement">
-<h3><span class="section-number">2.1.5.1. </span>Problem Statement<a class="headerlink" href="#problem-statement" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">2.1.5.1. </span>Problem Statement<a class="headerlink" href="#problem-statement" title="Permalink to this heading">#</a></h3>
 <p>This modeling disjunctions example involves selecting between two reactors:</p>
 <ul class="simple">
 <li><p>If <em>reactor 1</em> is selected, then pressure <span class="math notranslate nohighlight">\(P\)</span> must be between <span class="math notranslate nohighlight">\(5\)</span> and <span class="math notranslate nohighlight">\(10\)</span> atmospheres.</p></li>
 <li><p>If <em>reactor 2</em> is selected, then pressure <span class="math notranslate nohighlight">\(P\)</span> must be between <span class="math notranslate nohighlight">\(20\)</span> and <span class="math notranslate nohighlight">\(30\)</span> atmospheres.</p></li>
 </ul>
 <p><strong>Linear Disjunction Form:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-4f2aa5c2-7dd1-4f62-867c-c78ffa34a2c2">
-<span class="eqno">(2.6)<a class="headerlink" href="#equation-4f2aa5c2-7dd1-4f62-867c-c78ffa34a2c2" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-8a0919d4-27c7-45c5-84aa-59f5b2f244c3">
+<span class="eqno">(2.6)<a class="headerlink" href="#equation-8a0919d4-27c7-45c5-84aa-59f5b2f244c3" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \lor_{i \in D}
 \begin{bmatrix}
 A_{i}x \leq b_{i}(x)
 \end{bmatrix}
 \end{equation}\]</div>
 <p><strong>Applied to the Reactor Problem:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-048675ea-a5a0-4b1e-857c-0a44cd136389">
-<span class="eqno">(2.7)<a class="headerlink" href="#equation-048675ea-a5a0-4b1e-857c-0a44cd136389" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-545549f3-8d9a-4aab-bd0d-34bd47b2188b">
+<span class="eqno">(2.7)<a class="headerlink" href="#equation-545549f3-8d9a-4aab-bd0d-34bd47b2188b" title="Permalink to this equation">#</a></span>\[\begin{equation}
   \begin{bmatrix}
     y_1\\
     P \leq 10\\
@@ -1253,7 +799,7 @@ A_{i}x \leq b_{i}(x)
 <p><br> where <span class="math notranslate nohighlight">\(y_{1}\)</span> represents <em>reactor 1</em> and <span class="math notranslate nohighlight">\(y_{2}\)</span> represents <em>reactor 2</em>.</p>
 </section>
 <section id="define-model-in-pyomo-with-gdp">
-<h3><span class="section-number">2.1.5.2. </span>Define Model in Pyomo with GDP<a class="headerlink" href="#define-model-in-pyomo-with-gdp" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">2.1.5.2. </span>Define Model in Pyomo with GDP<a class="headerlink" href="#define-model-in-pyomo-with-gdp" title="Permalink to this heading">#</a></h3>
 <p>First we will define the model (including disjunctions) for the Reactor Problem in Pyomo.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1266,7 +812,7 @@ A_{i}x \leq b_{i}(x)
                            <span class="n">Set</span><span class="p">,</span> <span class="n">SolverFactory</span><span class="p">,</span> <span class="n">TransformationFactory</span><span class="p">,</span> <span class="n">Var</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">create_model</span><span class="p">():</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Build the reactor problem model.</span>
 <span class="sd">    </span>
 <span class="sd">    Return:</span>
@@ -1313,30 +859,30 @@ A_{i}x \leq b_{i}(x)
 </div>
 </section>
 <section id="transform-and-solve-with-big-m-relaxation">
-<h3><span class="section-number">2.1.5.3. </span>Transform and Solve with Big-M Relaxation<a class="headerlink" href="#transform-and-solve-with-big-m-relaxation" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">2.1.5.3. </span>Transform and Solve with Big-M Relaxation<a class="headerlink" href="#transform-and-solve-with-big-m-relaxation" title="Permalink to this heading">#</a></h3>
 <p><em>The following excerpts are from Section 15.8 in Biegler, Grossmann, and
 Westerberg (1997).</em></p>
 <p>Use “Big-M” constraints to convert linear disjunctions into mixed-integer constraints to represent logic with continuous variables.</p>
 </section>
 <section id="big-m-relaxation-approach">
-<h3><span class="section-number">2.1.5.4. </span>Big-M Relaxation Approach<a class="headerlink" href="#big-m-relaxation-approach" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">2.1.5.4. </span>Big-M Relaxation Approach<a class="headerlink" href="#big-m-relaxation-approach" title="Permalink to this heading">#</a></h3>
 <p><strong>General Notation:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-4d05dfb6-ff82-42ea-a77d-93477994719f">
-<span class="eqno">(2.8)<a class="headerlink" href="#equation-4d05dfb6-ff82-42ea-a77d-93477994719f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-0c98320f-c8ce-410c-9a3d-d2d2d7d10235">
+<span class="eqno">(2.8)<a class="headerlink" href="#equation-0c98320f-c8ce-410c-9a3d-d2d2d7d10235" title="Permalink to this equation">#</a></span>\[\begin{equation}
 A_{i}(x) \leq b_{i} + M_{i}(1-y_{i})  \ , \  \forall i \in D
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-431c1f1b-059f-4c6e-91c2-51c4bd1d546b">
-<span class="eqno">(2.9)<a class="headerlink" href="#equation-431c1f1b-059f-4c6e-91c2-51c4bd1d546b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-b81da3f5-a7d2-4d71-8a07-9b0127276bcd">
+<span class="eqno">(2.9)<a class="headerlink" href="#equation-b81da3f5-a7d2-4d71-8a07-9b0127276bcd" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \sum_{i \in D} y_{i} = 1
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-51d207ec-bb41-41ee-b1c2-b689be3da9e5">
-<span class="eqno">(2.10)<a class="headerlink" href="#equation-51d207ec-bb41-41ee-b1c2-b689be3da9e5" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-8c4b9fa3-399c-4148-8988-1331dde54fac">
+<span class="eqno">(2.10)<a class="headerlink" href="#equation-8c4b9fa3-399c-4148-8988-1331dde54fac" title="Permalink to this equation">#</a></span>\[\begin{equation}
 y_{i} \in \{0,1) \ , \  \forall i \in D
 \end{equation}\]</div>
 <br>
 <p><strong>Applied to the Reactor Problem:</strong> <br></p>
-<div class="amsmath math notranslate nohighlight" id="equation-feea2f58-45a4-44e2-a91e-266b86d86ba4">
-<span class="eqno">(2.11)<a class="headerlink" href="#equation-feea2f58-45a4-44e2-a91e-266b86d86ba4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-62eddc8a-f882-4caf-9842-073358dbd094">
+<span class="eqno">(2.11)<a class="headerlink" href="#equation-62eddc8a-f882-4caf-9842-073358dbd094" title="Permalink to this equation">#</a></span>\[\begin{equation}
   P \leq 10 + M_{1}(1-y_{1})\\
   -P \leq -5 + M_{1}(1-y_{1})\\
   P \leq 30 + M_{2}(1-y_{2})\\
@@ -1356,7 +902,7 @@ Considering the special case where <span class="math notranslate nohighlight">\(
 <p><strong>Big-M is the best to use if the problem is small.</strong></p>
 </section>
 <section id="big-m-implementation-in-pyomo">
-<h3><span class="section-number">2.1.5.5. </span>Big-M Implementation in Pyomo<a class="headerlink" href="#big-m-implementation-in-pyomo" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">2.1.5.5. </span>Big-M Implementation in Pyomo<a class="headerlink" href="#big-m-implementation-in-pyomo" title="Permalink to this heading">#</a></h3>
 <p>First we will create and print the model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1839,37 +1385,37 @@ P : Reactor pressure (atm)
 </div>
 </section>
 <section id="transform-and-solve-with-convex-hull-relaxation">
-<h3><span class="section-number">2.1.5.6. </span>Transform and Solve with Convex Hull Relaxation<a class="headerlink" href="#transform-and-solve-with-convex-hull-relaxation" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">2.1.5.6. </span>Transform and Solve with Convex Hull Relaxation<a class="headerlink" href="#transform-and-solve-with-convex-hull-relaxation" title="Permalink to this heading">#</a></h3>
 <p><em>The following excerpts are from Section 15.8 in Biegler, Grossmann, and Westerberg (1997).</em></p>
 <p>Convex hull can be used if we don’t want to implement Big-M parameters. This approach requires separating the continuous variables into its components.</p>
 </section>
 <section id="convex-hull-relaxation-approach">
-<h3><span class="section-number">2.1.5.7. </span>Convex Hull Relaxation Approach<a class="headerlink" href="#convex-hull-relaxation-approach" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">2.1.5.7. </span>Convex Hull Relaxation Approach<a class="headerlink" href="#convex-hull-relaxation-approach" title="Permalink to this heading">#</a></h3>
 <p><strong>General Notation:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-665903e8-6add-4b51-bc1c-76a67f21ee49">
-<span class="eqno">(2.12)<a class="headerlink" href="#equation-665903e8-6add-4b51-bc1c-76a67f21ee49" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-0b277f85-e958-47fb-bb6b-e6b51fafc8ee">
+<span class="eqno">(2.12)<a class="headerlink" href="#equation-0b277f85-e958-47fb-bb6b-e6b51fafc8ee" title="Permalink to this equation">#</a></span>\[\begin{equation}
 x = \sum_{i \in D} z_{i}
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-fe6d5602-9357-4fcc-838b-3462ed33fce3">
-<span class="eqno">(2.13)<a class="headerlink" href="#equation-fe6d5602-9357-4fcc-838b-3462ed33fce3" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-25d9dd96-9b76-4bb5-bf88-6624be4f9f43">
+<span class="eqno">(2.13)<a class="headerlink" href="#equation-25d9dd96-9b76-4bb5-bf88-6624be4f9f43" title="Permalink to this equation">#</a></span>\[\begin{equation}
 A_{i} z_{i} \leq b_{i}y_{i}  \ , \ \forall i \in D
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-ff6e7c0f-24c1-4927-812f-fb428ed1352f">
-<span class="eqno">(2.14)<a class="headerlink" href="#equation-ff6e7c0f-24c1-4927-812f-fb428ed1352f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-b1887e9f-5f6c-4f50-92c6-8ee7b303763c">
+<span class="eqno">(2.14)<a class="headerlink" href="#equation-b1887e9f-5f6c-4f50-92c6-8ee7b303763c" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \sum_{i \in D} y_{i} = 1
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-fad834ef-6c1b-464e-8e05-853cf91186ff">
-<span class="eqno">(2.15)<a class="headerlink" href="#equation-fad834ef-6c1b-464e-8e05-853cf91186ff" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-dbd4731c-52b8-4441-816c-d4021b2eb521">
+<span class="eqno">(2.15)<a class="headerlink" href="#equation-dbd4731c-52b8-4441-816c-d4021b2eb521" title="Permalink to this equation">#</a></span>\[\begin{equation}
 0 \leq z_{i} \leq Uy_{i}  \ , \ \forall i \in D
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-d90b343b-a6a1-4acf-abd5-573cbfae3aed">
-<span class="eqno">(2.16)<a class="headerlink" href="#equation-d90b343b-a6a1-4acf-abd5-573cbfae3aed" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-b483c11b-7311-4dc7-b691-31b2afcff236">
+<span class="eqno">(2.16)<a class="headerlink" href="#equation-b483c11b-7311-4dc7-b691-31b2afcff236" title="Permalink to this equation">#</a></span>\[\begin{equation}
 y_{i} = \{0,1) \ , \ \forall i \in D
 \end{equation}\]</div>
 <p><span class="math notranslate nohighlight">\(z_{i}\)</span>: continuous variables separated into as many new variables as there are terms for the disjunctions.</p>
 <p><strong>Applied to the Reactor Problem:</strong> <br></p>
-<div class="amsmath math notranslate nohighlight" id="equation-96432d84-d7a9-4432-a94c-1f5990c688f3">
-<span class="eqno">(2.17)<a class="headerlink" href="#equation-96432d84-d7a9-4432-a94c-1f5990c688f3" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-7ba5086e-19f1-4dc2-84a3-0409eb09c086">
+<span class="eqno">(2.17)<a class="headerlink" href="#equation-7ba5086e-19f1-4dc2-84a3-0409eb09c086" title="Permalink to this equation">#</a></span>\[\begin{equation}
   P = P_{1} + P_{2} \\
   P_{1} \leq 10y_{1}\\
   P_{2} \leq 30y_{2} \\
@@ -1883,7 +1429,7 @@ y_{i} = \{0,1) \ , \ \forall i \in D
 <p><strong>Convex hull is better to use over Big-M if the problem is large.</strong></p>
 </section>
 <section id="convex-hull-implementation-in-pyomo">
-<h3><span class="section-number">2.1.5.8. </span>Convex Hull Implementation in Pyomo<a class="headerlink" href="#convex-hull-implementation-in-pyomo" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">2.1.5.8. </span>Convex Hull Implementation in Pyomo<a class="headerlink" href="#convex-hull-implementation-in-pyomo" title="Permalink to this heading">#</a></h3>
 <p>We will repeat the procedure above but using Convex Hull now.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1979,8 +1525,8 @@ P : Reactor pressure (atm)
 </section>
 </section>
 <section id="discussion-questions">
-<h2><span class="section-number">2.1.6. </span>Discussion Questions<a class="headerlink" href="#discussion-questions" title="Permalink to this headline">#</a></h2>
-<ol class="simple">
+<h2><span class="section-number">2.1.6. </span>Discussion Questions<a class="headerlink" href="#discussion-questions" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
 <li><p>How do we create a system to go from logical expressions to linear constraints?</p></li>
 <li><p>Are conjuctive or disjunctive clauses more common? Why might this be the case?</p></li>
 <li><p>If <span class="math notranslate nohighlight">\(y_{i}=0\)</span> and <span class="math notranslate nohighlight">\(y_{i}=1\)</span>, what happens when a Big-M parameter is introduced in the general notation?</p></li>
@@ -2014,7 +1560,7 @@ P : Reactor pressure (atm)
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./notebooks/2"
         },
         predefinedOutput: true
@@ -2022,50 +1568,125 @@ P : Reactor pressure (atm)
     </script>
     <script>kernelName = 'python3'</script>
 
-              </div>
+                </article>
               
-            </main>
-            <footer class="footer-article noprint">
-                
-    <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="logic.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">2. </span>Logical Modeling</p>
-        </div>
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="logic.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>Logical Modeling</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="Modeling_Disjunctions_Strip_Packing.html" title="next page">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="Modeling_Disjunctions_Strip_Packing.html"
+       title="next page">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title"><span class="section-number">2.2. </span>Modeling Disjunctions through the Strip Packing Problem</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
-            </footer>
-        </div>
-    </div>
-    <div class="footer-content row">
-        <footer class="col footer"><p>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-and-learning-objectives">2.1.1. Introduction and Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-modules">2.1.2. Import Modules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logical-modeling">2.1.3. Logical Modeling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symbolic-logic-notation">2.1.3.1. Symbolic Logic Notation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#logical-statements-and-conjuctive-normal-form">2.1.3.2. Logical Statements and Conjuctive Normal Form</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modeling-disjunctions">2.1.4. Modeling Disjunctions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#general-notation">2.1.4.1. General Notation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-reactor-problem">2.1.5. Example: The Reactor Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-statement">2.1.5.1. Problem Statement</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-model-in-pyomo-with-gdp">2.1.5.2. Define Model in Pyomo with GDP</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transform-and-solve-with-big-m-relaxation">2.1.5.3. Transform and Solve with Big-M Relaxation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#big-m-relaxation-approach">2.1.5.4. Big-M Relaxation Approach</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#big-m-implementation-in-pyomo">2.1.5.5. Big-M Implementation in Pyomo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transform-and-solve-with-convex-hull-relaxation">2.1.5.6. Transform and Solve with Convex Hull Relaxation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convex-hull-relaxation-approach">2.1.5.7. Convex Hull Relaxation Approach</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convex-hull-implementation-in-pyomo">2.1.5.8. Convex Hull Implementation in Pyomo</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion-questions">2.1.6. Discussion Questions</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
   
-    By Alexander Dowling, et al.<br/>
-  
-      &copy; Copyright 2022.<br/>
-</p>
-        </footer>
-    </div>
+  <div class="footer-item">
     
+<p class="component-author">
+By Alexander Dowling, et al.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
 </div>
+          </footer>
+        
 
-
-      </div>
+      </main>
     </div>
+  </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
 
-
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>

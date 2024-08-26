@@ -104,6 +104,7 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
     # replace links to media with urls
     # 2022-09-21: removed "!" from the beginning both of these expressions to also work on handouts (pdf) in media folder
     # 2022-09-21: the use case is the error propagation handout
+    '''
     MEDIA_LINK = '\[(.*)\]\(\.\./\.\./media/(.*\..*)\)'
     IMAGE_LINK = r'[\1](https://ndcbe.github.io/optimization/_images/\2)'
     
@@ -122,6 +123,11 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
             # replace media files with urls to _images
             cell.source = re.sub(MEDIA_LINK, IMAGE_LINK, cell.source)
 
+    '''
+
+    replace_markdown('../../media/',
+                     'https://raw.githubusercontent.com/ndcbe/optimization/main/media/')
+    
     ## Save new notebook
     output_notebook = os.path.join(folder_new, filename)
     
@@ -129,7 +135,6 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
         if verbose >= 1:
             print("Saving ", output_notebook)
         nbformat.write(nb, fp)
-    
 
 # Testing
 #process_notebook("./notebooks/01", "03-Flow-control.ipynb")

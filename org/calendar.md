@@ -41,26 +41,27 @@ All assignments are due at 5pm unless otherwise noted.
 | | [](../notebooks/3/PyomoDAE_theory.ipynb) |
 | Thursday, September 26, 2024 | [](../notebooks/6/Math-Primer.ipynb) |
 | Tuesday, October 1, 2024 | [](../notebooks/6/Math-Primer-2.ipynb) |
-| Tuesday, September 21, 2024 | [](../notebooks/6/Optimality.ipynb) | <- Left off here with edits
-| Thursday, September 23, 2024 | [](../notebooks/6/Newton-Methods.ipynb) |
-| Tuesday, September 28, 2024 | [](../notebooks/6/Quasi-Newton-Methods.ipynb) |
-| Thursday, October 02, 2024 | [](../notebooks/6/Globalization.ipynb) |
-| Tuesday, October 07, 2024 | Catch-up, Exam Questions |
-| Thursday, October 09, 2024 | [](../notebooks/7/Convexity.ipynb) |
-| Tuesday, October 14, 2024 | Spring Break |
-| Thursday, October 16, 2024 | Spring Break |
-| Tuesday, October 21, 2024 | **Midsemester Exam** (in-class) |
-| Thursday, October 23, 2024 | [](../notebooks/7/Local-Optimality.ipynb) |
-| Tuesday, October 28, 2024 | [](../notebooks/7/KKT-Multipliers.ipynb) |
-| Thursday, October 30, 2024 | [](../notebooks/7/Constraint-Qualifications.ipynb) |
+| Thursday, October 3, 2024 | [](../notebooks/6/Optimality.ipynb) |
+| Tuesday, October 5, 2024 | **Project 1: Presentations** |
+| Thursday, October 10: Guest Lecture: Parameter Estimation and Design of Experiments |
+| Tuesday, October 15, 2024 | [](../notebooks/6/Newton-Methods.ipynb) |
+| Thursday, October 17, 2024 | [](../notebooks/6/Quasi-Newton-Methods.ipynb) |
+| Tuesday, October 22, 2024 | Fall Break |
+| Thursday, October 24, 2024 | Fall Break |
+| Tuesday, October 29, 2024 | **Exam 1** |
+| Thursday, October 31, 2024 | Exam 1 (alternate date -- will confirm soon) |
+| Tuesday, November 5, 2024 | [](../notebooks/6/Globalization.ipynb) |
+| Thursday, November 7, 2024 | [](../notebooks/7/Convexity.ipynb) |
+| Tuesday, November 12, 2024 | [](../notebooks/7/Local-Optimality.ipynb) |
+| Thursday, November 14, 2024 | [](../notebooks/7/KKT-Multipliers.ipynb) |
+| Tuesday, November 19, 2024 | [](../notebooks/7/Constraint-Qualifications.ipynb) |
 | | [](../notebooks/7/NLP-Diagnostics.ipynb) |
-| Tuesday, November 04, 2024 | [](../notebooks/7/Second-Order.ipynb) |
-| Thursday, November 06, 2024 | [](../notebooks/7/Interior-Point1.ipynb) |
-| Tuesday, November 11, 2024 | In-class semeser project peer review 1 |
-| Thursday, November 13, 2024 | [](../notebooks/7/Interior-Point2.ipynb) |
-| Tuesday, November 18, 2024 | Multi-Objective Optimization |
-| Thursday, November 20, 2024 | [](../notebooks/8/MILP.ipynb) |
+| Thursday, November 21, 2024 | [](../notebooks/7/Second-Order.ipynb) |
+| Tuesday, November 26, 2024 | [](../notebooks/7/Interior-Point1.ipynb) |
+| Thursday, November 28, 2024 | Thanksgiving Holiday |
+| Tuesday, December 3, 2024 | [](../notebooks/7/Interior-Point2.ipynb) |
+| Thursday, December 5, 2024 | [](../notebooks/8/MILP.ipynb) |
 | | [](../notebooks/8/MINLP-Algorithms.ipynb) |
-| Tuesday, November 25, 2024 | [](../notebooks/8/Global-Opt.ipynb) |
-| Thursday, November 27, 2024 | In-class semester project peer review 2 |
-| Tuesday, December 02, 2024 | Semester review, last minute project questions |
+| Tuesday, December 10, 2024 | [](../notebooks/8/Global-Opt.ipynb) |
+| Thursday, December 12, 2024 | **Exam 2** |
+| Thursday, December 19, 2024 | **Project 2: Presentations** |

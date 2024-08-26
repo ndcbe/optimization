@@ -1,5 +1,7 @@
 # Semester Project
 
+**Note** This is the class project description for Spring 2023 (last offering). For Fall 2024, we will be splitting the project into two parts and scaling back accordingly. Check back for an update soon.
+
 Although homework is helpful for learning concepts, the goal of the class is to prepare you to apply optimization methods in your research or future careers. A project is the best way to accomplish this.
 
 During the semester project, you will develop mastery of a handful of concepts introduced in this class through an application of your choice. The semester project is the main evaluation criteria for the semester (instead of a final exam).

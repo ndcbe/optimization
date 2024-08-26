@@ -1,24 +1,20 @@
-# Spring 2023 Calendar
+# Fall 2024 Calendar
 
 ## Assignments
 
 | Deadline   | Description |
 | ----------- | ----------- |
-| Friday, January 20, 2023 | [](../notebooks/assignments/Pyomo1.ipynb) |
-| Friday, January  27, 2023 | [](../notebooks/assignments/Pyomo2.ipynb) |
-| Friday, February 3, 2023 | postponed |
-| Friday, February 10, 2023 | [](../notebooks/assignments/Pyomo-Mini-Project.ipynb) |
-| Friday, February 17, 2023 | [](../notebooks/assignments/Pyomo3.ipynb) | 
-| | Semester Project: Proposal |
-| Friday, February 24, 2023 | [](../notebooks/assignments/Algorithms1.ipynb) |
-| Friday, March 3, 2023 | [](../notebooks/assignments/Algorithms2.ipynb) |
-| Friday, March 10, 2023 | [](../notebooks/assignments/Algorithms3.ipynb) |
-| Friday, April 7, 2023 | Semester Project: Status Update |
-| Tuesday, April 11, 2023 | Peer Review Due (noon ET) |
-| Monday, April 24, 2023 | Semester Project: Draft Notebook/Report Due |
-| Wednesday, April 26, 2023 | Semester Project: Peer Review Due |
-| Wednesday, May 3, 2023 | Semester Project: Notebook/Report Due |
-| Monday, May 8, 2023, 10:30 AM - 12:30 PM | Semester Project: Presentations (Final Exam Timeslot) |
+| Friday, September 6, 2024 | [](../notebooks/assignments/Pyomo1.ipynb) |
+| Friday, September  13, 2024 | [](../notebooks/assignments/Pyomo2.ipynb) |
+| Friday, September 26, 2024 | [](../notebooks/assignments/Pyomo3.ipynb) | 
+| Tuesday, October 8, 2024 | Project 1: Presentations and Reports | 
+| Friday, October 16, 2024 | [](../notebooks/assignments/Algorithms1.ipynb) |
+| Tuesday, October 29, 2024 | [](../notebooks/assignments/Algorithms2.ipynb) |
+| Tuesday, November 12, 2024 | Project 2: Proposals |
+| Tuesday, November 21, 2024 | [](../notebooks/assignments/Algorithms3.ipynb) |
+| Tuesday, December 10, 2024 | [](../notebooks/assignments/Algorithms4.ipynb) (optional) |
+| Thursday, December 12, 2024 | Project 2: Notebooks or Reports |
+| Thursday, December 19, 2024, 4:15 PM - 6:15 PM | Project 2: Presentations (Final Exam Timeslot) |
 
 All assignments are due at 5pm unless otherwise noted.
 

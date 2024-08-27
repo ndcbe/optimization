@@ -55,10 +55,10 @@ Final grades will be determined as follows:
 
 | Category    | Weight |
 | ------ | ----- |
-| Homework | 15% |
+| Homework | 10% |
 | Project 1 | 20% |
 | Exam 1 | 25% |
-| Project 2 | 20% |
+| Project 2 | 25% |
 | Exam 2 | 20% |
 
 Grade scale for 60499 (graduate):

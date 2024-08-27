@@ -2,29 +2,20 @@
 
 CBE 60499, ACMS 60499, CBE 40499, CBE 60499: Nonlinear and Stochastic Optimization
 
-University of Notre Dame, Spring 2023
+University of Notre Dame, Fall 2024
 
 ## Prerequisites 
 
-Graduate students (60499): A background in linear algebra and numerical methods will be helpful but is not necessary. Students should be comfortable programming in Julia, Python, MATLAB, C, or a similar language. EE 60551: Mathematical Programming is not a prerequisite for this course.
+Graduate students (60499): A background in linear algebra and numericalmethods is strongly recommended but not required. Students must be comfortable programming in Python (preferred), MATLAB, Julia, C, or a similar language. Topics in EE 60551 and ACMS 60880 are complementary to CBE/ACMS 60499. These courses are not prerequisites for CBE/ACMS 60499.
 
-Undergraduate students (40499): Students must be comfortable with linear algebra and programming in Julia, Python, MATLAB, C, or a similar language. CBE 20258 or a similar undergraduate class on numerical methods is strongly recommended as a prerequisite. Please contact the instructor for any questions about preparation.
-
-Everyone: You should satisfy at least TWO of the following advisory prerequisites:
-- Have at least one year of programming experience in Python (ideal), MATLAB, Julia, C, or a similar language.
-- Comfortable with matrix operations such as inverses, transposes, basic matrix algebra rules, basic matrix calculus, eigenvalues and eigenvectors, rank, definiteness
-- Completed a class in numerical methods or computational linear algebra. (For CBE undergraduates, enjoyed CBE 20258 Numerical and Statistical Analysis.)
-- Previously studied mathematical programming (optimization) theory
-- Comfortable using Pyomo modeling environment
-- High motivated to learn about optimization; plan to apply it to your research.
-
+Undergraduate students (40499): Students must be comfortable with linear algebra and programming in Python (preferred), MATLAB, Julia, C, or a similar language. A course on these topics, such as CBE 20258, AME 30251 (concurrent is okay), CE 30125 (concurrent is okay), PHYS 20451, or ACMS 20220, and the standard undergraduate curriculum in computer science or electrical engineering should satisfy this prerequisite. Please contact the instructor for any preparation questions.
 
 ## Instructor and Teaching Assistants
 
-| | Prof. Alexander (Alex) Dowling | Ms. Nicole Cortes | Mr. Xinhe Chen|
+| | Prof. Alexander (Alex) Dowling | Ashiat Bakare | Steven Yeo |
 | ----------- | ----------- | ----------- | ----------- |
-| | ![](https://dowlinglab.nd.edu/assets/320333/200x200/dowling_alex_sq.jpg) | ![](https://dowlinglab.nd.edu/assets/477743/200x200/img_5301_square_sized.jpg) | ![](https://dowlinglab.nd.edu/assets/477378/200x200/xinhe.jpg) |
-| Office Hours | 8-9am on Thursdays in 366 or 369 Nieuwland Hall | 9-10am on Wednesdays in 366 Nieuwland Hall | 9-10am on Wednesdays in 366 Nieuwland Hall  |
+| | ![](https://dowlinglab.nd.edu/assets/320333/200x200/dowling_alex_sq.jpg) |  |  |
+| Office Hours | TBD in 366 or 369 Nieuwland Hall | TBD in 366 Nieuwland Hall | TBD in 366 Nieuwland Hall  |
 
 ## Discussuion Board (Canvas) and Email Correspondance
 * Post your questions to the **discussion board in Canvas**
@@ -64,10 +55,11 @@ Final grades will be determined as follows:
 
 | Category    | Weight |
 | ------ | ----- |
-| Homework | 20% |
-| Mini-Project | 10% |
-| Midterm Exam| 30% |
-| Final Project | 40% |
+| Homework | 15% |
+| Project 1 | 20% |
+| Exam 1 | 25% |
+| Project 2 | 20% |
+| Exam 2 | 20% |
 
 Grade scale for 60499 (graduate):
 - A : demonstrated mastery of main concepts
@@ -84,7 +76,6 @@ Grading scale for 40499 (undergraduate):
 - B- or below: struggled with main concepts or missing assignments or both
 
 The median grade in 40499 will likely be an A- or B+.
-
 
 ## Homework
 
@@ -108,21 +99,19 @@ The following is a non-exhaustive list of collaborative scenarios that are PROHI
 * It is late at night, you are frustrated with syntax errors, and you just cannot get one of the homework problems to work. You find a screenshot on Canvas of code from a classmate and an associated discussion. Desperate to finish the assignment, you start adapting your code to follow the screenshot. To keep it simple, you copy line-by-line, do not change variable names, and copy some comments but skip others. You end up submitted code that looks almost identical to your classmate. You remember the instructor keeps emphasizing the comments should be in our own words to show that you understand the solution. You decide to go to bed and add those comments in the morning. You oversleep and submit code without any comments or acknowledgments of your classmates. This is prohibited by the collaboration policy because you submitted work that is not your own. You did not acknowledge sources, and you can not explain with confidence the solution procedure to the instructor or TA.
 * You have no prior programming experience and feel like you are falling behind. You feel like the homework takes you three times as long as your classmates. You conclude the only way you can keep up is to do the homework with a partner. They do half the assignment and you do the other half. You then exchange solutions. The person who completed each problem then explains the solution to the partner. Each person changes the comments, adds some extra white spaces, and changes a few variable names to ensure the solutions are not identical. This is prohibited by the collaboration policy because each person did not make an honest effort to solve every problem on their own. Although each person either explained or had the solutions explained to them, they likely cannot defend all of their solutions on their own to the TA or instructor. 
 
-## Midterm Exam
+## Exams
 
-The midterm exam will take place during class as indicated on the [semester calendar](./calendar.md). The exam will be closed book with no access to a computer. Students will be permitted to bring 2 sheets of letter size paper filled with handwritten notes.
+The two exam will take place during class as indicated on the [semester calendar](./calendar.md). The exam will be closed book with no access to a computer. Students will be permitted to bring 2 sheets (exam 1) and 4 sheets (exam 2) of letter size paper filled with handwritten notes.
 
 ## Projects
 
-In the [Pyomo Mini-Project](../notebooks/assignments/Pyomo-Mini-Project.ipynb) you will hone your Pyomo skills and practice using optimization as an analysis tool.
-
-In the [Semester Project](../org/semester_project.md) you will independently explore a topic related to optimization. This serves, instead of a final exam, as a the major assessment vehicle for the semester.
+[Semester Projects](../org/semester_project.md) will be updated soon with more information.
 
 ## Grading Standards
 
 All computer code must be commented. No exceptions.
 
-All graphs must have labeled axes with UNITS. Likewise, all final answers need UNITS and should be rounded to the appropriate number of significant digits.
+All graphs must have labeled axes with UNITS. Likewise, all final answers need UNITS and should be rounded to the appropriate number of significant digits. For the projects, please prepare [publication quality graphics](https://ndcbe.github.io/data-and-computing/notebooks/01/Publication-Quality-Figures.html)
 
 Be sure to answer the questions that are asked. When discussing results, only report the appropriate number of significant figures.
 

@@ -105,7 +105,7 @@ The two exam will take place during class as indicated on the [semester calendar
 
 ## Projects
 
-[Semester Projects](../org/semester_project.md) will be updated soon with more information.
+[](../org/project1.md)
 
 ## Grading Standards
 

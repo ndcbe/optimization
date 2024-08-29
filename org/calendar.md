@@ -6,12 +6,12 @@
 | ----------- | ----------- |
 | Friday, September 6, 2024 | [](../notebooks/assignments/Pyomo1.ipynb) |
 | Friday, September  13, 2024 | [](../notebooks/assignments/Pyomo2.ipynb) |
-| Friday, September 26, 2024 | [](../notebooks/assignments/Pyomo3.ipynb) | 
+| Friday, September 27, 2024 | [](../notebooks/assignments/Pyomo3.ipynb) | 
 | Tuesday, October 8, 2024 | Project 1: Presentations and Reports | 
-| Friday, October 16, 2024 | [](../notebooks/assignments/Algorithms1.ipynb) |
-| Tuesday, October 29, 2024 | [](../notebooks/assignments/Algorithms2.ipynb) |
+| Friday, October 18, 2024 | [](../notebooks/assignments/Algorithms1.ipynb) |
+| Friday, November 1, 2024 | [](../notebooks/assignments/Algorithms2.ipynb) |
 | Tuesday, November 12, 2024 | Project 2: Proposals |
-| Tuesday, November 21, 2024 | [](../notebooks/assignments/Algorithms3.ipynb) |
+| Tuesday, November 26, 2024 | [](../notebooks/assignments/Algorithms3.ipynb) |
 | Tuesday, December 10, 2024 | [](../notebooks/assignments/Algorithms4.ipynb) (optional) |
 | Thursday, December 12, 2024 | Project 2: Notebooks or Reports |
 | Thursday, December 19, 2024, 4:15 PM - 6:15 PM | Project 2: Presentations (Final Exam Timeslot) |
@@ -42,7 +42,7 @@ All assignments are due at 5pm unless otherwise noted.
 | Thursday, September 26, 2024 | [](../notebooks/6/Math-Primer.ipynb) |
 | Tuesday, October 1, 2024 | [](../notebooks/6/Math-Primer-2.ipynb) |
 | Thursday, October 3, 2024 | [](../notebooks/6/Optimality.ipynb) |
-| Tuesday, October 5, 2024 | **Project 1: Presentations** |
+| Tuesday, October 8, 2024 | **Project 1: Presentations** |
 | Thursday, October 10: Guest Lecture: Parameter Estimation and Design of Experiments |
 | Tuesday, October 15, 2024 | [](../notebooks/6/Newton-Methods.ipynb) |
 | Thursday, October 17, 2024 | [](../notebooks/6/Quasi-Newton-Methods.ipynb) |

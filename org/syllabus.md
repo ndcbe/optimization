@@ -14,12 +14,18 @@ Undergraduate students (40499): Students must be comfortable with linear algebra
 
 | | Prof. Alexander (Alex) Dowling | Ashiat Bakare | Steven Yeo |
 | ----------- | ----------- | ----------- | ----------- |
-| | ![](https://dowlinglab.nd.edu/assets/320333/200x200/dowling_alex_sq.jpg) |  |  |
-| Office Hours | TBD in 366 or 369 Nieuwland Hall | TBD in 366 Nieuwland Hall | TBD in 366 Nieuwland Hall  |
+| | ![](../media/dowling_alex.jpg) | ![](../media/ashiat_bakare.jpg) | ![](../media/steven_yeo.jpg)  |
+| Office Hours | By appointment in 369 Nieuwland Science Hall | Wednesdays, 4 - 5 pm in 366 Nieuwland Science Hall | Thursdays, 4 - 5 pm in 366 Nieuwland Science Hall  |
+
+Prof. Dowling will also try to stop by the TA office hours. To schedule a meeting with Prof. Dowling:
+* Check his availability on [Google calendar](https://calendar.google.com/calendar/u/0?cid=YWRvd2xpbmdAbmQuZWR1)
+* Send him an email with ~3 proposed times (that work for both you and his Google calendar)
+* Include 40499 or 60499 in the subject of your email
+* Once Prof. Dowling agrees to the time, please send him a Google calendar invite
 
 ## Discussuion Board (Canvas) and Email Correspondance
 * Post your questions to the **discussion board in Canvas**
-* Instructor only: adowling@nd.edu, **'60499' or '40499' in the subject**, private official matters (e.g., excused absence, testing accommodations)
+* Instructor only: adowling@nd.edu, **'60499' or '40499' in the subject**, private official matters (e.g., excused absence, testing accommodations, schedule a meeting per guidelines above)
 
 We encourage you to post all your questions including your mathematical models, pseudocode, and code screenshots to the public **discussion board in Canvas**. We are doing this for a few reasons:
 1. As professionals, you'll need to be comfortable asking questions in front of a team. We would like to cultivate a positive and friendly learning environment where everyone can practice this skill during the semester.
@@ -42,6 +48,8 @@ Additional References:
 ## Classroom Meetings
 
 Classroom meetings are a mix of i) traditional chalk board instruction, ii) computer demonstrations, and iii) in-class activities. Please bring an internet connected laptop computer. You are encouraged to review the [relevant notebooks](./calendar.md) and chapters in reference textbooks before and after each class meeting.
+
+You are expected to attend and actively participate in all class sessions.  If you miss class for an official University excused function (e.g., illness, conference travel), please find notes for that lecture, do the reading, and avail yourself of office hours to catch up on the missed material.
 
 ## Focus and Final Grades
 
@@ -76,6 +84,10 @@ Grading scale for 40499 (undergraduate):
 - B- or below: struggled with main concepts or missing assignments or both
 
 The median grade in 40499 will likely be an A- or B+.
+
+Senior graduate students may audit this course with the permission of the instructor. The expectations for auditing are:
+1. Attend and participate in at least 75% of the class sessions. 
+2. Attempt each homework assignment (2 hours). 
 
 ## Homework
 
@@ -151,7 +163,7 @@ If there is an extenuating circumstance, please **email the instructor with 6049
 We will use Python 3 in this class. You have three options to use Python:
 1. (Recommended for Most People.) Use Google Colab. This allows you to complete all assignments from any internet accessible computer.
 2. (Recommended for Advanced Users.) Install [anaconda3](https://www.anaconda.com/download/) on your own computer. This is a free distribution of Python that includes common packages for data analysis and scientific computing. You will need to install popular packages such as `numpy`, `scipy`, `pandas`, `matplotlib`, and `pyomo`.
-3. Use anaconda3 installed on any ESC maintained computer, e.g., B19 in Fitzpatrick Hall.
+3. Use anaconda3 installed on any ESC-maintained computer.
 
 ## Inclusiveness, Mental Health, and Disabilities
 

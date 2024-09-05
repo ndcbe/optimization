@@ -28,10 +28,14 @@ All assignments are due at 5pm unless otherwise noted.
 | Thursday, August 29, 2024 | [](../notebooks/1/Pyomo-Nuts-and-Bolts.ipynb) |
 | | [](../notebooks/1/IP.ipynb) |
 | | [](../notebooks/assignments/Pyomo1.ipynb) |
-| Tuesday, September 3, 2024 |  |
-| | [](../notebooks/2/Logical_Modeling_GDP.ipynb) |
+| Tuesday, September 3, 2024 | [](../notebooks/2/Logical_Modeling_GDP.ipynb) |
 | | [](../notebooks/2/Modeling_Disjunctions_Strip_Packing.ipynb) |
-| Thursday, September 5, 2024 | [](../notebooks/3/PyomoDAE_example.ipynb) | 
+| Thursday, September 5, 2024 | [](../notebooks/3/PyomoDAE_car.ipynb) |
+| | [](../notebooks/3/PyomoDAE_TCLab.ipynb) |
+| | [Transient Heat Conduction in Various Geometries](https://jckantor.github.io/ND-Pyomo-Cookbook/notebooks/05.03-Heat_Conduction_in_Various_Geometries.html) |
+| | [Path Planning for a Simple Car](https://jckantor.github.io/ND-Pyomo-Cookbook/notebooks/06.03-Path-Planning-for-a-Simple-Car.html) |
+| | [Soft Landing Apollo 11 on the Moon](https://jckantor.github.io/ND-Pyomo-Cookbook/notebooks/06.04-Soft-Landing-Apollo-11-on-the-Moon.html) |
+| | [Diffusion with Adsorption in Polymers](https://jckantor.github.io/ND-Pyomo-Cookbook/notebooks/05.04-Diffusion_Adsorption_in_Polymers.html) |
 | Tuesday, September 10, 2024 | [](../notebooks/4/SP.ipynb) |
 | Thursday, September 12, 2024 | Blocks in Pyomo |
 | Tuesday, September 17, 2024 | Work on Project 1 |
@@ -39,6 +43,7 @@ All assignments are due at 5pm unless otherwise noted.
 | Tuesday, September 24, 2024 | [](../notebooks/3/DAE_background.ipynb) |
 | | [](../notebooks/3/DAE_numeric_integration.ipynb) |
 | | [](../notebooks/3/PyomoDAE_theory.ipynb) |
+| | [](../notebooks/3/PyomoDAE_example.ipynb) |
 | Thursday, September 26, 2024 | [](../notebooks/6/Math-Primer.ipynb) |
 | Tuesday, October 1, 2024 | [](../notebooks/6/Math-Primer-2.ipynb) |
 | Thursday, October 3, 2024 | [](../notebooks/6/Optimality.ipynb) |

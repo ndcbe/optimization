@@ -37,6 +37,7 @@ All assignments are due at 5pm unless otherwise noted.
 | | [Soft Landing Apollo 11 on the Moon](https://jckantor.github.io/ND-Pyomo-Cookbook/notebooks/06.04-Soft-Landing-Apollo-11-on-the-Moon.html) |
 | | [Diffusion with Adsorption in Polymers](https://jckantor.github.io/ND-Pyomo-Cookbook/notebooks/05.04-Diffusion_Adsorption_in_Polymers.html) |
 | Tuesday, September 10, 2024 | [](../notebooks/4/SP.ipynb) |
+| | [](../notebooks/4/RiskMeasures.ipynb) |
 | Thursday, September 12, 2024 | Blocks in Pyomo |
 | Tuesday, September 17, 2024 | Work on Project 1 |
 | Thursday, September 19, 2024 | Work on Project 1 |

@@ -38,7 +38,7 @@ All assignments are due at 5pm unless otherwise noted.
 | | [Diffusion with Adsorption in Polymers](https://jckantor.github.io/ND-Pyomo-Cookbook/notebooks/05.04-Diffusion_Adsorption_in_Polymers.html) |
 | Tuesday, September 10, 2024 | [](../notebooks/4/SP.ipynb) |
 | | [](../notebooks/4/RiskMeasures.ipynb) |
-| Thursday, September 12, 2024 | Blocks in Pyomo |
+| Thursday, September 12, 2024 | [](../notebooks/4/blocks.ipynb) |
 | Tuesday, September 17, 2024 | Work on Project 1 |
 | Thursday, September 19, 2024 | Work on Project 1 |
 | Tuesday, September 24, 2024 | [](../notebooks/3/DAE_background.ipynb) |

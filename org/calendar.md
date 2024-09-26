@@ -45,7 +45,7 @@ All assignments are due at 5pm unless otherwise noted.
 | | [](../notebooks/3/DAE_numeric_integration.ipynb) |
 | | [](../notebooks/3/PyomoDAE_theory.ipynb) |
 | | [](../notebooks/3/PyomoDAE_example.ipynb) |
-| Thursday, September 26, 2024 | [](../notebooks/6/Math-Primer.ipynb) |
+| Thursday, September 26, 2024 | [](../notebooks/6/Math-Primer-1.md) |
 | Tuesday, October 1, 2024 | [](../notebooks/6/Math-Primer-2.ipynb) |
 | Thursday, October 3, 2024 | [](../notebooks/6/Optimality.ipynb) |
 | Tuesday, October 8, 2024 | **Project 1: Presentations** |

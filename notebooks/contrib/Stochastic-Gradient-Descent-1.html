@@ -271,6 +271,7 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 
+<li class="toctree-l2"><a class="reference internal" href="student_diet.html">Optimizing Your Daily Diet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blending.html">Blending Under Uncertainty</a></li>
 
 
@@ -578,24 +579,24 @@ $<span class="math notranslate nohighlight">\(l(\theta) = \sum_{i=1}^{k} (y_i - 
 <p><strong>1-2-1. Formulation:</strong></p>
 <p>Typically, the problem is formulated as an optimization problem:
 $$</p>
-<div class="amsmath math notranslate nohighlight" id="equation-dd88fec5-5b8d-4486-9294-1b6c9eb6b7f4">
-<span class="eqno">(4)<a class="headerlink" href="#equation-dd88fec5-5b8d-4486-9294-1b6c9eb6b7f4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-80fd4c65-cd8e-4001-a706-097c1add28d3">
+<span class="eqno">(4)<a class="headerlink" href="#equation-80fd4c65-cd8e-4001-a706-097c1add28d3" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \theta_t^* = \arg \underset{\theta}{\min} \frac 1 t \sum_{i=1}^{t} \left(L(f_{\theta}(x_i), y_i) + R(\theta)\right)
 \end{equation}\]</div>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}
 where $t$ is the number of data points, $\theta_t^*$ is the parameter that minimize the empirical cost, $(x_i, y_i)$ are the $i^{th}$ training example, $L(s, y)$ is a loss function which gives small value if $s$ is a good prediction for $y$, and $R(\theta)$ is a regularization function for $\theta$  which typically gives small value for small $\theta$. \\For stochastic gradient descent (SGD) method, let $d=(x, y)$ be one data sample, $l(\theta, d) = L(f_{\theta}(x), y) + R(\theta)$ be the cost of $\theta$ for $d$, $g(\theta, \xi) = \frac{\partial l(\theta, d)}{\partial \theta}$ be the gradient function, and $D_t = (d_1, \cdots, d_t)$ be all the training samples at $t^{th}$ step. The SGD method updates $\theta$ according to its  stochastic gradient:
 \end{aligned}\end{align} \]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-e44a0eea-0d44-49a7-80b3-3822de6cc1d4">
-<span class="eqno">(5)<a class="headerlink" href="#equation-e44a0eea-0d44-49a7-80b3-3822de6cc1d4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-47d5b9d8-02bc-4786-b599-ffb688399aa2">
+<span class="eqno">(5)<a class="headerlink" href="#equation-47d5b9d8-02bc-4786-b599-ffb688399aa2" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \theta_t = \theta_{t-1} - \gamma_t g(\theta_{t-1}, d_t)
 \end{equation}\]</div>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned} **bold text**
 where $\gamma_t$ is learning rate at the $t^{th}$ step.\\The formulation of gradient descent is very similar to the above equation but focusing on total data samples in each iteration:
 \end{aligned}\end{align} \]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-8b4ad518-5856-4f4a-98d2-afc770598c19">
-<span class="eqno">(6)<a class="headerlink" href="#equation-8b4ad518-5856-4f4a-98d2-afc770598c19" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-51a97229-5efe-486a-9640-b8bf8050ad73">
+<span class="eqno">(6)<a class="headerlink" href="#equation-51a97229-5efe-486a-9640-b8bf8050ad73" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \theta_t = \theta_{t-1} - \gamma_t G(\theta_{t-1})
 \end{equation}\]</div>
 <p>$$</p>
@@ -616,24 +617,24 @@ where $\gamma_t$ is learning rate at the $t^{th}$ step.\\The formulation of grad
 <p>4.1. Choose the k data and call it d</p>
 <p>4-2. Use the parameters to compute the loss function
 $$</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d4872992-dc42-4c24-a532-9eb14bb8c07c">
-<span class="eqno">(7)<a class="headerlink" href="#equation-d4872992-dc42-4c24-a532-9eb14bb8c07c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-3016288b-66cd-41ee-b5f7-a63e589d847e">
+<span class="eqno">(7)<a class="headerlink" href="#equation-3016288b-66cd-41ee-b5f7-a63e589d847e" title="Permalink to this equation">#</a></span>\[\begin{equation}
     l(\boldsymbol\theta_{t-1}, d) = \sum_{i=1}^{k} (y_i - f(x_i, \boldsymbol\theta_{t-1}))^2 
 \end{equation}\]</div>
 <div class="math notranslate nohighlight">
 \[
    4-3. Compute the gradient of loss function above with respect to the latest model parameters
 \]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-f98f572f-07bd-47cb-a2de-127417f1f1ea">
-<span class="eqno">(8)<a class="headerlink" href="#equation-f98f572f-07bd-47cb-a2de-127417f1f1ea" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-98be4104-3b24-4635-963b-f30f70d21b71">
+<span class="eqno">(8)<a class="headerlink" href="#equation-98be4104-3b24-4635-963b-f30f70d21b71" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \frac{\partial l(\boldsymbol\theta_{t-1}, d)}{\partial \theta}
 \end{equation}\]</div>
 <div class="math notranslate nohighlight">
 \[
     4-4. Update the parameters
 \]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-57481375-d31f-433c-ab44-a5b23ce00176">
-<span class="eqno">(9)<a class="headerlink" href="#equation-57481375-d31f-433c-ab44-a5b23ce00176" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-c99ab701-0f74-40f9-8a4c-78f4a899ce48">
+<span class="eqno">(9)<a class="headerlink" href="#equation-c99ab701-0f74-40f9-8a4c-78f4a899ce48" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \boldsymbol\theta_t = \boldsymbol\theta_{t-1} - \gamma_t (\frac{\partial l(\boldsymbol\theta_{t-1}, d)}{\partial \theta})
 \end{equation}\]</div>
 <p>$<span class="math notranslate nohighlight">\(

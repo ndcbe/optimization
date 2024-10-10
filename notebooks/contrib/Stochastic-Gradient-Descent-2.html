@@ -271,6 +271,7 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 
+<li class="toctree-l2"><a class="reference internal" href="student_diet.html">Optimizing Your Daily Diet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blending.html">Blending Under Uncertainty</a></li>
 
 
@@ -576,24 +577,24 @@ document.write(`
 <h3>Formulation (Wei Wu, 2011)<a class="headerlink" href="#formulation-wei-wu-2011" title="Permalink to this heading">#</a></h3>
 <p>Consider the problem of fitting a data set, given by <span class="math notranslate nohighlight">\((x_i, y_i), i=1,2,..,t\)</span>, to a given function <span class="math notranslate nohighlight">\(y = f_\theta(x)\)</span> which has <span class="math notranslate nohighlight">\(\theta\)</span> as parameters. Typically, this problem is formulated as an optimization problem:
 $$</p>
-<div class="amsmath math notranslate nohighlight" id="equation-99286bff-de55-4b42-ba47-e3dca6d6570a">
-<span class="eqno">(10)<a class="headerlink" href="#equation-99286bff-de55-4b42-ba47-e3dca6d6570a" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-6a0d36cd-c875-4f12-8945-f738464ac913">
+<span class="eqno">(10)<a class="headerlink" href="#equation-6a0d36cd-c875-4f12-8945-f738464ac913" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \theta_t^* = \arg \underset{\theta}{\min} \frac 1 t \sum_{i=1}^{t} \left(L(f_{\theta}(x_i), y_i) + R(\theta)\right)
 \end{equation}\]</div>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}
 where $t$ is the number of data points, $\theta_t^*$ is the parameter that minimize the empirical cost, $(x_i, y_i)$ are the $i^{th}$ training example, $L(s, y)$ is a loss function which gives small value if $s$ is a good prediction for $y$, and $R(\theta)$ is a regularization function for $\theta$  which typically gives small value for small $\theta$. \\For stochastic gradient descent (SGD) method, let $d=(x, y)$ be one data sample, $l(\theta, d) = L(f_{\theta}(x), y) + R(\theta)$ be the cost of $\theta$ for $d$, $g(\theta, d) = \frac{\partial l(\theta, d)}{\partial \theta}$ be the gradient function, and $D_t = (d_1, \cdots, d_t)$ be all the training samples at $t^{th}$ step. The SGD method updates $\theta$ according to its  stochastic gradient:
 \end{aligned}\end{align} \]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-3b4c9c6e-e797-4bd2-add6-8e9585945e77">
-<span class="eqno">(11)<a class="headerlink" href="#equation-3b4c9c6e-e797-4bd2-add6-8e9585945e77" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-97e823c0-067d-482a-977a-9424022b03fd">
+<span class="eqno">(11)<a class="headerlink" href="#equation-97e823c0-067d-482a-977a-9424022b03fd" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \theta_t = \theta_{t-1} - \alpha_t g(\theta_{t-1}, d_t)
 \end{equation}\]</div>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}
 where $\alpha_t$ is learning rate at the $t^{th}$ step.\\The formulation of gradient descent (GD) is very similar to the above equation but focusing on total data samples in each iteration:
 \end{aligned}\end{align} \]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-fe1c2684-7839-4caf-a90a-5436176bf6a4">
-<span class="eqno">(12)<a class="headerlink" href="#equation-fe1c2684-7839-4caf-a90a-5436176bf6a4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-f78424db-d313-4213-aa5a-0d10875beaad">
+<span class="eqno">(12)<a class="headerlink" href="#equation-f78424db-d313-4213-aa5a-0d10875beaad" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \theta_t = \theta_{t-1} - \alpha_t G(\theta_{t-1})
 \end{equation}\]</div>
 <p>$$
@@ -11412,8 +11413,8 @@ Batch Size: 1000, Learning rate: 2.00e-04
 </div>
 <p>The goal is to come up with a model that classifies the given height data into male and female classes. Firstly, the function that defines the model is assumed and the above generated data is used to tune the parameters of the function such that it best fits the data.<br />
 The function assumed to model the data is a logistic function defined as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-28244ce0-64f4-4f01-b529-f5916dd98498">
-<span class="eqno">(13)<a class="headerlink" href="#equation-28244ce0-64f4-4f01-b529-f5916dd98498" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-12ceaa9e-350c-4f73-8f3f-3f3ca63853de">
+<span class="eqno">(13)<a class="headerlink" href="#equation-12ceaa9e-350c-4f73-8f3f-3f3ca63853de" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;y = \textrm{sig}(z), \quad \textrm{where,} \\
 &amp;z = \theta_0 x + \theta_1, \\
 &amp;\textrm{sig}(z) = \frac{1}{1+e^{-z}}.
@@ -11496,25 +11497,25 @@ The following code snippets define and plot the logistic function</p>
 <li><p>The least square metric does not make sense since the output of the logistic function is the probability of a given data point belonging to the female class. Instead it makes more sense to maximize the likelihood of the model correctly classifying the data.</p></li>
 </ol>
 <p>Therefore, the loss function for this problem is defined in terms of the likelihood of the model, defined by the logistic function, predicting the class of a given data point correctly. Let <span class="math notranslate nohighlight">\(p_k\)</span> be the probability of the <span class="math notranslate nohighlight">\(k\)</span>th data point, namely <span class="math notranslate nohighlight">\(x_k\)</span>, belonging to the female class. Since only two classes are involved, the probability of <span class="math notranslate nohighlight">\(x_k\)</span> belonging to the male class is <span class="math notranslate nohighlight">\(1-p_k\)</span>. Further, let <span class="math notranslate nohighlight">\(y_k\)</span> denote the value of the label given to each data set, i.e., either <span class="math notranslate nohighlight">\(0\)</span> or <span class="math notranslate nohighlight">\(1\)</span>. The likelihood of the model predicting the <span class="math notranslate nohighlight">\(k\)</span>th data point correctly is given by:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c2602af0-021d-4fca-92b9-b05f4bf48e79">
-<span class="eqno">(14)<a class="headerlink" href="#equation-c2602af0-021d-4fca-92b9-b05f4bf48e79" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-9ced0c3f-8296-4564-863d-6fef26f6519d">
+<span class="eqno">(14)<a class="headerlink" href="#equation-9ced0c3f-8296-4564-863d-6fef26f6519d" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;l_k = p_k^{y_k}(1-p_k)^{1-y_k}, \quad \textrm{where,}\\
 &amp;p_k = \textrm{sig}(\theta_0 x + \theta_1).
 \end{align}\]</div>
 <p>If the given data point, <span class="math notranslate nohighlight">\(x_k\)</span>, belongs to the female class, i.e., <span class="math notranslate nohighlight">\(y_k = 1\)</span> and the model prediction is correct, i.e., <span class="math notranslate nohighlight">\(p_k \rightarrow 1\)</span>, then <span class="math notranslate nohighlight">\(l_k = 1\)</span>. Similarly, if <span class="math notranslate nohighlight">\(x_k\)</span> belongs to the male class and the model prediction is correct, i.e., <span class="math notranslate nohighlight">\(p_k \rightarrow 0\)</span>, then <span class="math notranslate nohighlight">\(l_k = 1\)</span>. Thus, <span class="math notranslate nohighlight">\(l_k = 1\)</span> if the model predicts prefectly correctly, <span class="math notranslate nohighlight">\(l_k = 0\)</span> if the model prediction is perfectly incorrect and anything in between otherwise.<br />
 The likelihood of the model classifying all the data points <span class="math notranslate nohighlight">\(x_k, k=1,2,..,n,\)</span> correctly is:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6d90bfc2-dafc-47ba-a3d6-3387c9ce8b6d">
-<span class="eqno">(15)<a class="headerlink" href="#equation-6d90bfc2-dafc-47ba-a3d6-3387c9ce8b6d" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-8ad58924-d9ea-4ecf-83bb-3e3daa5fd642">
+<span class="eqno">(15)<a class="headerlink" href="#equation-8ad58924-d9ea-4ecf-83bb-3e3daa5fd642" title="Permalink to this equation">#</a></span>\[\begin{align}
 l = \prod_{k=1}^{n} l_k = \prod_{k=1}^{n} p_k^{y_k}(1-p_k)^{1-y_k}.
 \end{align}\]</div>
 <p>For the model to best fit the given data, the goal is to maximize the likelihood of the model classifying the data correctly as given by the above equation. To solve this optimization problem using SGD, <span class="math notranslate nohighlight">\(l\)</span> needs to be cast as the sum of functions instead of product of functions as in the above equation. For this, logarithmic function of <span class="math notranslate nohighlight">\(l\)</span> is considered:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e8747dc6-c8ff-4ea0-962b-a5f0a2474382">
-<span class="eqno">(16)<a class="headerlink" href="#equation-e8747dc6-c8ff-4ea0-962b-a5f0a2474382" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-45701bee-f8d1-4d2c-9759-0bcf80dd1939">
+<span class="eqno">(16)<a class="headerlink" href="#equation-45701bee-f8d1-4d2c-9759-0bcf80dd1939" title="Permalink to this equation">#</a></span>\[\begin{align}
 l_l = \log (l) = \sum_{k=1}^{n} (y_k \log(p_k) + (1-y_k) \log(1-p_k)).
 \end{align}\]</div>
 <p>From the above equation, maximizing <span class="math notranslate nohighlight">\(l_l\)</span> leads to maximization of <span class="math notranslate nohighlight">\(l\)</span> (since the log function is monotonic with <span class="math notranslate nohighlight">\(\log(0) = -\infty\)</span> and <span class="math notranslate nohighlight">\(\log(1) = 0\)</span>). To pose the problem as a minimization problem, the negative of <span class="math notranslate nohighlight">\(l_l\)</span> is considered as the objective function:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-91e52923-012a-4a75-b7aa-3e8bff467a17">
-<span class="eqno">(17)<a class="headerlink" href="#equation-91e52923-012a-4a75-b7aa-3e8bff467a17" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-e4279d31-efc0-46e1-b5e7-b97a3e162152">
+<span class="eqno">(17)<a class="headerlink" href="#equation-e4279d31-efc0-46e1-b5e7-b97a3e162152" title="Permalink to this equation">#</a></span>\[\begin{align}
 l_s = -l_l = \sum_{k=1}^{n} (-y_k \log(p_k) - (1-y_k) \log(1-p_k)).
 \end{align}\]</div>
 <p>The above objective function is commonly known as the logistic loss function or maximum likelihood function and is minimised using SGD. The following code snippets define and minimize the logistic loss function.</p>

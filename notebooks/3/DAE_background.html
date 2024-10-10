@@ -271,6 +271,7 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 
+<li class="toctree-l2"><a class="reference internal" href="../contrib/student_diet.html">Optimizing Your Daily Diet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../contrib/blending.html">Blending Under Uncertainty</a></li>
 
 
@@ -602,22 +603,22 @@ document.write(`
 <p>Dynamic systems can be found in a wide range of engineering fields and subfields. This section is meant to be an introduction to solve differentiable-algebraic equations (DAEs) with resepct to optimizing dynamic systems. To allow for uniform understanding, the examples and explanations in this notebook will focus on basic physics examples (i.e. the pendulum example) and explanations.</p>
 <p>DAEs are tpyically specified as initial value problems with initial coniditions at zero. These equations are experessed with resepct to an independent variable, <span class="math notranslate nohighlight">\(t\)</span>, and are typically autnomous, or <span class="math notranslate nohighlight">\(t\)</span> does not explicilty appear in the equation.</p>
 <p>DAEs are tpyically of the form:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-47741097-f4de-4d00-83f4-cbb1137d5d3a">
-<span class="eqno">(3.1)<a class="headerlink" href="#equation-47741097-f4de-4d00-83f4-cbb1137d5d3a" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-2fae85e5-8240-4de2-a275-3995c2d64b28">
+<span class="eqno">(3.1)<a class="headerlink" href="#equation-2fae85e5-8240-4de2-a275-3995c2d64b28" title="Permalink to this equation">#</a></span>\[\begin{align}
 F\left(x, \frac{d x}{d t}, u(t), p, t\right)=0, \quad h(x(0))=0
 \end{align}\]</div>
 <p><span class="math notranslate nohighlight">\(x(t)\)</span>: state variables, functions of time</p>
 <p><span class="math notranslate nohighlight">\(u(t)\)</span>: control variables, functions of time</p>
 <p><span class="math notranslate nohighlight">\(p\)</span>: variables, independent of <span class="math notranslate nohighlight">\(t\)</span></p>
 <p>With respect to optimizing DAEs, the equations are structured to the simpler form:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-1a2a4314-e2c4-44ae-b6b2-854a009c750e">
-<span class="eqno">(3.2)<a class="headerlink" href="#equation-1a2a4314-e2c4-44ae-b6b2-854a009c750e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-c70964f9-7ae8-4cae-be8d-76d0ed55cc6a">
+<span class="eqno">(3.2)<a class="headerlink" href="#equation-c70964f9-7ae8-4cae-be8d-76d0ed55cc6a" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \frac{d z}{d t}= f(z(t), y(t), u(t), p), \quad z(0)=z_0, \quad
 g(z(t), y(t), u(t), p)=0
 \end{equation}\]</div>
 <p>where the state variables <span class="math notranslate nohighlight">\(x(t)\)</span> is partioned into differenetiable varibales, <span class="math notranslate nohighlight">\(z(t)\)</span>, and algebraic variables <span class="math notranslate nohighlight">\(y(t)\)</span>. It is assumed that <span class="math notranslate nohighlight">\(y(t)\)</span> can be solved independetly from <span class="math notranslate nohighlight">\(z(t)\)</span>, <span class="math notranslate nohighlight">\(u(t)\)</span>, and <span class="math notranslate nohighlight">\(p\)</span>, which allows for the DAE to be treated as an ODE of the form:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-0dc5820b-3fef-41e5-97b6-2fbbae56af55">
-<span class="eqno">(3.3)<a class="headerlink" href="#equation-0dc5820b-3fef-41e5-97b6-2fbbae56af55" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-c04b4696-a0c4-4540-b11d-54d737e609d3">
+<span class="eqno">(3.3)<a class="headerlink" href="#equation-c04b4696-a0c4-4540-b11d-54d737e609d3" title="Permalink to this equation">#</a></span>\[\begin{align}
 \frac{d z}{d t}=f(z(t), y[z(t),u(t),p], u(t), p)= \bar f(z(t), u(t), p), \quad z(0)=0
 \end{align}\]</div>
 <p>The section, Handling Path Constraints, will explain DAE indexing and how to reduce the index of a DAE to allow it to be treated as an ODE.</p>
@@ -637,15 +638,15 @@ g(z(t), y(t), u(t), p)=0
 <section id="daes-as-boundary-value-problems">
 <h2><span class="section-number">3.3.4. </span>DAEs as Boundary Value Problems<a class="headerlink" href="#daes-as-boundary-value-problems" title="Permalink to this heading">#</a></h2>
 <p>Because DAEs are typically initial value problems, they can also be boundary value problems (BVP), where the initial condition is replaced by bondary conditions. With respect to solving DAE optimization problems, BVP DAEs are of the form:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-676e0be6-6ef4-4db3-b145-9602561b104a">
-<span class="eqno">(3.4)<a class="headerlink" href="#equation-676e0be6-6ef4-4db3-b145-9602561b104a" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-695ee62a-53a5-471d-8f4b-00415af65687">
+<span class="eqno">(3.4)<a class="headerlink" href="#equation-695ee62a-53a5-471d-8f4b-00415af65687" title="Permalink to this equation">#</a></span>\[\begin{align}
 \frac{d z}{d t}=\hat f(z(t)), \quad h(z(0),z[t_f;z(0)])=0
 \end{align}\]</div>
 <p>In this form the solutions may be nonunique or not exist over a speficied reason; therefore, a key property is finding a locally unique solution, expressed by the theorem:</p>
 <blockquote>
 <div><p><strong>Theorem 8.2</strong>: Consider the BVP DAE with solution <span class="math notranslate nohighlight">\( \hat z(t)\)</span>. Also let <span class="math notranslate nohighlight">\(\bar f(z(t))\)</span> be Lipschitz continuous for all z(t) <span class="math notranslate nohighlight">\(|| z(t) - \hat z(t) || \leq \epsilon\)</span> for some <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> and <span class="math notranslate nohighlight">\(t \in [0, t_f]\)</span>. Then  the solution <span class="math notranslate nohighlight">\(\hat z(t)\)</span> is locally unique if and only if the matrix:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-046eca39-4e07-4972-8a34-3c304a443172">
-<span class="eqno">(3.5)<a class="headerlink" href="#equation-046eca39-4e07-4972-8a34-3c304a443172" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-3fb3790d-0f08-48d1-b27d-f195029cb552">
+<span class="eqno">(3.5)<a class="headerlink" href="#equation-3fb3790d-0f08-48d1-b27d-f195029cb552" title="Permalink to this equation">#</a></span>\[\begin{align}
 Q(t) = \frac{\partial h\left(\hat{z}(0), \hat{z}\left(t_f\right)\right)}{\partial z(0)}+Z(t) \frac{\partial h\left(\hat{z}(0), \hat{z}\left(t_f\right)\right)}{\partial z\left(t_f\right)}
 \end{align}\]</div>
 <p>is nonsingular, where the fundamental solution matrix <span class="math notranslate nohighlight">\(Z(t) = \frac{dz(t_f)}{dz(0)}\)</span> is evaluated at the solution <span class="math notranslate nohighlight">\(\hat z(t)\)</span>.</p>
@@ -655,8 +656,8 @@ Q(t) = \frac{\partial h\left(\hat{z}(0), \hat{z}\left(t_f\right)\right)}{\partia
 <section id="dae-optimization">
 <h2><span class="section-number">3.3.5. </span>DAE Optimization<a class="headerlink" href="#dae-optimization" title="Permalink to this heading">#</a></h2>
 <p>Typically dynamic systems needed to be optimized over multiple periods, <span class="math notranslate nohighlight">\(l = 1,..., N_T\)</span>, in a time range, <span class="math notranslate nohighlight">\(t\)</span>. The model, states, and decisions can change during each period, <span class="math notranslate nohighlight">\(t \in (t_{l-1}, t_l]\)</span> , or over multiple periods. The multiperiod, dynamic optimization problem is of the form:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7340e8a5-9efa-4c34-bb47-0b89a973bb9b">
-<span class="eqno">(3.6)<a class="headerlink" href="#equation-7340e8a5-9efa-4c34-bb47-0b89a973bb9b" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-412679a7-2605-4ff7-9ea7-10c640195f30">
+<span class="eqno">(3.6)<a class="headerlink" href="#equation-412679a7-2605-4ff7-9ea7-10c640195f30" title="Permalink to this equation">#</a></span>\[\begin{align}
 \min &amp; \sum_{l=1}^{N_T} \Phi^l\left(z^l\left(t_l\right), y^l\left(t_l\right), u^l\left(t_l\right), p^l\right) \\
 \text { s.t. } &amp; \frac{d z^l}{d t}=f^l\left(z^l(t), y^l(t), u^l(t), p^l\right), \quad z^l\left(t_{l-1}\right)=z_0^l, \\
 &amp; g^l\left(z^l(t), y^l(t), u^l(t), p^l\right)=0, \\
@@ -684,13 +685,13 @@ Q(t) = \frac{\partial h\left(\hat{z}(0), \hat{z}\left(t_f\right)\right)}{\partia
 <h3><span class="section-number">3.3.6.1. </span>DAE Index and Index Reduction<a class="headerlink" href="#dae-index-and-index-reduction" title="Permalink to this heading">#</a></h3>
 <blockquote>
 <div><p><strong>Definition 8.6</strong>: Consider the DAE systems of the form:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d17261cc-1661-4014-8d34-d2bb08dbe202">
-<span class="eqno">(3.7)<a class="headerlink" href="#equation-d17261cc-1661-4014-8d34-d2bb08dbe202" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-ec5bafec-58d5-4f99-a66a-84410ea6d780">
+<span class="eqno">(3.7)<a class="headerlink" href="#equation-ec5bafec-58d5-4f99-a66a-84410ea6d780" title="Permalink to this equation">#</a></span>\[\begin{align}
 F\left(x, \frac{d x}{d t}, u(t), p, t\right)=0, \quad h(x(0))=0
 \end{align}\]</div>
 <p>OR</p>
-<div class="amsmath math notranslate nohighlight" id="equation-fd4910df-6a5d-4dfc-a5a5-92e32bbe90f9">
-<span class="eqno">(3.8)<a class="headerlink" href="#equation-fd4910df-6a5d-4dfc-a5a5-92e32bbe90f9" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-0212559e-de99-495d-885e-f28aa3198578">
+<span class="eqno">(3.8)<a class="headerlink" href="#equation-0212559e-de99-495d-885e-f28aa3198578" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \frac{d z}{d t}= f(z(t), y(t), u(t), p), \quad z(0)=z_0, \quad
 g(z(t), y(t), u(t), p)=0
 \end{equation}\]</div>
@@ -701,8 +702,8 @@ g(z(t), y(t), u(t), p)=0
 <blockquote>
 <div><p><strong>Algorithm 8.1</strong>: (Reduction of High Index DAEs)
 Start with a DAE of the form:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-77c4454c-6490-4fdc-900c-8b92b5bddbfb">
-<span class="eqno">(3.9)<a class="headerlink" href="#equation-77c4454c-6490-4fdc-900c-8b92b5bddbfb" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-ac9f868a-25a0-4cd8-81b8-0646581f782f">
+<span class="eqno">(3.9)<a class="headerlink" href="#equation-ac9f868a-25a0-4cd8-81b8-0646581f782f" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \frac{d z}{d t}= f(z(t), y(t), u(t), p), \quad z(0)=z_0, \quad g(z(t), y(t), u(t), p)=0.
 \end{equation}\]</div>
 <ol class="arabic simple">
@@ -724,8 +725,8 @@ Start with a DAE of the form:</p>
 </ul>
 <p><img alt="PendulumFigure" src="https://github.com/mollydougher/optimization/blob/dougher-final-project/media/contrib/PendulumFigure.png?raw=true" /></p>
 <p>The following DAE system describes the pendulum system:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-116bbd12-b613-427c-8f94-d0ff80c7190c">
-<span class="eqno">(3.10)<a class="headerlink" href="#equation-116bbd12-b613-427c-8f94-d0ff80c7190c" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-50fa9fa8-4608-474d-ae26-09f84a37829d">
+<span class="eqno">(3.10)<a class="headerlink" href="#equation-50fa9fa8-4608-474d-ae26-09f84a37829d" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp; x' = u \\
 &amp; y' = v \\
 &amp; u' = -Tx \\
@@ -733,15 +734,15 @@ Start with a DAE of the form:</p>
 &amp; x^2 + y^2 = 1 \\
 \end{align}\]</div>
 <p>To find the index of the DAE system, first take the derivative of the algebraic equation and substitute in for the differential variables:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-47121ff8-b89f-480d-9c78-476892c10711">
-<span class="eqno">(3.11)<a class="headerlink" href="#equation-47121ff8-b89f-480d-9c78-476892c10711" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-7ceada4c-dfbd-470d-b03f-5e3dee7a19cb">
+<span class="eqno">(3.11)<a class="headerlink" href="#equation-7ceada4c-dfbd-470d-b03f-5e3dee7a19cb" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp; x^2 + y^2 = 1 \\
 &amp; 2xx' + 2yy' = 0 \\
 &amp; 2xu + 2yv = 0
 \end{align}\]</div>
 <p>Next, differentiate the obtained equation using the product rule, make similar substitutions, and rearrange:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-dc6ba933-889b-4f39-8fb3-0f8dfc71ce3b">
-<span class="eqno">(3.12)<a class="headerlink" href="#equation-dc6ba933-889b-4f39-8fb3-0f8dfc71ce3b" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-138a649f-399e-4e08-95a4-b679c4bfdc4f">
+<span class="eqno">(3.12)<a class="headerlink" href="#equation-138a649f-399e-4e08-95a4-b679c4bfdc4f" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp; 2xu + 2yv = 0 \\
 &amp; 2(xu'+ x'u) + 2(yv' + vy') = 0 \\
 &amp; 2(-Tx^2 + u^2) + 2(y(g-Ty) + v^2) = 0 \\
@@ -749,8 +750,8 @@ Start with a DAE of the form:</p>
 &amp; 2(u^2 + v^2) - 2T(x^2 + y^2) + 2gy = 0
 \end{align}\]</div>
 <p>Finally, implicitly differentiate the obtained equation, make similar substitutions, and rearrange to isolate the <span class="math notranslate nohighlight">\(T'\)</span> term:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-fde7e5c8-8563-4b6c-ab67-6b1c197df16c">
-<span class="eqno">(3.13)<a class="headerlink" href="#equation-fde7e5c8-8563-4b6c-ab67-6b1c197df16c" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-d1428178-6823-4191-85ef-707a3ae3ac55">
+<span class="eqno">(3.13)<a class="headerlink" href="#equation-d1428178-6823-4191-85ef-707a3ae3ac55" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp; 2(u^2 + v^2) - 2T(x^2 + y^2) + 2gy = 0 \\
 &amp; 4(uu' + vv') - 4T(xx' + yy') - 2T'(x^2 + y^2) + 2gy' = 0 \\
 &amp; 4(uu' + vv') - 4T(xx' + yy') + 2gy' = 2T'(x^2 + y^2) \\
@@ -759,18 +760,18 @@ Start with a DAE of the form:</p>
 \end{align}\]</div>
 <p>Now the equations are a system of ODEs. Three differentiations were completed, indicating that this is an <strong>Index 3 DAE</strong>.</p>
 <p>To reduce this DAE to index 1, follow Algorithm 8.1. The above analysis shows that this is not an index 1 DAE system. Therefore, the following algebraic equation is identified: <span class="math notranslate nohighlight">\(x^2 + y^2 = 1\)</span>. Differentiate the algebraic equation to yield:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d0565685-3147-4115-865c-d33812d4b777">
-<span class="eqno">(3.14)<a class="headerlink" href="#equation-d0565685-3147-4115-865c-d33812d4b777" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-b75ea125-3cda-4688-8f1c-4c5247da7f0b">
+<span class="eqno">(3.14)<a class="headerlink" href="#equation-b75ea125-3cda-4688-8f1c-4c5247da7f0b" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp; 2xx' + 2yy' = 0\\
 \end{align}\]</div>
 <p>which can be solved for <span class="math notranslate nohighlight">\(x'\)</span>. Substitute for <span class="math notranslate nohighlight">\(x'\)</span> and <span class="math notranslate nohighlight">\(y'\)</span> to yield:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-cca7438e-1bb4-4db9-834c-1dab3edc5681">
-<span class="eqno">(3.15)<a class="headerlink" href="#equation-cca7438e-1bb4-4db9-834c-1dab3edc5681" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-d2daa703-9a1d-45d6-a0da-e82fc3aacde2">
+<span class="eqno">(3.15)<a class="headerlink" href="#equation-d2daa703-9a1d-45d6-a0da-e82fc3aacde2" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp; 2xu + 2yv = 0\\
 \end{align}\]</div>
 <p>The new DAE system is now:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-42b1ccd6-cffb-4a98-aa20-e263af8a1b4b">
-<span class="eqno">(3.16)<a class="headerlink" href="#equation-42b1ccd6-cffb-4a98-aa20-e263af8a1b4b" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-02f9abb2-99f8-4a3f-b93a-c99b5984c855">
+<span class="eqno">(3.16)<a class="headerlink" href="#equation-02f9abb2-99f8-4a3f-b93a-c99b5984c855" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp; y' = v \\
 &amp; u' = -Tx \\
 &amp; v' = g - Ty \\
@@ -778,15 +779,15 @@ Start with a DAE of the form:</p>
 &amp; 2xu + 2yv = 0 \\
 \end{align}\]</div>
 <p>where <span class="math notranslate nohighlight">\(x\)</span> is now an algebraic variable and the final equation must be solved for <span class="math notranslate nohighlight">\(T\)</span>. Differentiating the algebraic (last) equation leads to:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8bc5f3ed-b97e-4252-aafe-8e6494c66a0e">
-<span class="eqno">(3.17)<a class="headerlink" href="#equation-8bc5f3ed-b97e-4252-aafe-8e6494c66a0e" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-24619d26-09a6-4a32-a7cd-2c21a7c8f8fe">
+<span class="eqno">(3.17)<a class="headerlink" href="#equation-24619d26-09a6-4a32-a7cd-2c21a7c8f8fe" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp; 2(xu'+ x'u) + 2(yv' + vy') = 0 \\
 &amp; 2(xu' + u^2) + 2(yv' + v^2) = 0 \\
 &amp; 2(u^2 - Tx^2) + 2(v^2 + gy - Ty^2) = 0 \\
 \end{align}\]</div>
 <p>The equations can replace <span class="math notranslate nohighlight">\(u' = -Tx\)</span>, leading to the following DAE system:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ddade167-80a6-4b09-a41f-55340376b6a5">
-<span class="eqno">(3.18)<a class="headerlink" href="#equation-ddade167-80a6-4b09-a41f-55340376b6a5" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-f19d92ed-328c-46d6-b08c-3f4808d0ac78">
+<span class="eqno">(3.18)<a class="headerlink" href="#equation-f19d92ed-328c-46d6-b08c-3f4808d0ac78" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp; y' = v \\
 &amp; v' = g - Ty \\
 &amp; x^2 + y^2 = 1 \\

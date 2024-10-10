@@ -271,6 +271,7 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 
+<li class="toctree-l2"><a class="reference internal" href="../contrib/student_diet.html">Optimizing Your Daily Diet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../contrib/blending.html">Blending Under Uncertainty</a></li>
 
 
@@ -1082,13 +1083,13 @@ Abs. Relative Error is 6.5195531446713024e-15
 <p>The periods (<span class="math notranslate nohighlight">\(l\)</span>) can be represented by finite elements in time (<span class="math notranslate nohighlight">\(t\)</span>) and the state (<span class="math notranslate nohighlight">\(z\)</span>) and control variables (<span class="math notranslate nohighlight">\(u\)</span>) can be represented with polynomials (Figure 10.1).</p>
 <p><img alt="BieglerFigure10.1" src="https://github.com/mollydougher/optimization/blob/dougher-final-project/media/contrib/BieglerFigure10.1.png?raw=true" /></p>
 <p>The collocation method can be developed by solving the differential equation (<span class="math notranslate nohighlight">\( dz/dt \)</span>) at specific time points. For example, Figure 10.1 shows the state variable approximation for a single finite element:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5d5c9824-a5ee-49f0-b02c-c2e4aebce83f">
-<span class="eqno">(3.20)<a class="headerlink" href="#equation-5d5c9824-a5ee-49f0-b02c-c2e4aebce83f" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-73cc2b81-59c3-4529-8384-84edffb4a12c">
+<span class="eqno">(3.20)<a class="headerlink" href="#equation-73cc2b81-59c3-4529-8384-84edffb4a12c" title="Permalink to this equation">#</a></span>\[\begin{align}
 z^k(t) = \alpha_0 + \alpha_1t + ... + \alpha_kt^k 
 \end{align}\]</div>
 <p>where <span class="math notranslate nohighlight">\( \alpha_n \)</span> are constants in the power series. This profile can also be represented as a Lagrange interpolation polynomial. Choosing <span class="math notranslate nohighlight">\(K+1\)</span> interpolation points within element <span class="math notranslate nohighlight">\(i\)</span>, the state can be represented as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-dcbb7295-d76e-48e2-a25c-d8403e56deb7">
-<span class="eqno">(3.21)<a class="headerlink" href="#equation-dcbb7295-d76e-48e2-a25c-d8403e56deb7" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-7ae57fd7-968d-4318-98c9-3e70e456c6c3">
+<span class="eqno">(3.21)<a class="headerlink" href="#equation-7ae57fd7-968d-4318-98c9-3e70e456c6c3" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp; t = t_{i-1} + h_i\tau , \\
 &amp; z^k(t) = \sum_{j=0}^K \ell_j(\tau)z_{ij} , \\
 &amp; \text{for } t \in [t_{i-1},t_i] \text{ and } \tau \in [0,1] , \\
@@ -1101,39 +1102,39 @@ z^k(t) = \alpha_0 + \alpha_1t + ... + \alpha_kt^k
 <p>The key property of this polynomial is that
 <span class="math notranslate nohighlight">\( z^K(t_{ij})=z_{ij} \)</span> where <span class="math notranslate nohighlight">\( t_{ij}=t_{i-1} + \tau_j h_i \)</span>.</p>
 <p>We can do the same thing for the time derivative of the state (Lagrange polynomial with K interpolation points):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b7de62af-9661-46c8-9851-d62624d928ee">
-<span class="eqno">(3.22)<a class="headerlink" href="#equation-b7de62af-9661-46c8-9851-d62624d928ee" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-d7757902-7cbf-49bf-846a-8d4ea9d21771">
+<span class="eqno">(3.22)<a class="headerlink" href="#equation-d7757902-7cbf-49bf-846a-8d4ea9d21771" title="Permalink to this equation">#</a></span>\[\begin{align}
 z^k(t) = z_{i-1} + h_i \sum_{j=1}^K \Omega_j(\tau) \dot{z}_{ij} ,
 \end{align}\]</div>
 <p>where <span class="math notranslate nohighlight">\(z_{i-1}\)</span> represents the differential state at the beginning of element <span class="math notranslate nohighlight">\(i\)</span>, <span class="math notranslate nohighlight">\(\dot{z}_{ij}\)</span> is the time derivative, and <span class="math notranslate nohighlight">\(\Omega_j(\tau)\)</span> is a <span class="math notranslate nohighlight">\(K^{th}\)</span> order polynomial that satisfies:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-3d479708-559d-41ed-9163-165eda7c904c">
-<span class="eqno">(3.23)<a class="headerlink" href="#equation-3d479708-559d-41ed-9163-165eda7c904c" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-844b06b6-89d0-439d-83ef-ab6f8c2dc87b">
+<span class="eqno">(3.23)<a class="headerlink" href="#equation-844b06b6-89d0-439d-83ef-ab6f8c2dc87b" title="Permalink to this equation">#</a></span>\[\begin{align}
 \Omega_j(\tau)=\int_0^{\tau}\ell_j(\tau')d\tau', \text{ }t \in [t_{i-1},t_i], \text{ }\tau \in [0,1]. 
 \end{align}\]</div>
 <p>Note that this is equivalent to the implcit Runge-Kutta (IRK) representation, where <span class="math notranslate nohighlight">\(n_s=k\)</span>, <span class="math notranslate nohighlight">\(C_k=\tau_k\)</span>, <span class="math notranslate nohighlight">\(a_{kj}=\Omega_j(\tau_k)\)</span>, and <span class="math notranslate nohighlight">\(b_k=\Omega_k(1)\)</span>. We can obtain <span class="math notranslate nohighlight">\(\ell_j\)</span> and <span class="math notranslate nohighlight">\(\Omega_j\)</span> from Gauss quadrature.</p>
 <p>Collocation equations can be found by substituting the polynomial into the differential equation (<span class="math notranslate nohighlight">\( dz/dt \)</span>). The algebraic equations must hold at each interpolation point <span class="math notranslate nohighlight">\(\tau_j\)</span>. The collocation equations for the Lagrange polynomial are:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-aef6c24c-64e8-4cde-b973-37a645cfdb54">
-<span class="eqno">(3.24)<a class="headerlink" href="#equation-aef6c24c-64e8-4cde-b973-37a645cfdb54" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-96d80b98-e44e-4f49-b5dd-cb8ada51d8e2">
+<span class="eqno">(3.24)<a class="headerlink" href="#equation-96d80b98-e44e-4f49-b5dd-cb8ada51d8e2" title="Permalink to this equation">#</a></span>\[\begin{align}
 \sum_{j=0}^K z_{ij} \frac{d\ell_j(\tau_k)}{d\tau}=h_i f(z_{ik},t_{ik}), \text{ } k=1,...,K.
 \end{align}\]</div>
 </section>
 <section id="collocation-with-orthogonal-polynomials">
 <h3><span class="section-number">3.5.3.3. </span>Collocation with Orthogonal Polynomials<a class="headerlink" href="#collocation-with-orthogonal-polynomials" title="Permalink to this heading">#</a></h3>
 <p>With the interpolation points <span class="math notranslate nohighlight">\(\tau_k\)</span> known, then the collocation equations  become algebraic. Now <span class="math notranslate nohighlight">\(\tau_k\)</span> must be determined such that the approximation is most accurate. Representing the solution as an integral:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b8cc84b9-9860-4a67-add0-ab3ac203fd63">
-<span class="eqno">(3.25)<a class="headerlink" href="#equation-b8cc84b9-9860-4a67-add0-ab3ac203fd63" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-b364945c-290b-4fdd-8549-cf0d2e69fc38">
+<span class="eqno">(3.25)<a class="headerlink" href="#equation-b364945c-290b-4fdd-8549-cf0d2e69fc38" title="Permalink to this equation">#</a></span>\[\begin{align}
 z(t_i) = z(t_{i-1}) + \int_{t_{i-1}}^{t_i} f(z(t),t)dt ,
 \end{align}\]</div>
 <p>the numerical solution is the quadrautre formula:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-19647275-9f09-413f-9306-1202c8915988">
-<span class="eqno">(3.26)<a class="headerlink" href="#equation-19647275-9f09-413f-9306-1202c8915988" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-eb3ebef3-8591-4974-81dc-c1e328518a0f">
+<span class="eqno">(3.26)<a class="headerlink" href="#equation-eb3ebef3-8591-4974-81dc-c1e328518a0f" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp; z(t_i) = z(t_{i-1}) + \sum_{j=1}^K \omega_j h_i f(z(t_{ij}), t_{ij}),
 &amp; t_{ij} = t_{i-1} + h_i \tau_j 
 \end{align}\]</div>
 <blockquote>
 <div><p><strong>Theorem 10.1</strong>: The quadrature formula (above) provides the exact solution to the integral (above) if <span class="math notranslate nohighlight">\(f(z(t),t)\)</span> is a polynomial in <span class="math notranslate nohighlight">\(t\)</span> of order <span class="math notranslate nohighlight">\(2K\)</span> and <span class="math notranslate nohighlight">\(\tau_j\)</span> are the roots of a <span class="math notranslate nohighlight">\(K\)</span>th degree polynomial, <span class="math notranslate nohighlight">\(P_K(\tau)\)</span> with the property:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e1c01a2d-595b-4eb1-87dc-13e2c04368eb">
-<span class="eqno">(3.27)<a class="headerlink" href="#equation-e1c01a2d-595b-4eb1-87dc-13e2c04368eb" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-b1f9c2ba-913e-4a54-97ac-492ddbd00df4">
+<span class="eqno">(3.27)<a class="headerlink" href="#equation-b1f9c2ba-913e-4a54-97ac-492ddbd00df4" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp; \int_0^1 P_j(\tau) P_{j'}(\tau)d\tau,
 &amp; j=0,...,K-1, 
 &amp; \text{ } j'=1,...,K, 

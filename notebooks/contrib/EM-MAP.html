@@ -1,12 +1,13 @@
 
+
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../../" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Expectation Maximization Algorithm and MAP Estimation &#8212; Nonlinear and Stochastic Optimization</title>
   
@@ -14,49 +15,53 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/contrib/EM-MAP';</script>
@@ -72,23 +77,28 @@
 
   
   
-  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   
   <div id="pst-scroll-pixel-helper"></div>
+
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
 
   
   <input type="checkbox"
           class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -110,20 +120,12 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
-
-  <div class="pst-async-banner-revealer d-none">
-  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
-</div>
-
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
-    </header>
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
   
-
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
-      
-      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -139,8 +141,6 @@
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
 
-  
-    
   
 
 <a class="navbar-brand logo" href="../../intro.html">
@@ -159,18 +159,7 @@
   
   
 </a></div>
-        <div class="sidebar-primary-item">
-
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
-        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -182,13 +171,13 @@
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Fall 2024 Calendar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
@@ -198,16 +187,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4: Interior Point Methods</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project (Spring 2023)</a></li>
 </ul>
-</details></li>
+</li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
@@ -215,13 +204,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.5. Integer Programs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.6. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_car.html">3.1. Pyomo.DAE Example: Race Car</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_TCLab.html">3.2. Pyomo.DAE Example: Temperature Control Lab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../3/DAE_background.html">3.3. Differential Algebraic Equations (DAEs)</a></li>
@@ -229,23 +218,23 @@
 <li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_theory.html">3.5. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_example.html">3.6. Pyomo.DAE: Racing Example Revisited</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../4/blocks.html">4.2. Blocks and Other Pyomo Best Practices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.3. Risk Measures and Portfolio Optimization</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Reactor Kinetics Example for Pyomo.DoE Tutorial</a></li>
 </ul>
-</details></li>
+</li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-1.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
@@ -253,8 +242,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
@@ -264,22 +253,45 @@
 <li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
 </ul>
-</details></li>
+</li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="dfo.html">Derivative-Free Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyomo.html">More Pyomo Examples</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="semiconductor_manufacturing.html">Semiconductor Production Planning</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="blending.html">Blending Under Uncertainty</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="vehicle_routing.html">Vehicle Routing Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="portfolio_optimization_extended.html">Risk Measures and Portfolio Optimization: Expanded</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="race_car_extended.html">Race Car Models Revisited</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="hot_air_ballon.html">Project 1: Hot Air Balloon Dynamic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reactor_design.html">Chemical Reactor Design</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="dfo.html">Derivative-Free Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="sgd.html">Stochastic Gradient Descent</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="sgd.html">Stochastic Gradient Descent</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
 
@@ -290,11 +302,11 @@
 
 <li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="data.html">Machine Learning and Applied Statistics</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="data.html">Machine Learning and Applied Statistics</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-15"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Expectation Maximization Algorithm and MAP Estimation</a></li>
 </ul>
-</details></li>
+</li>
 </ul>
 
     </div>
@@ -310,7 +322,7 @@
 
       </div>
       
-      <main id="main-content" class="bd-main" role="main">
+      <main id="main-content" class="bd-main">
         
         
 
@@ -319,14 +331,14 @@
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article d-print-none">
+              <div class="bd-header-article">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</button></div>
+</label></div>
       
     </div>
   
@@ -351,14 +363,14 @@
       
       <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/contrib/EM-MAP.ipynb" target="_blank"
    class="btn btn-sm dropdown-item"
-   title="Launch on Colab"
+   title="Launch onColab"
    data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
 <span class="btn__icon-container">
   
-    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+    <img src="../../_static/images/logo_colab.png">
   </span>
 <span class="btn__text-container">Colab</span>
 </a>
@@ -482,10 +494,10 @@
 
 <script>
 document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
 `);
 </script>
@@ -493,14 +505,14 @@ document.write(`
 
 <script>
 document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</button>
+</label>
 </div></div>
       
     </div>
@@ -553,10 +565,10 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article">
+                <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="expectation-maximization-algorithm-and-map-estimation">
-<h1>Expectation Maximization Algorithm and MAP Estimation<a class="headerlink" href="#expectation-maximization-algorithm-and-map-estimation" title="Link to this heading">#</a></h1>
+<h1>Expectation Maximization Algorithm and MAP Estimation<a class="headerlink" href="#expectation-maximization-algorithm-and-map-estimation" title="Permalink to this heading">#</a></h1>
 <p>Prepared by: Ken Sible (<a class="reference external" href="mailto:ksible&#37;&#52;&#48;nd&#46;edu">ksible<span>&#64;</span>nd<span>&#46;</span>edu</a>, <a class="reference external" href="https://github.com/kennethsible">&#64;kennethsible</a>, 2023)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -577,11 +589,11 @@ document.write(`
 </div>
 </div>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
 <p>In this tutorial notebook, we introduce the <strong>expectation maximization</strong> (EM) algorithm for parameter estimation given partially observed data. We use a <strong>Naive Bayes</strong> classifier for <strong>language identification</strong> as a running example throughout the notebook. In order to train the classifier, we use <strong>maximum a posteriori</strong> (MAP) estimation, a statistical optimization method for estimating the parameters of a distribution given (fully or partially) observed data.</p>
 </section>
 <section id="naive-bayes-classifier">
-<h2>Naive Bayes Classifier<a class="headerlink" href="#naive-bayes-classifier" title="Link to this heading">#</a></h2>
+<h2>Naive Bayes Classifier<a class="headerlink" href="#naive-bayes-classifier" title="Permalink to this heading">#</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(\{(x^{(i)},y^{(i)}):x^{(i)}\in\{+1,-1\}^d,y^{(i)}\in\{1,2,\ldots,k\}\}_{i=1}^n\)</span> be a training set where <span class="math notranslate nohighlight">\(n\)</span> is the number of <strong>documents</strong>, <span class="math notranslate nohighlight">\(k\)</span> is the number of <strong>labels</strong> and <span class="math notranslate nohighlight">\(d\)</span> is the number of <strong>features</strong>. In language identification, an example of text classification, the labels are languages and the features are tokens, which are meaningful sequences of characters. We define <span class="math notranslate nohighlight">\(x^{(i)}_j\)</span> to be <span class="math notranslate nohighlight">\(+1\)</span> if document <span class="math notranslate nohighlight">\(i\)</span> contains token <span class="math notranslate nohighlight">\(j\)</span> and <span class="math notranslate nohighlight">\(-1\)</span> otherwise. Hence, each component of the binary vector <span class="math notranslate nohighlight">\(x^{(i)}\)</span> represents either the <em>presence</em> or <em>absence</em> of a particular token in document <span class="math notranslate nohighlight">\(i\)</span>. Now, we derive the <strong>Naive Bayes</strong> model for classification.</p>
 <p>Let <span class="math notranslate nohighlight">\(Y\)</span> and <span class="math notranslate nohighlight">\(X_1,X_2,\ldots,X_d\)</span> be random variables corresponding to the label <span class="math notranslate nohighlight">\(y\)</span> and the vector components <span class="math notranslate nohighlight">\(x_1,x_2,\ldots,x_d\)</span>, respectively. The Naive Bayes classifier is a <strong>generative model</strong>, so we need to estimate the parameters of the following joint probablity distribution:
 $<span class="math notranslate nohighlight">\(\mathbb{P}(Y=y,X_1=x_1,X_2=x_2,\ldots,X_d=x_d)\)</span><span class="math notranslate nohighlight">\(
@@ -602,7 +614,7 @@ $<span class="math notranslate nohighlight">\(
 where we define \)</span>p(y\mid x_1,\ldots,x_d)=\mathbb{P}(Y=y\mid X_1=x_1,\ldots,X_d=x_d)<span class="math notranslate nohighlight">\(, called the **posterior distribution**. Note, the posterior distribution and the joint distribution \)</span>\mathbb{P}(Y=y,X_1=x_1,\ldots,X_d=x_d)<span class="math notranslate nohighlight">\( only differs by a constant factor \)</span>\mathbb{P}(X_1=x_1,\ldots,X_d=x_d)$, called the <strong>marginal distribution</strong>.</p>
 <p>In order to estimate the parameters of the Naive Bayes classifier, we use <strong>maximum a posteriori</strong> (MAP) estimation, which is equivalent to <strong>maximum likelihood estimation</strong> (MLE) if the prior distribution is uniform.</p>
 <section id="maximum-a-posteriori-estimation">
-<h3>Maximum A Posteriori Estimation<a class="headerlink" href="#maximum-a-posteriori-estimation" title="Link to this heading">#</a></h3>
+<h3>Maximum A Posteriori Estimation<a class="headerlink" href="#maximum-a-posteriori-estimation" title="Permalink to this heading">#</a></h3>
 <p>Given a training set <span class="math notranslate nohighlight">\(\{(x^{(i)},y^{(i)}):x^{(i)}\in\{+1,-1\}^d,y^{(i)}\in\{1,2,\ldots,k\}\}_{i=1}^n\)</span>, the <strong>log-likelihood function</strong> <span class="math notranslate nohighlight">\(L(\theta)\)</span> for the classifier is
 $$</p>
 <div class="amsmath math notranslate nohighlight">
@@ -742,7 +754,7 @@ q_j(x\mid y)=\frac{\sum_{i=1}^n[\![y^{(i)}=y\text{ and }x^{(i)}_j=x]\!]}{\sum_{i
 </section>
 </section>
 <section id="supervised-learning-with-labeled-data">
-<h2>Supervised Learning (with Labeled Data)<a class="headerlink" href="#supervised-learning-with-labeled-data" title="Link to this heading">#</a></h2>
+<h2>Supervised Learning (with Labeled Data)<a class="headerlink" href="#supervised-learning-with-labeled-data" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">csv</span>
@@ -794,12 +806,12 @@ q_j(x\mid y)=\frac{\sum_{i=1}^n[\![y^{(i)}=y\text{ and }x^{(i)}_j=x]\!]}{\sum_{i
 </div>
 </div>
 <section id="exercise-1">
-<h3>Exercise 1<a class="headerlink" href="#exercise-1" title="Link to this heading">#</a></h3>
+<h3>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this heading">#</a></h3>
 <p>In practice, we use subwords of length <span class="math notranslate nohighlight">\(n\)</span>, called <span class="math notranslate nohighlight">\(n\)</span>-grams, instead of entire words for language identification. In the Python implementation, change the features from entire words to bigrams (<span class="math notranslate nohighlight">\(n=2\)</span>) or trigrams (<span class="math notranslate nohighlight">\(n=3\)</span>), and compare both the accuracy and the number of parameters.</p>
 <p>Hint: In Cell [4], replace <code class="docutils literal notranslate"><span class="pre">nltk.word_tokenize(text)</span></code> with <code class="docutils literal notranslate"><span class="pre">list(nltk.bigrams(text))</span></code> or <code class="docutils literal notranslate"><span class="pre">list(nltk.trigrams(text))</span></code>.</p>
 </section>
 <section id="exercise-2">
-<h3>Exercise 2<a class="headerlink" href="#exercise-2" title="Link to this heading">#</a></h3>
+<h3>Exercise 2<a class="headerlink" href="#exercise-2" title="Permalink to this heading">#</a></h3>
 <p>In the Python implementation, we used add-one <strong>Laplace smoothing</strong> (see below). Why do we require smoothing with maximum a posteriori estimation?</p>
 <div class="math notranslate nohighlight">
 \[
@@ -808,11 +820,11 @@ q_j(x\mid y)=\frac{\text{count}_j(x\mid y)+\alpha}{\text{count}(y)+\alpha d}
 <p>where <span class="math notranslate nohighlight">\(\alpha\)</span> is a hyperparameter and <span class="math notranslate nohighlight">\(d\)</span> is the dimension of the multinomial distribution (<span class="math notranslate nohighlight">\(2\)</span> for Bernoulli and <span class="math notranslate nohighlight">\(|V|\)</span> for categorical where <span class="math notranslate nohighlight">\(V\)</span> is the vocabulary).</p>
 </section>
 <section id="exercise-3">
-<h3>Exercise 3<a class="headerlink" href="#exercise-3" title="Link to this heading">#</a></h3>
+<h3>Exercise 3<a class="headerlink" href="#exercise-3" title="Permalink to this heading">#</a></h3>
 <p>We implemented a <strong>Bernoulli</strong> Naive Bayes classifier where each likelihood <span class="math notranslate nohighlight">\(p(x_j\mid y)\)</span> is a Bernoulli distribution and each <span class="math notranslate nohighlight">\(x_j\)</span> is binary variable representing the presence or absence of feature <span class="math notranslate nohighlight">\(j\)</span>. However, <span class="math notranslate nohighlight">\(p(x_j\mid y)\)</span> can be any distribution, but Bernoulli (discrete), Multinomial (discrete) and Gaussian (continuous) are the most common. In a <strong>multinomial</strong> Naive Bayes classifier, each likelihood <span class="math notranslate nohighlight">\(p(x_j\mid y)\)</span> is categorical distribution and each <span class="math notranslate nohighlight">\(x_j\)</span> is the number of times feature <span class="math notranslate nohighlight">\(j\)</span> is observed. In the Python implementation, change the features <span class="math notranslate nohighlight">\(\{x_j\}_{j=1}^k\)</span> from binary variables to frequency counts and update the likelihoods.</p>
 <p>Hint: The likelihoods <span class="math notranslate nohighlight">\(p(x_j\mid y)\)</span> are estimated by calculating the fraction of documents for Bernoulli and the fraction of tokens for multinomial (see below).</p>
 <section id="bernoulli">
-<h4>Bernoulli<a class="headerlink" href="#bernoulli" title="Link to this heading">#</a></h4>
+<h4>Bernoulli<a class="headerlink" href="#bernoulli" title="Permalink to this heading">#</a></h4>
 <div class="math notranslate nohighlight">
 \[
 p(y\mid x_1,\ldots,x_d)\propto q(y)\prod_{j=1}^d[q_j(x_j\mid y)]^{x_j}\cdot[1-q_j(x_j\mid y)]^{(1-x_j)}
@@ -820,7 +832,7 @@ p(y\mid x_1,\ldots,x_d)\propto q(y)\prod_{j=1}^d[q_j(x_j\mid y)]^{x_j}\cdot[1-q_
 <p>where <span class="math notranslate nohighlight">\(x_j\in\{+1,-1\}\)</span> for all <span class="math notranslate nohighlight">\(j\)</span>.</p>
 </section>
 <section id="multinomial">
-<h4>Multinomial<a class="headerlink" href="#multinomial" title="Link to this heading">#</a></h4>
+<h4>Multinomial<a class="headerlink" href="#multinomial" title="Permalink to this heading">#</a></h4>
 <div class="math notranslate nohighlight">
 \[
 p(y\mid x_1,\ldots,x_d)\propto q(y)\prod_{j=1}^d[q_j(x_j\mid y)]^{x_j}
@@ -951,7 +963,7 @@ p(y\mid x_1,\ldots,x_d)\propto q(y)\prod_{j=1}^d[q_j(x_j\mid y)]^{x_j}
 </section>
 </section>
 <section id="expectation-maximization-algorithm">
-<h2>Expectation Maximization Algorithm<a class="headerlink" href="#expectation-maximization-algorithm" title="Link to this heading">#</a></h2>
+<h2>Expectation Maximization Algorithm<a class="headerlink" href="#expectation-maximization-algorithm" title="Permalink to this heading">#</a></h2>
 <p>In statistics, a random variable that is never observed is called a <strong>latent variable</strong>. The <strong>expectation maximization</strong> (EM) algorithm is an iterative method for performing maximum a posteriori (or maximum likelihood) estimation for a latent variable model. First, the initial parameters <span class="math notranslate nohighlight">\(\theta^0\)</span> are chosen at random. Then, new parameters <span class="math notranslate nohighlight">\(\theta^t\)</span> are calculated from the previous posterior distribution <span class="math notranslate nohighlight">\(p(y\mid x^{(i)};\theta^{t-1})\)</span> at each iteration. The EM algorithm is guaranteed to converge, but only to a local solution. Note, both the initial parameters and the posteriors must be normalized. The parameters for Naive Bayes are
 $<span class="math notranslate nohighlight">\(
 q^t(y)=\frac{1}{n}\sum_{i=1}^n\delta(y\mid i)\quad\text{ and }\quad q^t_j(x\mid y)=\frac{\sum_{i:x^{(i)}_j=x}\delta(y\mid i)}{\sum_{i=1}^n\delta(y\mid i)}
@@ -962,7 +974,7 @@ where
 \)</span><span class="math notranslate nohighlight">\(
 Note, these parameter formulas are equivalent to those for fully observed data if we define \)</span>\delta(y\mid i)=1<span class="math notranslate nohighlight">\( if \)</span>y_i=y<span class="math notranslate nohighlight">\( and \)</span>0$ otherwise.</p>
 <section id="pseudocode">
-<h3>Pseudocode<a class="headerlink" href="#pseudocode" title="Link to this heading">#</a></h3>
+<h3>Pseudocode<a class="headerlink" href="#pseudocode" title="Permalink to this heading">#</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Inputs</span><span class="p">:</span>
     <span class="n">data</span> <span class="o">-</span> <span class="n">training</span> <span class="n">examples</span>
     <span class="n">n</span> <span class="o">-</span> <span class="n">number</span> <span class="n">of</span> <span class="n">documents</span>
@@ -983,7 +995,7 @@ Note, these parameter formulas are equivalent to those for fully observed data i
 </div>
 </section>
 <section id="python-implementation">
-<h3>Python Implementation<a class="headerlink" href="#python-implementation" title="Link to this heading">#</a></h3>
+<h3>Python Implementation<a class="headerlink" href="#python-implementation" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">logsumexp</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -1034,7 +1046,7 @@ Note, these parameter formulas are equivalent to those for fully observed data i
 </section>
 </section>
 <section id="unsupervised-learning-with-unlabeled-data">
-<h2>Unsupervised Learning (with Unlabeled Data)<a class="headerlink" href="#unsupervised-learning-with-unlabeled-data" title="Link to this heading">#</a></h2>
+<h2>Unsupervised Learning (with Unlabeled Data)<a class="headerlink" href="#unsupervised-learning-with-unlabeled-data" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">unlabeled_data</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">]]</span>
@@ -1086,11 +1098,11 @@ Note, these parameter formulas are equivalent to those for fully observed data i
 <p>Unfortunately, we cannot apply the EM algorithm for unsupervised language identification (see McCallum et al.). Instead, we verified that the EM algorithm converges by providing training data with a known conditional distribution and comparing that against the output distribution from EM.</p>
 </section>
 <section id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading">#</a></h2>
 <p>In this tutorial notebook, we covered the Naive Bayes classifier, maximum a posteriori estimation, and the expectation maximization algorithm. The Naive Bayes classifier is a statistical model for classification based on Bayes’ theorem and the Naive Bayes independence assumption. MAP (or MLE) estimation is a statistical technique for estimating the parameters of a posterior (or likelihood) distribution given fully or partially observed data. The EM algorithm is an interative method for calculating new parameters or MAP (or MLE) estimates given unobserved data in a latent model.</p>
 </section>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Deisenroth, M. P., Ong, C. S., &amp; Faisa, A. A. (n.d.). <em>Mathematics for Machine Learning</em>. <a class="reference external" href="https://mml-book.github.io/book/mml-book.pdf">https://mml-book.github.io/book/mml-book.pdf</a></p></li>
 <li><p>Collins, M. (n.d.). <em>The Naive Bayes Model, Maximum-Likelihood Estimation, and the EM Algorithm</em>. <a class="reference external" href="http://web2.cs.columbia.edu/~mcollins/em.pdf">http://web2.cs.columbia.edu/~mcollins/em.pdf</a></p></li>
@@ -1129,7 +1141,7 @@ Note, these parameter formulas are equivalent to those for fully observed data i
               
               
               
-                <footer class="prev-next-footer d-print-none">
+                <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -1149,7 +1161,6 @@ Note, these parameter formulas are equivalent to those for fully observed data i
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
 
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
@@ -1204,7 +1215,7 @@ By Alexander Dowling, et al.
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2022.
       <br/>
     
   </p>
@@ -1228,8 +1239,8 @@ By Alexander Dowling, et al.
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
 
   <footer class="bd-footer">
   </footer>

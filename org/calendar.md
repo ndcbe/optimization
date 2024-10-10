@@ -55,7 +55,7 @@ All assignments are due at 5pm unless otherwise noted.
 | Tuesday, October 22, 2024 | Fall Break |
 | Thursday, October 24, 2024 | Fall Break |
 | Tuesday, October 29, 2024 | **Exam 1** |
-| Thursday, October 31, 2024 | Exam 1 (alternate date -- will confirm soon) |
+| Thursday, October 31, 2024 | Catch-up |
 | Tuesday, November 5, 2024 | [](../notebooks/6/Globalization.ipynb) |
 | Thursday, November 7, 2024 | [](../notebooks/7/Convexity.ipynb) |
 | Tuesday, November 12, 2024 | [](../notebooks/7/Local-Optimality.ipynb) |

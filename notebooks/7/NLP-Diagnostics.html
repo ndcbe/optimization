@@ -1,0 +1,1943 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>7.6. NLP Diagnostics with Degeneracy Hunter &#8212; Nonlinear and Stochastic Optimization</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/7/NLP-Diagnostics';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="7.7. Simple Netwon Method for Equality Constrained NLPs" href="Interior-Point1.html" />
+    <link rel="prev" title="7.5. Second Order Optimality Conditions" href="Second-Order.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/cbe_logo.jpg" class="logo__image only-light" alt="Nonlinear and Stochastic Optimization - Home"/>
+    <script>document.write(`<img src="../../_static/cbe_logo.jpg" class="logo__image only-dark" alt="Nonlinear and Stochastic Optimization - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Optimization for Decision Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Fall 2024 Calendar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project1.html">Project 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms1.html">Algorithms Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms2.html">Algorithms Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4: Interior Point Methods</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project (Spring 2023)</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/LP-NLP.html">1.4. Continuous Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.5. Integer Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.6. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_car.html">3.1. Pyomo.DAE Example: Race Car</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_TCLab.html">3.2. Pyomo.DAE Example: Temperature Control Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_background.html">3.3. Differential Algebraic Equations (DAEs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_numeric_integration.html">3.4. Numeric Integration for DAEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_theory.html">3.5. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_example.html">3.6. Pyomo.DAE: Racing Example Revisited</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/blocks.html">4.2. Blocks and Other Pyomo Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.3. Risk Measures and Portfolio Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Reactor Kinetics Example for Pyomo.DoE Tutorial</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-1.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Newton-Methods.html">6.4. Newton-type Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="constrained.html">7. Constrained Nonlinear Optimization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Convexity.html">7.1. Convexity Revisited</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Constraint-Qualifications.html">7.4. Constraint Qualifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Second-Order.html">7.5. Second Order Optimality Conditions</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">7.6. NLP Diagnostics with Degeneracy Hunter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/pyomo.html">More Pyomo Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/semiconductor_manufacturing.html">Semiconductor Production Planning</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/student_diet.html">Optimizing Your Daily Diet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/blending.html">Blending Under Uncertainty</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/vehicle_routing.html">Vehicle Routing Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/portfolio_optimization_extended.html">Risk Measures and Portfolio Optimization: Expanded</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/race_car_extended.html">Race Car Models Revisited</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/hot_air_ballon.html">Project 1: Hot Air Balloon Dynamic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/reactor_design.html">Chemical Reactor Design</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/dfo.html">Derivative-Free Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/sgd.html">Stochastic Gradient Descent</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/data.html">Machine Learning and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/7/NLP-Diagnostics.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/7/NLP-Diagnostics.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/7/NLP-Diagnostics.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>NLP Diagnostics with Degeneracy Hunter</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">7.6.1. Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-well-behaved-nonlinear-program">7.6.2. Example 1: Well-Behaved Nonlinear Program</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-the-model-in-pyomo">7.6.2.1. Define the model in Pyomo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-the-initial-point">7.6.2.2. Evaluate the initial point</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identify-the-constraint-residuals-larger-than-0-1">7.6.2.3. Identify the constraint residuals larger than 0.1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identify-all-variables-within-1-of-their-bounds">7.6.2.4. Identify all variables within 1 of their bounds</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solve-the-optimization-problem">7.6.2.5. Solve the optimization problem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#check-if-any-constraint-residuals-are-large-than-10-14">7.6.2.6. Check if any constraint residuals are large than 10<span class="math notranslate nohighlight">\(^{-14}\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identify-all-variables-within-10-5-of-their-bounds">7.6.2.7. Identify all variables within 10<span class="math notranslate nohighlight">\(^{-5}\)</span> of their bounds</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#check-the-rank-of-the-constraint-jacobian-at-the-solution">7.6.2.8. Check the rank of the constraint Jacobian at the solution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#try-degeneracy-hunter">7.6.2.9. Try Degeneracy Hunter</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-linear-program-with-redundant-equality-constraints">7.6.3. Example 2: Linear Program with Redundant Equality Constraints</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">7.6.3.1. Define the model in Pyomo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">7.6.3.2. Evaluate the initial point</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identify-constraints-with-residuals-greater-than-0-1-at-the-initial-point">7.6.3.3. Identify constraints with residuals greater than 0.1 at the initial point</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solve-the-optimization-problem-and-extract-the-solution">7.6.3.4. Solve the optimization problem and extract the solution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#check-the-rank-of-the-jacobian-of-the-equality-constraints">7.6.3.5. Check the rank of the Jacobian of the equality constraints</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identify-candidate-degenerate-constraints">7.6.3.6. Identify candidate degenerate constraints</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#find-irreducible-degenerate-sets-ids">7.6.3.7. Find irreducible degenerate sets (IDS)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reformulate-example-2">7.6.3.8. Reformulate Example 2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solve-the-reformulated-model">7.6.3.9. Solve the reformulated model</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="nlp-diagnostics-with-degeneracy-hunter">
+<h1><span class="section-number">7.6. </span>NLP Diagnostics with Degeneracy Hunter<a class="headerlink" href="#nlp-diagnostics-with-degeneracy-hunter" title="Link to this heading">#</a></h1>
+<p>Created by Prof. Alex Dowling (<a class="reference external" href="mailto:adowling&#37;&#52;&#48;nd&#46;edu">adowling<span>&#64;</span>nd<span>&#46;</span>edu</a>) at the University of Notre Dame. This notebook (and Degeneracy Hunter) are available through the <a class="reference external" href="https://idaes.org">Institute for the Design of Advanced Energy Systems</a> under a BSD-3 license.</p>
+<p>This notebook shows how to use the following Degeneracy Hunter features using two motivating examples:</p>
+<ul class="simple">
+<li><p>Inspect constraint violations and bounds of a Pyomo model</p></li>
+<li><p>Compute the Irreducible Degenerate Set (IDS) for a Pyomo model</p></li>
+<li><p>Demonstrates the Ipopt performance benefits from removing a single redundant constraint</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This code cell installs packages on Colab</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="k">if</span> <span class="s2">&quot;google.colab&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+    <span class="o">!</span>wget<span class="w"> </span><span class="s2">&quot;https://raw.githubusercontent.com/ndcbe/CBE60499/main/notebooks/helper.py&quot;</span>
+    <span class="kn">import</span> <span class="nn">helper</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">install_idaes</span><span class="p">()</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">install_ipopt</span><span class="p">()</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">install_cbc</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="setup">
+<h2><span class="section-number">7.6.1. </span>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
+<p>We start by importing Pyomo and Degeneracy Hunter.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyomo.environ</span> <span class="k">as</span> <span class="nn">pyo</span>
+
+<span class="kn">from</span> <span class="nn">idaes.core.util.model_diagnostics</span> <span class="kn">import</span> <span class="n">DegeneracyHunter</span>
+
+<span class="n">milp_solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;cbc&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-1-well-behaved-nonlinear-program">
+<h2><span class="section-number">7.6.2. </span>Example 1: Well-Behaved Nonlinear Program<a class="headerlink" href="#example-1-well-behaved-nonlinear-program" title="Link to this heading">#</a></h2>
+<p>Consider the following “well-behaved” nonlinear optimization problem.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*} \min_{\mathbf{x}} \quad &amp; \sum_{i=\{0,...,4\}} x_i^2\\
+\mathrm{s.t.} \quad &amp; x_0 + x_1 - x_3 \geq 10 \\
+&amp; x_0 \times x_3 + x_1 \geq 0 \\
+&amp; x_4 \times x_3 + x_0 \times x_3 + x_4 = 0
+\end{align*} \end{split}\]</div>
+<p>This problem is feasible, well-initialized, and standard constraint qualifications hold. As expected, we have no trouble solving this problem.</p>
+<section id="define-the-model-in-pyomo">
+<h3><span class="section-number">7.6.2.1. </span>Define the model in Pyomo<a class="headerlink" href="#define-the-model-in-pyomo" title="Link to this heading">#</a></h3>
+<p>We start by defining the optimization problem in Pyomo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+<span class="n">m</span><span class="o">.</span><span class="n">I</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)])</span>
+
+<span class="n">m</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span><span class="n">initialize</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+<span class="n">m</span><span class="o">.</span><span class="n">con1</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">con2</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">con3</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">m</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">I</span><span class="p">))</span>
+
+<span class="n">m</span><span class="o">.</span><span class="n">pprint</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1 Set Declarations
+    I : Size=1, Index=None, Ordered=Insertion
+        Key  : Dimen : Domain : Size : Members
+        None :     1 :    Any :    5 : {0, 1, 2, 3, 4}
+
+1 Var Declarations
+    x : Size=5, Index=I
+        Key : Lower : Value : Upper : Fixed : Stale : Domain
+          0 :   -10 :   1.0 :    10 : False : False :  Reals
+          1 :   -10 :   1.0 :    10 : False : False :  Reals
+          2 :   -10 :   1.0 :    10 : False : False :  Reals
+          3 :   -10 :   1.0 :    10 : False : False :  Reals
+          4 :   -10 :   1.0 :    10 : False : False :  Reals
+
+1 Objective Declarations
+    obj : Size=1, Index=None, Active=True
+        Key  : Active : Sense    : Expression
+        None :   True : minimize : x[0]**2 + x[1]**2 + x[2]**2 + x[3]**2 + x[4]**2
+
+3 Constraint Declarations
+    con1 : Size=1, Index=None, Active=True
+        Key  : Lower : Body               : Upper : Active
+        None :  10.0 : x[0] + x[1] - x[3] :  +Inf :   True
+    con2 : Size=1, Index=None, Active=True
+        Key  : Lower : Body             : Upper : Active
+        None :   0.0 : x[0]*x[3] + x[1] :  +Inf :   True
+    con3 : Size=1, Index=None, Active=True
+        Key  : Lower : Body                         : Upper : Active
+        None :   0.0 : x[4]*x[3] + x[0]*x[3] - x[4] :   0.0 :   True
+
+6 Declarations: I x con1 con2 con3 obj
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="evaluate-the-initial-point">
+<h3><span class="section-number">7.6.2.2. </span>Evaluate the initial point<a class="headerlink" href="#evaluate-the-initial-point" title="Link to this heading">#</a></h3>
+<p>Initialization is extremely important for nonlinear optimization problems. By setting the Ipopt option <code class="docutils literal notranslate"><span class="pre">max_iter</span></code> to zero, we can inspect the initial point.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Specify Ipopt as the solver</span>
+<span class="n">opt</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+
+<span class="c1"># Specifying an iteration limit of 0 allows us to inspect the initial point</span>
+<span class="n">opt</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;max_iter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># &quot;Solving&quot; the model with an iteration limit of 0 load the initial point and applies</span>
+<span class="c1"># any preprocessors (e.g., enforces bounds)</span>
+<span class="n">opt</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Create Degeneracy Hunter object</span>
+<span class="n">dh</span> <span class="o">=</span> <span class="n">DegeneracyHunter</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="n">milp_solver</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: max_iter=0
+
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+
+This version of Ipopt was compiled from source code available at
+    https://github.com/IDAES/Ipopt as part of the Institute for the Design of
+    Advanced Energy Systems Process Systems Engineering Framework (IDAES PSE
+    Framework) Copyright (c) 2018-2019. See https://github.com/IDAES/idaes-pse.
+
+This version of Ipopt was compiled using HSL, a collection of Fortran codes
+    for large-scale scientific computation.  All technical papers, sales and
+    publicity material resulting from use of the HSL codes within IPOPT must
+    contain the following acknowledgement:
+        HSL, a collection of Fortran codes for large-scale scientific
+        computation. See http://www.hsl.rl.ac.uk.
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:        3
+Number of nonzeros in inequality constraint Jacobian.:        6
+Number of nonzeros in Lagrangian Hessian.............:        7
+
+Total number of variables............................:        5
+                     variables with only lower bounds:        0
+                variables with lower and upper bounds:        5
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:        1
+Total number of inequality constraints...............:        2
+        inequality constraints with only lower bounds:        2
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        0
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  5.0000000e+00 9.00e+00 2.00e+00  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+
+Number of Iterations....: 0
+
+                                   (scaled)                 (unscaled)
+Objective...............:   5.0000000000000000e+00    5.0000000000000000e+00
+Dual infeasibility......:   2.0000000000000000e+00    2.0000000000000000e+00
+Constraint violation....:   8.9999999000000006e+00    8.9999999000000006e+00
+Complementarity.........:   1.1000000099999999e+01    1.1000000099999999e+01
+Overall NLP error.......:   1.1000000099999999e+01    1.1000000099999999e+01
+
+
+Number of objective function evaluations             = 1
+Number of objective gradient evaluations             = 1
+Number of equality constraint evaluations            = 1
+Number of inequality constraint evaluations          = 1
+Number of equality constraint Jacobian evaluations   = 1
+Number of inequality constraint Jacobian evaluations = 1
+Number of Lagrangian Hessian evaluations             = 0
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.000
+Total CPU secs in NLP function evaluations           =      0.000
+
+EXIT: Maximum Number of Iterations Exceeded.
+WARNING: Loading a SolverResults object with a warning status into
+    model.name=&quot;unknown&quot;;
+      - termination condition: maxIterations
+      - message from solver: Ipopt 3.13.2\x3a Maximum Number of Iterations
+        Exceeded.
+</pre></div>
+</div>
+</div>
+</div>
+<p>We expect the exit status <code class="docutils literal notranslate"><span class="pre">Maximum</span> <span class="pre">Number</span> <span class="pre">of</span> <span class="pre">Iterations</span> <span class="pre">Exceeded</span></code> because we told Ipopt to take zero iterations (only evaluate the initial point).</p>
+</section>
+<section id="identify-the-constraint-residuals-larger-than-0-1">
+<h3><span class="section-number">7.6.2.3. </span>Identify the constraint residuals larger than 0.1<a class="headerlink" href="#identify-the-constraint-residuals-larger-than-0-1" title="Link to this heading">#</a></h3>
+<p>When developing nonlinear optimization models, one often wants to know: “what constraints are violated at the initial point (or more generally the point the solver terminated) within a given tolerance?” Degeneracy Hunter makes this very easy by provided a simple interface to several IDAES utility functions.</p>
+<p>The following line of code will print out all constraints with residuals larger than <code class="docutils literal notranslate"><span class="pre">0.1</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dh</span><span class="o">.</span><span class="n">check_residuals</span><span class="p">(</span><span class="n">tol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
+All constraints with residuals larger than 0.1 :
+
+count = 0 	|residual| = 9.0
+con1 : Size=1, Index=None, Active=True
+    Key  : Lower : Body               : Upper : Active
+    None :  10.0 : x[0] + x[1] - x[3] :  +Inf :   True
+variable	lower	value	upper
+x[0] 		 -10 	 1.0 	 10
+x[1] 		 -10 	 1.0 	 10
+x[3] 		 -10 	 1.0 	 10
+
+count = 1 	|residual| = 1.0
+con3 : Size=1, Index=None, Active=True
+    Key  : Lower : Body                         : Upper : Active
+    None :   0.0 : x[4]*x[3] + x[0]*x[3] - x[4] :   0.0 :   True
+variable	lower	value	upper
+x[4] 		 -10 	 1.0 	 10
+x[3] 		 -10 	 1.0 	 10
+x[0] 		 -10 	 1.0 	 10
+No constraints with residuals larger than 0.1 !
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dict_keys([&lt;pyomo.core.base.constraint.SimpleConstraint object at 0x1519cc2e0&gt;, &lt;pyomo.core.base.constraint.SimpleConstraint object at 0x1519cc400&gt;])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Important: Ipopt does several preprocessing steps when we executed it with zero iterations. When checking the initial point, it is strongly recommended to call Ipopt with zero iterations first. Otherwise, you will not be analyzing the initial point Ipopt starts with.</p>
+</section>
+<section id="identify-all-variables-within-1-of-their-bounds">
+<h3><span class="section-number">7.6.2.4. </span>Identify all variables within 1 of their bounds<a class="headerlink" href="#identify-all-variables-within-1-of-their-bounds" title="Link to this heading">#</a></h3>
+<p>Another common question when developing optimization models is, “Which variables are within their bounds by a given tolerance?” Below is the syntax:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dh</span><span class="o">.</span><span class="n">check_variable_bounds</span><span class="p">(</span><span class="n">tol</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
+No variables within 1.0 (absolute) of their bounds.
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pyomo.common.collections.component_set.ComponentSet at 0x151a26790&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="solve-the-optimization-problem">
+<h3><span class="section-number">7.6.2.5. </span>Solve the optimization problem<a class="headerlink" href="#solve-the-optimization-problem" title="Link to this heading">#</a></h3>
+<p>Now we can solve the optimization problem. We first set the number of iterations to 50 and then resolve with Ipopt.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">opt</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;max_iter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">opt</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: max_iter=50
+
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+
+This version of Ipopt was compiled from source code available at
+    https://github.com/IDAES/Ipopt as part of the Institute for the Design of
+    Advanced Energy Systems Process Systems Engineering Framework (IDAES PSE
+    Framework) Copyright (c) 2018-2019. See https://github.com/IDAES/idaes-pse.
+
+This version of Ipopt was compiled using HSL, a collection of Fortran codes
+    for large-scale scientific computation.  All technical papers, sales and
+    publicity material resulting from use of the HSL codes within IPOPT must
+    contain the following acknowledgement:
+        HSL, a collection of Fortran codes for large-scale scientific
+        computation. See http://www.hsl.rl.ac.uk.
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:        3
+Number of nonzeros in inequality constraint Jacobian.:        6
+Number of nonzeros in Lagrangian Hessian.............:        7
+
+Total number of variables............................:        5
+                     variables with only lower bounds:        0
+                variables with lower and upper bounds:        5
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:        1
+Total number of inequality constraints...............:        2
+        inequality constraints with only lower bounds:        2
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        0
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  5.0000000e+00 9.00e+00 2.00e+00  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1  5.5940309e+00 8.19e+00 2.58e+00  -1.0 4.12e+00    -  3.29e-01 9.99e-02h  1
+   2  4.3446689e+01 2.13e+00 2.10e+00  -1.0 3.67e+00    -  7.64e-01 1.00e+00h  1
+   3  5.0854561e+01 6.80e-01 1.02e+00  -1.0 1.02e+00   0.0 9.34e-01 1.00e+00h  1
+   4  4.9204340e+01 4.73e-01 1.26e+00  -1.0 1.78e+00    -  1.00e+00 1.00e+00f  1
+   5  4.8955163e+01 9.44e-01 1.57e+00  -1.0 4.62e+00  -0.5 1.00e+00 3.51e-01f  2
+   6  4.5850988e+01 8.92e-01 1.56e+00  -1.0 2.14e+00  -0.1 1.00e+00 7.67e-01f  1
+   7  4.5704084e+01 1.19e+00 1.75e+00  -1.0 4.73e+00    -  1.00e+00 2.50e-01f  3
+   8  4.5331671e+01 1.31e+00 3.01e+00  -1.0 1.56e+01    -  7.20e-01 5.98e-02f  4
+   9  4.1480725e+01 7.76e-03 1.98e-01  -1.0 4.94e-01    -  1.00e+00 1.00e+00f  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  10  4.1177584e+01 1.30e-03 8.56e-03  -2.5 1.48e-01    -  1.00e+00 1.00e+00f  1
+  11  4.1157407e+01 7.91e-06 1.09e-05  -3.8 9.88e-03    -  1.00e+00 1.00e+00h  1
+  12  4.1157067e+01 2.59e-10 1.57e-09  -5.7 1.30e-04    -  1.00e+00 1.00e+00h  1
+  13  4.1157063e+01 2.24e-14 1.63e-13  -8.6 1.52e-06    -  1.00e+00 1.00e+00h  1
+
+Number of Iterations....: 13
+
+                                   (scaled)                 (unscaled)
+Objective...............:   4.1157063321491172e+01    4.1157063321491172e+01
+Dual infeasibility......:   1.6278818285040336e-13    1.6278818285040336e-13
+Constraint violation....:   2.2426505097428162e-14    2.2426505097428162e-14
+Complementarity.........:   2.5065697306197698e-09    2.5065697306197698e-09
+Overall NLP error.......:   2.5065697306197698e-09    2.5065697306197698e-09
+
+
+Number of objective function evaluations             = 24
+Number of objective gradient evaluations             = 14
+Number of equality constraint evaluations            = 24
+Number of inequality constraint evaluations          = 24
+Number of equality constraint Jacobian evaluations   = 14
+Number of inequality constraint Jacobian evaluations = 14
+Number of Lagrangian Hessian evaluations             = 13
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.004
+Total CPU secs in NLP function evaluations           =      0.000
+
+EXIT: Optimal Solution Found.
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Problem&#39;: [{&#39;Lower bound&#39;: -inf, &#39;Upper bound&#39;: inf, &#39;Number of objectives&#39;: 1, &#39;Number of constraints&#39;: 3, &#39;Number of variables&#39;: 5, &#39;Sense&#39;: &#39;unknown&#39;}], &#39;Solver&#39;: [{&#39;Status&#39;: &#39;ok&#39;, &#39;Message&#39;: &#39;Ipopt 3.13.2\\x3a Optimal Solution Found&#39;, &#39;Termination condition&#39;: &#39;optimal&#39;, &#39;Id&#39;: 0, &#39;Error rc&#39;: 0, &#39;Time&#39;: 0.04221987724304199}], &#39;Solution&#39;: [OrderedDict([(&#39;number of solutions&#39;, 0), (&#39;number of solutions displayed&#39;, 0)])]}
+</pre></div>
+</div>
+</div>
+</div>
+<p>As expected, Ipopt has no trouble solving this optimization problem.</p>
+</section>
+<section id="check-if-any-constraint-residuals-are-large-than-10-14">
+<h3><span class="section-number">7.6.2.6. </span>Check if any constraint residuals are large than 10<span class="math notranslate nohighlight">\(^{-14}\)</span><a class="headerlink" href="#check-if-any-constraint-residuals-are-large-than-10-14" title="Link to this heading">#</a></h3>
+<p>Let’s now inspect the new solution to see which (if any) constraints have residuals larger than 10<span class="math notranslate nohighlight">\(^{-14}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dh</span><span class="o">.</span><span class="n">check_residuals</span><span class="p">(</span><span class="n">tol</span><span class="o">=</span><span class="mf">1E-14</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
+All constraints with residuals larger than 1e-14 :
+
+count = 0 	|residual| = 9.97185747309004e-08
+con1 : Size=1, Index=None, Active=True
+    Key  : Lower : Body               : Upper : Active
+    None :  10.0 : x[0] + x[1] - x[3] :  +Inf :   True
+variable	lower	value	upper
+x[0] 		 -10 	 1.4516741106008322 	 10
+x[1] 		 -10 	 5.061595738300216 	 10
+x[3] 		 -10 	 -3.4867300513803765 	 10
+
+count = 1 	|residual| = 7.942586144338293e-09
+con2 : Size=1, Index=None, Active=True
+    Key  : Lower : Body             : Upper : Active
+    None :   0.0 : x[0]*x[3] + x[1] :  +Inf :   True
+variable	lower	value	upper
+x[1] 		 -10 	 5.061595738300216 	 10
+x[0] 		 -10 	 1.4516741106008322 	 10
+x[3] 		 -10 	 -3.4867300513803765 	 10
+
+count = 2 	|residual| = 2.2426505097428162e-14
+con3 : Size=1, Index=None, Active=True
+    Key  : Lower : Body                         : Upper : Active
+    None :   0.0 : x[4]*x[3] + x[0]*x[3] - x[4] :   0.0 :   True
+variable	lower	value	upper
+x[4] 		 -10 	 -1.128125759356881 	 10
+x[3] 		 -10 	 -3.4867300513803765 	 10
+x[0] 		 -10 	 1.4516741106008322 	 10
+No constraints with residuals larger than 1e-14 !
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dict_keys([&lt;pyomo.core.base.constraint.SimpleConstraint object at 0x1519cc2e0&gt;, &lt;pyomo.core.base.constraint.SimpleConstraint object at 0x1519cc340&gt;, &lt;pyomo.core.base.constraint.SimpleConstraint object at 0x1519cc400&gt;])
+</pre></div>
+</div>
+</div>
+</div>
+<p>As expected, all of the constraints are satisfied, even with this fairly tight tolerance.</p>
+</section>
+<section id="identify-all-variables-within-10-5-of-their-bounds">
+<h3><span class="section-number">7.6.2.7. </span>Identify all variables within 10<span class="math notranslate nohighlight">\(^{-5}\)</span> of their bounds<a class="headerlink" href="#identify-all-variables-within-10-5-of-their-bounds" title="Link to this heading">#</a></h3>
+<p>Finally, let’s check if any of the variables are near their bounds at the new solution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dh</span><span class="o">.</span><span class="n">check_variable_bounds</span><span class="p">(</span><span class="n">tol</span><span class="o">=</span><span class="mf">1E-5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
+No variables within 1e-05 (absolute) of their bounds.
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pyomo.common.collections.component_set.ComponentSet at 0x151aeaa30&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Great, no variables are near their bounds. If a variable was at its bound, it is important the inspect the model and confirm the bound is physically sensible/what you intended.</p>
+</section>
+<section id="check-the-rank-of-the-constraint-jacobian-at-the-solution">
+<h3><span class="section-number">7.6.2.8. </span>Check the rank of the constraint Jacobian at the solution<a class="headerlink" href="#check-the-rank-of-the-constraint-jacobian-at-the-solution" title="Link to this heading">#</a></h3>
+<p>The main feature of Degeneracy Hunter is to check if an optimization problem is poorly formulated. Let’s see what happens when we check the rank on a carefully formulated optimization problem:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dh</span><span class="o">.</span><span class="n">check_rank_equality_constraints</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Checking rank of Jacobian of equality constraints...
+Model contains 1 equality constraints and 5 variables.
+Model needs at least 2 equality constraints to check rank.
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-1
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="try-degeneracy-hunter">
+<h3><span class="section-number">7.6.2.9. </span>Try Degeneracy Hunter<a class="headerlink" href="#try-degeneracy-hunter" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ids</span> <span class="o">=</span> <span class="n">dh</span><span class="o">.</span><span class="n">find_irreducible_degenerate_sets</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>*** Searching for a Single Degenerate Set ***
+Building MILP model...
+2 Set Declarations
+    C : Size=1, Index=None, Ordered=Insertion
+        Key  : Dimen : Domain : Size : Members
+        None :     1 :    Any :    1 :    {0,}
+    V : Size=1, Index=None, Ordered=Insertion
+        Key  : Dimen : Domain : Size : Members
+        None :     1 :    Any :    5 : {0, 1, 2, 3, 4}
+
+4 Var Declarations
+    abs_nu : Size=1, Index=C
+        Key : Lower : Value : Upper        : Fixed : Stale : Domain
+          0 :     0 :  None : 100000.00001 : False :  True :  Reals
+    nu : Size=1, Index=C
+        Key : Lower         : Value : Upper        : Fixed : Stale : Domain
+          0 : -100000.00001 :   1.0 : 100000.00001 : False : False :  Reals
+    y_neg : Size=1, Index=C
+        Key : Lower : Value : Upper : Fixed : Stale : Domain
+          0 :     0 :  None :     1 : False :  True : Binary
+    y_pos : Size=1, Index=C
+        Key : Lower : Value : Upper : Fixed : Stale : Domain
+          0 :     0 :  None :     1 : False :  True : Binary
+
+1 Constraint Declarations
+    pos_xor_neg : Size=0, Index=C, Active=True
+        Key : Lower : Body : Upper : Active
+
+7 Declarations: C V nu y_pos y_neg abs_nu pos_xor_neg
+Solving MILP model...
+WARNING: Loading a SolverResults object with a warning status into
+    model.name=&quot;unknown&quot;;
+      - termination condition: infeasible
+      - message from solver: &lt;undefined&gt;
+No candidate equations. The Jacobian is likely full rank.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="example-2-linear-program-with-redundant-equality-constraints">
+<h2><span class="section-number">7.6.3. </span>Example 2: Linear Program with Redundant Equality Constraints<a class="headerlink" href="#example-2-linear-program-with-redundant-equality-constraints" title="Link to this heading">#</a></h2>
+<p>Now let’s apply Degeneracy Hunter to a poorly formulated optimization problem:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*} \min_{\mathbf{x}} \quad &amp; \sum_{i=\{1,...,3\}} x_i \\
+\mathrm{s.t.}~~&amp; x_1 + x_2 \geq 1 \\
+&amp; x_1 + x_2 + x_3 = 1 \\
+&amp; x_2 - 2 x_3 \leq 1 \\
+&amp; x_1 + x_3 \geq 1 \\
+&amp; x_1 + x_2 + x_3 = 1 \\
+\end{align*} \end{split}\]</div>
+<p>Notice the two equality constraints are redundant. This means the constraint qualifications (e.g., LICQ) do not hold which has three important implications:</p>
+<ol class="arabic simple">
+<li><p>The optimal solution may not be mathematically well-defined (e.g., the dual variables are not unique)</p></li>
+<li><p>The calculations performed by the optimization solver may become numerically poorly scaled</p></li>
+<li><p>Theoretical convergence properties of optimization algorithms may not hold</p></li>
+</ol>
+<p>The absolute best defense against this is to detect degenerate equations and reformulate the model to remove them; this is the primary purpose of Degeneracy Hunter. Let’s see it in action.</p>
+<section id="id1">
+<h3><span class="section-number">7.6.3.1. </span>Define the model in Pyomo<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">example2</span><span class="p">(</span><span class="n">with_degenerate_constraint</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; Create the Pyomo model for Example 2</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        with_degenerate_constraint: Boolean, if True, include the redundant linear constraint</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        m2: Pyomo model</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">m2</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+    <span class="n">m2</span><span class="o">.</span><span class="n">I</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">)])</span>
+
+    <span class="n">m2</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m2</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span><span class="n">initialize</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="n">m2</span><span class="o">.</span><span class="n">con1</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">m2</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">m2</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">m2</span><span class="o">.</span><span class="n">con2</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">m2</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">m2</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">m2</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">m2</span><span class="o">.</span><span class="n">con3</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">m2</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">m2</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">m2</span><span class="o">.</span><span class="n">con4</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">m2</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">m2</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">with_degenerate_constraint</span><span class="p">:</span>
+        <span class="n">m2</span><span class="o">.</span><span class="n">con5</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">m2</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">m2</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">m2</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">m2</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">m2</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">m2</span><span class="o">.</span><span class="n">I</span><span class="p">))</span>
+
+    <span class="n">m2</span><span class="o">.</span><span class="n">pprint</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">m2</span>
+
+<span class="c1"># Create the Pyomo model for Example 2 including the redundant constraint</span>
+<span class="n">m2</span> <span class="o">=</span> <span class="n">example2</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1 Set Declarations
+    I : Size=1, Index=None, Ordered=Insertion
+        Key  : Dimen : Domain : Size : Members
+        None :     1 :    Any :    3 : {1, 2, 3}
+
+1 Var Declarations
+    x : Size=3, Index=I
+        Key : Lower : Value : Upper : Fixed : Stale : Domain
+          1 :     0 :   1.0 :     5 : False : False :  Reals
+          2 :     0 :   1.0 :     5 : False : False :  Reals
+          3 :     0 :   1.0 :     5 : False : False :  Reals
+
+1 Objective Declarations
+    obj : Size=1, Index=None, Active=True
+        Key  : Active : Sense    : Expression
+        None :   True : minimize : x[1] + x[2] + x[3]
+
+5 Constraint Declarations
+    con1 : Size=1, Index=None, Active=True
+        Key  : Lower : Body        : Upper : Active
+        None :   1.0 : x[1] + x[2] :  +Inf :   True
+    con2 : Size=1, Index=None, Active=True
+        Key  : Lower : Body               : Upper : Active
+        None :   1.0 : x[1] + x[2] + x[3] :   1.0 :   True
+    con3 : Size=1, Index=None, Active=True
+        Key  : Lower : Body          : Upper : Active
+        None :  -Inf : x[2] - 2*x[3] :   1.0 :   True
+    con4 : Size=1, Index=None, Active=True
+        Key  : Lower : Body        : Upper : Active
+        None :   1.0 : x[1] + x[3] :  +Inf :   True
+    con5 : Size=1, Index=None, Active=True
+        Key  : Lower : Body               : Upper : Active
+        None :   1.0 : x[1] + x[2] + x[3] :   1.0 :   True
+
+8 Declarations: I x con1 con2 con3 con4 con5 obj
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id2">
+<h3><span class="section-number">7.6.3.2. </span>Evaluate the initial point<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Specifying an iteration limit of 0 allows us to inspect the initial point</span>
+<span class="n">opt</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;max_iter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># &quot;Solving&quot; the model with an iteration limit of 0 load the initial point and applies</span>
+<span class="c1"># any preprocessors (e.g., enforces bounds)</span>
+<span class="n">opt</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">m2</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Create Degeneracy Hunter object</span>
+<span class="n">dh2</span> <span class="o">=</span> <span class="n">DegeneracyHunter</span><span class="p">(</span><span class="n">m2</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="n">milp_solver</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: max_iter=0
+
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+
+This version of Ipopt was compiled from source code available at
+    https://github.com/IDAES/Ipopt as part of the Institute for the Design of
+    Advanced Energy Systems Process Systems Engineering Framework (IDAES PSE
+    Framework) Copyright (c) 2018-2019. See https://github.com/IDAES/idaes-pse.
+
+This version of Ipopt was compiled using HSL, a collection of Fortran codes
+    for large-scale scientific computation.  All technical papers, sales and
+    publicity material resulting from use of the HSL codes within IPOPT must
+    contain the following acknowledgement:
+        HSL, a collection of Fortran codes for large-scale scientific
+        computation. See http://www.hsl.rl.ac.uk.
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:        6
+Number of nonzeros in inequality constraint Jacobian.:        6
+Number of nonzeros in Lagrangian Hessian.............:        0
+
+Total number of variables............................:        3
+                     variables with only lower bounds:        0
+                variables with lower and upper bounds:        3
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:        2
+Total number of inequality constraints...............:        3
+        inequality constraints with only lower bounds:        2
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        1
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  3.0000000e+00 2.00e+00 1.00e+00  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+
+Number of Iterations....: 0
+
+                                   (scaled)                 (unscaled)
+Objective...............:   3.0000000000000000e+00    3.0000000000000000e+00
+Dual infeasibility......:   1.0000000000000000e+00    1.0000000000000000e+00
+Constraint violation....:   2.0000000000000000e+00    2.0000000000000000e+00
+Complementarity.........:   4.0000000499999997e+00    4.0000000499999997e+00
+Overall NLP error.......:   4.0000000499999997e+00    4.0000000499999997e+00
+
+
+Number of objective function evaluations             = 1
+Number of objective gradient evaluations             = 1
+Number of equality constraint evaluations            = 1
+Number of inequality constraint evaluations          = 1
+Number of equality constraint Jacobian evaluations   = 1
+Number of inequality constraint Jacobian evaluations = 1
+Number of Lagrangian Hessian evaluations             = 0
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.000
+Total CPU secs in NLP function evaluations           =      0.000
+
+EXIT: Maximum Number of Iterations Exceeded.
+WARNING: Loading a SolverResults object with a warning status into
+    model.name=&quot;unknown&quot;;
+      - termination condition: maxIterations
+      - message from solver: Ipopt 3.13.2\x3a Maximum Number of Iterations
+        Exceeded.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="identify-constraints-with-residuals-greater-than-0-1-at-the-initial-point">
+<h3><span class="section-number">7.6.3.3. </span>Identify constraints with residuals greater than 0.1 at the initial point<a class="headerlink" href="#identify-constraints-with-residuals-greater-than-0-1-at-the-initial-point" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dh2</span><span class="o">.</span><span class="n">check_residuals</span><span class="p">(</span><span class="n">tol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
+All constraints with residuals larger than 0.1 :
+
+count = 0 	|residual| = 2.0
+con2 : Size=1, Index=None, Active=True
+    Key  : Lower : Body               : Upper : Active
+    None :   1.0 : x[1] + x[2] + x[3] :   1.0 :   True
+variable	lower	value	upper
+x[1] 		 0 	 1.0 	 5
+x[2] 		 0 	 1.0 	 5
+x[3] 		 0 	 1.0 	 5
+
+count = 1 	|residual| = 2.0
+con5 : Size=1, Index=None, Active=True
+    Key  : Lower : Body               : Upper : Active
+    None :   1.0 : x[1] + x[2] + x[3] :   1.0 :   True
+variable	lower	value	upper
+x[1] 		 0 	 1.0 	 5
+x[2] 		 0 	 1.0 	 5
+x[3] 		 0 	 1.0 	 5
+No constraints with residuals larger than 0.1 !
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dict_keys([&lt;pyomo.core.base.constraint.SimpleConstraint object at 0x151add700&gt;, &lt;pyomo.core.base.constraint.SimpleConstraint object at 0x1519c4c40&gt;])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="solve-the-optimization-problem-and-extract-the-solution">
+<h3><span class="section-number">7.6.3.4. </span>Solve the optimization problem and extract the solution<a class="headerlink" href="#solve-the-optimization-problem-and-extract-the-solution" title="Link to this heading">#</a></h3>
+<p>Now let’s solve the optimization problem.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">opt</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;max_iter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">opt</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">m2</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">m2</span><span class="o">.</span><span class="n">I</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x[&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;]=&quot;</span><span class="p">,</span><span class="n">m2</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: max_iter=50
+
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+
+This version of Ipopt was compiled from source code available at
+    https://github.com/IDAES/Ipopt as part of the Institute for the Design of
+    Advanced Energy Systems Process Systems Engineering Framework (IDAES PSE
+    Framework) Copyright (c) 2018-2019. See https://github.com/IDAES/idaes-pse.
+
+This version of Ipopt was compiled using HSL, a collection of Fortran codes
+    for large-scale scientific computation.  All technical papers, sales and
+    publicity material resulting from use of the HSL codes within IPOPT must
+    contain the following acknowledgement:
+        HSL, a collection of Fortran codes for large-scale scientific
+        computation. See http://www.hsl.rl.ac.uk.
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:        6
+Number of nonzeros in inequality constraint Jacobian.:        6
+Number of nonzeros in Lagrangian Hessian.............:        0
+
+Total number of variables............................:        3
+                     variables with only lower bounds:        0
+                variables with lower and upper bounds:        3
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:        2
+Total number of inequality constraints...............:        3
+        inequality constraints with only lower bounds:        2
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        1
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  3.0000000e+00 2.00e+00 1.00e+00  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1  1.3934810e+00 3.93e-01 2.17e-01  -1.0 1.23e+00    -  7.90e-01 8.03e-01h  1
+   2  1.0184419e+00 1.84e-02 1.26e-02  -1.7 7.02e-01    -  9.41e-01 9.53e-01h  1
+   3  1.0011246e+00 1.12e-03 3.82e-02  -2.5 1.50e-02    -  1.00e+00 9.39e-01h  1
+   4  1.0006914e+00 6.91e-04 3.12e+00  -2.5 3.17e-03    -  1.00e+00 3.85e-01h  1
+   5  1.0002664e+00 2.66e-04 4.35e+00  -2.5 1.12e-03    -  1.00e+00 6.15e-01h  1
+   6  1.0001115e+00 1.12e-04 1.07e+01  -2.5 4.99e-04    -  1.00e+00 5.82e-01h  1
+   7  1.0000788e+00 7.88e-05 4.33e+01  -2.5 1.88e-04    -  1.00e+00 2.94e-01f  2
+   8  1.0000153e+00 1.53e-05 2.19e+01  -2.5 6.85e-05    -  1.00e+00 8.08e-01h  1
+   9  1.0000118e+00 1.18e-05 2.78e+02  -2.5 3.47e-05    -  1.00e+00 2.45e-01f  2
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  10  1.0000014e+00 1.44e-06 2.83e-08  -2.5 7.79e-06    -  1.00e+00 1.00e+00h  1
+  11  1.0000000e+00 1.39e-09 1.84e-11  -5.7 2.56e-06    -  1.00e+00 1.00e+00h  1
+  12  1.0000000e+00 1.39e-09 1.24e+02  -8.6 1.16e-08    -  1.00e+00 9.54e-07h 21
+  13  9.9999999e-01 9.82e-09 1.14e-13  -8.6 1.33e-08    -  1.00e+00 1.00e+00s 22
+  14  9.9999999e-01 9.96e-09 6.46e-14  -8.6 2.29e-10    -  1.00e+00 1.00e+00s 22
+  15  9.9999999e-01 9.96e-09 1.82e+02  -9.0 4.00e-11    -  1.00e+00 9.54e-07h 21
+  16  9.9999999e-01 1.00e-08 1.52e-13  -9.0 5.89e-11    -  1.00e+00 1.00e+00s 22
+
+Number of Iterations....: 16
+
+                                   (scaled)                 (unscaled)
+Objective...............:   9.9999999000238915e-01    9.9999999000238915e-01
+Dual infeasibility......:   1.5188693260016487e-13    1.5188693260016487e-13
+Constraint violation....:   9.9976108502985994e-09    9.9976108502985994e-09
+Complementarity.........:   9.2217032157601989e-10    9.2217032157601989e-10
+Overall NLP error.......:   9.9976108502985994e-09    9.9976108502985994e-09
+
+
+Number of objective function evaluations             = 111
+Number of objective gradient evaluations             = 17
+Number of equality constraint evaluations            = 111
+Number of inequality constraint evaluations          = 111
+Number of equality constraint Jacobian evaluations   = 17
+Number of inequality constraint Jacobian evaluations = 17
+Number of Lagrangian Hessian evaluations             = 16
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.007
+Total CPU secs in NLP function evaluations           =      0.000
+
+EXIT: Optimal Solution Found.
+x[ 1 ]= 1.0000000099975996
+x[ 2 ]= 0.0
+x[ 3 ]= 0.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>We got luck here. Ipopt implements several algorithmic and numerical safeguards to handle (mildy) degenerate equations. Nevertheless, notice the last column of the Ipopt output labeled <code class="docutils literal notranslate"><span class="pre">ls</span></code>. This is the number of linesearch evaluations. For iterations 0 to 11, <code class="docutils literal notranslate"><span class="pre">ls</span></code> is 1, which means Ipopt is taking full steps. For iterations 12 to 16, however, <code class="docutils literal notranslate"><span class="pre">ls</span></code> is greater than 20. This means Ipopt is struggling (a little) to converge to the solution.</p>
+</section>
+<section id="check-the-rank-of-the-jacobian-of-the-equality-constraints">
+<h3><span class="section-number">7.6.3.5. </span>Check the rank of the Jacobian of the equality constraints<a class="headerlink" href="#check-the-rank-of-the-jacobian-of-the-equality-constraints" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_deficient</span> <span class="o">=</span> <span class="n">dh2</span><span class="o">.</span><span class="n">check_rank_equality_constraints</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Checking rank of Jacobian of equality constraints...
+Model contains 2 equality constraints and 3 variables.
+Computing the 1 smallest singular value(s)
+Smallest singular value(s):
+0.000E+00
+</pre></div>
+</div>
+</div>
+</div>
+<p>A singular value near 0 indicates the Jacobian of the equality constraints is rank deficient. For each near-zero signular value, there is likely one degenerate constraint.</p>
+</section>
+<section id="identify-candidate-degenerate-constraints">
+<h3><span class="section-number">7.6.3.6. </span>Identify candidate degenerate constraints<a class="headerlink" href="#identify-candidate-degenerate-constraints" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds2</span> <span class="o">=</span> <span class="n">dh2</span><span class="o">.</span><span class="n">find_candidate_equations</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>*** Searching for a Single Degenerate Set ***
+Building MILP model...
+2 Set Declarations
+    C : Size=1, Index=None, Ordered=Insertion
+        Key  : Dimen : Domain : Size : Members
+        None :     1 :    Any :    2 : {0, 1}
+    V : Size=1, Index=None, Ordered=Insertion
+        Key  : Dimen : Domain : Size : Members
+        None :     1 :    Any :    3 : {0, 1, 2}
+
+4 Var Declarations
+    abs_nu : Size=2, Index=C
+        Key : Lower : Value : Upper        : Fixed : Stale : Domain
+          0 :     0 :  None : 100000.00001 : False :  True :  Reals
+          1 :     0 :  None : 100000.00001 : False :  True :  Reals
+    nu : Size=2, Index=C
+        Key : Lower         : Value : Upper        : Fixed : Stale : Domain
+          0 : -100000.00001 :   1.0 : 100000.00001 : False : False :  Reals
+          1 : -100000.00001 :   1.0 : 100000.00001 : False : False :  Reals
+    y_neg : Size=2, Index=C
+        Key : Lower : Value : Upper : Fixed : Stale : Domain
+          0 :     0 :  None :     1 : False :  True : Binary
+          1 :     0 :  None :     1 : False :  True : Binary
+    y_pos : Size=2, Index=C
+        Key : Lower : Value : Upper : Fixed : Stale : Domain
+          0 :     0 :  None :     1 : False :  True : Binary
+          1 :     0 :  None :     1 : False :  True : Binary
+
+1 Constraint Declarations
+    pos_xor_neg : Size=0, Index=C, Active=True
+        Key : Lower : Body : Upper : Active
+
+7 Declarations: C V nu y_pos y_neg abs_nu pos_xor_neg
+Solving MILP model...
+Welcome to the CBC MILP Solver 
+Version: 2.10.5 
+Build Date: Dec  8 2020 
+
+command line - /anaconda3/envs/spring2021/bin/cbc -printingOptions all -import /var/folders/xy/24xvnyss36v3d8mw68tygxdw0000gp/T/tmp69c_1cob.pyomo.lp -stat=1 -solve -solu /var/folders/xy/24xvnyss36v3d8mw68tygxdw0000gp/T/tmp69c_1cob.pyomo.soln (default strategy 1)
+Option for printingOptions changed from normal to all
+Presolve 9 (-8) rows, 7 (-2) columns and 20 (-15) elements
+Statistics for presolved model
+Original problem has 4 integers (4 of which binary)
+Presolved problem has 4 integers (4 of which binary)
+==== 5 zero objective 2 different
+5 variables have objective of 0
+2 variables have objective of 1
+==== absolute objective values 2 different
+5 variables have objective of 0
+2 variables have objective of 1
+==== for integers 4 zero objective 1 different
+4 variables have objective of 0
+==== for integers absolute objective values 1 different
+4 variables have objective of 0
+===== end objective counts
+
+
+Problem has 9 rows, 7 columns (2 with objective) and 20 elements
+Column breakdown:
+0 of type 0.0-&gt;inf, 2 of type 0.0-&gt;up, 0 of type lo-&gt;inf, 
+1 of type lo-&gt;up, 0 of type free, 0 of type fixed, 
+0 of type -inf-&gt;0.0, 0 of type -inf-&gt;up, 4 of type 0.0-&gt;1.0 
+Row breakdown:
+0 of type E 0.0, 0 of type E 1.0, 0 of type E -1.0, 
+0 of type E other, 0 of type G 0.0, 1 of type G 1.0, 
+0 of type G other, 4 of type L 0.0, 0 of type L 1.0, 
+4 of type L other, 0 of type Range 0.0-&gt;1.0, 0 of type Range other, 
+0 of type Free 
+Continuous objective value is 0 - 0.00 seconds
+Cgl0003I 0 fixed, 0 tightened bounds, 2 strengthened rows, 0 substitutions
+Cgl0004I processed model has 9 rows, 7 columns (4 integer (4 of which binary)) and 22 elements
+Cbc0038I Initial state - 2 integers unsatisfied sum - 1
+Cbc0038I Pass   1: suminf.    0.00000 (0) obj. 1.99999e-05 iterations 3
+Cbc0038I Solution found of 1.99999e-05
+Cbc0038I Relaxing continuous gives 2e-05
+Cbc0038I Rounding solution of 1.99999e-05 is better than previous of 2e-05
+
+Cbc0038I Before mini branch and bound, 2 integers at bound fixed and 0 continuous
+Cbc0038I Full problem 9 rows 7 columns, reduced to 7 rows 5 columns
+Cbc0038I Mini branch and bound did not improve solution (0.00 seconds)
+Cbc0038I Round again with cutoff of 8.99991e-06
+Cbc0038I Pass   2: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 2
+Cbc0038I Pass   3: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 0
+Cbc0038I Pass   4: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 1
+Cbc0038I Pass   5: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 0
+Cbc0038I Pass   6: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 0
+Cbc0038I Pass   7: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 0
+Cbc0038I Pass   8: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 0
+Cbc0038I Pass   9: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 0
+Cbc0038I Pass  10: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 0
+Cbc0038I Pass  11: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 0
+Cbc0038I Pass  12: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 1
+Cbc0038I Pass  13: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 0
+Cbc0038I Pass  14: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 1
+Cbc0038I Pass  15: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 0
+Cbc0038I Pass  16: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 0
+Cbc0038I Pass  17: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 0
+Cbc0038I Pass  18: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 5
+Cbc0038I Pass  19: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 1
+Cbc0038I Pass  20: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 0
+Cbc0038I Pass  21: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 0
+Cbc0038I Pass  22: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 0
+Cbc0038I Pass  23: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 0
+Cbc0038I Pass  24: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 0
+Cbc0038I Pass  25: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 0
+Cbc0038I Pass  26: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 2
+Cbc0038I Pass  27: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 2
+Cbc0038I Pass  28: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 0
+Cbc0038I Pass  29: suminf.    1.00000 (3) obj. 8.99991e-06 iterations 3
+Cbc0038I Pass  30: suminf.    0.55000 (2) obj. 8.99991e-06 iterations 2
+Cbc0038I Pass  31: suminf.    1.00000 (3) obj. 8.99991e-06 iterations 2
+Cbc0038I No solution found this major pass
+Cbc0038I Before mini branch and bound, 0 integers at bound fixed and 0 continuous
+Cbc0038I Full problem 9 rows 7 columns, reduced to 9 rows 7 columns
+Cbc0038I Mini branch and bound did not improve solution (0.01 seconds)
+Cbc0038I After 0.01 seconds - Feasibility pump exiting with objective of 1.99999e-05 - took 0.01 seconds
+Cbc0012I Integer solution of 2e-05 found by feasibility pump after 0 iterations and 0 nodes (0.01 seconds)
+Cbc0038I Full problem 9 rows 7 columns, reduced to 7 rows 5 columns
+Cbc0006I The LP relaxation is infeasible or too expensive
+Cbc0031I 2 added rows had average density of 2
+Cbc0013I At root node, 2 cuts changed objective from 0 to 1e-05 in 3 passes
+Cbc0014I Cut generator 0 (Probing) - 2 row cuts average 1.0 elements, 2 column cuts (2 active)  in 0.000 seconds - new frequency is 1
+Cbc0014I Cut generator 1 (Gomory) - 2 row cuts average 2.0 elements, 0 column cuts (0 active)  in 0.000 seconds - new frequency is 1
+Cbc0014I Cut generator 2 (Knapsack) - 0 row cuts average 0.0 elements, 0 column cuts (0 active)  in 0.000 seconds - new frequency is -100
+Cbc0014I Cut generator 3 (Clique) - 0 row cuts average 0.0 elements, 0 column cuts (0 active)  in 0.000 seconds - new frequency is -100
+Cbc0014I Cut generator 4 (MixedIntegerRounding2) - 0 row cuts average 0.0 elements, 0 column cuts (0 active)  in 0.000 seconds - new frequency is -100
+Cbc0014I Cut generator 5 (FlowCover) - 0 row cuts average 0.0 elements, 0 column cuts (0 active)  in 0.000 seconds - new frequency is -100
+Cbc0014I Cut generator 6 (TwoMirCuts) - 2 row cuts average 2.0 elements, 0 column cuts (0 active)  in 0.000 seconds - new frequency is 1
+Cbc0001I Search completed - best objective 2.000000000000001e-05, took 6 iterations and 0 nodes (0.01 seconds)
+Cbc0035I Maximum depth 0, 0 variables fixed on reduced cost
+Cuts at root node changed objective from 0 to 1e-05
+Probing was tried 3 times and created 4 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+Gomory was tried 2 times and created 2 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+Knapsack was tried 2 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+Clique was tried 2 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+MixedIntegerRounding2 was tried 2 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+FlowCover was tried 2 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+TwoMirCuts was tried 2 times and created 2 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+ZeroHalf was tried 1 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+
+Result - Optimal solution found
+
+Objective value:                0.00002000
+Enumerated nodes:               0
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total iterations:               6
+Time (CPU seconds):             0.02
+Time (Wallclock seconds):       0.02
+
+Total time (CPU seconds):       0.02   (Wallclock seconds):       0.02
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="find-irreducible-degenerate-sets-ids">
+<h3><span class="section-number">7.6.3.7. </span>Find irreducible degenerate sets (IDS)<a class="headerlink" href="#find-irreducible-degenerate-sets-ids" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ids</span> <span class="o">=</span> <span class="n">dh2</span><span class="o">.</span><span class="n">find_irreducible_degenerate_sets</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>*** Searching for Irreducible Degenerate Sets ***
+Building MILP model...
+Solving MILP 1 of 2 ...
+Solving MILP 2 of 2 ...
+
+Irreducible Degenerate Set 0
+nu	Constraint Name
+1.0 	 con2
+-1.0 	 con5
+
+Irreducible Degenerate Set 1
+nu	Constraint Name
+-1.0 	 con2
+1.0 	 con5
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="reformulate-example-2">
+<h3><span class="section-number">7.6.3.8. </span>Reformulate Example 2<a class="headerlink" href="#reformulate-example-2" title="Link to this heading">#</a></h3>
+<p>Now let’s reformulate the model by skipping/removing the redundant equality constraint:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*} \min_{\mathbf{x}} \quad &amp; \sum_{i=\{1,...,3\}} x_i \\
+\mathrm{s.t.}~~&amp; x_1 + x_2 \geq 1 \\
+&amp; x_1 + x_2 + x_3 = 1 \\
+&amp; x_2 - 2 x_3 \leq 1 \\
+&amp; x_1 + x_3 \geq 1
+\end{align*} \end{split}\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m2b</span> <span class="o">=</span> <span class="n">example2</span><span class="p">(</span><span class="n">with_degenerate_constraint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1 Set Declarations
+    I : Size=1, Index=None, Ordered=Insertion
+        Key  : Dimen : Domain : Size : Members
+        None :     1 :    Any :    3 : {1, 2, 3}
+
+1 Var Declarations
+    x : Size=3, Index=I
+        Key : Lower : Value : Upper : Fixed : Stale : Domain
+          1 :     0 :   1.0 :     5 : False : False :  Reals
+          2 :     0 :   1.0 :     5 : False : False :  Reals
+          3 :     0 :   1.0 :     5 : False : False :  Reals
+
+1 Objective Declarations
+    obj : Size=1, Index=None, Active=True
+        Key  : Active : Sense    : Expression
+        None :   True : minimize : x[1] + x[2] + x[3]
+
+4 Constraint Declarations
+    con1 : Size=1, Index=None, Active=True
+        Key  : Lower : Body        : Upper : Active
+        None :   1.0 : x[1] + x[2] :  +Inf :   True
+    con2 : Size=1, Index=None, Active=True
+        Key  : Lower : Body               : Upper : Active
+        None :   1.0 : x[1] + x[2] + x[3] :   1.0 :   True
+    con3 : Size=1, Index=None, Active=True
+        Key  : Lower : Body          : Upper : Active
+        None :  -Inf : x[2] - 2*x[3] :   1.0 :   True
+    con4 : Size=1, Index=None, Active=True
+        Key  : Lower : Body        : Upper : Active
+        None :   1.0 : x[1] + x[3] :  +Inf :   True
+
+7 Declarations: I x con1 con2 con3 con4 obj
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="solve-the-reformulated-model">
+<h3><span class="section-number">7.6.3.9. </span>Solve the reformulated model<a class="headerlink" href="#solve-the-reformulated-model" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">opt</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;max_iter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">opt</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">m2b</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">m2b</span><span class="o">.</span><span class="n">I</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x[&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;]=&quot;</span><span class="p">,</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: max_iter=50
+
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+
+This version of Ipopt was compiled from source code available at
+    https://github.com/IDAES/Ipopt as part of the Institute for the Design of
+    Advanced Energy Systems Process Systems Engineering Framework (IDAES PSE
+    Framework) Copyright (c) 2018-2019. See https://github.com/IDAES/idaes-pse.
+
+This version of Ipopt was compiled using HSL, a collection of Fortran codes
+    for large-scale scientific computation.  All technical papers, sales and
+    publicity material resulting from use of the HSL codes within IPOPT must
+    contain the following acknowledgement:
+        HSL, a collection of Fortran codes for large-scale scientific
+        computation. See http://www.hsl.rl.ac.uk.
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:        3
+Number of nonzeros in inequality constraint Jacobian.:        6
+Number of nonzeros in Lagrangian Hessian.............:        0
+
+Total number of variables............................:        3
+                     variables with only lower bounds:        0
+                variables with lower and upper bounds:        3
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:        1
+Total number of inequality constraints...............:        3
+        inequality constraints with only lower bounds:        2
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        1
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  3.0000000e+00 2.00e+00 6.30e-01  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1  1.3934810e+00 3.93e-01 1.34e-01  -1.0 1.23e+00    -  7.90e-01 8.03e-01f  1
+   2  1.0184419e+00 1.84e-02 9.15e-03  -1.7 7.02e-01    -  9.41e-01 9.53e-01h  1
+   3  1.0011246e+00 1.12e-03 3.88e-02  -2.5 1.50e-02    -  1.00e+00 9.39e-01h  1
+   4  1.0006914e+00 6.91e-04 3.12e+00  -2.5 3.17e-03    -  1.00e+00 3.85e-01h  1
+   5  1.0002664e+00 2.66e-04 4.35e+00  -2.5 1.12e-03    -  1.00e+00 6.15e-01h  1
+   6  1.0001115e+00 1.12e-04 1.07e+01  -2.5 5.00e-04    -  1.00e+00 5.81e-01h  1
+   7  1.0000788e+00 7.88e-05 4.34e+01  -2.5 1.88e-04    -  1.00e+00 2.93e-01f  2
+   8  1.0000154e+00 1.54e-05 2.26e+01  -2.5 6.89e-05    -  1.00e+00 8.04e-01h  1
+   9  1.0000118e+00 1.18e-05 2.98e+02  -2.5 3.64e-05    -  1.00e+00 2.33e-01f  2
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  10  1.0000020e+00 2.04e-06 1.33e+02  -2.5 9.72e-06    -  1.00e+00 8.28e-01h  1
+  11  1.0000016e+00 1.61e-06 2.26e+03  -2.5 4.79e-06    -  1.00e+00 2.12e-01f  2
+  12  1.0000002e+00 2.46e-07 8.72e+02  -2.5 1.20e-06    -  1.00e+00 8.47e-01h  1
+  13  1.0000002e+00 1.95e-07 1.71e+04  -2.5 7.02e-07    -  1.00e+00 2.09e-01f  2
+  14  1.0000000e+00 1.54e-08 3.23e+03  -2.5 1.50e-07    -  1.00e+00 9.21e-01h  1
+  15  1.0000000e+00 1.15e-08 9.99e+04  -2.5 6.89e-08    -  1.00e+00 2.54e-01f  2
+  16  1.0000000e+00 2.22e-16 2.83e-08  -2.5 8.21e-09    -  1.00e+00 1.00e+00h  1
+  17  1.0000000e+00 2.22e-16 4.14e-11  -8.6 8.25e-16    -  1.00e+00 1.00e+00   0
+
+Number of Iterations....: 17
+
+                                   (scaled)                 (unscaled)
+Objective...............:   9.9999999999999978e-01    9.9999999999999978e-01
+Dual infeasibility......:   4.1425156707686206e-11    4.1425156707686206e-11
+Constraint violation....:   2.2204460492503131e-16    2.2204460492503131e-16
+Complementarity.........:   2.6658012082875325e-09    2.6658012082875325e-09
+Overall NLP error.......:   2.6658012082875325e-09    2.6658012082875325e-09
+
+
+Number of objective function evaluations             = 23
+Number of objective gradient evaluations             = 18
+Number of equality constraint evaluations            = 23
+Number of inequality constraint evaluations          = 23
+Number of equality constraint Jacobian evaluations   = 18
+Number of inequality constraint Jacobian evaluations = 18
+Number of Lagrangian Hessian evaluations             = 17
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.005
+Total CPU secs in NLP function evaluations           =      0.000
+
+EXIT: Optimal Solution Found.
+x[ 1 ]= 5.061595738300216
+x[ 2 ]= 9.184026563775058e-26
+x[ 3 ]= -3.4867300513803765
+</pre></div>
+</div>
+</div>
+</div>
+<p>We get the same answer as before, but careful inspection of the Ipopt output reveals a subtle improvement. Notice <code class="docutils literal notranslate"><span class="pre">ls</span></code> is only 1 or 2 for all of the iterations, in contrast to more than 20 for the original model. This means Ipopt is taking (nearly) full steps for all iterations.</p>
+<p>Let’s also compare the number of function evaluations.</p>
+<p>Original model (using Ipopt 3.13.2 with <code class="docutils literal notranslate"><span class="pre">ma27</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Number</span> <span class="n">of</span> <span class="n">objective</span> <span class="n">function</span> <span class="n">evaluations</span>             <span class="o">=</span> <span class="mi">111</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">objective</span> <span class="n">gradient</span> <span class="n">evaluations</span>             <span class="o">=</span> <span class="mi">17</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">equality</span> <span class="n">constraint</span> <span class="n">evaluations</span>            <span class="o">=</span> <span class="mi">111</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">inequality</span> <span class="n">constraint</span> <span class="n">evaluations</span>          <span class="o">=</span> <span class="mi">111</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">equality</span> <span class="n">constraint</span> <span class="n">Jacobian</span> <span class="n">evaluations</span>   <span class="o">=</span> <span class="mi">17</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">inequality</span> <span class="n">constraint</span> <span class="n">Jacobian</span> <span class="n">evaluations</span> <span class="o">=</span> <span class="mi">17</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">Lagrangian</span> <span class="n">Hessian</span> <span class="n">evaluations</span>             <span class="o">=</span> <span class="mi">16</span>
+</pre></div>
+</div>
+<p>Reformulated model (using Ipopt 3.13.2 with <code class="docutils literal notranslate"><span class="pre">ma27</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Number</span> <span class="n">of</span> <span class="n">objective</span> <span class="n">function</span> <span class="n">evaluations</span>             <span class="o">=</span> <span class="mi">23</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">objective</span> <span class="n">gradient</span> <span class="n">evaluations</span>             <span class="o">=</span> <span class="mi">18</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">equality</span> <span class="n">constraint</span> <span class="n">evaluations</span>            <span class="o">=</span> <span class="mi">23</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">inequality</span> <span class="n">constraint</span> <span class="n">evaluations</span>          <span class="o">=</span> <span class="mi">23</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">equality</span> <span class="n">constraint</span> <span class="n">Jacobian</span> <span class="n">evaluations</span>   <span class="o">=</span> <span class="mi">18</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">inequality</span> <span class="n">constraint</span> <span class="n">Jacobian</span> <span class="n">evaluations</span> <span class="o">=</span> <span class="mi">18</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">Lagrangian</span> <span class="n">Hessian</span> <span class="n">evaluations</span>             <span class="o">=</span> <span class="mi">17</span>
+</pre></div>
+</div>
+<p>Removing a <strong>single redundant constraint</strong> reduced the number of objective and constraint evaluations <strong>5-fold</strong>!</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/7"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Second-Order.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">7.5. </span>Second Order Optimality Conditions</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Interior-Point1.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">7.7. </span>Simple Netwon Method for Equality Constrained NLPs</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">7.6.1. Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-well-behaved-nonlinear-program">7.6.2. Example 1: Well-Behaved Nonlinear Program</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-the-model-in-pyomo">7.6.2.1. Define the model in Pyomo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-the-initial-point">7.6.2.2. Evaluate the initial point</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identify-the-constraint-residuals-larger-than-0-1">7.6.2.3. Identify the constraint residuals larger than 0.1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identify-all-variables-within-1-of-their-bounds">7.6.2.4. Identify all variables within 1 of their bounds</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solve-the-optimization-problem">7.6.2.5. Solve the optimization problem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#check-if-any-constraint-residuals-are-large-than-10-14">7.6.2.6. Check if any constraint residuals are large than 10<span class="math notranslate nohighlight">\(^{-14}\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identify-all-variables-within-10-5-of-their-bounds">7.6.2.7. Identify all variables within 10<span class="math notranslate nohighlight">\(^{-5}\)</span> of their bounds</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#check-the-rank-of-the-constraint-jacobian-at-the-solution">7.6.2.8. Check the rank of the constraint Jacobian at the solution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#try-degeneracy-hunter">7.6.2.9. Try Degeneracy Hunter</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-linear-program-with-redundant-equality-constraints">7.6.3. Example 2: Linear Program with Redundant Equality Constraints</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">7.6.3.1. Define the model in Pyomo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">7.6.3.2. Evaluate the initial point</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identify-constraints-with-residuals-greater-than-0-1-at-the-initial-point">7.6.3.3. Identify constraints with residuals greater than 0.1 at the initial point</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solve-the-optimization-problem-and-extract-the-solution">7.6.3.4. Solve the optimization problem and extract the solution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#check-the-rank-of-the-jacobian-of-the-equality-constraints">7.6.3.5. Check the rank of the Jacobian of the equality constraints</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identify-candidate-degenerate-constraints">7.6.3.6. Identify candidate degenerate constraints</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#find-irreducible-degenerate-sets-ids">7.6.3.7. Find irreducible degenerate sets (IDS)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reformulate-example-2">7.6.3.8. Reformulate Example 2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solve-the-reformulated-model">7.6.3.9. Solve the reformulated model</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Alexander Dowling, et al.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -24,7 +24,8 @@ All assignments are due at 5pm unless otherwise noted.
 | ----------- | ----------- |
 | Tuesday, August 27, 2024 | [](../notebooks/1/Pyomo-Introduction.ipynb) |
 | | [](../notebooks/1/Optimization-Modeling.ipynb) |
-| | [](../notebooks/1/LP-NLP.ipynb) |
+| | [](../notebooks/1/LP.ipynb) |
+| | [](../notebooks/1/NLP.ipynb) |
 | Thursday, August 29, 2024 | [](../notebooks/1/Pyomo-Nuts-and-Bolts.ipynb) |
 | | [](../notebooks/1/IP.ipynb) |
 | | [](../notebooks/assignments/Pyomo1.ipynb) |

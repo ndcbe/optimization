@@ -1,12 +1,13 @@
 
+
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../../" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Stochastic Gradient Descent Tutorial 2 &#8212; Nonlinear and Stochastic Optimization</title>
   
@@ -14,49 +15,53 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/contrib/Stochastic-Gradient-Descent-2';</script>
@@ -73,23 +78,28 @@
 
   
   
-  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   
   <div id="pst-scroll-pixel-helper"></div>
+
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
 
   
   <input type="checkbox"
           class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -111,20 +121,12 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
-
-  <div class="pst-async-banner-revealer d-none">
-  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
-</div>
-
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
-    </header>
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
   
-
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
-      
-      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -140,8 +142,6 @@
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
 
-  
-    
   
 
 <a class="navbar-brand logo" href="../../intro.html">
@@ -160,18 +160,7 @@
   
   
 </a></div>
-        <div class="sidebar-primary-item">
-
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
-        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -183,14 +172,14 @@
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Fall 2024 Calendar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../org/workshop.html">Computational Optimization in Python (São Paulo, Brazil)</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
@@ -200,16 +189,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4: Interior Point Methods</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project (Spring 2023)</a></li>
 </ul>
-</details></li>
+</li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
@@ -218,13 +207,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.6. Integer Programs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.7. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_car.html">3.1. Pyomo.DAE Example: Race Car</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_TCLab.html">3.2. Pyomo.DAE Example: Temperature Control Lab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../3/DAE_background.html">3.3. Differential Algebraic Equations (DAEs)</a></li>
@@ -232,23 +221,23 @@
 <li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_theory.html">3.5. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_example.html">3.6. Pyomo.DAE: Racing Example Revisited</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../4/blocks.html">4.2. Blocks and Other Pyomo Best Practices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.3. Risk Measures and Portfolio Optimization</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Reactor Kinetics Example for Pyomo.DoE Tutorial</a></li>
 </ul>
-</details></li>
+</li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-1.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
@@ -256,8 +245,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
@@ -267,17 +256,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
 </ul>
-</details></li>
+</li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="pyomo.html">More Pyomo Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyomo.html">More Pyomo Examples</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="semiconductor_manufacturing.html">Semiconductor Production Planning</a></li>
 
 
@@ -300,13 +289,13 @@
 <li class="toctree-l2"><a class="reference internal" href="hot_air_ballon.html">Project 1: Hot Air Balloon Dynamic Control</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reactor_design.html">Chemical Reactor Design</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="dfo.html">Derivative-Free Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="dfo.html">Derivative-Free Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="sgd.html">Stochastic Gradient Descent</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="sgd.html">Stochastic Gradient Descent</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Stochastic Gradient Descent Tutorial 2</a></li>
 
@@ -317,11 +306,11 @@
 
 <li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="data.html">Machine Learning and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="data.html">Machine Learning and Applied Statistics</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-15"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
 </ul>
-</details></li>
+</li>
 </ul>
 
     </div>
@@ -337,7 +326,7 @@
 
       </div>
       
-      <main id="main-content" class="bd-main" role="main">
+      <main id="main-content" class="bd-main">
         
         
 
@@ -346,14 +335,14 @@
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article d-print-none">
+              <div class="bd-header-article">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</button></div>
+</label></div>
       
     </div>
   
@@ -378,14 +367,14 @@
       
       <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/contrib/Stochastic-Gradient-Descent-2.ipynb" target="_blank"
    class="btn btn-sm dropdown-item"
-   title="Launch on Colab"
+   title="Launch onColab"
    data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
 <span class="btn__icon-container">
   
-    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+    <img src="../../_static/images/logo_colab.png">
   </span>
 <span class="btn__text-container">Colab</span>
 </a>
@@ -509,10 +498,10 @@
 
 <script>
 document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
 `);
 </script>
@@ -520,14 +509,14 @@ document.write(`
 
 <script>
 document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</button>
+</label>
 </div></div>
       
     </div>
@@ -576,45 +565,45 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article">
+                <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="stochastic-gradient-descent-tutorial-2">
-<h1>Stochastic Gradient Descent Tutorial 2<a class="headerlink" href="#stochastic-gradient-descent-tutorial-2" title="Link to this heading">#</a></h1>
+<h1>Stochastic Gradient Descent Tutorial 2<a class="headerlink" href="#stochastic-gradient-descent-tutorial-2" title="Permalink to this heading">#</a></h1>
 <p><strong>Prepared by:</strong> <a class="reference external" href="https://shashankramesh.github.io/index.html">Shashank Ramesh</a> (<a class="reference external" href="mailto:sramesh&#37;&#52;&#48;nd&#46;edu">sramesh<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2023)</p>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
 <p>In most engineering fields, optimization problems with objectives that have high computation costs are often encountered. For example, the computation cost of the objective function of a classification problem grows exponentially as the number of classes and size of the data sets grows. In order to speed up computations in these cases, algorithms that reduce the number or complexity of objective function evaluations are needed. Stochastic gradient descent (SGD) is one such algorithm that uses a stochastic approximation of the gradient of the objective function to reduce the computational complexity involved in objective function evaluations.</p>
 <p>The SGD algorithm is most commonly used in statistics and machine learning for data classification or regression. For example, SGD along with the backpropagation technique is used to tune the parameters of a neural network [1]. SGD is also used to solve support vector regression problems in [2] and logistic regression in [3].</p>
 <p>This notebook presents the theory behind SGD, along with a basic implementation used to solve two classes of problems: regression and classification. The notebook follows the concepts and implementation techniques presented in [4].</p>
 <section id="formulation-wei-wu-2011">
-<h3>Formulation (Wei Wu, 2011)<a class="headerlink" href="#formulation-wei-wu-2011" title="Link to this heading">#</a></h3>
+<h3>Formulation (Wei Wu, 2011)<a class="headerlink" href="#formulation-wei-wu-2011" title="Permalink to this heading">#</a></h3>
 <p>Consider the problem of fitting a data set, given by <span class="math notranslate nohighlight">\((x_i, y_i), i=1,2,..,t\)</span>, to a given function <span class="math notranslate nohighlight">\(y = f_\theta(x)\)</span> which has <span class="math notranslate nohighlight">\(\theta\)</span> as parameters. Typically, this problem is formulated as an optimization problem:
 $$</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b29b0e94-248c-4820-a1d9-3cf5265d52bf">
-<span class="eqno">(10)<a class="headerlink" href="#equation-b29b0e94-248c-4820-a1d9-3cf5265d52bf" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-5ed73b25-8581-400a-8c78-c71c62e0739b">
+<span class="eqno">(10)<a class="headerlink" href="#equation-5ed73b25-8581-400a-8c78-c71c62e0739b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \theta_t^* = \arg \underset{\theta}{\min} \frac 1 t \sum_{i=1}^{t} \left(L(f_{\theta}(x_i), y_i) + R(\theta)\right)
 \end{equation}\]</div>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}
 where $t$ is the number of data points, $\theta_t^*$ is the parameter that minimize the empirical cost, $(x_i, y_i)$ are the $i^{th}$ training example, $L(s, y)$ is a loss function which gives small value if $s$ is a good prediction for $y$, and $R(\theta)$ is a regularization function for $\theta$  which typically gives small value for small $\theta$. \\For stochastic gradient descent (SGD) method, let $d=(x, y)$ be one data sample, $l(\theta, d) = L(f_{\theta}(x), y) + R(\theta)$ be the cost of $\theta$ for $d$, $g(\theta, d) = \frac{\partial l(\theta, d)}{\partial \theta}$ be the gradient function, and $D_t = (d_1, \cdots, d_t)$ be all the training samples at $t^{th}$ step. The SGD method updates $\theta$ according to its  stochastic gradient:
 \end{aligned}\end{align} \]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-e0e9c841-d15d-4661-b0d9-f3890d8b52ce">
-<span class="eqno">(11)<a class="headerlink" href="#equation-e0e9c841-d15d-4661-b0d9-f3890d8b52ce" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-2e8b3d15-8644-4409-9551-654b63a033bb">
+<span class="eqno">(11)<a class="headerlink" href="#equation-2e8b3d15-8644-4409-9551-654b63a033bb" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \theta_t = \theta_{t-1} - \alpha_t g(\theta_{t-1}, d_t)
 \end{equation}\]</div>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}
 where $\alpha_t$ is learning rate at the $t^{th}$ step.\\The formulation of gradient descent (GD) is very similar to the above equation but focusing on total data samples in each iteration:
 \end{aligned}\end{align} \]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-3d807ac2-1ce5-49cc-b10e-572ccb52f547">
-<span class="eqno">(12)<a class="headerlink" href="#equation-3d807ac2-1ce5-49cc-b10e-572ccb52f547" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-b914eea9-04a9-4b85-a5e0-a214783ed2aa">
+<span class="eqno">(12)<a class="headerlink" href="#equation-b914eea9-04a9-4b85-a5e0-a214783ed2aa" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \theta_t = \theta_{t-1} - \alpha_t G(\theta_{t-1})
 \end{equation}\]</div>
 <p>$$
 Thus, SGD uses a subset of the data set to compute the gradient while GD uses the whole data set to compute the gradient. This key difference helps in reducing the computational complexity and time in the case of SGD as compared to GD.</p>
 </section>
 <section id="algorithm">
-<h3>Algorithm<a class="headerlink" href="#algorithm" title="Link to this heading">#</a></h3>
+<h3>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this heading">#</a></h3>
 <p>The algorithm involves three main steps:</p>
 <ol class="arabic simple">
 <li><p>Random selection of a sample or a set of samples from the data set.</p></li>
@@ -627,7 +616,7 @@ gradient and step length.</p></li>
 </section>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="functions-and-utilities">
-<h1>Functions and Utilities<a class="headerlink" href="#functions-and-utilities" title="Link to this heading">#</a></h1>
+<h1>Functions and Utilities<a class="headerlink" href="#functions-and-utilities" title="Permalink to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -731,7 +720,7 @@ gradient and step length.</p></li>
 </div>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="implementation-of-the-algorithm">
-<h1>Implementation of the Algorithm<a class="headerlink" href="#implementation-of-the-algorithm" title="Link to this heading">#</a></h1>
+<h1>Implementation of the Algorithm<a class="headerlink" href="#implementation-of-the-algorithm" title="Permalink to this heading">#</a></h1>
 <p>The pseudo code of the algorithm is given below:</p>
 <p>k – Iteration count <br />
 max_iterations – Maximum iterations allowed for the optimization <br />
@@ -887,7 +876,7 @@ theta[k+1] = theta[k] – alpha*grad \</p>
 <p>The subsequent sections in this notebook presents simple examples of the above problems that are solved using SGD. In the process, the performance of the SGD is also studied as its parameters like batch size and learning rate are varied.</p>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="regression-example-fitting-a-quadratic-function-to-a-2d-data-set">
-<h1>Regression Example: Fitting a Quadratic Function to a 2D Data Set<a class="headerlink" href="#regression-example-fitting-a-quadratic-function-to-a-2d-data-set" title="Link to this heading">#</a></h1>
+<h1>Regression Example: Fitting a Quadratic Function to a 2D Data Set<a class="headerlink" href="#regression-example-fitting-a-quadratic-function-to-a-2d-data-set" title="Permalink to this heading">#</a></h1>
 <p>Let <span class="math notranslate nohighlight">\(D = \{(x_i, y_i), i=1,2,...,t\}\)</span> be the data set generated from the following function:
 $<span class="math notranslate nohighlight">\( y_i = x_i^2 + 1 + \delta,\)</span><span class="math notranslate nohighlight">\(
 where, \)</span>\delta$ is a random variable with a gaussian probability distribution. This data set is generated in the following code snippets.</p>
@@ -1011,7 +1000,7 @@ where, \)</span>\delta$ is a random variable with a gaussian probability distrib
 </div>
 <p>In the subsequent sections, the above optimization problem is solved using SGD with different tuning parameters.</p>
 <section id="sgd-where-data-is-sampled-with-and-without-replacement">
-<h2>SGD where data is sampled with and without replacement<a class="headerlink" href="#sgd-where-data-is-sampled-with-and-without-replacement" title="Link to this heading">#</a></h2>
+<h2>SGD where data is sampled with and without replacement<a class="headerlink" href="#sgd-where-data-is-sampled-with-and-without-replacement" title="Permalink to this heading">#</a></h2>
 <p>In this section, the regression problem is solved using SGD where the batch data is sampled with and without replacement.</p>
 <p>Sampling batch data from the data set with replacement:</p>
 <div class="cell docutils container">
@@ -11088,7 +11077,7 @@ Max iterations or epochs reached
 </div>
 </section>
 <section id="study-of-parameters-of-sgd">
-<h2>Study of parameters of SGD<a class="headerlink" href="#study-of-parameters-of-sgd" title="Link to this heading">#</a></h2>
+<h2>Study of parameters of SGD<a class="headerlink" href="#study-of-parameters-of-sgd" title="Permalink to this heading">#</a></h2>
 <p>In this section, the performance of the SGD is studied by varying the learning rate and batch size. The performance is measured using two metrics: 1) number of iterations. 2) computation time.</p>
 <p>To find the number iterations to reach the local minimum, a box of confusion is defined which is a region around the local minimum. The value of the decision variables are said to have reached the local minimum if they are inside the box of confusion.</p>
 <div class="cell docutils container">
@@ -11375,7 +11364,7 @@ Batch Size: 1000, Learning rate: 2.00e-04
 </section>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="binary-classification-logistic-regression-example">
-<h1>Binary Classification: Logistic Regression Example<a class="headerlink" href="#binary-classification-logistic-regression-example" title="Link to this heading">#</a></h1>
+<h1>Binary Classification: Logistic Regression Example<a class="headerlink" href="#binary-classification-logistic-regression-example" title="Permalink to this heading">#</a></h1>
 <p>Consider the height data of human males and females. From a survey, it was found that the mean height of male and female is <span class="math notranslate nohighlight">\(175\)</span> cm and <span class="math notranslate nohighlight">\(162\)</span> cm, respectively. The standard deviation in the height of male and female is assumed to be <span class="math notranslate nohighlight">\(3.5\)</span> cm and <span class="math notranslate nohighlight">\(4\)</span> cm, respectively. The following code snippet generates height data of males and females by sampling from a gaussian distribution with the aforemnetioned mean and standard deviation information.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -11426,8 +11415,8 @@ Batch Size: 1000, Learning rate: 2.00e-04
 </div>
 <p>The goal is to come up with a model that classifies the given height data into male and female classes. Firstly, the function that defines the model is assumed and the above generated data is used to tune the parameters of the function such that it best fits the data.<br />
 The function assumed to model the data is a logistic function defined as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-fed4f1ae-de78-4855-a6b6-fa1915d9de8b">
-<span class="eqno">(13)<a class="headerlink" href="#equation-fed4f1ae-de78-4855-a6b6-fa1915d9de8b" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-8f77e917-1216-49c8-bc6e-013a1b4f6860">
+<span class="eqno">(13)<a class="headerlink" href="#equation-8f77e917-1216-49c8-bc6e-013a1b4f6860" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;y = \textrm{sig}(z), \quad \textrm{where,} \\
 &amp;z = \theta_0 x + \theta_1, \\
 &amp;\textrm{sig}(z) = \frac{1}{1+e^{-z}}.
@@ -11510,25 +11499,25 @@ The following code snippets define and plot the logistic function</p>
 <li><p>The least square metric does not make sense since the output of the logistic function is the probability of a given data point belonging to the female class. Instead it makes more sense to maximize the likelihood of the model correctly classifying the data.</p></li>
 </ol>
 <p>Therefore, the loss function for this problem is defined in terms of the likelihood of the model, defined by the logistic function, predicting the class of a given data point correctly. Let <span class="math notranslate nohighlight">\(p_k\)</span> be the probability of the <span class="math notranslate nohighlight">\(k\)</span>th data point, namely <span class="math notranslate nohighlight">\(x_k\)</span>, belonging to the female class. Since only two classes are involved, the probability of <span class="math notranslate nohighlight">\(x_k\)</span> belonging to the male class is <span class="math notranslate nohighlight">\(1-p_k\)</span>. Further, let <span class="math notranslate nohighlight">\(y_k\)</span> denote the value of the label given to each data set, i.e., either <span class="math notranslate nohighlight">\(0\)</span> or <span class="math notranslate nohighlight">\(1\)</span>. The likelihood of the model predicting the <span class="math notranslate nohighlight">\(k\)</span>th data point correctly is given by:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-984d14de-295d-4551-89b8-c9e088a3a931">
-<span class="eqno">(14)<a class="headerlink" href="#equation-984d14de-295d-4551-89b8-c9e088a3a931" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-e2239998-f6c0-4155-984a-a2660af696e6">
+<span class="eqno">(14)<a class="headerlink" href="#equation-e2239998-f6c0-4155-984a-a2660af696e6" title="Permalink to this equation">#</a></span>\[\begin{align}
 &amp;l_k = p_k^{y_k}(1-p_k)^{1-y_k}, \quad \textrm{where,}\\
 &amp;p_k = \textrm{sig}(\theta_0 x + \theta_1).
 \end{align}\]</div>
 <p>If the given data point, <span class="math notranslate nohighlight">\(x_k\)</span>, belongs to the female class, i.e., <span class="math notranslate nohighlight">\(y_k = 1\)</span> and the model prediction is correct, i.e., <span class="math notranslate nohighlight">\(p_k \rightarrow 1\)</span>, then <span class="math notranslate nohighlight">\(l_k = 1\)</span>. Similarly, if <span class="math notranslate nohighlight">\(x_k\)</span> belongs to the male class and the model prediction is correct, i.e., <span class="math notranslate nohighlight">\(p_k \rightarrow 0\)</span>, then <span class="math notranslate nohighlight">\(l_k = 1\)</span>. Thus, <span class="math notranslate nohighlight">\(l_k = 1\)</span> if the model predicts prefectly correctly, <span class="math notranslate nohighlight">\(l_k = 0\)</span> if the model prediction is perfectly incorrect and anything in between otherwise.<br />
 The likelihood of the model classifying all the data points <span class="math notranslate nohighlight">\(x_k, k=1,2,..,n,\)</span> correctly is:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-faedd052-2c24-40f9-b7ae-94342ee42168">
-<span class="eqno">(15)<a class="headerlink" href="#equation-faedd052-2c24-40f9-b7ae-94342ee42168" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-ec18a800-e437-4663-8f55-bc7c26e5a760">
+<span class="eqno">(15)<a class="headerlink" href="#equation-ec18a800-e437-4663-8f55-bc7c26e5a760" title="Permalink to this equation">#</a></span>\[\begin{align}
 l = \prod_{k=1}^{n} l_k = \prod_{k=1}^{n} p_k^{y_k}(1-p_k)^{1-y_k}.
 \end{align}\]</div>
 <p>For the model to best fit the given data, the goal is to maximize the likelihood of the model classifying the data correctly as given by the above equation. To solve this optimization problem using SGD, <span class="math notranslate nohighlight">\(l\)</span> needs to be cast as the sum of functions instead of product of functions as in the above equation. For this, logarithmic function of <span class="math notranslate nohighlight">\(l\)</span> is considered:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5b3c38b9-1130-45bf-a7c4-c90a33722708">
-<span class="eqno">(16)<a class="headerlink" href="#equation-5b3c38b9-1130-45bf-a7c4-c90a33722708" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-c6ddb231-d592-480b-a4c1-92cd8d13150f">
+<span class="eqno">(16)<a class="headerlink" href="#equation-c6ddb231-d592-480b-a4c1-92cd8d13150f" title="Permalink to this equation">#</a></span>\[\begin{align}
 l_l = \log (l) = \sum_{k=1}^{n} (y_k \log(p_k) + (1-y_k) \log(1-p_k)).
 \end{align}\]</div>
 <p>From the above equation, maximizing <span class="math notranslate nohighlight">\(l_l\)</span> leads to maximization of <span class="math notranslate nohighlight">\(l\)</span> (since the log function is monotonic with <span class="math notranslate nohighlight">\(\log(0) = -\infty\)</span> and <span class="math notranslate nohighlight">\(\log(1) = 0\)</span>). To pose the problem as a minimization problem, the negative of <span class="math notranslate nohighlight">\(l_l\)</span> is considered as the objective function:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-352d45be-a0fa-4ad2-8688-ebe9520076f5">
-<span class="eqno">(17)<a class="headerlink" href="#equation-352d45be-a0fa-4ad2-8688-ebe9520076f5" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-c3ac5baf-0f26-423b-ae95-cda56803d262">
+<span class="eqno">(17)<a class="headerlink" href="#equation-c3ac5baf-0f26-423b-ae95-cda56803d262" title="Permalink to this equation">#</a></span>\[\begin{align}
 l_s = -l_l = \sum_{k=1}^{n} (-y_k \log(p_k) - (1-y_k) \log(1-p_k)).
 \end{align}\]</div>
 <p>The above objective function is commonly known as the logistic loss function or maximum likelihood function and is minimised using SGD. The following code snippets define and minimize the logistic loss function.</p>
@@ -14060,7 +14049,7 @@ The success rate of the model prediction after optimization: 96.0
 <p>From the above results, it is clear that there is significant improvement in the success rate of the model predicting correctly after minimising the logistic loss function.</p>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="conclusions">
-<h1>Conclusions<a class="headerlink" href="#conclusions" title="Link to this heading">#</a></h1>
+<h1>Conclusions<a class="headerlink" href="#conclusions" title="Permalink to this heading">#</a></h1>
 <p>This notebook explains the stochastic gradient descent algorithm and its applications in regression and classification problems encountered in statistics and machine learning. The algorithm was implemented in python and the performance of SGD in terms of the computation time and number of iterations was studied for different batch sizes and learning rates. The following trends were observed:</p>
 <ol class="arabic simple">
 <li><p>The number of iterations reduces with increase in batch size due to improvement in the gradient approximation.</p></li>
@@ -14073,7 +14062,7 @@ The success rate of the model prediction after optimization: 96.0
 In this notebook, the basic SGD algorithm has been discussed with simple toy examples. Further details on modifying the algorithm by changing learning rate, decay rate, etc., at each iteration to make SGD more robust and suitable for large scale applications can be found in [4].</p>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="references">
-<h1>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h1>
+<h1>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h1>
 <p>[1] Wei Wu, Jian Wang, Mingsong Cheng, Zhengxue Li, Convergence analysis of online gradient method for BP neural networks, Neural Networks, Volume 24, Issue 1, 2011, pp. 91-98, ISSN 0893-6080, <a class="reference external" href="https://doi.org/10.1016/j.neunet.2010.09.007">https://doi.org/10.1016/j.neunet.2010.09.007</a>.</p>
 <p>[2] Li-Hua Ren, Zhi-Feng Ye, Yong-Ping Zhao, A modeling method for aero-engine by combining stochastic gradient descent with support vector regression,
 Aerospace Science and Technology, Volume 99, 2020, 105775, ISSN 1270-9638,
@@ -14112,7 +14101,7 @@ Aerospace Science and Technology, Volume 99, 2020, 105775, ISSN 1270-9638,
               
               
               
-                <footer class="prev-next-footer d-print-none">
+                <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -14141,7 +14130,6 @@ Aerospace Science and Technology, Volume 99, 2020, 105775, ISSN 1270-9638,
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
 
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
@@ -14192,7 +14180,7 @@ By Alexander Dowling, et al.
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2022.
       <br/>
     
   </p>
@@ -14216,8 +14204,8 @@ By Alexander Dowling, et al.
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
 
   <footer class="bd-footer">
   </footer>

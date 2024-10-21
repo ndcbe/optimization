@@ -1,12 +1,13 @@
 
+
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../../" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Stochastic Gradient Descent Tutorial 3 &#8212; Nonlinear and Stochastic Optimization</title>
   
@@ -14,49 +15,53 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/contrib/Stochastic-Gradient-Descent-3';</script>
@@ -73,23 +78,28 @@
 
   
   
-  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   
   <div id="pst-scroll-pixel-helper"></div>
+
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
 
   
   <input type="checkbox"
           class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -111,20 +121,12 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
-
-  <div class="pst-async-banner-revealer d-none">
-  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
-</div>
-
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
-    </header>
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
   
-
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
-      
-      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -140,8 +142,6 @@
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
 
-  
-    
   
 
 <a class="navbar-brand logo" href="../../intro.html">
@@ -160,18 +160,7 @@
   
   
 </a></div>
-        <div class="sidebar-primary-item">
-
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
-        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -183,14 +172,14 @@
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Fall 2024 Calendar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../org/workshop.html">Computational Optimization in Python (São Paulo, Brazil)</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
@@ -200,16 +189,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4: Interior Point Methods</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project (Spring 2023)</a></li>
 </ul>
-</details></li>
+</li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
@@ -218,13 +207,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.6. Integer Programs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.7. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_car.html">3.1. Pyomo.DAE Example: Race Car</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_TCLab.html">3.2. Pyomo.DAE Example: Temperature Control Lab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../3/DAE_background.html">3.3. Differential Algebraic Equations (DAEs)</a></li>
@@ -232,23 +221,23 @@
 <li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_theory.html">3.5. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_example.html">3.6. Pyomo.DAE: Racing Example Revisited</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../4/blocks.html">4.2. Blocks and Other Pyomo Best Practices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.3. Risk Measures and Portfolio Optimization</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Reactor Kinetics Example for Pyomo.DoE Tutorial</a></li>
 </ul>
-</details></li>
+</li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-1.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
@@ -256,8 +245,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
@@ -267,17 +256,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
 </ul>
-</details></li>
+</li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="pyomo.html">More Pyomo Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyomo.html">More Pyomo Examples</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="semiconductor_manufacturing.html">Semiconductor Production Planning</a></li>
 
 
@@ -300,13 +289,13 @@
 <li class="toctree-l2"><a class="reference internal" href="hot_air_ballon.html">Project 1: Hot Air Balloon Dynamic Control</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reactor_design.html">Chemical Reactor Design</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="dfo.html">Derivative-Free Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="dfo.html">Derivative-Free Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="sgd.html">Stochastic Gradient Descent</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="sgd.html">Stochastic Gradient Descent</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
 
@@ -317,11 +306,11 @@
 
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Stochastic Gradient Descent Tutorial 3</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="data.html">Machine Learning and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="data.html">Machine Learning and Applied Statistics</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-15"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
 </ul>
-</details></li>
+</li>
 </ul>
 
     </div>
@@ -337,7 +326,7 @@
 
       </div>
       
-      <main id="main-content" class="bd-main" role="main">
+      <main id="main-content" class="bd-main">
         
         
 
@@ -346,14 +335,14 @@
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article d-print-none">
+              <div class="bd-header-article">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</button></div>
+</label></div>
       
     </div>
   
@@ -378,14 +367,14 @@
       
       <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/contrib/Stochastic-Gradient-Descent-3.ipynb" target="_blank"
    class="btn btn-sm dropdown-item"
-   title="Launch on Colab"
+   title="Launch onColab"
    data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
 <span class="btn__icon-container">
   
-    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+    <img src="../../_static/images/logo_colab.png">
   </span>
 <span class="btn__text-container">Colab</span>
 </a>
@@ -509,10 +498,10 @@
 
 <script>
 document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
 `);
 </script>
@@ -520,14 +509,14 @@ document.write(`
 
 <script>
 document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</button>
+</label>
 </div></div>
       
     </div>
@@ -604,13 +593,13 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article">
+                <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="stochastic-gradient-descent-tutorial-3">
-<h1>Stochastic Gradient Descent Tutorial 3<a class="headerlink" href="#stochastic-gradient-descent-tutorial-3" title="Link to this heading">#</a></h1>
+<h1>Stochastic Gradient Descent Tutorial 3<a class="headerlink" href="#stochastic-gradient-descent-tutorial-3" title="Permalink to this heading">#</a></h1>
 <p><strong>Prepared by:</strong> <a class="reference external" href="https://github.com/hanfengzhang">Hanfeng Zhang</a> (<a class="reference external" href="mailto:hzhang25&#37;&#52;&#48;nd&#46;edu">hzhang25<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2023)</p>
 <section id="introduction">
-<h2>1. Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<h2>1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
 <p>Nowadays, people are more and more getting used to enjoying the achievements of deep learning. However, for such large-scale machine learning models, we need to deal with optimization problems with millions of training samples. The classical optimization techniques such as interior point methods or gradient descent are not efficient because they have to go through all data points then just evaluate the objective once. Stochastic Gradient Descent (SGD) calculates the gradient using just a random small part of the observations instead of all of them. Although SGD usually takes a higher number of iterations to reach the minima due to the randomness in descents, it is still computationally efficient than the typical gradient descent method. Especially when combined with the backpropagation algorithm, SGD is dominant in neural network training applications.</p>
 <p>In this notebook, we want to demonstrate the following topics for readers:</p>
 <ul class="simple">
@@ -622,10 +611,10 @@ document.write(`
 <p>For each example, visualization of the trajectories taken by the optimization algorithm are tried to show.</p>
 </section>
 <section id="gradient-descent">
-<h2>2. Gradient Descent<a class="headerlink" href="#gradient-descent" title="Link to this heading">#</a></h2>
+<h2>2. Gradient Descent<a class="headerlink" href="#gradient-descent" title="Permalink to this heading">#</a></h2>
 <p>In this section, we are going to explore and comprehend the fundamental details of gradient descent before talking with “stochasticity”.</p>
 <section id="gradient-descent-algorithm">
-<h3>2.1. Gradient Descent Algorithm<a class="headerlink" href="#gradient-descent-algorithm" title="Link to this heading">#</a></h3>
+<h3>2.1. Gradient Descent Algorithm<a class="headerlink" href="#gradient-descent-algorithm" title="Permalink to this heading">#</a></h3>
 <p>To grasp the concept of the gradient descent algorithm, consider a drop of water trickling down the side of a bowl or a ball rolling down a hill. These objects move towards the direction of the steepest descent until they reach the lowest point, gaining momentum and accelerating over time.</p>
 <p>Similarly, the idea behind gradient descent involves starting with an arbitrarily chosen position of the point or vector <span class="math notranslate nohighlight">\(\boldsymbol{\theta} = \left(\theta_1, \cdots, \theta_{n} \right) \)</span> and iteratively moving it towards the direction of the fastest decrease in the cost function. The negative gradient vector, <span class="math notranslate nohighlight">\(-\nabla \theta\)</span> or <span class="math notranslate nohighlight">\(-G\)</span>, points in this direction.</p>
 <p>After selecting a random starting point <span class="math notranslate nohighlight">\(\boldsymbol{\theta} = \left(\theta_1, \cdots, \theta_{n} \right) \)</span>, you update or move it to a new position by subtracting the learning rate <span class="math notranslate nohighlight">\(\alpha\)</span> (a small positive value <span class="math notranslate nohighlight">\(0 &lt; \alpha \leq 1\)</span>) multiplied by the negative gradient: <span class="math notranslate nohighlight">\(\boldsymbol{\theta} \rightarrow \boldsymbol{\theta} - \alpha G\)</span>.</p>
@@ -693,7 +682,7 @@ document.write(`
 </div>
 </section>
 <section id="learning-rate-and-visualization">
-<h3>2.2. Learning rate and visualization<a class="headerlink" href="#learning-rate-and-visualization" title="Link to this heading">#</a></h3>
+<h3>2.2. Learning rate and visualization<a class="headerlink" href="#learning-rate-and-visualization" title="Permalink to this heading">#</a></h3>
 <p>Consider a simple convex problem as a ball rolling down a hill,</p>
 <div class="math notranslate nohighlight">
 \[
@@ -723,7 +712,7 @@ $<span class="math notranslate nohighlight">\(
 </div>
 <p>We can find the minimizer of the given objective function <span class="math notranslate nohighlight">\(x^* \approx 0\)</span></p>
 <section id="visualization">
-<h4>2.2.1. Visualization<a class="headerlink" href="#visualization" title="Link to this heading">#</a></h4>
+<h4>2.2.1. Visualization<a class="headerlink" href="#visualization" title="Permalink to this heading">#</a></h4>
 <p>Instead of only looking at the minimizer, we want to know how the gradient descent works, so the visualization is needed.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -801,7 +790,7 @@ $<span class="math notranslate nohighlight">\(
 <p>It starts from the rightmost red dot (<span class="math notranslate nohighlight">\(x=10\)</span>) and move toward the minimum (<span class="math notranslate nohighlight">\(x=0\)</span>). The updates are larger at first because the value of the gradient (and slope) is higher. As approaching the minimum, updates become lower.</p>
 </section>
 <section id="change-learning-rate">
-<h4>2.2.2. Change learning rate<a class="headerlink" href="#change-learning-rate" title="Link to this heading">#</a></h4>
+<h4>2.2.2. Change learning rate<a class="headerlink" href="#change-learning-rate" title="Permalink to this heading">#</a></h4>
 <p>The learning rate is a very important parameter of the algorithm. Different learning rate values can significantly affect the behavior of gradient descent. Consider the previous example, but with a learning rate of 0.8 instead of 0.2:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -848,7 +837,7 @@ $<span class="math notranslate nohighlight">\(
 </div>
 </section>
 <section id="nonconvex-function">
-<h4>2.2.3. Nonconvex function<a class="headerlink" href="#nonconvex-function" title="Link to this heading">#</a></h4>
+<h4>2.2.3. Nonconvex function<a class="headerlink" href="#nonconvex-function" title="Permalink to this heading">#</a></h4>
 <p>Nonconvex functions might have local minima or saddle points where the algorithm can get trapped. In such situations, our choice of learning rate or starting point can make the difference between finding a local minimum and finding the global minimum.</p>
 <p>Consider a new optimization problem:</p>
 <div class="math notranslate nohighlight">
@@ -897,9 +886,9 @@ $<span class="math notranslate nohighlight">\(
 </section>
 </section>
 <section id="more-applications">
-<h3>2.3. More applications<a class="headerlink" href="#more-applications" title="Link to this heading">#</a></h3>
+<h3>2.3. More applications<a class="headerlink" href="#more-applications" title="Permalink to this heading">#</a></h3>
 <section id="univariate">
-<h4>2.3.1. Univariate<a class="headerlink" href="#univariate" title="Link to this heading">#</a></h4>
+<h4>2.3.1. Univariate<a class="headerlink" href="#univariate" title="Permalink to this heading">#</a></h4>
 <p>Consider the problem:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -925,7 +914,7 @@ $<span class="math notranslate nohighlight">\(
 <p>With the provided set of arguments, <code class="docutils literal notranslate"><span class="pre">gradient_descent</span></code> correctly calculates that this function has the minimum at <span class="math notranslate nohighlight">\(x=1\)</span>. We can try it with other values for the learning rate and starting point.</p>
 </section>
 <section id="bivariate">
-<h4>2.3.2. Bivariate<a class="headerlink" href="#bivariate" title="Link to this heading">#</a></h4>
+<h4>2.3.2. Bivariate<a class="headerlink" href="#bivariate" title="Permalink to this heading">#</a></h4>
 <p>We can also use <code class="docutils literal notranslate"><span class="pre">gradient_descent</span></code> with functions of more than one variable. The application is the same, but we need to provide the gradient and starting points as vectors or arrays.</p>
 <p>For example, we can find the minimum of the problem:</p>
 <div class="math notranslate nohighlight">
@@ -949,7 +938,7 @@ $<span class="math notranslate nohighlight">\(
 <p>In this case, our gradient function returns an array, and the start value also is an array, so we would get an array as the result. The resulting values are almost equal to zero, so we can say that <code class="docutils literal notranslate"><span class="pre">gradient_descent</span></code> correctly found that the minimum of this problem is at <span class="math notranslate nohighlight">\(x_1 = x_2 = 0\)</span>.</p>
 </section>
 <section id="ordinary-least-squares">
-<h4>2.3.3. Ordinary Least Squares<a class="headerlink" href="#ordinary-least-squares" title="Link to this heading">#</a></h4>
+<h4>2.3.3. Ordinary Least Squares<a class="headerlink" href="#ordinary-least-squares" title="Permalink to this heading">#</a></h4>
 <p>Linear regression and the ordinary least squares (OLS) method start with the observed values of the inputs <span class="math notranslate nohighlight">\(\boldsymbol{x} = \left(x_1, \cdots, x_n\right)\)</span> and outputs <span class="math notranslate nohighlight">\(y\)</span>. They define a linear function <span class="math notranslate nohighlight">\(f(\boldsymbol{x}) = b_0 + b_1 x_1 + \cdots + b_n x_n\)</span>, which is as close as possible to observation <span class="math notranslate nohighlight">\(y\)</span>. This is an optimization problem. It finds the values of weights <span class="math notranslate nohighlight">\(b_0, b_1, \cdots, b_n\)</span> that minimize the sum of squared residuals <span class="math notranslate nohighlight">\(\text{SSR} = \sum_{i} \left(y_i - f(\boldsymbol{x_i})\right)^2\)</span>or the mean squared error <span class="math notranslate nohighlight">\(\text{MSE} = \text{SSR} / {n}\)</span>. Here, <span class="math notranslate nohighlight">\(n\)</span> is the total number of observations and <span class="math notranslate nohighlight">\(i = 1, \cdots, n\)</span>. We can also use the cost function <span class="math notranslate nohighlight">\(\mathcal{L} = \text{SSR} / (2n)\)</span>, which is mathematically more convenient than SSR or MSE.</p>
 <p>The most basic form of linear regression is simple linear regression. It has only one set of inputs <span class="math notranslate nohighlight">\(x\)</span> and two weights: <span class="math notranslate nohighlight">\(b_0\)</span> and <span class="math notranslate nohighlight">\(b_1\)</span>. The equation of the regression line is <span class="math notranslate nohighlight">\(f(x) = b_0 + b_1 x\)</span>. Although the optimal values of <span class="math notranslate nohighlight">\(b_0\)</span> and <span class="math notranslate nohighlight">\(b_1\)</span> can be calculated analytically, we could implement gradient descent to determine them.</p>
 <p>First, use calculus to find the gradient of the cost function <span class="math notranslate nohighlight">\(\mathcal{L} = \sum_{i} \left(y_i - b_0 - b_1 x_i\right)^2 / (2n)\)</span>. Since we have two decision variables, <span class="math notranslate nohighlight">\(b_0\)</span> and <span class="math notranslate nohighlight">\(b_1\)</span>, the gradient <span class="math notranslate nohighlight">\(\nabla C\)</span> is a vector with two components:</p>
@@ -1108,31 +1097,31 @@ $<span class="math notranslate nohighlight">\(
 </section>
 </section>
 <section id="stochastic-gradient-descent-algorithms">
-<h2>3. Stochastic Gradient Descent Algorithms<a class="headerlink" href="#stochastic-gradient-descent-algorithms" title="Link to this heading">#</a></h2>
+<h2>3. Stochastic Gradient Descent Algorithms<a class="headerlink" href="#stochastic-gradient-descent-algorithms" title="Permalink to this heading">#</a></h2>
 <p>A recurring problem in machine learning is that large training sets are necessary for good generalization, but large training sets are also more computationally expensive. On the contrary, the stochastic gradient descent samples a <strong>minibatch</strong> of examples drawn uniformly from the training set on each updating step, which is the reason named as “<strong>stochastic</strong>”.</p>
 <p>To be mentioned, there are several different definitions and classifications for SGD, here we follows the definition in <strong>Section 5, <a class="reference external" href="https://www.deeplearningbook.org/">Deep Learning</a> by Goodfellow, et al</strong>, which call gradient descent on minibatches as stochastic gradient descent. Stochastic approaches is that not only is the gradient over few examples cheaper to compute, not getting the exact direction (using only a small number of examples), but actually leads to better solutions. This is particularly true for large datasets with redundant information wherein the examples might not be too different from each other. Another reason for stochastic approaches performing better is the presence of multiple local minima with different depths. In a sense, the noise in the direction allows for jumping across the trenches while a fullbatch approach will converge in the trench it started with.</p>
 <p><img alt="minibatch.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABCYAAAJKCAYAAADwTUQkAAABfGlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGAqSSwoyGFhYGDIzSspCnJ3UoiIjFJgv8PAzcDDIMRgxSCemFxc4BgQ4MOAE3y7xsAIoi/rgsxK8/x506a1fP4WNq+ZclYlOrj1gQF3SmpxMgMDIweQnZxSnJwLZOcA2TrJBUUlQPYMIFu3vKQAxD4BZIsUAR0IZN8BsdMh7A8gdhKYzcQCVhMS5AxkSwDZAkkQtgaInQ5hW4DYyRmJKUC2B8guiBvAgNPDRcHcwFLXkYC7SQa5OaUwO0ChxZOaFxoMcgcQyzB4MLgwKDCYMxgwWDLoMjiWpFaUgBQ65xdUFmWmZ5QoOAJDNlXBOT+3oLQktUhHwTMvWU9HwcjA0ACkDhRnEKM/B4FNZxQ7jxDLX8jAYKnMwMDcgxBLmsbAsH0PA4PEKYSYyjwGBn5rBoZt5woSixLhDmf8xkKIX5xmbARh8zgxMLDe+///sxoDA/skBoa/E////73o//+/i4H2A+PsQA4AJHdp4IxrEg8AAAGeaVRYdFhNTDpjb20uYWRvYmUueG1wAAAAAAA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJYTVAgQ29yZSA1LjQuMCI+CiAgIDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+CiAgICAgIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiCiAgICAgICAgICAgIHhtbG5zOmV4aWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vZXhpZi8xLjAvIj4KICAgICAgICAgPGV4aWY6UGl4ZWxYRGltZW5zaW9uPjEwNjI8L2V4aWY6UGl4ZWxYRGltZW5zaW9uPgogICAgICAgICA8ZXhpZjpQaXhlbFlEaW1lbnNpb24+NTg2PC9leGlmOlBpeGVsWURpbWVuc2lvbj4KICAgICAgPC9yZGY6RGVzY3JpcHRpb24+CiAgIDwvcmRmOlJERj4KPC94OnhtcG1ldGE+ClwXhG0AAEAASURBVHgB7N0NvFxlfSD+X94vSUhCkiaEJEAEokCB1OILBcRUsWXxhaqUylZE2iIrrdqFYlf+XUUXV8FspSsUsYuKrfzRdksFPrQqiy8oCiyCKSgRCJAESCQhCUm8ed/zzL1zMzP35s7cOzN3ztz5ns8nmTlvz/Oc7++cO3N+c85zxuzNhjAQIECAAAECBAgQIECAAAECBFogMLYFdaqSAAECBAgQIECAAAECBAgQIFAQkJiwIxAgQIAAAQIECBAgQIAAAQItE5CYaBm9igkQIECAAAECBAgQIECAAAGJCfsAAQIECBAgQIAAAQIECBAg0DIBiYmW0auYAAECBAgQIECAAAECBAgQkJiwDxAgQIAAAQIECBAgQIAAAQItE5CYaBm9igkQIECAAAECBAgQIECAAAGJCfsAAQIECBAgQIAAAQIECBAg0DIBiYmW0auYAAECBAgQIECAAAECBAgQkJiwDxAgQIAAAQIECBAgQIAAAQItE5CYaBm9igkQIECAAAECBAgQIECAAAGJCfsAAQIECBAgQIAAAQIECBAg0DIBiYmW0auYAAECBAgQIECAAAECBAgQkJiwDxAgQIAAAQIECBAgQIAAAQItE5CYaBm9igkQIECAAAECBAgQIECAAAGJCfsAAQIECBAgQIAAAQIECBAg0DIBiYmW0auYAAECBAgQIECAAAECBAgQkJiwDxAgQIAAAQIECBAgQIAAAQItE5CYaBm9igkQIECAAAECBAgQIECAAAGJCfsAAQIECBAgQIAAAQIECBAg0DIBiYmW0auYAAECBAgQIECAAAECBAgQkJiwDxAgQIAAAQIECBAgQIAAAQItE5CYaBm9igkQIECAAAECBAgQIECAAAGJCfsAAQIECBAgQIAAAQIECBAg0DIBiYmW0auYAAECBAgQIECAAAECBAgQkJiwDxAgQIAAAQIECBAgQIAAAQItE5CYaBm9igkQIECAAAECBAgQIECAAAGJCfsAAQIECBAgQIAAAQIECBAg0DIBiYmW0auYAAECBAgQIECAAAECBAgQkJiwDxAgQIAAAQIECBAgQIAAAQItE5CYaBm9igkQIECAAAECBAgQIECAAAGJCfsAAQIECBAgQIAAAQIECBAg0DIBiYmW0auYAAECBAgQIECAAAECBAgQkJiwDxAgQIAAAQIECBAgQIAAAQItE5CYaBm9igkQIECAAAECBAgQIECAAAGJCfsAAQIECBAgQIAAAQIECBAg0DIBiYmW0auYAAECBAgQIECAAAECBAgQkJiwDxAgQIAAAQIECBAgQIAAAQItE5CYaBm9igkQIECAAAECBAgQIECAAAGJCfsAAQIECBAgQIAAAQIECBAg0DIBiYmW0auYAAECBAgQIECAAAECBAgQkJiwDxAgQIAAAQIECBAgQIAAAQItE5CYaBm9igkQIECAAAECBAgQIECAAAGJCfsAAQIECBAgQIAAAQIECBAg0DIBiYmW0auYAAECBAgQIECAAAECBAgQkJiwDxAgQIAAAQIECBAgQIAAAQItE5CYaBm9igkQIECAAAECBAgQIECAAAGJCfsAAQIECBAgQIAAAQIECBAg0DIBiYmW0auYAAECBAgQIECAAAECBAgQkJiwDxAgQIAAAQIECBAgQIAAAQItE5CYaBm9igkQIECAAAECBAgQIECAAAGJCfsAAQIECBAgQIAAAQIECBAg0DIBiYmW0auYAAECBAgQIECAAAECBAgQkJiwDxAgQIAAAQIECBAgQIAAAQItE5CYaBm9igkQIECAAAECBAgQIECAAAGJCfsAAQIECBAgQIAAAQIECBAg0DIBiYmW0auYAAECBAgQIECAAAECBAgQkJiwDxAgQIAAAQIECBAgQIAAAQItE5CYaBm9igkQIECAAAECBAgQIECAAAGJCfsAAQIECBAgQIAAAQIECBAg0DIBiYmW0auYAAECBAgQIECAAAECBAgQGI+AQDsLfO1rX4unn346fu3Xfi3OP//8dt6U3LSdaW5CoSEECBAgQIAAAQIEOkJgzN5s6IgttZGjTmDPnj0xbty4vu1auXJlHH744X3j3gxdgOnQzaxBgAABAgQIECBAgEB9Aq6YGKJfOnFL/9IwduzYwr8hFjHkxXft2tW3zvjx1UN22223xapVq2L27Nnxzne+c0Ta2NfAAd40qz1jxowZoDaT6hFgWo+edQkQIECAAAECBAgQGI6APiaGoPbAAw8UfqGfMGFCpH/p1/q3vOUtQyhhaIum+tKJYrG+9Pqxj31s0EKuu+66eOtb3xoXX3xxnHPOOfHxj3980OWbPTNv7Wn29iqfAAECBAgQIECAAAECBIYmIDExBK+7776739K333571WRBv5VqmJCuynjVq17Vb8kvf/nL/aYNNmHOnDmDzR7xeXlrz4gDqJAAAQIECBAgQIAAAQIEygQkJso4Bh+ZMmXKgAtcccUVfbd3DLjAMCZef/31w1grYuvWrWXrrVu3rmx8pEfy1p6R3v5q9aXbdN73vvfFueeeG5deemm1xc0nQIAAAQIECBAgQIDAqBOQmBhGSGfMmNFvrTvuuKPftHompFsx0jBQXYOVm55MUVwnvabxVg55a08rLQaqe/Xq1XHDDTfEzTffHMuWLWt4gmugOk0jQIAAAQIECBAgQIBAngSq96SYp9bmpC0bN24snPyn1+Jw3nnnxYsvvlgcrev1nnvu6Vs/1fG6170uvve97/VNG+xNemxmo9oxWD21zstbe2pt90gtl/oNMRAgQIAAAQIECBAgQKCTBVwxMczon3LKKXHttdf2rZ0SCE899VTfeD1v3v3ud/et/q53vavQkWXfBG8IECBAgAABAgQIECBAgMAoEpCYGGYw0+M4/+iP/qhs7T/7sz8rGx/OyJo1a8oSHNdcc01s27ZtOEVZhwABAgQIECBAgAABAgQI5F5AYmKYIdq0aVNMmjSpcJtFsYj0hI7t27cXR4f1etFFF/Wtl/qISLdC5CExsXfv3r52teObZrW/3nInTpxYxjl2bGMPyXrbV9a4ipFmlp2qSuU3o45mlFlBY5QAAQIECBAgQIAAgSEINPYsaAgVj5ZFv/CFL5Rtyv/6X/+rbHwoIykBkZIbxeGmm24qvh3Sa3rCw2mnnRZvectbIj31YbChuGx6LR1SWz72sY/FQQcdFGPGjIl0wpxeFy1aFNddd13VckvLKtZRS3tK16vnfUoQXX311YX2lrY/bU96+sUvf/nLIRefTG677baCayqztNz0Ppmn+elRr/sb0klxqj/9S76nn3562aLpCR3F+aWvX/va18qWG2gklf3tb397wPaluCWP4Wx3sa5G7hPFMktf09VCaZtTW4u2xf1uyZIlkQyq7c+l5RXfP/DAA/s1STHIU58sxTZ7JUCAAAECBAgQINBRAtnJjKFGgaxPiXTZQOHf4Ycf3rdWcVrxtW/GEN989KMf7Ss/lZWd4BZK2F+9AxW/e/fusjIee+yxgRYrTKtcNo2nobIdxe2qfP3+979fWH6w/yrrGKw9g5Uz0LzkU9qm7AkXhcVKvUrnV75/85vfPFCx/aalck844YSyuirLqhz/6U9/2q+cNGHlypVDKqe03OL+MFDBKRalyw72PutMdW/2GNeBiinsc6XrFk0buU9UVrx58+a96XgqrXew91/84hcrixhwPJWbXXVUU7m17gsDVmQiAQIECBAgQIAAAQJ1CbhiIjsDqnfITpTKili+fHnZeC0jWRTjiiuu6Fs0OxEs/GrcN6HGN+mX5tKh8laB0nmVy+7cubPwa3VpO0qXr3x/6qmnRvo1erChso7B2jNYObXM27BhQ+GqheKjVqutk65OSb/ODzakJ6QsWLAgHn744cEW6zfv+OOPH9CmnqdwVFoWK01XQqRY1DqkJ7xMmTKlpisFkmm6WqGR+0RpO1OHsdOmTSvrV6V0/kDv3/ve90a6smSwIV0xk8otfXJOcfni43SL4+k17QuunCgV8Z4AAQIECBAgQIDAyAlITDTA+g//8A/LSil9qkbZjEFGSm/hSItddtllgyzdnFldXV1lJ4gXXnhhZL86993rn05S06NLS4dXvepVg966ULpss9+nZEDpY1VTW7Nf/AvtS4mf7u7uuOqqq8qakU6MBzvJ/fSnP122fCrz/vvvj5TESWWmf9lVIZFdCRLZr/5lyyabymH+/PmFNmVXThReS5/skpZNZad5lf9SHAYa0u0NlftKilt2RURf+9J2f+tb3+q3eupYtdqQTEuTMo3cJ9JtJZWJoezKlIJlMi36pm1P9ZYON9xwQ+GWotJppe/f9KY3lY7GJZdc0meSEhDpdpsUs9L9eTi3iZRVYoQAAQIECBAgQIAAgeEJZF/+DTUKlN4ikC49Lx2yx3qWXTKeLiMfylB6yXnlZeWD1VtZR+XtDenWgf0Nlctme1DfNgx2y0Xltt5yyy37q6LfrQGDtWe/hexnxmDtH+w2k9SG0m1N77Oky4C1ZCfEhWWzE9j9LlO6YlqutOzB2pHWW7duXdnyaZtqHbLkSNm6qd5q9aXbIIrty5I0/aoazLRR+0Sx0tJ9PrUp7eeDDan+YtuLr8mgcki3qRTnp9eBtrN0nVRudoVS6STvCRAgQIAAAQIECBAYQQFXTGRnLo0Y0uX0pUOtl76ndVasWFF2yfn1119fWtSIv09XRixevHi/9f7DP/xD2bzBrjgoW3CERrKT/TjllFP2W1u6sqHy9psrr7xywOX/9m//NpLHd7/73UJHoAMuVDLxzjvvLBmLuPfee8vGK0d27NhRNik79svGBxv5b//tv5XNTldFDLbdaeHzzz+/cKVGulLgpJNOKlt/sJFG7xPpFqDS2yzSlSzvf//7B2tCYZ/Mkghly6QrJyqHFP/SIV0tMdiQ9vXUCaaBAAECBAgQIECAAIHWCEhMNMg9XaJfeu/6smXLCpei11L8n/zJn/QtlspIZbVqSCeg6ckVgw2pr4PsF+a+RdIJZvZLe994K9+kWzfSI1arDekEvXRI8RpoSE+FqOZRut7kyZMjJT6KQ+mtJcVpjXotTX6lOt/4xjfWVHTav1KipVoSo1hYM/aJs88+u1h84fUv/uIvysb3N5KSCKW+A/UnUtmPx/765thfHaYTIECAAAECBAgQIDCyAhITDfSufLznXXfdVbX0l156qaxfhPS4yVYN2W0ANZ+ElyZTWtXeynrTFQNDSepU9jeRHlfZiOE973lPXzH//u//3ve+kW8q21r52NpG1dWMfSI9djT17VEcsluBim9rev3GN75RtlxlUiz1/1E6bNmypXTUewIECBAgQIAAAQIEciYgMdHAgJx55pllpVX+Klw2s3ek9FfvNKnWX7EHKqveaenpE7UOlSd/qYPFVg9HH330kJpQGZ/KbRpSYSULz5kzp2SsOW8rO7McylM5htKiZuwTTzzxRFkT3va2t5WNVxuZOXNm2SLr168vG583b17ZeHo6h44ty0iMECBAgAABAgQIEMiVgMREA8ORLvsvvZ893eJQ+ct2aXXpl97SWwgqn9BQumze3leefFfe19+K9g41sXDooYeWNfPrX/962XieR0qvxEi3NkyaNKnlza11n/jXf/3XsraWPoEj9bFR7V9lnNMTSEqHZJF1IFs6KdLtHd/+9rfLphkhQIAAAQIECBAgQCAfAuPz0YzR04rLL7+8LNmQ7p3/6le/OuAG/uM//mPZ9D/6oz8qG8/zyAEHHJDn5tXUtuH0PZB+eX/ooYfi7rvvLtyCs2rVqti0aVNZfaW3KZTNaODIP/3TP/WVNn369L73rXxT6z4xZcqUsmZWjpfNHObIv/zLv8S4cePK1j799NML4+kWntQ3ReoPxECAAAECBAgQIECAQOsFXDHR4BikjhJPOOGEvlJvvvnm/V5Gfs455/Qtlz2CMxe/evc1qAPfDNZp5osvvhhvectbCr+8v+pVr4rLLrssbr/99nj44YcjJSJK/40EXWkyojIxMhL111PHk08+Wc/qNa2brl5KVySlp49UDil2KRly2mmnDXpFU+V6xgkQIECAAAECBAgQaI6AKyaa4Pp3f/d3kU5ei8Pf//3fFx7TWBxPr8uXLy8djWuuuaZs3EjzBSofzZk6ZRxouO666wq/sA80z7ShC1TeUlGayBtqacccc0wcdthhA66WrohJTx9Jt1NddNFFhURS6YLpiSmpD42UvEhXwKRkhoEAAQIECBAgQIAAgZEXkJhogvmJJ55YVup73/vefomJd7/73X3LpD4CBvu1vm9BbxoqUHkrR2VfBamy9JSUykdSphPpz33uc4UrY9Iv76XlpPcf+9jHorJT04Y2PCus3a6SKN3+Cy+8sMz0Jz/5SZlh6bKNeJ+e1JLimBJPqR+XdMVE6ZASFOm2j9TXheREqYz3BAgQIECAAAECBEZGwE+ETXKufBRl6RUS6baAdAtAcWinTheLbR6Nr5W/vKf+JN761reWber9999f6GMiPT3lwAMPLJzIpmRE8V9auLITyLICGjTyjne8o6+k0ts6+ia20ZvKK1ea1fTUp0Tq8yXVV/nI0VTn0qVLm1W1cgkQIECAAAECBAgQGERAYmIQnHpmVf7KXnqFROW8yiss6qnXurULvPDCC2ULn3zyyWXjd955Z9l4OpnNS6xe9rKX9bUtJblG6uS+r9I63syePbts7dQXxEgPqb+QykfcpisnWtGWkd529REgQIAAAQIECBDIm4DERJMikn6dLe14L508pkvJ04lP6hCzOHzxi18svvVap0B6JORQhsorVSofQ5meuFE6VD6CsnReq98//fTTrW5CzfVXSwDVXFCdC6bHij722GNlpTzzzDNl40YIECBAgAABAgQIEGi+gMREE42/8IUvlJX+pS99KSofEfqHf/iHZcsYGb7AmWeeOaSV06NdS4fU10fpcMstt/SNpnmlfUn0zRjgzUB9VQywWGFSZTKk1nXPPvvssiI/8pGPlI3neeSQQw4pa94HPvCBsvGRHDnyyCPLqmv322LKNsYIAQIECBAgQIAAgTYRkJhoYqAWL15cVnq6haP0EaGpE8Dx4/U/WoZUx0i6KiU9ArKW4Z577omNGzf2LVrZJ0iaUXqFRHocaC23S6S+RCo7V+yrZIA3lf1RPPfccwMs1X9S6ix1xowZfTPSVTgvvfRS3/hgb9J2XH311fHAAw8MtljT5qUET9r3i0OybVVbKjsRTf2KGAgQIECAAAECBAgQGFkBiYkmew92q8anPvWpJtfeecWnfgKWLFkyaBIhncCfeuqpZTiV/X6kmemJG6VD5a0fpfPS+/QYzOOPP75y8qDjBxxwQNn8G264oWx8sJGbbrqpbPa0adOq9pGQOl5NT55IyZNLLrmkbP2RHKnc99PjdVOCotYhJRBSMmOgPiFS/C+99NIB51WWXxn3WbNmVS5inAABAgQIECBAgACBJgtITDQZeH+3aqRHTh500EFNrr0zi09XTqST79InoRQlVqxYEekEvnRIJ+ipT5DK4V3velfZpHS1y9e+9rWyaWlk+/btce6558bpp5/eb161CenqgdIrH5YtW9av3WvWrBnwpD114Fg5pMdeDrTdqX+TdLI+c+bMylVaMp72/dKrJlIjFi1aVLiSI3kONKQrPVLyIlmn/kRSMuP6668vWzQlKlL8k2OyuO666wrxKVsoG0mJjVROaX8v6QoZjwutlDJOgAABAgQIECBAoPkC7iNosnG6VSOd4JaeAKUqv/KVrzS55s4rvtK5ePVCMcGQnrJRevtGEkoJos985jMDYqWT58oyU3Ii/Usn1enKi0cffbTs0a8DFlRl4l//9V/He9/73r6lUrvTSXJ6HGnpfjPQrSTr1q3r93jS4nanzldTEqbytpViRX/1V39VfNuS189//vPx85//PNJVLsUhXcmR/qVkzRlnnBGpP4pnn3027r333gGTM8X19vearohI/1IfIW9605sKi33zm98csKx//ud/3l8xphMgQIAAAQIECBAg0ESBMdnJzt4mlj+qik6/vhYv/U4nOitXrqxp+9Iv3gsWLChbdijsQ6k3lVv6q29qY2rrQMNQlq1cv9Z1a12usvxaxivLTuPpdopar1xIJ+7f/e53q1aVbg1Iv8LXMqRbd1InnMW+I2rdT1ISpDJpUllf2r6Bhl/+8pd99Q00f6Bp999//4CPPq00HWz/qSx3uOumKznSFQ7DGdIjP9PTNUqH4ZS3YcMGVzCVInpPgAABAgQIECBAYAQF3MoxBOzSy/2H0nv//Pnzy5ID3/jGN4ZQa5TdZjCUelMlQ1l+KMtWbkBlfwyV84vj9dRRLGN/r+nE+I1vfGOkJ1uUdlxZuXy6SiKdmNeSlEjrPvTQQ5FiVnrLRWWZ6cqKzZs3x/nnn1/Woemhhx5aueiA46nvh8pbG0oXHKyvktQRZrqF4dprry1dpd/7tN3pSSNp2RNPPLHf/IEm1BOvWveJdMVKSgwMtv3FtqUYpFtvUsIkxbsyKZGWS+WtXr26cLVLcb2BXlNZyTWV47aqgYRMI0CAAAECBAgQIDAyAq6YGKJzsbO90qsSai1ipNZNJ1rpX+q/oNojLoeybOV21rpurctVll/LeLHsgeKR+hFYu3ZtoZj0WM7UL8HcuXPLEge11FG6TOr/oPTJGenke/bs2f2cB2tXaXmV79N66cqJ1CdEGtKtGFOnTu1XfuV6peNp3XSLR3EY6nYX217L/lOso/haz7rFMort37FjR6ED0pRoSsmXlCQZKM7F9fb3mm65Wb9+fSH+qaxizAZKauyvDNMJECBAgAABAgQIEGiegMRE82yVTIAAAQIECBAgQIAAAQIECFQRcCtHFSCzCRAgQIAAAQIECBAgQIAAgeYJSEw0z1bJBAgQIECAAAECBAgQIECAQBUBiYkqQGYTIECAAAECBAgQIECAAAECzROQmGierZIJECBAgAABAgQIECBAgACBKgISE1WAzCZAgAABAgQIECBAgAABAgSaJyAx0TxbJRMgQIAAAQIECBAgQIAAAQJVBCQmqgCZTYAAAQIECBAgQIAAAQIECDRPQGKiebZKJkCAAAECBAgQIECAAAECBKoISExUATKbAAECBAgQIECAAAECBAgQaJ6AxETzbJVMgAABAgQIECBAgAABAgQIVBGQmKgCZDYBAgQIECBAgAABAgQIECDQPAGJiebZKpkAAQIECBAgQIAAAQIECBCoIiAxUQXIbAIECBAgQIAAAQIECBAgQKB5AhITzbNVMgECBAgQIECAAAECBAgQIFBFQGKiCpDZBAgQIECAAAECBAgQIECAQPMEJCaaZ6tkAgQIECBAgAABAgQIECBAoIqAxEQVILMJECBAgAABAgQIECBAgACB5glITDTPVskECBAgQIAAAQIECBAgQIBAFQGJiSpAZhMgQIAAAQIECBAgQIAAAQLNE5CYaJ6tkgkQIECAAAECBAgQIECAAIEqAhITVYDMJkCAAAECBAgQIECAAAECBJonIDHRPFslEyBAgAABAgQIECBAgAABAlUEJCaqAJlNgAABAgQIECBAgAABAgQINE9AYqJ5tkomQIAAAQIECBAgQIAAAQIEqghITFQBMpsAAQIECBAgQIAAAQIECBBonoDERPNslUyAAAECBAgQIECAAAECBAhUEZCYqAJkNgECBAgQIECAAAECBAgQINA8AYmJ5tkqmQABAgQIECBAgAABAgQIEKgiIDFRBchsAgQIECBAgAABAgQIECBAoHkCEhPNs1UyAQIECBAgQIAAAQIECBAgUEVAYqIKkNkECBAgQIAAAQIECBAgQIBA8wQkJppnq2QCBAgQIECAAAECBAgQIECgioDERBUgswkQIECAAAECBAgQIECAAIHmCUhMNM9WyQQIECBAgAABAgQIECBAgEAVAYmJKkBmEyBAgAABAgQIECBAgAABAs0TkJhonq2SCRAgQIAAAQIECBAgQIAAgSoCEhNVgMwmQIAAAQIECBAgQIAAAQIEmicgMdE8WyUTIECAAAECBAgQIECAAAECVQQkJqoAmU2AAAECBAgQIECAAAECBAg0T0Bionm2SiZAgAABAgQIECBAgAABAgSqCEhMVAEymwABAgQIECBAgAABAgQIEGiegMRE82yVTIAAAQIECBAgQIAAAQIECFQRkJioAmQ2AQIECBAgQIAAAQIECBAg0DwBiYnm2SqZAAECBAgQIECAAAECBAgQqCIgMVEFyGwCBAgQIECAAAECBAgQIECgeQISE82zVTIBAgQIECBAgAABAgQIECBQRUBiogqQ2QQIECBAgAABAgQIECBAgEDzBCQmmmerZAIECBAgQIAAAQIECBAgQKCKgMREFSCzCRAgQIAAAQIECBAgQIAAgeYJSEw0z1bJBAgQIECAAAECBAgQIECAQBUBiYkqQGYTIECAAAECBAgQIECAAAECzROQmGierZIJECBAgAABAgQIECBAgACBKgISE1WAzCZAgAABAgQIECBAgAABAgSaJyAx0TxbJRMgQIAAAQIECBAgQIAAAQJVBCQmqgCZTYAAAQIECBAgQIAAAQIECDRPQGKiebZKJkCAAAECBAgQIECAAAECBKoISExUATKbAAECBAgQIECAAAECBAgQaJ6AxETzbJVMgAABAgQIECBAgAABAgQIVBGQmKgCZDYBAgQIECBAgAABAgQIECDQPAGJiebZKpkAAQIECBAgQIAAAQIECBCoIiAxUQXIbAIECBAgQIAAAQIECBAgQKB5AhITzbNVMgECBAgQIECAAAECBAgQIFBFQGKiCpDZBAgQIECAAAECBAgQIECAQPMEJCaaZ6tkAgQIECBAgAABAgQIECBAoIqA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QKMEilc2ROonYubkmJ0lJcbv3hUvPLch7vzfD8Ybr3gsVpRUdusNy+PedVkGYtLUOOm3Di0kJVYuXx0rC08O3RM9N3xkK2x8Pr76YHrMZ8TsRTNjXpYYSE8brW39bfFvP9wQu8ZlfUscd0i87pWzY8a4iOeWPxYX3fxiocyIF+PdH10ej2zoacuJr16QLXdwISmxZd26+EbvrSdp4Zv++Yl4Ll01kbV58cLJcaCfXnoNvRAgQIAAgfwLjNmbDflvZr5beMwZV8bMw16b70ZqHQECBAgQGKLA9LmT45gDx8b61VtiRbqromtcTB/gUZzTZ0yK7M6K2Lppe6zpufuiUFNt64+LxYdOinQHxjPrtpWtX9rcVMei2VlPEi/tjF9W1LNvuaysuSkjsSdWrB28T4p963hHgAABAgRaI7Dh6R/Fo3de3prKc1ar3xNyFhDNIUCAAAECeRHYtHZb3Fvod6K3RQMkJdKcTRu39/VFUdr22tbfHSue6bsGo3T1svepjoeyf4MPWVlrC51NDL6YuQQIECBAgECuBNzKkatwaAwBAgQIECBAgAABAgQIEOgsAYmJzoq3rSVAgAABAgQIECBAgAABArkSkJjIVTg0hgABAgQIECBAgAABAgQIdJaAxERnxdvWEiBAgAABAgQIECBAgACBXAlITOQqHBpDgAABAgQIECBAgAABAgQ6S0BiorPibWsJECBAgAABAgQIECBAgECuBCQmchUOjSFAgAABAgQIECBAgAABAp0lIDHRWfG2tQQIECBAgAABAgQIECBAIFcCEhO5CofGECBAgAABAgQIECBAgACBzhKQmOiseNtaAgQIECBAgAABAgQIECCQKwGJiVyFQ2MIECBAgAABAgQIECBAgEBnCUhMdFa8bS0BAgQIECBAgAABAgQIEMiVgMRErsKhMQQIECBAgAABAgQIECBAoLMEJCY6K962lgABAgQIECBAgAABAgQI5EpAYiJX4dAYAgQIECBAgAABAgQIECDQWQISE50Vb1tLgAABAgQIECBAgAABAgRyJSAxkatwaAwBAgQIECBAgAABAgQIEOgsAYmJzoq3rSVAgAABAgQIECBAgAABArkSkJjIVTg0hgABAgQIECBAgAABAgQIdJaAxEQD4j1hwvjYu2d3A0pSBAECBAgQIECAAAECBAiMdoF0/pjOIw09AhITDdgTDpzSFXt272xASYogQIAAAQIECBAgQIAAgdEukM4f03mkoUdAYqIBe8KiBbNj985tDShJEQQIECBAgAABAgQIECAw2gXS+ePLFs4e7ZtZ8/ZJTNRMtf8FX/eqRRG7Xtr/AuYQIECAAAECBAgQIECAAIGiQHb+eOqJ2XmkoSAgMdGAHeH033p57O5+Mfbu3duA0hRBgAABAgQIECBAgAABAqNVIJ03pvPH009+xWjdxCFvl8TEkMn6r3D4gllxxMJZsWPr+v4zTSFAgAABAgQIECBAgAABAr0C6bwxnT8ePn8mk14BiYkG7QqXXPD62PurZ7OrJvY0qETFECBAgAABAgQIECBAgMBoEkjni+m8MZ0/GvYJSEzss6jr3WtOODxec/zC2Ln5mbrKsTIBAgQIECBAgAABAgQIjE6BdL6YzhvT+aNhn4DExD6Lut/990veHF1jt8X2LWvrLksBBAgQIECAAAECBAgQIDB6BNJ5YjpfTOeNhnIBiYlyj7rGpk3tii9/+twYt32t5ERdklYmQIAAAQIECBAgQIDA6BFISYl0npjOF9N5o6FcYEzWI6hHSZSb1D22cvX6eM+HvxrdeybHhGmHxpgx8j91oyqAAAECBAgQIECAAAECbSaQ+pRIt2+kKyVSUmJR9uAEQ38BiYn+Jg2ZsnlLd/yXZbfHj3+6KsYccEhMnDIrS1CMaUjZCiFAgAABAgQIECBAgACB/Aqk3//T0zdSR5epT4l0+4YrJfYfL4mJ/ds0ZM6PH34qlt34nXhi1foY13VQxPgDY9yEyTF23IQYM3ZcQ+pQCAECBAgQIECAAAECBAi0TmDvnt2xZ/fO2L1zW8Sul2J394uFR4Kmp2/o6LJ6XCQmqhs1ZImnsts7vvXDx+L7D6yMJ1e9EC9t7Y6dO3c1pGyFECBAgAABAgQIECBAgEDrBCZMGB8HTumKly2cHaeeuChOP/kVcfj8ma1rUJvVLDHRZgHTXAIECBAgQIAAAQIECBAgMJoE9Mo4mqJpWwgQIECAAAECBAgQIECAQJsJSEy0WcA0lwABAgQIECBAgAABAgQIjCYBiYnRFE3bQoAAAQIECBAgQIAAAQIE2kxAYqLNAqa5BAgQIECAAAECBAgQIEBgNAlITIymaNoWAgQIECBAgAABAgQIECDQZgISE20WMM0lQIAAAQIECBAgQIAAAQKjSUBiYjRF07YQIECAAAECBAgQIECAAIE2E5CYaLOAaS4BAgQIECBAgAABAgQIEBhNAhIToymatoUAAQIECBAgQIAAAQIECLSZgMREmwVMcwkQIECAAAECBAgQIECAwGgSkJgYTdG0LQQIECBAgAABAgQIECBAoM0EJCbaLGCaS4AAAQIECBAgQIAAAQIERpOAxMRoiqZtIUCAAAECBAgQIECAAAECbSYgMdFmAdNcAgQIECBAgAABAgQIECAwmgQkJkZTNG0LAQIECBAgQIAAAQIECBBoMwGJiTYLmOYSIECAAAECBAgQIECAAIHRJCAxMZqiaVsIECBAgAABAgQIECBAgECbCYxvs/ZqLgECBAgQINBCgWPOuLLptT965+VNr0MFBAgQIECAQH4EJCbyEwstIUCAAAECbSEw87DXNq2dG57+UdPKVjABAgQIECCQTwG3cuQzLlpFgAABAgQIECBAgAABAgQ6QkBioiPCbCMJECBAgAABAgQIECBAgEA+BSQm8hkXrSJAgAABAgQIECBAgAABAh0hIDHREWG2kQQIECBAgAABAgQIECBAIJ8CEhP5jItWESBAgAABAgQIECBAgACBjhCQmOiIMNtIAgQIECBAgAABAgQIECCQTwGJiXzGRasIECBAgAABAgQIECBAgEBHCEhMdESYbSQBAgQIECBAgAABAgQIEMingMREPuOiVQQIECBAgAABAgQIECBAoCMEJCY6Isw2kgABAgQIECBAgAABAgQI5FNAYiKfcdEqAgQIECBAgAABAgQIECDQEQISEx0RZhtJgAABAgQIECBAgAABAgTyKSAxkc+4aBUBAgQIECBAgAABAgQIEOgIAYmJjgizjSRAgAABAgQIECBAgAABAvkUkJjIZ1y0igABAgQIECBAgAABAgQIdISAxERHhNlGEiBAgAABAgQIECBAgACBfApITOQzLlpFgAABAgQIECBAgAABAgQ6QkBioiPCbCMJECBAgAABAgQIECBAgEA+BSQm8hkXrSJAgAABAgQIECBAgAABAh0hIDHREWG2kQQIECBAgAABAgQIECBAIJ8CEhP5jItWESBAgAABAgQIECBAgACBjhCQmOiIMNtIAgQIECBAgAABAgQIECCQTwGJiXzGRasIECBAgAABAgQIECBAgEBHCEhMdESYbSQBAgQIECBAgAABAgQIEMingMREPuOiVQQIECBAgAABAgQIECBAoCMEJCY6Isw2kgABAgQIECBAgAABAgQI5FNAYiKfcdEqAgQIECBAgAABAgQIECDQEQISEx0RZhtJgAABAgQIECBAgAABAgTyKSAxkc+4aBUBAgQIECBAgAABAgQIEOgIAYmJjgizjSRAgAABAgQIECBAgAABAvkUkJjIZ1y0igABAgQIECBAgAABAgQIdISAxERHhNlGEiBAgAABAgQIECBAgACBfApITOQzLlpFgAABAgQIECBAgAABAgQ6QkBioiPCbCMJECBAgAABAgQIECBAgEA+BSQm8hkXrSJAgAABAgQIECBAgAABAh0hIDHREWG2kQQIECBAgAABAgQIECBAIJ8CEhP5jItWESBAgAABAgQIECBAgACBjhCQmOiIMNtIAgQIECBAgAABAgQIECCQTwGJiXzGRasIECBAgAABAgQIECBAgEBHCEhMdESYbSQBAgQIECBAgAABAgQIEMingMREPuOiVQQIECBAgAABAgQIECBAoCMEJCY6Isw2kgABAgQIECBAgAABAgQI5FNAYiKfcdEqAgQIECBAgAABAgQIECDQEQISEx0RZhtJgAABAgQIECBAgAABAgTyKSAxkc+4aBUBAgQIECBAgAABAgQIEOgIAYmJjgizjSRAgAABAgQIECBAgAABAvkUkJjIZ1y0igABAgQIECBAgAABAgQIdISAxERHhNlGEiBAgAABAgQIECBAgACBfApITOQzLlpFgAABAgQIECBAgAABAgQ6QmDM3mzoiC21kQQIECBAgECZwH0/fTre91f/f2zfsatserWRmYe9ttoiw56/4ekfDWndSRPHxw2f+IN41fGHDWk9CxMgQIAAAQL5EZCYyE8stIQAAQIECIy4wP1ZcuI/fezrMW7aETGha9qI1z/cCnd2b47dm5+Iv/3Y2ZISw0W0HgECBAgQyImAWzlyEgjNIECAAAECrRBIVxqkk/t0kp9O9tthkJRohyhpIwECBAgQqF1AYqJ2K0sSIECAAIFRKdBOyQlJiVG5C9ooAgQIEOhwAYmJDt8BbD4BAgQIEEgC7ZCckJSwrxIgQIAAgdEpIDExOuNqqwgQIECAwJAF8pyckJQYcjitQIAAAQIE2kZAYqJtQqWhBAgQIECg+QJ5TE5ISjQ/7mogQIAAAQKtFJCYaKW+ugkQIECAQA4F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3j4/lf7k8W+k53/welq3YVe64aYduUGxrqHZyh626q1VZ7atTnRZnVOi+hjGSo+UWE5SlsupNHefPJuzbXtkWbYt3ux88mzWt83RZdmmdvNzybN547ZmkGVb0u3M03Se7ayivVk0Jhq2fv77r6bHn/yPdPj102l49KdSWr85DY9sTEPDI2nd0HDDsw/m8JdmZ9LszHSamb6Q0sV30szU2blLQlZX0+j1RJe9CMmyF63ut5Vn91bRt5Rl9IR6q0+evXlF3lqWkdPpvTZ59m4W9RmyjJrMyurqV54rqzbeszQmWsrk1fzxjn/7z5fTt/9nMk0ePZXeeXcqTU9fbGn2wZpmZGR92nzTaLpjfCx9+t6J9MD+j6U9NXxso1slWXYr1d128uzOaS1sJcu1kFL3Ncqze6voW8oyekK91SfP3rwiby3LyOn0Xlu/8+y94ljP0JiIlYdqCBAgQIAAAQIECBAgQIBAUQLOylhU3BZLgAABAgQIECBAgAABAgRiCWhMxMpDNQQIECBAgAABAgQIECBAoCgBjYmi4rZYAgQIECBAgAABAgQIECAQS0BjIlYeqiFAgAABAgQIECBAgAABAkUJaEwUFbfFEiBAgAABAgQIECBAgACBWAIaE7HyUA0BAgQIECBAgAABAgQIEChKQGOiqLgtlgABAgQIECBAgAABAgQIxBLQmIiVh2oIECBAgAABAgQIECBAgEBRAhoTRcVtsQQIECBAgAABAgQIECBAIJaAxkSsPFRDgAABAgQIECBAgAABAgSKEtCYKCpuiyVAgAABAgQIECBAgAABArEENCZi5aEaAgQIECBAgAABAgQIECBQlIDGRFFxWywBAgQIECBAgAABAgQIEIgloDERKw/VECBAgAABAgQIECBAgACBogQ0JoqK22IJECBAgAABAgQIECBAgEAsAY2JWHmohgABAgQIECBAgAABAgQIFCWgMVFU3BZLgAABAgQIECBAgAABAgRiCWhMxMpDNQQIECBAgAABAgQIECBAoCgBjYmi4rZYAgQIECBAgAABAgQIECAQS0BjIlYeqiFAgAABAgQIECBAgAABAkUJaEwUFbfFEiBAgAABAgQIECBAgACBWAIaE7HyUA0BAgQIECBAgAABAgQIEChKQGOiqLgtlgABAgQIECBAgAABAgQIxBLQmIiVh2oIECBAgAABAgQIECBAgEBRAhoTRcVtsQQIECBAgAABAgQIECBAIJaAxkSsPFRDgAABAgQIECBAgAABAgSKEtCYKCpuiyVAgAABAgQIECBAgAABArEENCZi5aEaAgQIECBAgAABAgQIECBQlIDGRFFxWywBAgQIECBAgAABAgQIEIgloDERKw/VECBAgAABAgQIECBAgACBogQ0JoqK22IJECBAgAABAgQIECBAgEAsAY2JWHmohgABAgQIECBAgAABAgQIFCWgMVFU3BZLgAABAgQIECBAgAABAgRiCWhMxMpDNQQIECBAgAABAgQIECBAoCgBjYmi4rZYAgQIECBAgAABAgQIECAQS0BjIlYeqiFAgAABAgQIECBAgAABAkUJaEwUFbfFEiBAgAABAgQIECBAgACBWAIaE7HyUA0BAgQIECBAgAABAgQIEChKQGOiqLgtlgABAgQIECBAgAABAgQIxBLQmIiVh2oIECBAgAABAgQIECBAgEBRAhoTRcVtsQQIECBAgAABAgQIECBAIJaAxkSsPFRDgAABAgQIECBAgAABAgSKEtCYKCpuiyVAgAABAgQIECBAgAABArEENCZi5aEaAgQIECBAgAABAgQIECBQlIDGRFFxWywBAgQIECBAgAABAgQIEIgloDERKw/VECBAgAABAgQIECBAgACBogQ0JoqK22IJECBAgAABAgQIECBAgEAsAY2JWHmohgABAgQIECBAgAABAgQIFCWgMVFU3BZLgAABAgQIECBAgAABAgRiCWhMxMpDNQQIECBAgAABAgQIECBAoCgBjYmi4rZYAgQIECBAgAABAgQIECAQS0BjIlYeqiFAgAABAgQIECBAgAABAkUJaEwUFbfFEiBAgAABAgQIECBAgACBWAIaE7HyUA0BAgQIECBAgAABAgQIEChKQGOiqLgtlgABAgQIECBAgAABAgQIxBLQmIiVh2oIECBAgAABAgQIECBAgEBRAhoTRcVtsQQIECBAgAABAgQIECBAIJaAxkSsPFRDgAABAgQIECBAgAABAgSKEtCYKCpuiyVAgAABAgQIECBAgAABArEENCZi5aEaAgQIECBAgAABAgQIECBQlIDGRFFxWywBAgQIECBAgAABAgQIEIgloDERKw/VECBAgAABAgQIECBAgACBogQ0JoqK22IJECBAgAABAgQIECBAgEAsAY2JWHmohgABAgQIECBAgAABAgQIFCWgMVFU3BZLgAABAgQIECBAgAABAgRiCWhMxMpDNQQIECBAgAABAgQIECBAoCgBjYmi4rZYAgQIECBAgAABAgQIECAQS0BjIlYeqiFAgAABAgQIECBAgAABAkUJaEwUFbfFEiBAgAABAgQIECBAgACBWAIaE7HyUA0BAgQIECBAgAABAgQIEChKQGOiqLgtlgABAgQIECBAgAABAgQIxBLQmIiVh2oIECBAgAABAgQIECBAgEBRAhoTRcVtsQQIECBAgAABAgQIECBAIJaAxkSsPFRDgAABAgQIECBAgAABAgSKEtCYKCpuiyVAgAABAgQIECBAgAABArEENCZi5aEaAgQIECBAgAABAgQIECBQlIDGRFFxWywBAgQIECBAgAABAgQIEIgloDERKw/VECBAgAABAgQIECBAgACBogQ0JoqK22IJECBAgAABAgQIECBAgEAsAY2JWHmohgABAgQIECBAgAABAgQIFCWgMVFU3BZLgAABAgQIECBAgAABAgRiCWhMxMpDNQQIECBAgAABAgQIECBAoCgBjYmi4rZYAgQIECBAgAABAgQIECAQS0BjIlYeqiFAgAABAgQIECBAgAABAkUJaEwUFbfFEiBAgAABAgQIECBAgACBWAIaE7HyUA0BAgQIECBAgAABAgQIEChKQGOiqLgtlgABAgQIECBAgAABAgQIxBLQmIiVh2oIECBAgAABAgQIECBAgEBRAhoTRcVtsQQIECBAgAABAgQIECBAIJaAxkSsPFRDgAABAgQIECBAgAABAgSKEtCYKCpuiyVAgAABAgQIECBAgAABArEENCZi5aEaAgQIECBAgAABAgQIECBQlIDGRFFxWywBAgQIECBAgAABAgQIEIgloDERKw/VECBAgAABAgQIECBAgACBogQ0JoqK22IJECBAgAABAgQIECBAgEAsAY2JWHmohgABAgQIECBAgAABAgQIFCWgMVFU3BZLgAABAgQIECBAgAABAgRiCWhMxMpDNQQIECBAgAABAgQIECBAoCgBjYmi4rZYAgQIECBAgAABAgQIECAQS0BjIlYeqiFAgAABAgQIECBAgAABAkUJaEwUFbfFEiBAgAABAgQIECBAgACBWAIaE7HyUA0BAgQIECBAgAABAgQIEChKQGOiqLgtlgABAgQIECBAgAABAgQIxBLQmIiVh2oIECBAgAABAgQIECBAgEBRAhoTRcVtsQQIECBAgAABAgQIECBAIJaAxkSsPFRDgAABAgQIECBAgAABAgSKEtCYKCpuiyVAgAABAgQIECBAgAABArEENCZi5aEaAgQIECBAgAABAgQIECBQlIDGRFFxWywBAgQIECBAgAABAgQIEIgloDERKw/VECBAgAABAgQIECBAgACBogQ0JoqK22IJECBAgAABAgQIECBAgEAsAY2JWHmohgABAgQIECBAgAABAgQIFCWgMVFU3BZLgAABAgQIECBAgAABAgRiCWhMxMpDNQQIECBAgAABAgQIECBAoCgBjYmi4rZYAgQIECBAgAABAgQIECAQS0BjIlYeqiFAgAABAgQIECBAgAABAkUJaEwUFbfFEiBAgAABAgQIECBAgACBWAIaE7HyUA0BAgQIECBAgAABAgQIEChKQGOiqLgtlgABAgQIECBAgAABAgQIxBL4f75SxuneZm8xAAAAAElFTkSuQmCC" /></p>
 <section id="formulation">
-<h3>3.1. Formulation<a class="headerlink" href="#formulation" title="Link to this heading">#</a></h3>
+<h3>3.1. Formulation<a class="headerlink" href="#formulation" title="Permalink to this heading">#</a></h3>
 <p>Typically, the problem is formulated as an optimization problem (Wei Wu, 2011):
 $$</p>
-<div class="amsmath math notranslate nohighlight" id="equation-84d49ca4-432f-4ee1-bea9-c237a11ac441">
-<span class="eqno">(18)<a class="headerlink" href="#equation-84d49ca4-432f-4ee1-bea9-c237a11ac441" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-4646168d-505f-427b-b921-68863392d4c7">
+<span class="eqno">(18)<a class="headerlink" href="#equation-4646168d-505f-427b-b921-68863392d4c7" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \theta_t^* = \arg \underset{\theta}{\min} \frac 1 t \sum_{i=1}^{t} \left(L(f_{\theta}(x_i), y_i) + R(\theta)\right)
 \end{equation}\]</div>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}
 where $t$ is the number of data points, $\theta_t^*$ is the parameter that minimize the empirical cost, $(x_i, y_i)$ are the $i^{th}$ training example, $L(s, y)$ is a loss function which gives small value if $s$ is a good prediction for $y$, and $R(\theta)$ is a regularization function for $\theta$  which typically gives small value for small $\theta$. \\For stochastic gradient descent (SGD) method, let $d=(x, y)$ be one data sample, $l(\theta, d) = L(f_{\theta}(x), y) + R(\theta)$ be the cost of $\theta$ for $d$, $g(\theta, \xi) = \frac{\partial l(\theta, d)}{\partial \theta}$ be the gradient function, and $D_t = (d_1, \cdots, d_t)$ be all the training samples at $t^{th}$ step. The SGD method updates $\theta$ according to its  stochastic gradient:
 \end{aligned}\end{align} \]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-614fdaca-0f54-4499-ba80-7f565c123693">
-<span class="eqno">(19)<a class="headerlink" href="#equation-614fdaca-0f54-4499-ba80-7f565c123693" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-37508229-8faa-4b52-b177-1b88ecdd32d3">
+<span class="eqno">(19)<a class="headerlink" href="#equation-37508229-8faa-4b52-b177-1b88ecdd32d3" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \theta_t = \theta_{t-1} - \alpha g(\theta_{t-1}, d_t)
 \end{equation}\]</div>
 <div class="math notranslate nohighlight">
 \[The formulation of gradient descent is very similar to the above equation but focusing on total data samples in each iteration:
 \]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-cc159d6e-79cc-405b-972b-2215fd2eec3a">
-<span class="eqno">(20)<a class="headerlink" href="#equation-cc159d6e-79cc-405b-972b-2215fd2eec3a" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-7326dcae-eeac-4936-b62c-040c204f081b">
+<span class="eqno">(20)<a class="headerlink" href="#equation-7326dcae-eeac-4936-b62c-040c204f081b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \theta_t = \theta_{t-1} - \alpha G(\theta_{t-1})
 \end{equation}\]</div>
 <p>$$</p>
@@ -1292,7 +1281,7 @@ gradient and step length.</p></li>
 </div>
 </section>
 <section id="parametric-study">
-<h3>3.2. Parametric study<a class="headerlink" href="#parametric-study" title="Link to this heading">#</a></h3>
+<h3>3.2. Parametric study<a class="headerlink" href="#parametric-study" title="Permalink to this heading">#</a></h3>
 <p>In this part we use a synthetic dataset and fit a model to predict <span class="math notranslate nohighlight">\(y\)</span> from a given <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(x_1\)</span>.</p>
 <p>Now the multivariate linear regression model could be regarded as:</p>
 <div class="math notranslate nohighlight">
@@ -1545,7 +1534,7 @@ y = \theta^Tx
   </div></div>
 </div>
 <section id="cost-function">
-<h4>3.2.1. Cost function<a class="headerlink" href="#cost-function" title="Link to this heading">#</a></h4>
+<h4>3.2.1. Cost function<a class="headerlink" href="#cost-function" title="Permalink to this heading">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">theta</span><span class="p">):</span>
@@ -1694,7 +1683,7 @@ y = \theta^Tx
 </div>
 </section>
 <section id="change-values-of-alpha">
-<h4>3.2.2. Change Values of <span class="math notranslate nohighlight">\(\alpha\)</span><a class="headerlink" href="#change-values-of-alpha" title="Link to this heading">#</a></h4>
+<h4>3.2.2. Change Values of <span class="math notranslate nohighlight">\(\alpha\)</span><a class="headerlink" href="#change-values-of-alpha" title="Permalink to this heading">#</a></h4>
 <p>Similar to the section of gradient descent, we can change the hyperparameter learning rate <span class="math notranslate nohighlight">\(\alpha\)</span> and explore its effect for stochastic gradient descent.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1727,7 +1716,7 @@ y = \theta^Tx
 <p>From the above plots, I took different values of learning rate with the same iteration times (e.g. 100) and full batch. It is easy to see that when <span class="math notranslate nohighlight">\(\alpha = 0.12\)</span> (just slightly greater than the given value), the zig-zag behavior of the cost function becomes more unstable and harder to converge. Another small increment (e.g. <span class="math notranslate nohighlight">\(\alpha \geq 0.125\)</span>) would make the computation blow up. When <span class="math notranslate nohighlight">\(\alpha\)</span> is very small (e.g. <span class="math notranslate nohighlight">\(\alpha = 0.05\)</span>, within the 100 iterations the algorithm cannot reach out the minimum, the rate is slowed down by small <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
 </section>
 <section id="change-values-of-batch-size">
-<h4>3.2.3. Change Values of Batch Size<a class="headerlink" href="#change-values-of-batch-size" title="Link to this heading">#</a></h4>
+<h4>3.2.3. Change Values of Batch Size<a class="headerlink" href="#change-values-of-batch-size" title="Permalink to this heading">#</a></h4>
 <p>Since we know the minibatch is the key of stochastic gradient descent, here we change the batch size and analyze its relation to training loss curve.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1756,7 +1745,7 @@ y = \theta^Tx
 </section>
 </section>
 <section id="computational-cost-analysis">
-<h3>3.3. Computational cost analysis<a class="headerlink" href="#computational-cost-analysis" title="Link to this heading">#</a></h3>
+<h3>3.3. Computational cost analysis<a class="headerlink" href="#computational-cost-analysis" title="Permalink to this heading">#</a></h3>
 <p>Instead of showing the cost vs the number of batch seen, we need to average the costs over batches in each epoch for relevent comparison.</p>
 <p>Since we need to shuffle the data set and split which involves efficiency of codes and all cases did not converge into the same error, so it is not reasonable if we directly record the wall time for each running. So we should count or use computational complexity for comparison. Consider the objective function is:</p>
 <div class="math notranslate nohighlight">
@@ -1796,7 +1785,7 @@ y = \theta^Tx
 <p>From the plot of cost versus epochs, the model cannot converge after 100 epochs if choosing batch size <span class="math notranslate nohighlight">\(n = 250\)</span> and <span class="math notranslate nohighlight">\(n = 500\)</span>. However, if choosing batch size too small, e.g. <span class="math notranslate nohighlight">\(n = 1\)</span>, there are so many big fluctuations and cost is hard to decrease. Usually, size of minibatch is from 50 to 256 but case-dependent.</p>
 </section>
 <section id="takeaway-conclusion">
-<h3>3.4. Takeaway conclusion<a class="headerlink" href="#takeaway-conclusion" title="Link to this heading">#</a></h3>
+<h3>3.4. Takeaway conclusion<a class="headerlink" href="#takeaway-conclusion" title="Permalink to this heading">#</a></h3>
 <p><strong>Pros:</strong></p>
 <ul class="simple">
 <li><p>Since only some samples are used to calculate the gradient in each update, the training rate is fast and contains a certain degree of randomness, but from the perspective of expectation, the gradient calculated each time is basically the correct derivative. Although SGD sometimes fluctuates obviously and takes many detours, the requirements for gradients are very low (calculating gradients is fast for small batch). And for the introduction of noise, a lot of theoretical and practical work has proved that as long as the noise is not particularly large, SGD can converge well .</p></li>
@@ -1811,7 +1800,7 @@ y = \theta^Tx
 </ul>
 </section>
 <section id="variants-of-sgd">
-<h3>3.5. Variants of SGD<a class="headerlink" href="#variants-of-sgd" title="Link to this heading">#</a></h3>
+<h3>3.5. Variants of SGD<a class="headerlink" href="#variants-of-sgd" title="Permalink to this heading">#</a></h3>
 <p>Due to the challenges for vanilla SGD, some effective variants of SGD become popular:</p>
 <ol class="arabic simple">
 <li><p><strong>Momentum:</strong> Instead of depending only on the current gradient to update the weight, gradient descent with momentum (Polyak, 1964) replaces the current gradient with m (“momentum”), which is an aggregate of gradients. This aggregate is the exponential moving average of current and past gradients (i.e. up to time <span class="math notranslate nohighlight">\(t\)</span>).</p></li>
@@ -1829,10 +1818,10 @@ y = \theta^Tx
 </section>
 </section>
 <section id="comparison-between-gd-and-newton-based-method">
-<h2>4. Comparison between GD and Newton-based method<a class="headerlink" href="#comparison-between-gd-and-newton-based-method" title="Link to this heading">#</a></h2>
+<h2>4. Comparison between GD and Newton-based method<a class="headerlink" href="#comparison-between-gd-and-newton-based-method" title="Permalink to this heading">#</a></h2>
 <p>After case study and parametric study on SGD and GD methods, we want to further compare the behavior of gradient descent and other Newton-based methods as <strong>Homework: Algorithm 3</strong>. As discussed in previous sections, shuffling and splitting data into batches then optimizing each minibatch by gradient descent, which is exactly the meaning of “stochastic”. Theoretically, we can use any optimizer “stochastically” by minibatches. In this section, we would not use data set anymore, however, we would use several functions to imitate the shape of trainable parameter space and explore the performance of these methods.</p>
 <section id="newton-based-method">
-<h3>4.1. Newton-based method<a class="headerlink" href="#newton-based-method" title="Link to this heading">#</a></h3>
+<h3>4.1. Newton-based method<a class="headerlink" href="#newton-based-method" title="Permalink to this heading">#</a></h3>
 <p>The following codes are obtained from <strong>Homework: Algorithm 3</strong>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2407,7 +2396,7 @@ y = \theta^Tx
 </div>
 </section>
 <section id="rosenbrock-function">
-<h3>4.2. Rosenbrock function<a class="headerlink" href="#rosenbrock-function" title="Link to this heading">#</a></h3>
+<h3>4.2. Rosenbrock function<a class="headerlink" href="#rosenbrock-function" title="Permalink to this heading">#</a></h3>
 <p>In mathematical optimization, the <a class="reference external" href="https://en.wikipedia.org/wiki/Rosenbrock_function">Rosenbrock function</a> is a non-convex function, introduced by <em>Howard H. Rosenbrock</em> in 1960, which is used as a performance test problem for optimization algorithms. It is also known as Rosenbrock’s valley or Rosenbrock’s banana function.</p>
 <p>The global minimum is inside a long, narrow, parabolic shaped flat valley. To find the valley is trivial. To converge to the global minimum, however, is difficult.</p>
 <p><strong>The function is defined by:</strong></p>
@@ -2553,7 +2542,7 @@ After 7 steps, Newton method found minimizer x* = [1. 1.]
 </div>
 </section>
 <section id="single-saddle-point">
-<h3>4.3. Single saddle point<a class="headerlink" href="#single-saddle-point" title="Link to this heading">#</a></h3>
+<h3>4.3. Single saddle point<a class="headerlink" href="#single-saddle-point" title="Permalink to this heading">#</a></h3>
 <p>Saddle points are much more common than local minima when it comes to optimization problems in a high number of dimensions (which is always the case when it comes to building deep learning models). Consider the following problem:</p>
 <div class="math notranslate nohighlight">
 \[f(x, y) = 0.01x^2 - 0.1y^2\]</div>
@@ -2678,7 +2667,7 @@ After 3 steps, Newton method found minimizer x* = [0. 0.]
 <p>In single saddle points case, it seems gradient descent is more inclined to escape from saddle points compared to Newton’s method. But what if facing multiple saddle points?</p>
 </section>
 <section id="multiple-saddle-points">
-<h3>4.4. Multiple saddle points<a class="headerlink" href="#multiple-saddle-points" title="Link to this heading">#</a></h3>
+<h3>4.4. Multiple saddle points<a class="headerlink" href="#multiple-saddle-points" title="Permalink to this heading">#</a></h3>
 <p>Consider <a class="reference external" href="https://en.wikipedia.org/wiki/Himmelblau%27s_function">Himmelblau’s function</a>, which is a multi-modal function, used to test the performance of optimization algorithms. The function is defined by:</p>
 <div class="math notranslate nohighlight">
 \[f(x,y) = (x^2 + y - 11)^2 + (x + y^2 - 7)^2\]</div>
@@ -2993,7 +2982,7 @@ After 29 steps, Steepest-descent with Line-search found minimizer = [ 3.58442806
 </div>
 </section>
 <section id="id1">
-<h3>4.5. Takeaway conclusion<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<h3>4.5. Takeaway conclusion<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
 <p><strong>Computational cost analysis:</strong></p>
 <p>To compare the computational cost, we have discussed the time complexity of gradient descent is <span class="math notranslate nohighlight">\(\mathcal{O}(N)\)</span>.</p>
 <p>Newton’s Method takes a long time per iteration and is memory-intensive Usually Newton’s Method requires computing the second derivative, <span class="math notranslate nohighlight">\(H\)</span>, which is <span class="math notranslate nohighlight">\(O(N^2)\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the number of features. While computing the gradient, <span class="math notranslate nohighlight">\(g\)</span>, is only <span class="math notranslate nohighlight">\(O(N)\)</span>. But the next step is <span class="math notranslate nohighlight">\(H^{−1} g\)</span>, which is <span class="math notranslate nohighlight">\(O(N^3)\)</span> to compute. So while computing the Hessian is expensive, inverting it or solving least squares is often even worse. (If you have sparse features, the asymptotics look better, but other methods also perform better, so sparsity doesn’t make Newton <strong>relatively</strong> more appealing.) If using LU decomposition, some papers argue that it is <span class="math notranslate nohighlight">\(O(N^2)\)</span>.</p>
@@ -3032,7 +3021,7 @@ Newton-based methods could be used more in machine learning by the following rea
 *To be metioned, Newton's method will not help you with L1 or other similar compressed sensing/sparsity promoting penalty functions, since they lack the required smoothness.* --></section>
 </section>
 <section id="implement-sgd-on-glm-with-real-dataset">
-<h2>5. Implement SGD on GLM with real dataset<a class="headerlink" href="#implement-sgd-on-glm-with-real-dataset" title="Link to this heading">#</a></h2>
+<h2>5. Implement SGD on GLM with real dataset<a class="headerlink" href="#implement-sgd-on-glm-with-real-dataset" title="Permalink to this heading">#</a></h2>
 <p>In ordinary linear regression, we treat our outcome variable as a linear combination of several input variables plus some random noise, typically assumed to be Normally distributed. While this modeling approach is easily interpreted, efficiently implemented, and capable of accurately capturing many linear relationships, it does come with several significant limitations. A simple extension of linear models, a Generalized Linear Model (GLM) is able to relax some of most strict assumptions in linear regression. These assumptions include:</p>
 <ul class="simple">
 <li><p>Linearity between the outcome and input variables</p></li>
@@ -3041,7 +3030,7 @@ Newton-based methods could be used more in machine learning by the following rea
 </ul>
 <p>Relaxing these assumptions allows us to fit much more flexible models to much broader data types.</p>
 <section id="glm-structure">
-<h3>5.1. GLM Structure<a class="headerlink" href="#glm-structure" title="Link to this heading">#</a></h3>
+<h3>5.1. GLM Structure<a class="headerlink" href="#glm-structure" title="Permalink to this heading">#</a></h3>
 <p>Fitting a GLM first requires specifying two components: a random distribution for our outcome variable and a link function between the distribution’s mean parameter and its “linear predictor”.</p>
 <p><strong>The Random Component</strong></p>
 <p>The first step to building our GLM is identifying the distribution of the outcome variable. If the data has a binary response, we might want to use the Bernoulli or Binomial distributions. If we are working with count data, a Poisson model might be more useful. This distribution is typically assumed to come from the Exponential Family of distributions, which includes the Binomial, Poisson, Negative Binomial, Gamma, and Normal.</p>
@@ -3109,7 +3098,7 @@ S'(x) = \frac{\text{exp}(-x)}{(1+\text{exp}(-x))^2} = S(x)(1-S(x))
 \]</div>
 </section>
 <section id="data-wrangling">
-<h3>5.2. Data Wrangling<a class="headerlink" href="#data-wrangling" title="Link to this heading">#</a></h3>
+<h3>5.2. Data Wrangling<a class="headerlink" href="#data-wrangling" title="Permalink to this heading">#</a></h3>
 <p>While the aim of this section is to build a logistic regression model, the dataset is known to have 3 different classes. As mentioned above, logistic regress is named for binary class problems. The <a class="reference external" href="https://www.kaggle.com/datasets/lucidlenn/sloan-digital-sky-survey">data</a> produced by <a class="reference external" href="https://www.kaggle.com/lucidlenn">Lennart Grosser</a> consists of <strong>10,000</strong> observations of space taken by the SDSS. Every observation is described by 17 feature columns and 1 class column which identifies it to be either a star, galaxy or quasar.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -4194,7 +4183,7 @@ Name: class, dtype: float64
 <p>While most of the feature mean values are similar for either class, there are a few with noteworthy differences. The right ascension (ra), declination (dec) and ‘redshift’ have higher means for the GALAXY class, suggesting that higher values of these 3 features indicate the object to be a galaxy.</p>
 </section>
 <section id="developing-the-model">
-<h3>5.3. Developing the Model<a class="headerlink" href="#developing-the-model" title="Link to this heading">#</a></h3>
+<h3>5.3. Developing the Model<a class="headerlink" href="#developing-the-model" title="Permalink to this heading">#</a></h3>
 <p>The data has been cleaned and prepared to now develop a model. In short, the logistic regression model calculates the probabilities of a data point belonging to a certain class. The model first calculates a linear regression model and then uses the sigmoid function to calculate the probability. The final step is using a decision boundary to decide which class the data point belongs when compared to the decision boundary values.</p>
 <p>To create and test the model, we will need train and test data sets.</p>
 <div class="cell docutils container">
@@ -4643,7 +4632,7 @@ F-Score =  0.9644
 <p>The AUC score for the developed model is 0.9911. With its close proximity to 1, it can be stated that the model is good at distinguishing between the two classes.</p>
 </section>
 <section id="using-other-package">
-<h3>5.4. Using other package<a class="headerlink" href="#using-other-package" title="Link to this heading">#</a></h3>
+<h3>5.4. Using other package<a class="headerlink" href="#using-other-package" title="Permalink to this heading">#</a></h3>
 <p>We have created the model from scratch and produced one that classifies the data well. To compare the goodness of fit of our model, we use the predefined <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> package to create a logistic regression model using stochastic gradient descent (SGD) on the same training and test set.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -4729,7 +4718,7 @@ F-Score =  0.961
 </section>
 </section>
 <section id="summary">
-<h2>6. Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
+<h2>6. Summary<a class="headerlink" href="#summary" title="Permalink to this heading">#</a></h2>
 <p>This notebook introduces and implements (stochastic) gradient descent methods on several examples. By parametric study and comparison with Newton’s method, this work aims to help readers to understand:</p>
 <ul class="simple">
 <li><p>Stochastic gradient descent can be challenging to optimize due to the difficulty in selecting an appropriate learning rate. A learning rate that is too small leads to slow convergence, whereas a learning rate that is too large can hinder convergence and cause the loss function to oscillate or even diverge. However, the performance of SGD can be improved by using adaptive learning or momentum methods.</p></li>
@@ -4738,7 +4727,7 @@ F-Score =  0.961
 </ul>
 </section>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
 <p><strong>(Stochastic) Gradient Descent:</strong></p>
 <p>[1] Goodfellow, Ian, et al. ”Deep learning, volume 1.” (2016). <a class="reference external" href="https://www.deeplearningbook.org/contents/ml.html">https://www.deeplearningbook.org/contents/ml.html</a></p>
 <p>[2] Xu, Wei. ”Towards optimal one pass large scale learning with averaged stochastic gradient descent.” arXiv preprint arXiv:1107.2490 (2011).</p>
@@ -4791,7 +4780,7 @@ F-Score =  0.961
               
               
               
-                <footer class="prev-next-footer d-print-none">
+                <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -4820,7 +4809,6 @@ F-Score =  0.961
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
 
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
@@ -4899,7 +4887,7 @@ By Alexander Dowling, et al.
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2022.
       <br/>
     
   </p>
@@ -4923,8 +4911,8 @@ By Alexander Dowling, et al.
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
 
   <footer class="bd-footer">
   </footer>

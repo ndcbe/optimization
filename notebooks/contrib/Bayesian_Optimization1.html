@@ -1,12 +1,13 @@
 
+
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../../" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Bayesian Optimization Tutorial 1 &#8212; Nonlinear and Stochastic Optimization</title>
   
@@ -14,49 +15,53 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/contrib/Bayesian_Optimization1';</script>
@@ -73,23 +78,28 @@
 
   
   
-  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   
   <div id="pst-scroll-pixel-helper"></div>
+
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
 
   
   <input type="checkbox"
           class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -111,20 +121,12 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
-
-  <div class="pst-async-banner-revealer d-none">
-  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
-</div>
-
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
-    </header>
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
   
-
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
-      
-      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -140,8 +142,6 @@
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
 
-  
-    
   
 
 <a class="navbar-brand logo" href="../../intro.html">
@@ -160,18 +160,7 @@
   
   
 </a></div>
-        <div class="sidebar-primary-item">
-
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
-        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -183,14 +172,14 @@
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Fall 2024 Calendar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../org/workshop.html">Computational Optimization in Python (São Paulo, Brazil)</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
@@ -200,16 +189,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4: Interior Point Methods</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project (Spring 2023)</a></li>
 </ul>
-</details></li>
+</li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
@@ -218,13 +207,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.6. Integer Programs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.7. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_car.html">3.1. Pyomo.DAE Example: Race Car</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_TCLab.html">3.2. Pyomo.DAE Example: Temperature Control Lab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../3/DAE_background.html">3.3. Differential Algebraic Equations (DAEs)</a></li>
@@ -232,23 +221,23 @@
 <li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_theory.html">3.5. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_example.html">3.6. Pyomo.DAE: Racing Example Revisited</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../4/blocks.html">4.2. Blocks and Other Pyomo Best Practices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.3. Risk Measures and Portfolio Optimization</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Reactor Kinetics Example for Pyomo.DoE Tutorial</a></li>
 </ul>
-</details></li>
+</li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-1.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
@@ -256,8 +245,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
@@ -267,17 +256,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
 </ul>
-</details></li>
+</li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="pyomo.html">More Pyomo Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyomo.html">More Pyomo Examples</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="semiconductor_manufacturing.html">Semiconductor Production Planning</a></li>
 
 
@@ -300,13 +289,13 @@
 <li class="toctree-l2"><a class="reference internal" href="hot_air_ballon.html">Project 1: Hot Air Balloon Dynamic Control</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reactor_design.html">Chemical Reactor Design</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="dfo.html">Derivative-Free Optimization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="dfo.html">Derivative-Free Optimization</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Bayesian Optimization Tutorial 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="sgd.html">Stochastic Gradient Descent</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="sgd.html">Stochastic Gradient Descent</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
 
@@ -317,11 +306,11 @@
 
 <li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="data.html">Machine Learning and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="data.html">Machine Learning and Applied Statistics</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-15"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
 </ul>
-</details></li>
+</li>
 </ul>
 
     </div>
@@ -337,7 +326,7 @@
 
       </div>
       
-      <main id="main-content" class="bd-main" role="main">
+      <main id="main-content" class="bd-main">
         
         
 
@@ -346,14 +335,14 @@
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article d-print-none">
+              <div class="bd-header-article">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</button></div>
+</label></div>
       
     </div>
   
@@ -378,14 +367,14 @@
       
       <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/contrib/Bayesian_Optimization1.ipynb" target="_blank"
    class="btn btn-sm dropdown-item"
-   title="Launch on Colab"
+   title="Launch onColab"
    data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
 <span class="btn__icon-container">
   
-    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+    <img src="../../_static/images/logo_colab.png">
   </span>
 <span class="btn__text-container">Colab</span>
 </a>
@@ -509,10 +498,10 @@
 
 <script>
 document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
 `);
 </script>
@@ -520,14 +509,14 @@ document.write(`
 
 <script>
 document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</button>
+</label>
 </div></div>
       
     </div>
@@ -609,16 +598,16 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article">
+                <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="bayesian-optimization-tutorial-1">
-<h1>Bayesian Optimization Tutorial 1<a class="headerlink" href="#bayesian-optimization-tutorial-1" title="Link to this heading">#</a></h1>
+<h1>Bayesian Optimization Tutorial 1<a class="headerlink" href="#bayesian-optimization-tutorial-1" title="Permalink to this heading">#</a></h1>
 <p><strong>Prepared by:</strong> <a class="reference external" href="https://github.com/ParisaToofani">Parisa Toofani Movaghar</a> (<a class="reference external" href="mailto:ptoofani&#37;&#52;&#48;nd&#46;edu">ptoofani<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2023)</p>
 <section id="introduction">
-<h2>1.	Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<h2>1.	Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
 <p>Bayesian optimization is an approach to optimize the objective function that usually takes a long time (minutes or hours) to evaluate like tuning hyperparameters of a deep neural network. Also, many optimization problems in machine learning are black-box optimization problems where the objective function is unknown (black-box function) or we have no information about its derivatives. Thanks to the Bayes theorem, such problems can be handled by developing a Bayesian optimization algorithm. There are many areas where Bayesian optimization (BO) can be a handy tool. To make an example BO has been widely used to design engineering systems (system identification) and choose laboratory experiments in materials (model selection). But this is not the only place that BO can be helpful. In computer science they are widely used in A/B testing, recommender system, robotics and reinforcement learning, environmental monitoring and sensor networks, preference learning and interactive interfaces, and tuning the hyperparameters in deep neural networks. As can be seen, BO is a class of machine-learning-based optimization algorithms that focuses on solving problems by inferring the data. But as an engineer, we should know where the best place is to use BO for our problems.</p>
 <section id="when-we-need-bayesian-optimization">
-<h3>1.1.    When We Need Bayesian Optimization?<a class="headerlink" href="#when-we-need-bayesian-optimization" title="Link to this heading">#</a></h3>
+<h3>1.1.    When We Need Bayesian Optimization?<a class="headerlink" href="#when-we-need-bayesian-optimization" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p>The BO algorithm works well on the problem where the input dimension is not too large. It is recommended to use this algorithm for problems with dimensions less than 20.</p></li>
 <li><p>The objective function is continuous. We will see later that this is an assumption for the implementation of the Gaussian process (GP).</p></li>
@@ -628,25 +617,25 @@ document.write(`
 </ul>
 </section>
 <section id="parametric-vs-nonparametric-in-bayesian-optimization">
-<h3>1.2.  Parametric vs. Nonparametric in Bayesian Optimization<a class="headerlink" href="#parametric-vs-nonparametric-in-bayesian-optimization" title="Link to this heading">#</a></h3>
+<h3>1.2.  Parametric vs. Nonparametric in Bayesian Optimization<a class="headerlink" href="#parametric-vs-nonparametric-in-bayesian-optimization" title="Permalink to this heading">#</a></h3>
 <p>A Bayesian Optimization is an approach that uses Bayes Theorem to direct the search in order to find the minimum or maximum of an objective function. The most efficacy of the Bayesian optimization is in the black box system in which the parameter of the model is unknown (nonparametric Bayesian optimization (NBO)). But imagine that I have a beam whose characteristics are defined by stiffness, elasticity, and the applied load (more simply imagine we have a model with a, b, and c variables). Further, the goal is to find these variables in a way that the beam deflection is minimum. If we consider our model uncertain, this is another place that BO comes to help. In other words, due to the uncertainty that exists in our model, we infer our model to find the variables that describe our model well. This case is defined as the parametric Bayesian optimization (PBO).</p>
 </section>
 <section id="parametric-bayesian-optimization-pbo">
-<h3>1.2.1.	Parametric Bayesian Optimization (PBO)<a class="headerlink" href="#parametric-bayesian-optimization-pbo" title="Link to this heading">#</a></h3>
+<h3>1.2.1.	Parametric Bayesian Optimization (PBO)<a class="headerlink" href="#parametric-bayesian-optimization-pbo" title="Permalink to this heading">#</a></h3>
 <p>In order to define the Bayesian optimization with parametric models, we consider a generic family of models parametrized by w. Imagine we have a set of data <span class="math notranslate nohighlight">\((D)\)</span>. Since w is an unobserved quantity, we consider it as a latent random variable that has a prior distribution named <span class="math notranslate nohighlight">\(p(w)\)</span>. Given a data D and defining the likelihood model as <span class="math notranslate nohighlight">\(p(D|w)\)</span>, we can then infer a posterior distribution <span class="math notranslate nohighlight">\(p(w|D)\)</span> using the Bayes theorem.</p>
 <div class="math notranslate nohighlight">
 \[p(w│D)=\frac{(p(D│w)p(w))}{(p(D))}	\quad \quad(1)\]</div>
 <p>The posterior represents the updated beliefs about the model parameters after observing the data <span class="math notranslate nohighlight">\((D)\)</span>. The denominator correspondent with the marginal likelihood (evidence in literature) which is usually difficult to evaluate. This problem is considered a fully Bayesian approach.</p>
 </section>
 <section id="nonparametric-bayesian-optimization-nbo">
-<h3>1.2.2.	Nonparametric Bayesian Optimization (NBO)<a class="headerlink" href="#nonparametric-bayesian-optimization-nbo" title="Link to this heading">#</a></h3>
+<h3>1.2.2.	Nonparametric Bayesian Optimization (NBO)<a class="headerlink" href="#nonparametric-bayesian-optimization-nbo" title="Permalink to this heading">#</a></h3>
 <p>The NBO is rooted in two components: 1) a Bayesian statistical model for modeling the objective function (surrogate) and 2) an acquisition function for deciding where to sample next. The mathematics here is going to be a little bit complex. We will use a space-filling experimental design to evaluate the objective function. Then we will perform the iterative calculations to allocate the remainder of a budget of N functions evaluations. Here, the surrogate model is defined as a Gaussian process (GP) that provides the Bayesian posterior probability distribution that describes the potential value for <span class="math notranslate nohighlight">\(f(x)\)</span> at the determined point x. Following this, the acquisition function measures the x value at the next step based on the current posterior evaluation.</p>
 </section>
 </section>
 <section id="method">
-<h2>2.	Method<a class="headerlink" href="#method" title="Link to this heading">#</a></h2>
+<h2>2.	Method<a class="headerlink" href="#method" title="Permalink to this heading">#</a></h2>
 <section id="nonparametric-bayesian-optimization">
-<h3>2.1. Nonparametric Bayesian Optimization<a class="headerlink" href="#nonparametric-bayesian-optimization" title="Link to this heading">#</a></h3>
+<h3>2.1. Nonparametric Bayesian Optimization<a class="headerlink" href="#nonparametric-bayesian-optimization" title="Permalink to this heading">#</a></h3>
 <p>In this part, we will see how we can generalize the concept of PBO to NBO in order to optimize our favorite black box. This can be done by marginalizing away the weights in Bayesian linear regression and applying the kernel trick to construct a Bayesian nonparametric regression model. By kernelizing a marginalized version of Bayesian linear regression what we have already done is construct an object called a Gaussian process (GP) which we will discuss in the next part.</p>
 <p><strong>___________________________________________</strong></p>
 <p><strong>Algorithm:</strong> Bayesian Optimization</p>
@@ -666,7 +655,7 @@ document.write(`
 <p><strong>___________________________________________</strong></p>
 </section>
 <section id="gaussian-process">
-<h3>2.2. Gaussian Process<a class="headerlink" href="#gaussian-process" title="Link to this heading">#</a></h3>
+<h3>2.2. Gaussian Process<a class="headerlink" href="#gaussian-process" title="Permalink to this heading">#</a></h3>
 <p>The Gaussian process is a nonparametric model that is characterized by its prior mean function (<span class="math notranslate nohighlight">\(μ_0\)</span>) and its positive definite kernel (covariance) function (<span class="math notranslate nohighlight">\(Σ_0\)</span>) over the function space. The interesting thing about the  <span class="math notranslate nohighlight">\(Σ_0\)</span> is that it is constructed at each pair of points <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(x_j\)</span>. Therefore, if the points <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(x_j\)</span> are close to each other in the input space, they would have a larger positive correlation which put emphasis on the belief that they have more similar function values.
 The prior distribution over the functions <span class="math notranslate nohighlight">\([f(x_1 ),f(x_2 ),…,f(x_n )]\)</span> is defined as:</p>
 <div class="math notranslate nohighlight">
@@ -679,14 +668,14 @@ The prior distribution over the functions <span class="math notranslate nohighli
 <p>Where <span class="math notranslate nohighlight">\(Σ_0 (x,x_{1:n} )\)</span> is a vector of covariance terms between <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(x_{1:n}\)</span>. The posterior mean and variance evaluated at any point x represent the model prediction and uncertainty, respectively, in the objective function at the point <span class="math notranslate nohighlight">\(x\)</span>. The posterior functions are used to select the next query point <span class="math notranslate nohighlight">\(x_{n+1}\)</span>.</p>
 </section>
 <section id="the-prior-mean-function">
-<h3>2.2.1.	The prior mean function<a class="headerlink" href="#the-prior-mean-function" title="Link to this heading">#</a></h3>
+<h3>2.2.1.	The prior mean function<a class="headerlink" href="#the-prior-mean-function" title="Permalink to this heading">#</a></h3>
 <p>The prior mean function provides a possibles a possible offset. In most cases, this function is set to be a constant (<span class="math notranslate nohighlight">\(μ(x)≡μ\)</span>). However, when <span class="math notranslate nohighlight">\(f\)</span> is believed to have a trend or some application specific parametric structure, we could define the mean function to be:</p>
 <div class="math notranslate nohighlight">
 \[μ(x)=μ+∑_{i=1}^pβ_i ψ_i (x)	\quad \quad(5)\]</div>
 <p>Where each <span class="math notranslate nohighlight">\(\psi_i(x)\)</span> is a parametric function, and often a low-order polynomial in <span class="math notranslate nohighlight">\(x\)</span>.</p>
 </section>
 <section id="the-choice-of-kernel-in-gaussian-process">
-<h3>2.2.2.	The Choice of Kernel in Gaussian Process<a class="headerlink" href="#the-choice-of-kernel-in-gaussian-process" title="Link to this heading">#</a></h3>
+<h3>2.2.2.	The Choice of Kernel in Gaussian Process<a class="headerlink" href="#the-choice-of-kernel-in-gaussian-process" title="Permalink to this heading">#</a></h3>
 <p>One of the most important components of BO is the covariance (kernel) function which dictates the structure of the response functions that we can fit. To make an example, if we expect the response function to be periodic, we can use periodic kernels. Kernels usually are defined as the points closer in the input space that are more strongly correlated. In addition, kernels should be positive-semi definite. Different types of kernels can be defined as follows:</p>
 <p>a)	Laplacian function: this function provides a continuous and non-differentiable kernel function. In this case, if you average over your samples, you will get a straight line called Brownian bridges.</p>
 <div class="math notranslate nohighlight">
@@ -1078,13 +1067,13 @@ The prior distribution over the functions <span class="math notranslate nohighli
 </div>
 </section>
 <section id="acquisition-function">
-<h3>2.3. Acquisition Function<a class="headerlink" href="#acquisition-function" title="Link to this heading">#</a></h3>
+<h3>2.3. Acquisition Function<a class="headerlink" href="#acquisition-function" title="Permalink to this heading">#</a></h3>
 <p>Proposing sampling points in the search space is done by acquisition functions. They trade off exploitation and exploration. Exploitation means sampling where the surrogate model predicts a high objective and exploration means sampling at locations where the prediction uncertainty is high. Both correspond to high acquisition function values and the goal is to maximize the acquisition function to determine the next sampling point. There are two famous approaches to implementing the acquisition function named “probability of improvement (PI)” and “expected improvement (EI)”. But before getting to each algorithm let’s define what is the improvement. Imagine the objective function that we defined is <span class="math notranslate nohighlight">\(f(x)\)</span> and the current observe point is defined as <span class="math notranslate nohighlight">\(x^*\)</span>, then the improvement function <span class="math notranslate nohighlight">\(I(x)\)</span> is defined as follows:</p>
 <div class="math notranslate nohighlight">
 \[I(x)=max⁡(f(x)-f(x^* ),0) \quad \quad (14)\]</div>
 </section>
 <section id="probability-of-improvement-pi">
-<h3>2.3.1.	Probability of Improvement (PI)<a class="headerlink" href="#probability-of-improvement-pi" title="Link to this heading">#</a></h3>
+<h3>2.3.1.	Probability of Improvement (PI)<a class="headerlink" href="#probability-of-improvement-pi" title="Permalink to this heading">#</a></h3>
 <p>As we are using the GP, we know that at every point of observation, we apply a Gaussian distribution. Therefore, at point x the value of the function f(x) is sampled from the normal distribution with mean μ(x) and variance of the σ^2 (x). Finally, the probability of improvement is defined as:</p>
 <div class="math notranslate nohighlight">
 \[PI(x)=1-ϕ(z_0 )=ϕ(-z_0 )=ϕ((μ(x)-f(x^* ))/σ(x) ) \quad \quad (15)\]</div>
@@ -1124,7 +1113,7 @@ The prior distribution over the functions <span class="math notranslate nohighli
 </div>
 </section>
 <section id="expected-improvement-ei">
-<h3>2.3.2.	Expected Improvement (EI)<a class="headerlink" href="#expected-improvement-ei" title="Link to this heading">#</a></h3>
+<h3>2.3.2.	Expected Improvement (EI)<a class="headerlink" href="#expected-improvement-ei" title="Permalink to this heading">#</a></h3>
 <p>PI only considers the probability of the point at the current step. However, the effect of the higher moments can affect the improvement (magnitude of improvement). To solve such a problem, the expected improvement is defined as follows:</p>
 <div class="math notranslate nohighlight">
 \[EI(x)≡E[I(x)]=∫I(x)ϕ(z)dz→ϕ(z)=1/√{2π}  exp⁡(-z^2/2)   \quad \quad (16)\]</div>
@@ -1171,7 +1160,7 @@ The prior distribution over the functions <span class="math notranslate nohighli
 </section>
 </section>
 <section id="implementing-the-bayesian-optimization-from-scratch">
-<h2>3.	Implementing the Bayesian Optimization from scratch<a class="headerlink" href="#implementing-the-bayesian-optimization-from-scratch" title="Link to this heading">#</a></h2>
+<h2>3.	Implementing the Bayesian Optimization from scratch<a class="headerlink" href="#implementing-the-bayesian-optimization-from-scratch" title="Permalink to this heading">#</a></h2>
 <p>Now it is the time to put all components together, here, step by step, the Bayesian optimization is implemented using a simple function.</p>
 <p>Here, instead of using our 1D Gaussian Process model, we will use the Gaussian process module provided by Scikit-learn.</p>
 <p>The model that is used to be optimized is the Ackley function.</p>
@@ -1469,15 +1458,15 @@ Run time is:  5.780000925064087
 </div>
 </div>
 <section id="discussion">
-<h3>Discussion:<a class="headerlink" href="#discussion" title="Link to this heading">#</a></h3>
+<h3>Discussion:<a class="headerlink" href="#discussion" title="Permalink to this heading">#</a></h3>
 <p>In the custom model generated Bayesian optimization, the number of iterations is set to 100, and in each iteration, 100 random samples are generated. The expected improvement is defined as an algorithm for the acquisition function. It is important to note that 5 samples are generated to initialize the algorithm. As this algorithm is developed to solve the maximization problem the objective function for maximization is utilized. The run time for performing the algorithm is approximately between 2.5 to 6s which is extremely good and it makes the algorithm efficient. The global optimum is captured by the algorithm between the points of (0.002, 0.06) and (0.007, 0.4) which is near the actual global optimum. Also, it is worth mentioning that the algorithm converges to the optimal point after approximately 25 iterations.</p>
 <p><strong>!!! The algorithm is based on randomly generated samples. Therefore, after running the Notebook, you may get different results.</strong></p>
 </section>
 </section>
 <section id="libraries-to-perform-bayesian-optimization">
-<h2>4.	Libraries to Perform Bayesian Optimization<a class="headerlink" href="#libraries-to-perform-bayesian-optimization" title="Link to this heading">#</a></h2>
+<h2>4.	Libraries to Perform Bayesian Optimization<a class="headerlink" href="#libraries-to-perform-bayesian-optimization" title="Permalink to this heading">#</a></h2>
 <section id="gpyopt">
-<h3>4.1. GpyOpt<a class="headerlink" href="#gpyopt" title="Link to this heading">#</a></h3>
+<h3>4.1. GpyOpt<a class="headerlink" href="#gpyopt" title="Permalink to this heading">#</a></h3>
 <p>GPyOpt is a Python open-source library for Bayesian Optimization developed by the Machine Learning group of the University of Sheffield. It is based on GPy, a Python framework for Gaussian process modeling. GpyOpt is able to automatically configure the models and Machine Learning algorithms and design the wet-lab experiments while saving time and money. Among other functionalities, GPyOpt can design experiments in parallel, use cost models and mix different types of variables in system designs.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1567,11 +1556,11 @@ Run time is:  55.83359694480896
 </div>
 </section>
 <section id="id1">
-<h3>Discussion<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<h3>Discussion<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
 <p>In the GpyOpt, all model characteristics are set to be the same as the BO custom model to make them comparable. As can be seen, the algorithm takes more steps until converging to the optimal point (more than 60 iterations). Also, when the model gets near the optimal point experiences a smaller distance. The interesting point about this model is the large runtime which makes it inefficient for such a simple model.</p>
 </section>
 <section id="scikit-optimize">
-<h3>4.2. Scikit-Optimize<a class="headerlink" href="#scikit-optimize" title="Link to this heading">#</a></h3>
+<h3>4.2. Scikit-Optimize<a class="headerlink" href="#scikit-optimize" title="Permalink to this heading">#</a></h3>
 <p>Scikit-optimize is a library for sequential model-based optimization that is based on Scikit-learn. It also supports Bayesian optimization using Gaussian processes. The API is designed around minimization, hence, we have to provide negative objective function values.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1671,11 +1660,11 @@ Run time is:  32.40369367599487
 </div>
 </section>
 <section id="id2">
-<h3>Discussion<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<h3>Discussion<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
 <p>Same as GpyOpt, in the ScikitOpt model all parameters are set to be the same as the custom BO model to make it comparable. In the ScikiOpt, the model converges fast to the optimal point (in less than 25 iterations) and after 75 iterations, there is a minor change in the model results. The algorithm is also available to capture the global optimum with approximately good accuracy. After 25 iterations, oscillation is detected in model distances. The runtime of this model is also high in comparison with the custom-generated model.</p>
 </section>
 <section id="comparison-between-the-results-of-the-custom-bo-model-gpyopt-and-scikit-opt">
-<h3>4.3. Comparison Between the Results of the Custom BO Model, GpyOPT, and Scikit-Opt<a class="headerlink" href="#comparison-between-the-results-of-the-custom-bo-model-gpyopt-and-scikit-opt" title="Link to this heading">#</a></h3>
+<h3>4.3. Comparison Between the Results of the Custom BO Model, GpyOPT, and Scikit-Opt<a class="headerlink" href="#comparison-between-the-results-of-the-custom-bo-model-gpyopt-and-scikit-opt" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================</span>
@@ -1732,7 +1721,7 @@ Run time is:  32.40369367599487
 <img alt="../../_images/7a2959b6e191edf127104f6095c622bc401e5c045145c4e5262141fb529de2a9.png" src="../../_images/7a2959b6e191edf127104f6095c622bc401e5c045145c4e5262141fb529de2a9.png" />
 </div>
 </div>
-<div class="pst-scrollable-table-container"><table class="table">
+<table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Approach</p></th>
 <th class="head"><p>Optimal Point</p></th>
@@ -1758,19 +1747,18 @@ Run time is:  32.40369367599487
 </tr>
 </tbody>
 </table>
-</div>
 </section>
 <section id="id3">
-<h3>Discussion:<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<h3>Discussion:<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
 <p><strong>!!! It is important to note that the estimated results can differ by each time running this Jupyter Notebook. Therefore, the sign “~” has been put beside the results. Also, there should not be a major discrepancy between the results each time running the Jupyter Notebook.</strong></p>
 <p>Main Observation Optimal Point: (0, 1.1772)</p>
 <p>Comparing the results between three different algorithms and the main model all algorithms get close to the optimal point with some discrepancies. The existence of discrepancy considering the noisy model with lots of local optimum points is reasonable. Considering that all algorithms perform somehow well in capturing the optimal point, the parameter that differentiates between these three algorithms could be the model run time. The custom-generated BO model performs well by having a run time of 5.7800s. After that, Scikit-Opt and GpyOpt have second and third places, respectively. The first reason is that the custom-generated model skips lots of error-checking steps provided by other packages. This does not guarantee that the BO model performs well on other problems with more complex space or higher dimensions.</p>
 </section>
 </section>
 <section id="advanced-usage-of-bayesian-optimization">
-<h2>5. Advanced  Usage of Bayesian Optimization<a class="headerlink" href="#advanced-usage-of-bayesian-optimization" title="Link to this heading">#</a></h2>
+<h2>5. Advanced  Usage of Bayesian Optimization<a class="headerlink" href="#advanced-usage-of-bayesian-optimization" title="Permalink to this heading">#</a></h2>
 <section id="hyper-parameter-tuning">
-<h3>5.1. Hyper-Parameter Tuning<a class="headerlink" href="#hyper-parameter-tuning" title="Link to this heading">#</a></h3>
+<h3>5.1. Hyper-Parameter Tuning<a class="headerlink" href="#hyper-parameter-tuning" title="Permalink to this heading">#</a></h3>
 <p>Hyperparameter-tuning is the process of searching the most accurate hyperparameters for a dataset with a Machine Learning algorithm. To do this, we fit and evaluate the model by changing the hyperparameters one by one repeatedly until we find the best accuracy.</p>
 <p><strong>What is the difference between a parameter and a hyperparameter?</strong></p>
 <ul class="simple">
@@ -1787,21 +1775,21 @@ Run time is:  32.40369367599487
 </ol>
 </section>
 <section id="manual-search">
-<h3>5.1.1 Manual Search<a class="headerlink" href="#manual-search" title="Link to this heading">#</a></h3>
+<h3>5.1.1 Manual Search<a class="headerlink" href="#manual-search" title="Permalink to this heading">#</a></h3>
 <p>Manual hyperparameter tuning involves experimenting with different sets of hyperparameters manually i.e. each trial with a set of hyperparameters will be performed by you. This technique will require a robust experiment tracker which could track a variety of variables from images, and logs to system metrics.</p>
 </section>
 <section id="grid-search">
-<h3>5.1.2 Grid Search<a class="headerlink" href="#grid-search" title="Link to this heading">#</a></h3>
+<h3>5.1.2 Grid Search<a class="headerlink" href="#grid-search" title="Permalink to this heading">#</a></h3>
 <p>In the grid search method, we create a grid of possible values for hyperparameters. Each iteration tries a combination of hyperparameters in a specific order. It fits the model on every combination of hyperparameters possible and records the model performance. Finally, it returns the best model with the best hyperparameters.</p>
 </section>
 <section id="random-search">
-<h3>5.1.3 Random Search<a class="headerlink" href="#random-search" title="Link to this heading">#</a></h3>
+<h3>5.1.3 Random Search<a class="headerlink" href="#random-search" title="Permalink to this heading">#</a></h3>
 <p>In the random search method, we create a grid of possible values for hyperparameters. Each iteration tries a random combination of hyperparameters from this grid, records the performance, and lastly returns the combination of hyperparameters that provided the best performance.</p>
 <p><img alt="Grid vs Random Search" src="https://raw.githubusercontent.com/ndcbe/optimization/main/media/contrib/Grid_vs_Random.png" /></p>
 <p>Image Source: Elyse Lee (2019), An Intro to Hyper-parameter Optimization using Grid Search and Random Search, <a class="reference external" href="http://Medium.com">Medium.com</a>. <a class="reference external" href="https://medium.com/&#64;cjl2fv/an-intro-to-hyper-parameter-optimization-using-grid-search-and-random-search-d73b9834ca0a">url</a></p>
 </section>
 <section id="bayesian-optimization">
-<h3>5.1.4 Bayesian Optimization<a class="headerlink" href="#bayesian-optimization" title="Link to this heading">#</a></h3>
+<h3>5.1.4 Bayesian Optimization<a class="headerlink" href="#bayesian-optimization" title="Permalink to this heading">#</a></h3>
 <p>In the case of Hyper-Parameter tuning, there are lots of machine learning algorithms (our black-box problems) such as Descision-Trees, random forests, extreme gradient boosting (XGBoost), and deep neural networks which comprise lots of different types of Hyper-Parameters. Tuning such parameters can extremely impact the performance of the whole model. Some algorithms such as XGBoost (the one that is used in the further problem) and DNNs have many Hyper-Parameters that make the process of optimizing them a challenging task.</p>
 <p>The Hyper-Parameter optimization problem can be defined as:</p>
 <div class="math notranslate nohighlight">
@@ -1817,7 +1805,7 @@ Run time is:  32.40369367599487
 <p>However, solving such a problem is not an easy task for coding from scratch. For this reason, several developers have developed modules like HyperOpt, GpyOpt, and ScikitOpt to solve these problems.</p>
 </section>
 <section id="real-world-problem-tuning-hyperparameter-in-ml-based-building-response-estimation-model-under-an-earthquake">
-<h3>5.1.5 Real-World Problem: Tuning HyperParameter in ML-Based Building Response Estimation Model Under an Earthquake<a class="headerlink" href="#real-world-problem-tuning-hyperparameter-in-ml-based-building-response-estimation-model-under-an-earthquake" title="Link to this heading">#</a></h3>
+<h3>5.1.5 Real-World Problem: Tuning HyperParameter in ML-Based Building Response Estimation Model Under an Earthquake<a class="headerlink" href="#real-world-problem-tuning-hyperparameter-in-ml-based-building-response-estimation-model-under-an-earthquake" title="Permalink to this heading">#</a></h3>
 <p><strong>Problem Definition</strong>:</p>
 <p>A multi-degree of freedom (MDOF) simplified 2D shear-building model combined with 222 ground motions ranging from 0.05g to 1.80 g peak ground accelerations are analyzed using OpenSeesPy. The nonlinearity of models is created using the inter-story hysteretic model proposed in HAZUS. methodology, considering the building type, number of stories, and construction year. Then, response-history analysis is conducted to generate a comprehensive dataset for machine learning algorithms. The proposed algorithm used ground motion as well as structural characteristics such as PGA, Sa (0.2s), Sa(1s), and Sa(T1), story height, story mass, and period as input variables to estimate the responses of different structures.</p>
 <p>By performing several analyses, the XGboost Regression model performs better on the mentioned model. However, we still looking for improving the generated model using the hyperparameter tuning approaches.</p>
@@ -1825,7 +1813,7 @@ Run time is:  32.40369367599487
 <p><img alt="Hyperparameter Tuning Example" src="https://raw.githubusercontent.com/ndcbe/optimization/main/media/contrib/Hyper_Tuning_Model_problem.png" /></p>
 </section>
 <section id="step-1-import-required-libraries">
-<h3><strong>Step 1:</strong> Import required libraries<a class="headerlink" href="#step-1-import-required-libraries" title="Link to this heading">#</a></h3>
+<h3><strong>Step 1:</strong> Import required libraries<a class="headerlink" href="#step-1-import-required-libraries" title="Permalink to this heading">#</a></h3>
 <p>The first and foremost step to solving this question is importing the required libraries. For this specific problem, we require a Randomized search and cross-validation (provided by sci-kit learn), and XGBoost regressor library.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1843,7 +1831,7 @@ Run time is:  32.40369367599487
 </div>
 </section>
 <section id="step-2-prepare-the-dataset">
-<h3><strong>Step 2:</strong> Prepare the dataset<a class="headerlink" href="#step-2-prepare-the-dataset" title="Link to this heading">#</a></h3>
+<h3><strong>Step 2:</strong> Prepare the dataset<a class="headerlink" href="#step-2-prepare-the-dataset" title="Permalink to this heading">#</a></h3>
 <p>The dataset is provided on the GitHub repository and it can be imported using the following links. The data also can get extracted using the Pandas module.</p>
 <p>It is important to note that there are several inputs that do not have any effect on the prediction model, therefore they are removed from the dataset (Data Cleaning).</p>
 <div class="cell docutils container">
@@ -2008,7 +1996,7 @@ Run time is:  32.40369367599487
 </div>
 </section>
 <section id="step-3-define-a-model">
-<h3><strong>Step 3:</strong> Define a model<a class="headerlink" href="#step-3-define-a-model" title="Link to this heading">#</a></h3>
+<h3><strong>Step 3:</strong> Define a model<a class="headerlink" href="#step-3-define-a-model" title="Permalink to this heading">#</a></h3>
 <p>Here, the XGBoost model is utilized for performing the machine learning algorithm. The reason for utilizing such an algorithm is that XGBoost usually performs well on large-scale machine-learning problems on structured datasets. The second reason is that this algorithm can provide good accuracy compared to neural network approaches.</p>
 <p>The main Hyper-Parameters of the XGBoost model for the regression task are:</p>
 <p><span class="math notranslate nohighlight">\(\eta\)</span> (Learning Rate): Step size shrinkage used in the update to prevent overfitting. After each boosting step, we can directly get the weights of new features, and <span class="math notranslate nohighlight">\(\eta\)</span> shrinks the feature weights to make the boosting process more conservative. The default value is 0.3 and accepts values between <span class="math notranslate nohighlight">\([0, 1]\)</span>.</p>
@@ -2018,7 +2006,7 @@ Run time is:  32.40369367599487
 <p>n_estimators: The number of trees (or rounds) in an XGBoost model is specified to the XGBClassifier or XGBRegressor class in the n_estimators argument. The default in the XGBoost library is 100.</p>
 </section>
 <section id="step-4-data-visualization">
-<h3><strong>Step 4:</strong> Data visualization<a class="headerlink" href="#step-4-data-visualization" title="Link to this heading">#</a></h3>
+<h3><strong>Step 4:</strong> Data visualization<a class="headerlink" href="#step-4-data-visualization" title="Permalink to this heading">#</a></h3>
 <p>Before performing any machine learning task, it is important to have some visualization regarding the data. This can help to decide on various things like normalization, data extraction, and the best algorithm.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2105,7 +2093,7 @@ Run time is:  32.40369367599487
 </div>
 </section>
 <section id="step-5-preparing-data">
-<h3><strong>Step 5:</strong> Preparing Data<a class="headerlink" href="#step-5-preparing-data" title="Link to this heading">#</a></h3>
+<h3><strong>Step 5:</strong> Preparing Data<a class="headerlink" href="#step-5-preparing-data" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================</span>
@@ -2154,7 +2142,7 @@ MinMaxScaler()
 </div>
 </section>
 <section id="step-6-defining-the-baseline-model">
-<h3><strong>Step 6:</strong> Defining the baseline model<a class="headerlink" href="#step-6-defining-the-baseline-model" title="Link to this heading">#</a></h3>
+<h3><strong>Step 6:</strong> Defining the baseline model<a class="headerlink" href="#step-6-defining-the-baseline-model" title="Permalink to this heading">#</a></h3>
 <p>In this step, the XGBRegressor is utilized to create a model. It is important to note that the model is developed based on the default parameters. Also, the evaluation model here (the baseline) is defined based on the mean of the cross-validation score. The scoring parameter is also chosen as a negative mean squared error.</p>
 <p>Here, a brief discussion is provided about the cross-validation score based on an article by Stephen Allwright.</p>
 <p>Cross_val_score is a function in the Scikit-Learn package which trains and tests a model over multiple folds of your dataset. This cross-validation method gives you a better understanding of model performance over the whole dataset instead of just a single train/test split. Cross_val_score is used as a simple cross-validation technique to prevent over-fitting and promote model generalization. The process that cross_val_score uses is typical for cross-validation and follows these steps:</p>
@@ -2180,7 +2168,7 @@ MinMaxScaler()
 </div>
 </section>
 <section id="step-7-tuning-hyper-parameters">
-<h3><strong>Step 7:</strong> Tuning Hyper-Parameters<a class="headerlink" href="#step-7-tuning-hyper-parameters" title="Link to this heading">#</a></h3>
+<h3><strong>Step 7:</strong> Tuning Hyper-Parameters<a class="headerlink" href="#step-7-tuning-hyper-parameters" title="Permalink to this heading">#</a></h3>
 <p>In this step, we define a dictionary of Hyper-Parameters and their correspondent range (param-dist), or the list of dictionaries (bds) to utilize them in both random search and the “BayesianOptimization” model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2385,7 +2373,7 @@ The optimal min_child_weight is:  1.0
 </div>
 </section>
 <section id="step-8-results-and-discussion">
-<h3><strong>Step 8:</strong> Results and discussion<a class="headerlink" href="#step-8-results-and-discussion" title="Link to this heading">#</a></h3>
+<h3><strong>Step 8:</strong> Results and discussion<a class="headerlink" href="#step-8-results-and-discussion" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================</span>
@@ -2484,7 +2472,7 @@ Bayesian optimization  MSE = -0.00071
 </div>
 </section>
 <section id="id4">
-<h3>Discussion<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<h3>Discussion<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
 <p>Before starting the discussion here is some information regarding the evaluation metrics.</p>
 <p>Mean Squared Error (MSE) is a commonly used metric for evaluating the performance of regression models. It measures the average of the squared differences between the predicted and actual values of the target variable.</p>
 <p>Negative Mean Squared Error (NMSE) is simply the negation of the MSE. In other words, it’s the negative value of the average of the squared differences between the predicted and actual values of the target variable.</p>
@@ -2494,7 +2482,7 @@ Bayesian optimization  MSE = -0.00071
 </section>
 </section>
 <section id="further-studies-bayesian-multi-objective-optimization">
-<h2>6. Further Studies (Bayesian Multi-Objective Optimization)<a class="headerlink" href="#further-studies-bayesian-multi-objective-optimization" title="Link to this heading">#</a></h2>
+<h2>6. Further Studies (Bayesian Multi-Objective Optimization)<a class="headerlink" href="#further-studies-bayesian-multi-objective-optimization" title="Permalink to this heading">#</a></h2>
 <p>Bayesian multi-objective optimization is a framework for optimizing multiple objective functions simultaneously while accounting for uncertainty. The objective is to identify a set of solutions that approximate the Pareto front, which represents the set of non-dominated solutions that achieve the best trade-offs between the different objectives.</p>
 <p>The Bayesian approach involves constructing a probabilistic model of the objective functions and constraints, which can be represented as follows:</p>
 <div class="math notranslate nohighlight">
@@ -2525,7 +2513,7 @@ Bayesian optimization  MSE = -0.00071
 <p>Overall, Bayesian multi-objective optimization is a powerful and flexible framework for optimizing multiple objectives simultaneously while accounting for uncertainty. It has been widely used in many fields, including engineering design, finance, and machine learning.</p>
 </section>
 <section id="conclusion">
-<h2>7. Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
+<h2>7. Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Bayesian optimization is one of the powerful approaches to optimize the objective function that usually takes a long time (minutes or hours) to evaluate.</p></li>
 <li><p>Bayesian optimization plays a key role in optimizing nonparametric models like machine learning algorithms.</p></li>
@@ -2535,7 +2523,7 @@ Bayesian optimization  MSE = -0.00071
 </ul>
 </section>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
 <p><strong>Publications:</strong></p>
 <ol class="arabic simple">
 <li><p>Frazier, P. I. (2018). A tutorial on Bayesian optimization. arXiv preprint arXiv:1807.02811.</p></li>
@@ -2555,7 +2543,7 @@ Bayesian optimization  MSE = -0.00071
 </ol>
 </section>
 <section id="appendix-a-required-packages-and-installation-tips">
-<h2>Appendix A. Required Packages and Installation Tips<a class="headerlink" href="#appendix-a-required-packages-and-installation-tips" title="Link to this heading">#</a></h2>
+<h2>Appendix A. Required Packages and Installation Tips<a class="headerlink" href="#appendix-a-required-packages-and-installation-tips" title="Permalink to this heading">#</a></h2>
 <p><strong>The project is implemented in the Anaconda environment and Jupyter notebook.</strong></p>
 <p>For installing Anaconda following link is provided:</p>
 <p><a class="reference external" href="https://www.anaconda.com/download/">https://www.anaconda.com/download/</a></p>
@@ -2605,7 +2593,7 @@ If any error faced, probably a developement version of this package can solve th
               
               
               
-                <footer class="prev-next-footer d-print-none">
+                <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -2634,7 +2622,6 @@ If any error faced, probably a developement version of this package can solve th
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
 
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
@@ -2718,7 +2705,7 @@ By Alexander Dowling, et al.
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2022.
       <br/>
     
   </p>
@@ -2742,8 +2729,8 @@ By Alexander Dowling, et al.
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
 
   <footer class="bd-footer">
   </footer>

@@ -21,7 +21,7 @@ All attendees should bring a laptop computer with an internet connection. All ex
 * [](../notebooks/1/Pyomo-Nuts-and-Bolts.ipynb)
 
 **Tuesday, October 22, 2024**
-* [](../notebooks/2/IP.ipynb)
+* [](../notebooks/1/IP.ipynb)
 * [](../notebooks/2/Logical_Modeling_GDP.ipynb)
 * [](../notebooks/2/Modeling_Disjunctions_Strip_Packing.ipynb)
 * [](../notebooks/4/SP.ipynb)

@@ -1,7 +1,7 @@
 # Book settings
 # Learn more at https://jupyterbook.org/customize/config.html
 
-title: Nonlinear and Stochastic Optimization
+title: Optimization for Decision Science
 author: Alexander Dowling, et al.
 logo: media/cbe_logo.jpg
 
@@ -26,12 +26,7 @@ execute:
 
 # Define the name of the latex output file for PDF builds
 latex:
-  latex_documents:
-    targetname: book.tex
-
-# Add a bibtex file so that we can create citations
-bibtex_bibfiles:
-  - references.bib
+  use_jupyterbook_latex: false
 
 # Information about where the book exists on the web
 repository:
@@ -53,3 +48,33 @@ parse:
     - dollarmath
     - linkify
     - html_admonition
+
+sphinx:
+  extra_extensions:
+    - sphinxcontrib.tikz
+
+latex_elements:
+  # Override the default preamble injected by sphinx-jupyterbook-latex
+  preamble: |
+    % This will override the default sphinx-jupyterbook-latex preamble.
+    % Load only the essentials
+    \usepackage{tikz}
+    \usetikzlibrary{arrows.meta, shapes, positioning}
+
+    % Custom TikZ styles
+    \tikzset{
+      block/.style = {draw, rectangle, minimum height=1cm, minimum width=2cm, align=center, fill=blue!20},
+      arrow/.style = {->, >=stealth', thick},
+    }
+  
+  # Optionally, override the full documentclass
+  classoptions: oneside
+  pointsize: 11pt
+  figure_align: 'htbp'
+  inputenc: ''  # Disable inputenc as it's not needed for modern engines like XeTeX or LuaTeX
+  fontenc: ''   # Disable fontenc as well
+
+  # Disable certain components
+  maketitle: ''
+  printindex: ''
+  tableofcontents: ''

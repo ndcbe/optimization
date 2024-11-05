@@ -15,7 +15,7 @@ By completing this project, you will:
 Select topic of interest to your team. Here are a few general ideas:
 1. Create another optimization problem example similar to Project 1
 2. Significantly enhance at least one page/notebook on the class website
-3. Develop a *simple* optimization problem related to your research or iinterests
+3. Develop a *simple* optimization problem related to your research or interests
 
 Here is a list of ideas for *significant enhancements* to the class website:
 * Create a notebook that explains common modeling strategies for multi-objective optimization including scalarization and epsilon-constraint methods. In your notebook, include Pyomo code for a *simple* example. As a starting point, read [this paper](https://www.sciencedirect.com/science/article/pii/S0098135416300965) and then the first two chapters of [Nonlinear Multiobjective Optimization](https://link.springer.com/book/10.1007/978-1-4615-5563-6) which is available as a PDF from the library.
@@ -29,6 +29,10 @@ Here is a list of ideas for *significant enhancements* to the class website:
 * Develop a tutorial notebook on using [PyNumero](https://pyomo.readthedocs.io/en/stable/contributed_packages/pynumero/index.html) to implement optimization algorithms in Pyomo. Compare two optimization algorithms in class on a set of test problems, similar to [](../notebooks/assignments/Algorithms3.ipynb).
 * Develop a tutorial notebook on using the [Sensitivity Toolbox](https://pyomo.readthedocs.io/en/stable/contributed_packages/sensitivity_toolbox.html). Include an explanation of the underlying mathematics. You will need to read and summarize a few references on nonlinear programming sensitivity theory.
 * Develop a tutorial notebook to explain the [Model Predictive Control](https://pyomo.readthedocs.io/en/stable/contributed_packages/mpc/index.html) extension using the [](../notebooks/1/Pyomo-Nuts-and-Bolts.ipynb) example. As part of this tutorial notebook, provide an introduction to model predictive control.
+* Develop a tutorial on sequential quadratic programming with a simple solver implementation, similar to our interior point examples on the class website. Demonstrate this code on a few simple test problems.
+* Enhance the notebook on [](../notebooks/8/MILP.ipynb) by implementing a simple branch-and-bound solver as a function. Demonstrate the code using the test problem currently analyzed in the notebook. This should be new sections in the notebook, not a replacement of the current manual search through the tree.
+* Populate the current placeholder notebook on [](../notebooks/8/MINLP-Algorithms.ipynb). Write a brief background on different MINLP algorithms. See Prof. Dowling's scanned notes a starting point. Then show using a Pyomo example how to call these different algorithm options using `Bonmin` or `SCIP` or a similar solver available in Pyomo.
+* Populate the current placeholder notebook on [](../notebooks/8/Global-Opt.ipynb). Write a brief background on global optimization algoirhtms. See Prof. Dowling's scanned notes a starting point. Then show how to use `BARON` or `SCIP` with an example in Pyomo. You will want to use the NEOS server to access these solvers. See [here](https://github.com/ndandanov/pyomo_simple_minlp) and [here](https://groups.google.com/g/pyomo-forum/c/auK_1QIWeKk) as a starting point for accessing NEOS.
 
 
 Your project must enhance or extend the source reference material. For example, if you reproduced an optimization example from a textbook, you should perform a small additional analysis to gain a new insight about the problem not already discussed in the reference. If you choose an example that already has a Pyomo implementation, you need to extend the model in some way; this ensures that everyone gets some Pyomo practice in the project.
@@ -37,7 +41,7 @@ Your project must enhance or extend the source reference material. For example, 
 
 Most groups should develop a Jupyter notebook to contribute to the class website. Please follow the same formatting guidelines as [](./project1.md). For this project, please use sensible subsection and subsubsection titles. You do not need to the use same organization as Project 1.
 
-If you developed an optimization problem related to your research, you may instead prepare a private Jupyter notebook or written report. This flexibility is because you and your research advisor may not want pre-publication data released on the class website. If you write a research report, you also need to submit commented code for brief review.
+If you developed an optimization problem related to your research, you may instead prepare a private Jupyter notebook or written report. This flexibility is because you and your research advisor may not want pre-publication data released on the class website. If you write a research report, you also need to submit commented code for brief review. 
 
 ## Deliverable: Class Presentation
 

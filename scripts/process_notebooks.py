@@ -51,7 +51,7 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
     replace_code(SOLUTION_CODE, "# Add your solution here")
     replace_code(HIDDEN_TESTS, "# Removed autograder test. You may delete this cell.")
     
-    OLD_DATA_PATH = "./data/"
+    OLD_DATA_PATH = ".\./data/"
     NEW_DATA_PATH = "https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/data/"    
     replace_code(OLD_DATA_PATH, NEW_DATA_PATH)
     
@@ -104,6 +104,7 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
     # replace links to media with urls
     # 2022-09-21: removed "!" from the beginning both of these expressions to also work on handouts (pdf) in media folder
     # 2022-09-21: the use case is the error propagation handout
+    '''
     MEDIA_LINK = '\[(.*)\]\(\.\./\.\./media/(.*\..*)\)'
     IMAGE_LINK = r'[\1](https://ndcbe.github.io/optimization/_images/\2)'
     
@@ -122,6 +123,11 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
             # replace media files with urls to _images
             cell.source = re.sub(MEDIA_LINK, IMAGE_LINK, cell.source)
 
+    '''
+
+    replace_markdown('.\./.\./media/',
+                     'https://raw.githubusercontent.com/ndcbe/optimization/main/media/')
+    
     ## Save new notebook
     output_notebook = os.path.join(folder_new, filename)
     
@@ -129,7 +135,6 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
         if verbose >= 1:
             print("Saving ", output_notebook)
         nbformat.write(nb, fp)
-    
 
 # Testing
 #process_notebook("./notebooks/01", "03-Flow-control.ipynb")
@@ -138,7 +143,7 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
 IMPORTANT. We assume the source files are in XX-dev and the new files go into XX.
 The list below is just values for XX.
 """
-folders = ["1", "2", "3", "4", "5"]
+folders = ["1", "2", "3", "4", "5", "contrib"]
 
 for fld in folders:
     

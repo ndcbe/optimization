@@ -7,185 +7,197 @@ import urllib
 
 import subprocess
 
-def _check_available(executable_name): return (shutil.which(executable_name) or os.path.isfile(executable_name)) 
+
+#!/usr/bin/env python
+###############################################################################
+# The Institute for the Design of Advanced Energy Systems Integrated Platform
+# Framework (IDAES IP) was produced under the DOE Institute for the
+# Design of Advanced Energy Systems (IDAES).
+#
+# Copyright (c) 2018-2023 by the software owners: The Regents of the
+# University of California, through Lawrence Berkeley National Laboratory,
+# National Technology & Engineering Solutions of Sandia, LLC, Carnegie Mellon
+# University, West Virginia University Research Corporation, et al.
+# All rights reserved.  Please see the files COPYRIGHT.md and LICENSE.md
+# for full copyright and license information.
+###############################################################################
+# This package was further modified by Alex Dowling for use in the course
+# It is available under the IDAES license.
+
+"""
+Install IDAES, Ipopt, and other solvers on Google Colab
+
+Created by Alex Dowling (adowling@nd.edu) and Jeff Kantor at the University of Notre Dame
+with input from John Siirola at Sandia National Laboratories.
+
+To use this script, add the following to a code block in a Jupyter notebook:
+
+```
+import sys
+if "google.colab" in sys.modules:
+    !wget "https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/helper.py"
+    import helper
+    helper.easy_install()
+else:
+    sys.path.insert(0, '../')
+    import helper
+helper.set_plotting_style()
+```
+"""
+
+__version__ = "2024.08.24"
+
+import shutil
+import sys
+import os.path
+import os
+import re
+
+import subprocess
+
+import matplotlib.pyplot as plt
+
+def set_plotting_style():
+    SMALL_SIZE = 14
+    MEDIUM_SIZE = 16
+    BIGGER_SIZE = 18
+
+    plt.rc('font', size=SMALL_SIZE)  # controls default text sizes
+    plt.rc('axes', titlesize=SMALL_SIZE)  # fontsize of the axes title
+    plt.rc('axes', labelsize=MEDIUM_SIZE)  # fontsize of the x and y labels
+    plt.rc('xtick', labelsize=SMALL_SIZE)  # fontsize of the tick labels
+    plt.rc('ytick', labelsize=SMALL_SIZE)  # fontsize of the tick labels
+    plt.rc('legend', fontsize=SMALL_SIZE)  # legend fontsize
+    plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+    plt.rc('lines', linewidth=3)
+
+
+def _check_available(executable_name):
+    """Utility to check in an executable is available"""
+    return shutil.which(executable_name) or os.path.isfile(executable_name)
+
 
 def package_available(package_name):
-    
+    """Utility to check if a package/executable is available
+
+    This supports customization, e.g., glpk, for special package names
+    """
+
     if package_name == "glpk":
-        return _check_available("gpsol")        
+        return _check_available("gpsol")
     else:
         return _check_available(package_name)
 
-def on_colab(): return "google.colab" in sys.modules
 
-def command_with_output(command):
-    r = subprocess.getoutput(command)
-    print(r)
+def on_colab():
+    """Utility returns True if executed on Colab, False otherwise"""
+    return "google.colab" in sys.modules
 
+def install_idaes(verbose=False):
+    """Installs latest version of IDAES-PSE via pip
 
-def install_idaes():
+    Argument:
+        verbose: bool, if True, display console output from pip install
 
-    # Check if idaes is available. If not, install it
-    if not package_available("idaes"):
-        # Tip: "!pip" means run the 'pip' command outside the notebook.
+    """
+
+    try:
+        import idaes
+
+        print("idaes was found! No need to install.")
+    except ImportError:
         print("Installing idaes via pip...")
-        os.system("pip install -q idaes_pse")
-        assert package_available("idaes"), "idaes was not successfully installed."
+        v = subprocess.run(
+            [sys.executable, "-m", "pip", "install", "-q", "idaes_pse"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        if verbose:
+            print(v.stdout)
+            print(v.stderr)
         print("idaes was successfully installed")
-        os.system('idaes --version')
-    else:
-        print("IDAES found! No need to install.")
+        v = subprocess.run(
+            ["idaes", "--version"], check=True, capture_output=True, text=True
+        )
+        print(v.stdout)
+        print(v.stderr)
 
-def install_ipopt():
-    ## Install Ipopt
+
+def install_ipopt(verbose=False, try_conda_as_backup=False):
+    """Install Ipopt and possibly other solvers.
+
+    If running on Colab, this will install Ipopt, k_aug, and other COIN-OR
+    solvers via idaes get-extensions.
+
+    Arguments:
+        verbose: bool, if True, display console output from idaes get-extensions and conda
+        try_conda_as_backup: bool, if True, install ipopt via conda if idaes get-extensions fails
+    """
 
     # Check if Ipopt (solver) is available. If not, install it.
     if not package_available("ipopt"):
-        # Check if we are running on Google Colab
-        if on_colab():
-            # Install idaes solvers
-            print("Running idaes get-extensions to install Ipopt and k_aug...")
-            os.system("idaes get-extensions")
+        print("Running idaes get-extensions to install Ipopt, k_aug, and more...")
+        v = subprocess.run(
+            ["idaes", "get-extensions"], check=True, capture_output=True, text=True
+        )
+        if verbose:
+            print(v.stdout)
+            print(v.stderr)
+        _update_path()
+        print("Checking solver versions:")
+        _print_solver_versions()
 
-            # Add symbolic link for idaes solvers
-            os.system("ln -s /root/.idaes/bin/ipopt ipopt")
-            os.system("ln -s /root/.idaes/bin/k_aug k_aug")
-            
-            command_with_output('./ipopt -v')
-            command_with_output('./k_aug -v')
-            
-
-        # Check again if Ipopt is available
-        if not package_available("ipopt"):
-
-            if on_colab():
-                print("Installing Ipopt via zip file...")
-                os.system('wget -N -q "https://ampl.com/dl/open/ipopt/ipopt-linux64.zip"')
-                os.system('!unzip -o -q ipopt-linux64')
-            # Otherwise, try conda
-            else:
-                try:
-                    print("Installing Ipopt via conda...")
-                    os.system('conda install -c conda-forge ipopt')
-                except:
-                    pass
-        
-
-    else:
-        print("Ipopt found! No need to install.")
-        
-
-    # Verify Ipopt is now available
-    assert package_available("ipopt"), "Ipopt is not available"
-    
-    print("ipopt was successfully installed")
-    
-    if package_available("k_aug"):
-        print("k_aug was successfully installed")
-
+    # Check again if Ipopt is available. If not, try conda
+    if try_conda_as_backup and not package_available("ipopt"):
+        print("Installing Ipopt via conda...")
+        v = subprocess.run(
+            [sys.executable, "-m", "conda", "install", "-c", "conda-forge", "ipopt"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        if verbose:
+            print(v.stdout)
+            print(v.stderr)
+        print("Checking ipopt version:")
+        _print_single_solver_version("ipopt")
 
 def install_glpk():
     if not package_available("glpk") and on_colab():
         print("Installing glpk via apt-get...")
         os.system('apt-get install -y -qq glpk-utils')
-        
-        # Does not work on Colab. Feb-03-2021.
-        #print("Installing glpk via conda...")
-        #os.system('conda install -c conda-forge glpk')
-        
-    # Verify package is now available
-    # assert package_available("glpk"), "glpk is not available"
-    # For some reason, this is not working on Colab. Feb-05-2021
 
-    
-def install_cbc():
-    if not package_available("cbc") and on_colab():
-        #print("Installing cbc via apt-get...")
-        #os.system('apt-get install -y -qq coinor-cbc')
-        print("Installing cbc via zip file...")
-        os.system('wget -N -q "https://ampl.com/dl/open/cbc/cbc-linux64.zip"')
-        os.system('unzip -o -q cbc-linux64')
-        
-    # Verify package is now available
-    assert package_available("cbc"), "cbc is not available"
-    
-    # command_with_output("./cbc -v")
-        
-        
-def install_bonmin():
-    if not package_available("bonmin") and on_colab():
-        print("Installing bonmin via zip file...")
-        os.system('wget -N -q "https://ampl.com/dl/open/bonmin/bonmin-linux64.zip"')
-        os.system('unzip -o -q bonmin-linux64')
-    
-    # Verify package is now available
-    assert package_available("bonmin"), "bonmin is not available"
-    
-    command_with_output("./bonmin -v")
+def easy_install(verbose=False):
+    """Install IDAES and solvers in one step"""
 
-def install_couenne():
-    if not package_available("couenne") and on_colab():
-        print("Installing couenne via via zip file...")
-        os.system('wget -N -q "https://ampl.com/dl/open/couenne/couenne-linux64.zip"')
-        os.system('unzip -o -q couenne-linux64')
-        
-    # Verify package is now available
-    assert package_available("couenne"), "couenne is not available"
-    
-    command_with_output("./couenne -v")
+    install_idaes(verbose=verbose)
+    install_ipopt(verbose=verbose, try_conda_as_backup=True)
+
+def _update_path():
+    """Add idaes executables to PATH"""
+    if not re.search(re.escape("/root/.idaes/bin/"), os.environ["PATH"]):
+        os.environ["PATH"] = "/root/.idaes/bin/:" + os.environ["PATH"]
 
 
-def install_gecode():
-    if not package_available("gecode") and on_colab():
-        print("Installing gecode via via zip file...")
-        os.system('wget -N -q "https://ampl.com/dl/open/gecode/gecode-linux64.zip"')
-        os.system('unzip -o -q gecode-linux64')
-    
-    # Verify package is now available
-    assert package_available("gecode"), "gecode is not available"
-    
-    command_with_output("./gecode -v")
-    
-def _download(relative_file_names):
+def _print_single_solver_version(solvername):
+    """Print the version for a single solver
+    Arg:
+        solvername: solver executable name (string)
+    """
+    v = subprocess.run([solvername, "-v"], check=True, capture_output=True, text=True)
+    print(v.stdout)
+    print(v.stderr)
 
-    # GitHub pages url
-    # url = "https://ndcbe.github.io/CBE60499/"
-    url = "https://raw.githubusercontent.com/ndcbe/optimization/main/"
 
-    # loop over all files to download
-    for file_path in relative_file_names:
-        print("Checking for",file_path)
-        # split each file_path into a folder and filename
-        stem, filename = os.path.split(file_path)
-    
-        # check if the folder name is not empty
-        if stem:
-            # add "." for Colab. Doing it here because we do not want it in the URL
-            # stem = '.' + stem
-            
-            # check if the folder exists
-            if not os.path.exists(stem):
-                print("\tCreating folder",stem)
-                # if the folder does not exist, create it
-                os.mkdir(stem)
-        # if the file does not exist, create it by downloading from GitHub pages
-        if not os.path.isfile(file_path):
-            file_url = urllib.parse.urljoin(url,
-                    urllib.request.pathname2url(file_path))
-            print("\tDownloading",file_url)
-            with open(file_path, 'wb') as f:
-                f.write(requests.get(file_url).content)
-        else:
-            print("\tFile found!")
+def _print_solver_versions():
+    """Print versions of solvers in idaes get-extensions
 
-def download_data(filenames):
-    for i in range(len(filenames)):
-        filenames[i] = "./notebooks/data/"+filenames[i]
-    
-    _download(filenames)
+    This is the primary check that solvers installed correctly and are callable
+    """
 
-def download_figures(filenames):
-    for i in range(len(filenames)):
-        filenames[i] = "./media/"+filenames[i]
-    
-    _download(filenames)
+    # This does not work for cbc and clp; calling --version with these solvers,
+    # enters their scripting language mode.
+    for s in ["ipopt", "k_aug", "couenne", "bonmin", "ipopt_l1", "dot_sens"]:
+        _print_single_solver_version(s)
+

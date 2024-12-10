@@ -1,0 +1,6 @@
+# Dynamic Optimization
+
+**Sections**
+
+```{tableofcontents}
+```

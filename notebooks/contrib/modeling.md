@@ -1,4 +1,4 @@
-# Derivative-Free Optimization
+# Modeling Paradigms
 
 **Sections**
 

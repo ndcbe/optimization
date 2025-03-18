@@ -1,0 +1,1268 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Expectation Maximization Algorithm and MAP Estimation &#8212; Optimization for Decision Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/contrib/EM-MAP';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Machine Learning and Applied Statistics" href="data.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/cbe_logo.jpg" class="logo__image only-light" alt="Optimization for Decision Science - Home"/>
+    <script>document.write(`<img src="../../_static/cbe_logo.jpg" class="logo__image only-dark" alt="Optimization for Decision Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Optimization for Decision Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Fall 2024 Calendar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/workshop.html">Computational Optimization in Python (São Paulo, Brazil)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project1.html">Project 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms1.html">Algorithms Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms2.html">Algorithms Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project2.html">Project 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project (Spring 2023)</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/LP.html">1.4. Continuous Optimization: Linear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/NLP.html">1.5. Continuous Optimization: Nonlinear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.6. Integer Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.7. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_car.html">3.1. Pyomo.DAE Example: Race Car</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_TCLab.html">3.2. Pyomo.DAE Example: Temperature Control Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_background.html">3.3. Differential Algebraic Equations (DAEs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_numeric_integration.html">3.4. Numeric Integration for DAEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_theory.html">3.5. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_example.html">3.6. Pyomo.DAE: Racing Example Revisited</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/blocks.html">4.2. Blocks and Other Pyomo Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/AdvancedTopics.html">4.3. Advanced Topics in Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.4. Risk Measures and Portfolio Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Optimizing Experiments with <code class="docutils literal notranslate"><span class="pre">Pyomo.DoE</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-1.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Newton-Methods.html">6.4. Newton-type Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Constraint-Qualifications.html">7.4. Constraint Qualifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Second-Order.html">7.5. Second Order Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/degeneracy_hunter.html">7.6. NLP Diagnostics with Degeneracy Hunter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyomo.html">More Pyomo Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="semiconductor_manufacturing.html">Semiconductor Production Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="student_diet.html">Optimization of Daily Diet Using Pyomo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blending.html">Blending Under Uncertainty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vehicle_routing.html">Vehicle Routing</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="portfolio_optimization_extended.html">Risk Measures and Portfolio Optimization: Expanded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="race_car_extended.html">Extended Race Car Optimization Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hot_air_balloon.html">Hot Air Balloon Dynamic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reactor_design.html">Chemical Reactor Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Disaster_Response_Plan.html">Disaster Response Plan Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Sudoku_Solver.html">Sudoku Solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="more_circle_packing.html">Circle Packing Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="modeling.html">Modeling Paradigms</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="multi_objective.html">Multi-Objective Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_stochastic_programming.html">Advanced Topics in Stochastic Programming</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="algorithms.html">Global Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Deterministic_Global_Optimization.html">Deterministic Global Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="sgd.html">Stochastic Gradient Descent</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="data.html">Machine Learning and Applied Statistics</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Expectation Maximization Algorithm and MAP Estimation</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/contrib/EM-MAP.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/contrib/EM-MAP.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/contrib/EM-MAP.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Expectation Maximization Algorithm and MAP Estimation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#naive-bayes-classifier">Naive Bayes Classifier</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-a-posteriori-estimation">Maximum A Posteriori Estimation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supervised-learning-with-labeled-data">Supervised Learning (with Labeled Data)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1">Exercise 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2">Exercise 2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3">Exercise 3</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bernoulli">Bernoulli</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#multinomial">Multinomial</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#expectation-maximization-algorithm">Expectation Maximization Algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pseudocode">Pseudocode</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python-implementation">Python Implementation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unsupervised-learning-with-unlabeled-data">Unsupervised Learning (with Unlabeled Data)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="expectation-maximization-algorithm-and-map-estimation">
+<h1>Expectation Maximization Algorithm and MAP Estimation<a class="headerlink" href="#expectation-maximization-algorithm-and-map-estimation" title="Link to this heading">#</a></h1>
+<p>Prepared by: Ken Sible (<a class="reference external" href="mailto:ksible&#37;&#52;&#48;nd&#46;edu">ksible<span>&#64;</span>nd<span>&#46;</span>edu</a>, <a class="reference external" href="https://github.com/kennethsible">&#64;kennethsible</a>, 2023)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>wget<span class="w"> </span>-N<span class="w"> </span><span class="s2">&quot;https://huggingface.co/datasets/papluca/language-identification/resolve/main/train.csv&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span> <span class="kn">import</span><span class="w"> </span><span class="nn">nltk</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>nltk
+    <span class="kn">import</span><span class="w"> </span><span class="nn">nltk</span>
+    <span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;punkt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>In this tutorial notebook, we introduce the <strong>expectation maximization</strong> (EM) algorithm for parameter estimation given partially observed data. We use a <strong>Naive Bayes</strong> classifier for <strong>language identification</strong> as a running example throughout the notebook. In order to train the classifier, we use <strong>maximum a posteriori</strong> (MAP) estimation, a statistical optimization method for estimating the parameters of a distribution given (fully or partially) observed data.</p>
+</section>
+<section id="naive-bayes-classifier">
+<h2>Naive Bayes Classifier<a class="headerlink" href="#naive-bayes-classifier" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(\{(x^{(i)},y^{(i)}):x^{(i)}\in\{+1,-1\}^d,y^{(i)}\in\{1,2,\ldots,k\}\}_{i=1}^n\)</span> be a training set where <span class="math notranslate nohighlight">\(n\)</span> is the number of <strong>documents</strong>, <span class="math notranslate nohighlight">\(k\)</span> is the number of <strong>labels</strong> and <span class="math notranslate nohighlight">\(d\)</span> is the number of <strong>features</strong>. In language identification, an example of text classification, the labels are languages and the features are tokens, which are meaningful sequences of characters. We define <span class="math notranslate nohighlight">\(x^{(i)}_j\)</span> to be <span class="math notranslate nohighlight">\(+1\)</span> if document <span class="math notranslate nohighlight">\(i\)</span> contains token <span class="math notranslate nohighlight">\(j\)</span> and <span class="math notranslate nohighlight">\(-1\)</span> otherwise. Hence, each component of the binary vector <span class="math notranslate nohighlight">\(x^{(i)}\)</span> represents either the <em>presence</em> or <em>absence</em> of a particular token in document <span class="math notranslate nohighlight">\(i\)</span>. Now, we derive the <strong>Naive Bayes</strong> model for classification.</p>
+<p>Let <span class="math notranslate nohighlight">\(Y\)</span> and <span class="math notranslate nohighlight">\(X_1,X_2,\ldots,X_d\)</span> be random variables corresponding to the label <span class="math notranslate nohighlight">\(y\)</span> and the vector components <span class="math notranslate nohighlight">\(x_1,x_2,\ldots,x_d\)</span>, respectively. The Naive Bayes classifier is a <strong>generative model</strong>, so we need to estimate the parameters of the following joint probablity distribution:
+$<span class="math notranslate nohighlight">\(\mathbb{P}(Y=y,X_1=x_1,X_2=x_2,\ldots,X_d=x_d)\)</span><span class="math notranslate nohighlight">\(
+for all labels \)</span>y<span class="math notranslate nohighlight">\( paired with attribute values \)</span>x_1,x_2,\ldots,x_d<span class="math notranslate nohighlight">\(. Suppose that \)</span>X_j<span class="math notranslate nohighlight">\( is independent of \)</span>X_{j’}<span class="math notranslate nohighlight">\( for all \)</span>j’\neq j<span class="math notranslate nohighlight">\(, called the **Naive Bayes assumption**, which is equivalent to assuming that the positions of tokens are independent in the documents. Then, we observe that
+\)</span>$</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \mathbb{P}(Y=y,X_1=x_1,\ldots,X_d=x_d)&amp;=\mathbb{P}(Y=y)\cdot\mathbb{P}(X_1=x_1,\ldots,X_d=x_d\mid Y=y) \\
+    &amp;=\mathbb{P}(Y=y)\cdot\prod_{j=1}^d\mathbb{P}(X_j=x_j\mid X_1=x_1,\ldots,X_{j-1}=x_{j-1},Y=y) \\
+    &amp;=\mathbb{P}(Y=y)\cdot\prod_{j=1}^d\mathbb{P}(X_j=x_j\mid Y=y) \\
+\end{align*}\]</div>
+<div class="math notranslate nohighlight">
+\[
+where the final equality follows from the Naive Bayes assumption. The Naive Bayes classifier has two types of **parameters**: $q(y)$, called the **prior distribution**, and $q_j(x\mid y)$, called the **likelihood distribution**. Here, $q(y)=\mathbb{P}(Y=y)$ and $q_j(x\mid y)=\mathbb{P}(X_j=x\mid Y=y)$. Then,
+\]</div>
+<p>p(y\mid x_1,\ldots,x_d)\propto q(y)\prod_{j=1}^dq_j(x_j\mid y)
+$<span class="math notranslate nohighlight">\(
+where we define \)</span>p(y\mid x_1,\ldots,x_d)=\mathbb{P}(Y=y\mid X_1=x_1,\ldots,X_d=x_d)<span class="math notranslate nohighlight">\(, called the **posterior distribution**. Note, the posterior distribution and the joint distribution \)</span>\mathbb{P}(Y=y,X_1=x_1,\ldots,X_d=x_d)<span class="math notranslate nohighlight">\( only differs by a constant factor \)</span>\mathbb{P}(X_1=x_1,\ldots,X_d=x_d)$, called the <strong>marginal distribution</strong>.</p>
+<p>In order to estimate the parameters of the Naive Bayes classifier, we use <strong>maximum a posteriori</strong> (MAP) estimation, which is equivalent to <strong>maximum likelihood estimation</strong> (MLE) if the prior distribution is uniform.</p>
+<section id="maximum-a-posteriori-estimation">
+<h3>Maximum A Posteriori Estimation<a class="headerlink" href="#maximum-a-posteriori-estimation" title="Link to this heading">#</a></h3>
+<p>Given a training set <span class="math notranslate nohighlight">\(\{(x^{(i)},y^{(i)}):x^{(i)}\in\{+1,-1\}^d,y^{(i)}\in\{1,2,\ldots,k\}\}_{i=1}^n\)</span>, the <strong>log-likelihood function</strong> <span class="math notranslate nohighlight">\(L(\theta)\)</span> for the classifier is
+$$</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    L(\theta)&amp;=\sum_{i=1}^n\log p(x^{(i)},y^{(i)})\\
+    &amp;=\sum_{i=1}^n\log \left(q(y)\prod_{j=1}^dq_j(x^{(i)}_j\mid y^{(i)})\right)\\
+    &amp;=\sum_{i=1}^n\log q(y)+\sum_{i=1}^n\log\left(\prod_{j=1}^dq_j(x^{(i)}_j\mid y^{(i)})\right)\\
+    &amp;=\sum_{i=1}^n\log q(y)+\sum_{i=1}^n\sum_{j=1}^d\log q_j(x^{(i)}_j\mid y^{(i)})
+\end{align*}\]</div>
+<div class="math notranslate nohighlight">
+\[
+where $\theta$ is a parameter vector consisting of $q(y)$ and $q_j(x\mid y)$. The parameters of the classifier are then estimated by maximizing $L(\theta)$.
+\]</div>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+    \text{max }&amp; \sum_{i=1}^n\log q(y)+\sum_{i=1}^n\sum_{j=1}^d\log q_j(x^{(i)}_j\mid y^{(i)})\\
+    \text{s.t. }&amp; q(y)\geq 0\text{ for all }y\text{ and }\textstyle\sum_{y}q(y)=1,\\
+    \hphantom{\text{s.t. }}&amp; q_j(x\mid y)\geq 0\text{ for all }j,x,y\text{ and }\textstyle\sum_{x}q_j(x\mid y)=1.
+\end{align*}\]</div>
+<div class="math notranslate nohighlight">
+\[
+By using the method of Lagrange multipliers, one can derive the following global solution for the Naive Bayes classifier:
+\]</div>
+<p>q(y)=\frac{\sum_{i=1}^n[![y^{(i)}=y]!]}{n}=\frac{\text{count}(y)}{n}
+$<span class="math notranslate nohighlight">\(
+and
+\)</span><span class="math notranslate nohighlight">\(
+q_j(x\mid y)=\frac{\sum_{i=1}^n[\![y^{(i)}=y\text{ and }x^{(i)}_j=x]\!]}{\sum_{i=1}^n[\![y^{(i)}=y]\!]}=\frac{\text{count}_j(x\mid y)}{\text{count}(y)}.
+\)</span>$</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span><span class="o">,</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">BernoulliNB</span><span class="p">:</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">tokens</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span> <span class="o">=</span> <span class="n">tokens</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prior</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Initializes model parameters from random numbers &quot;&quot;&quot;</span>
+
+        <span class="c1"># randomly sample numbers from a uniform distribution</span>
+        <span class="n">distribution</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">]</span>
+
+        <span class="c1"># calculate normalizing constant for prior distribution</span>
+        <span class="n">denominator</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">distribution</span><span class="p">)</span>
+
+        <span class="c1"># assign normalized probabilities to prior distribution</span>
+        <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">probability</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span> <span class="n">distribution</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prior</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">probability</span> <span class="o">/</span> <span class="n">denominator</span>
+
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="c1"># randomly sample numbers from a uniform distribution</span>
+            <span class="n">distribution</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">]</span>
+
+            <span class="c1"># assign normalized probabilities to likelihood distribution</span>
+            <span class="k">for</span> <span class="n">token</span><span class="p">,</span> <span class="n">probability</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">,</span> <span class="n">distribution</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="n">token</span><span class="p">]</span> <span class="o">=</span> <span class="n">probability</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Trains a Bernoulli Naive Bayes classifier using MAP estimation</span>
+<span class="sd">        </span>
+<span class="sd">            Inputs:</span>
+<span class="sd">                data - list of (document, label) pairs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># count the number of occurrences of labels and tokens</span>
+        <span class="n">count</span><span class="p">,</span> <span class="n">total</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">Counter</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">document</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">count</span><span class="p">:</span>
+                <span class="n">count</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">document</span><span class="p">):</span>
+                <span class="n">count</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="n">token</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">total</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># update the model parameters from the frequency estimates</span>
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
+            <span class="n">probability</span> <span class="o">=</span> <span class="n">total</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prior</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">probability</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span>
+                <span class="c1"># apply add-one Laplace smoothing for a Bernoulli distribution</span>
+                <span class="n">probability</span> <span class="o">=</span> <span class="p">(</span><span class="n">count</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="n">token</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">total</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="n">token</span><span class="p">]</span> <span class="o">=</span> <span class="n">probability</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_posterior</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Calculates a probability distribution over labels</span>
+
+<span class="sd">            Inputs:</span>
+<span class="sd">                document - string of text</span>
+
+<span class="sd">            Outputs:</span>
+<span class="sd">                posterior - probability distribution over labels</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># calculate the posterior distribution from the model parameters</span>
+        <span class="n">document</span><span class="p">,</span> <span class="n">posterior</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">document</span><span class="p">),</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
+            <span class="n">posterior</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prior</span><span class="p">[</span><span class="n">label</span><span class="p">])</span>
+
+            <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span>
+                <span class="c1"># switch to log space to avoid arithmetic underflow</span>
+                <span class="k">if</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">document</span><span class="p">:</span>
+                    <span class="n">posterior</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">+=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="n">token</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">posterior</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">+=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="n">token</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">posterior</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">classify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Classifies a document using a Bernoulli Naive Bayes classifier</span>
+
+<span class="sd">            Inputs:</span>
+<span class="sd">                document - string of text</span>
+
+<span class="sd">            Outputs:</span>
+<span class="sd">                label - document label</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># calculate the posterior distribution over labels</span>
+        <span class="n">posterior</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_posterior</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+
+        <span class="c1"># return the label with the highest probability</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">posterior</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">posterior</span><span class="o">.</span><span class="n">get</span><span class="p">)</span> <span class="c1"># argmax(posterior)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="supervised-learning-with-labeled-data">
+<h2>Supervised Learning (with Labeled Data)<a class="headerlink" href="#supervised-learning-with-labeled-data" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
+
+<span class="c1"># import the language identification data</span>
+<span class="n">data</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">valid_data</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;train.csv&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sample</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">sample</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="s1">&#39;de&#39;</span><span class="p">,</span> <span class="s1">&#39;fr&#39;</span><span class="p">,</span> <span class="s1">&#39;es&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">sample</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">sample</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">document</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">word_tokenize</span><span class="p">(</span><span class="n">sample</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">sample</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+
+<span class="c1"># split the data into training and validation</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x_i</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">for</span> <span class="n">x_i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">[:</span><span class="mi">75</span><span class="p">]]</span>
+<span class="n">valid_data</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x_i</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">for</span> <span class="n">x_i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">[</span><span class="mi">75</span><span class="p">:</span><span class="mi">100</span><span class="p">]]</span>
+
+<span class="c1"># extract the labels and tokens from the data</span>
+<span class="n">labels</span><span class="p">,</span> <span class="n">tokens</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(),</span> <span class="nb">set</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">document</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">:</span>
+    <span class="n">labels</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">document</span><span class="p">:</span>
+        <span class="n">tokens</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># construct a Bernoulli Naive Bayes classifier</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">BernoulliNB</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">tokens</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
+
+<span class="c1"># calculate the accuracy using the validation data</span>
+<span class="n">count</span><span class="p">,</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">text</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">valid_data</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">classify</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">==</span> <span class="n">label</span><span class="p">:</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">total</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">count</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">}</span><span class="s1">% Accuracy&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>96.0% Accuracy
+</pre></div>
+</div>
+</div>
+</div>
+<section id="exercise-1">
+<h3>Exercise 1<a class="headerlink" href="#exercise-1" title="Link to this heading">#</a></h3>
+<p>In practice, we use subwords of length <span class="math notranslate nohighlight">\(n\)</span>, called <span class="math notranslate nohighlight">\(n\)</span>-grams, instead of entire words for language identification. In the Python implementation, change the features from entire words to bigrams (<span class="math notranslate nohighlight">\(n=2\)</span>) or trigrams (<span class="math notranslate nohighlight">\(n=3\)</span>), and compare both the accuracy and the number of parameters.</p>
+<p>Hint: In Cell [4], replace <code class="docutils literal notranslate"><span class="pre">nltk.word_tokenize(text)</span></code> with <code class="docutils literal notranslate"><span class="pre">list(nltk.bigrams(text))</span></code> or <code class="docutils literal notranslate"><span class="pre">list(nltk.trigrams(text))</span></code>.</p>
+</section>
+<section id="exercise-2">
+<h3>Exercise 2<a class="headerlink" href="#exercise-2" title="Link to this heading">#</a></h3>
+<p>In the Python implementation, we used add-one <strong>Laplace smoothing</strong> (see below). Why do we require smoothing with maximum a posteriori estimation?</p>
+<div class="math notranslate nohighlight">
+\[
+q_j(x\mid y)=\frac{\text{count}_j(x\mid y)+\alpha}{\text{count}(y)+\alpha d}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\alpha\)</span> is a hyperparameter and <span class="math notranslate nohighlight">\(d\)</span> is the dimension of the multinomial distribution (<span class="math notranslate nohighlight">\(2\)</span> for Bernoulli and <span class="math notranslate nohighlight">\(|V|\)</span> for categorical where <span class="math notranslate nohighlight">\(V\)</span> is the vocabulary).</p>
+</section>
+<section id="exercise-3">
+<h3>Exercise 3<a class="headerlink" href="#exercise-3" title="Link to this heading">#</a></h3>
+<p>We implemented a <strong>Bernoulli</strong> Naive Bayes classifier where each likelihood <span class="math notranslate nohighlight">\(p(x_j\mid y)\)</span> is a Bernoulli distribution and each <span class="math notranslate nohighlight">\(x_j\)</span> is binary variable representing the presence or absence of feature <span class="math notranslate nohighlight">\(j\)</span>. However, <span class="math notranslate nohighlight">\(p(x_j\mid y)\)</span> can be any distribution, but Bernoulli (discrete), Multinomial (discrete) and Gaussian (continuous) are the most common. In a <strong>multinomial</strong> Naive Bayes classifier, each likelihood <span class="math notranslate nohighlight">\(p(x_j\mid y)\)</span> is categorical distribution and each <span class="math notranslate nohighlight">\(x_j\)</span> is the number of times feature <span class="math notranslate nohighlight">\(j\)</span> is observed. In the Python implementation, change the features <span class="math notranslate nohighlight">\(\{x_j\}_{j=1}^k\)</span> from binary variables to frequency counts and update the likelihoods.</p>
+<p>Hint: The likelihoods <span class="math notranslate nohighlight">\(p(x_j\mid y)\)</span> are estimated by calculating the fraction of documents for Bernoulli and the fraction of tokens for multinomial (see below).</p>
+<section id="bernoulli">
+<h4>Bernoulli<a class="headerlink" href="#bernoulli" title="Link to this heading">#</a></h4>
+<div class="math notranslate nohighlight">
+\[
+p(y\mid x_1,\ldots,x_d)\propto q(y)\prod_{j=1}^d[q_j(x_j\mid y)]^{x_j}\cdot[1-q_j(x_j\mid y)]^{(1-x_j)}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(x_j\in\{+1,-1\}\)</span> for all <span class="math notranslate nohighlight">\(j\)</span>.</p>
+</section>
+<section id="multinomial">
+<h4>Multinomial<a class="headerlink" href="#multinomial" title="Link to this heading">#</a></h4>
+<div class="math notranslate nohighlight">
+\[
+p(y\mid x_1,\ldots,x_d)\propto q(y)\prod_{j=1}^d[q_j(x_j\mid y)]^{x_j}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(x_j\in\mathbb{N}\)</span> for all <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">MultinomialNB</span><span class="p">:</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">tokens</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span> <span class="o">=</span> <span class="n">tokens</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prior</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Initializes model parameters from random numbers &quot;&quot;&quot;</span>
+
+        <span class="c1"># randomly sample numbers from a uniform distribution</span>
+        <span class="n">distribution</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">]</span>
+
+        <span class="c1"># calculate normalizing constant for prior distribution</span>
+        <span class="n">denominator</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">distribution</span><span class="p">)</span>
+
+        <span class="c1"># assign normalized probabilities to prior distribution</span>
+        <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">probability</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span> <span class="n">distribution</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prior</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">probability</span> <span class="o">/</span> <span class="n">denominator</span>
+
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="c1"># randomly sample numbers from a uniform distribution</span>
+            <span class="n">distribution</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">]</span>
+
+            <span class="c1"># calculate normalizing constant for likelihood distribution</span>
+            <span class="n">denominator</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">distribution</span><span class="p">)</span>
+
+            <span class="c1"># assign normalized probabilities to likelihood distribution</span>
+            <span class="k">for</span> <span class="n">token</span><span class="p">,</span> <span class="n">probability</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">,</span> <span class="n">distribution</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="n">token</span><span class="p">]</span> <span class="o">=</span> <span class="n">probability</span> <span class="o">/</span> <span class="n">denominator</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Trains a multinomial Naive Bayes classifier using MAP estimation</span>
+<span class="sd">        </span>
+<span class="sd">            Inputs:</span>
+<span class="sd">                data - list of (document, label) pairs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># count the number of occurrences of labels and tokens</span>
+        <span class="n">count</span><span class="p">,</span> <span class="n">total</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">Counter</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">document</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">count</span><span class="p">:</span>
+                <span class="n">count</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+            <span class="c1"># Add your solution here</span>
+
+        <span class="c1"># update the model parameters from the frequency estimates</span>
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
+            <span class="n">probability</span> <span class="o">=</span> <span class="n">total</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prior</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">probability</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span>
+                <span class="c1"># Add your solution here</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="n">token</span><span class="p">]</span> <span class="o">=</span> <span class="n">probability</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_posterior</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Calculates a probability distribution over labels</span>
+
+<span class="sd">            Inputs:</span>
+<span class="sd">                document - string of text</span>
+
+<span class="sd">            Outputs:</span>
+<span class="sd">                posterior - probability distribution over labels</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># calculate the posterior distribution from the model parameters</span>
+        <span class="n">posterior</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span><span class="p">:</span>
+            <span class="n">posterior</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prior</span><span class="p">[</span><span class="n">label</span><span class="p">])</span>
+
+            <span class="c1"># Add your solution here</span>
+
+        <span class="k">return</span> <span class="n">posterior</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">classify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Classifies a document using a Bernoulli Naive Bayes classifier</span>
+
+<span class="sd">            Inputs:</span>
+<span class="sd">                document - string of text</span>
+
+<span class="sd">            Outputs:</span>
+<span class="sd">                label - document label</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># calculate the posterior distribution over labels</span>
+        <span class="n">posterior</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_posterior</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+
+        <span class="c1"># return the label with the highest probability</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">posterior</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">posterior</span><span class="o">.</span><span class="n">get</span><span class="p">)</span> <span class="c1"># argmax(posterior)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># construct a multinomial Naive Bayes classifier</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">MultinomialNB</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">tokens</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
+
+<span class="c1"># calculate the accuracy using the validation data</span>
+<span class="n">count</span><span class="p">,</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">text</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">valid_data</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">classify</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">==</span> <span class="n">label</span><span class="p">:</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">total</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">count</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">}</span><span class="s1">% Accuracy&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100.0% Accuracy
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="expectation-maximization-algorithm">
+<h2>Expectation Maximization Algorithm<a class="headerlink" href="#expectation-maximization-algorithm" title="Link to this heading">#</a></h2>
+<p>In statistics, a random variable that is never observed is called a <strong>latent variable</strong>. The <strong>expectation maximization</strong> (EM) algorithm is an iterative method for performing maximum a posteriori (or maximum likelihood) estimation for a latent variable model. First, the initial parameters <span class="math notranslate nohighlight">\(\theta^0\)</span> are chosen at random. Then, new parameters <span class="math notranslate nohighlight">\(\theta^t\)</span> are calculated from the previous posterior distribution <span class="math notranslate nohighlight">\(p(y\mid x^{(i)};\theta^{t-1})\)</span> at each iteration. The EM algorithm is guaranteed to converge, but only to a local solution. Note, both the initial parameters and the posteriors must be normalized. The parameters for Naive Bayes are
+$<span class="math notranslate nohighlight">\(
+q^t(y)=\frac{1}{n}\sum_{i=1}^n\delta(y\mid i)\quad\text{ and }\quad q^t_j(x\mid y)=\frac{\sum_{i:x^{(i)}_j=x}\delta(y\mid i)}{\sum_{i=1}^n\delta(y\mid i)}
+\)</span><span class="math notranslate nohighlight">\(
+where
+\)</span><span class="math notranslate nohighlight">\(
+\delta(y\mid i)=p(y\mid x^{(i)};\theta^{t-1})=\frac{q^{t-1}(y)\prod_{j=1}^dq^{t-1}_j(x^{(i)}_j\mid y)}{\sum_{y=1}^kq^{t-1}(y)\prod_{j=1}^dq^{t-1}_j(x^{(i)}_j\mid y)}.
+\)</span><span class="math notranslate nohighlight">\(
+Note, these parameter formulas are equivalent to those for fully observed data if we define \)</span>\delta(y\mid i)=1<span class="math notranslate nohighlight">\( if \)</span>y_i=y<span class="math notranslate nohighlight">\( and \)</span>0$ otherwise.</p>
+<section id="pseudocode">
+<h3>Pseudocode<a class="headerlink" href="#pseudocode" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Inputs</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">-</span> <span class="n">training</span> <span class="n">examples</span>
+    <span class="n">n</span> <span class="o">-</span> <span class="n">number</span> <span class="n">of</span> <span class="n">documents</span>
+    <span class="n">k</span> <span class="o">-</span> <span class="n">number</span> <span class="n">of</span> <span class="n">labels</span>
+    <span class="n">T</span> <span class="o">-</span> <span class="n">number</span> <span class="n">of</span> <span class="n">iterations</span>
+
+<span class="n">Initialization</span><span class="p">:</span> 
+    <span class="n">Set</span> <span class="n">model</span> <span class="n">parameters</span> <span class="p">(</span><span class="n">prior</span> <span class="ow">and</span> <span class="n">likelihood</span><span class="p">)</span> <span class="n">to</span> <span class="n">random</span> <span class="n">values</span>
+
+<span class="n">Algorithm</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">T</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">k</span>
+            <span class="n">calculate</span> <span class="n">posterior</span> <span class="n">distribution</span> <span class="kn">from</span><span class="w"> </span><span class="nn">model</span> <span class="n">parameters</span>
+        <span class="n">update</span> <span class="n">model</span> <span class="n">parameters</span> <span class="n">using</span> <span class="n">normalized</span> <span class="n">posterior</span> <span class="n">distribution</span>
+<span class="n">Output</span><span class="p">:</span>
+    <span class="n">model</span> <span class="n">parameters</span> <span class="o">-</span> <span class="n">prior</span> <span class="ow">and</span> <span class="n">likelihood</span>
+</pre></div>
+</div>
+</section>
+<section id="python-implementation">
+<h3>Python Implementation<a class="headerlink" href="#python-implementation" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">logsumexp</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Calculates the log of the sum of exponentials of the input data</span>
+
+<span class="sd">        Inputs:</span>
+<span class="sd">            data - list of numbers</span>
+
+<span class="sd">        Outputs:</span>
+<span class="sd">            the log of the sum of exponentials of the input data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># calculate the maximum value of the input data</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># shift the exponential arguments to avoid underflow</span>
+    <span class="k">return</span> <span class="n">c</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">))</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">expectation_maximization</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">BernoulliNB</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">T</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Expectation Maximization Algorithm for Bernoulli Naive Bayes &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+        <span class="c1"># estimate posterior distribution</span>
+        <span class="n">posterior</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">document</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+            <span class="n">posterior</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">calculate_posterior</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+
+        <span class="c1"># normalize posterior distribution</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
+            <span class="n">denominator</span> <span class="o">=</span> <span class="n">logsumexp</span><span class="p">([</span><span class="n">posterior</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">label</span><span class="p">]</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">labels</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
+                <span class="n">posterior</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">posterior</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">label</span><span class="p">]</span> <span class="o">-</span> <span class="n">denominator</span><span class="p">)</span>
+
+        <span class="c1"># update parameters (prior and likelihood)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;[</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s1">] </span><span class="si">{</span><span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">prior</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">model</span><span class="o">.</span><span class="n">labels</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
+            <span class="n">marginal</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">posterior</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">label</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)))</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">prior</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">marginal</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span>
+                <span class="n">probability</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">posterior</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">label</span><span class="p">]</span> <span class="o">*</span> <span class="n">document</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">document</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">likelihood</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="n">token</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">probability</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">marginal</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;[</span><span class="si">{</span><span class="n">T</span><span class="si">}</span><span class="s1">] </span><span class="si">{</span><span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">prior</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">model</span><span class="o">.</span><span class="n">labels</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="unsupervised-learning-with-unlabeled-data">
+<h2>Unsupervised Learning (with Unlabeled Data)<a class="headerlink" href="#unsupervised-learning-with-unlabeled-data" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">unlabeled_data</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">]]</span>
+
+<span class="c1"># extract the labels and tokens from the data</span>
+<span class="n">labels</span><span class="p">,</span> <span class="n">tokens</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span> <span class="nb">set</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">document</span> <span class="ow">in</span> <span class="n">unlabeled_data</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">document</span><span class="p">:</span>
+        <span class="n">tokens</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+
+<span class="c1"># construct a Bernoulli Naive Bayes classifier</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">BernoulliNB</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">tokens</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+
+<span class="c1"># apply the EM algorithm to the unlabled data</span>
+<span class="n">expectation_maximization</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">unlabeled_data</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0] [0.05035805143403056, 0.9496419485659694]
+[1] [0.5684630939482381, 0.4315369060517618]
+[2] [0.5966452242425817, 0.40335477575741824]
+[3] [0.598941474959691, 0.4010585250403089]
+[4] [0.5991012977476698, 0.40089870225233026]
+[5] [0.5991127955638306, 0.40088720443616943]
+[6] [0.5991136736773947, 0.4008863263226054]
+[7] [0.5991137447735392, 0.4008862552264606]
+[8] [0.599113750820036, 0.4008862491799639]
+[9] [0.5991137513539058, 0.40088624864609423]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;label(</span><span class="si">{</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;B&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">) =&quot;</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">classify</span><span class="p">([</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">calculate_posterior</span><span class="p">([</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>label([&#39;A&#39;, &#39;B&#39;]) = 1
+{1: -2.787002126164065, 2: -5.308464141745352}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Unfortunately, we cannot apply the EM algorithm for unsupervised language identification (see McCallum et al.). Instead, we verified that the EM algorithm converges by providing training data with a known conditional distribution and comparing that against the output distribution from EM.</p>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
+<p>In this tutorial notebook, we covered the Naive Bayes classifier, maximum a posteriori estimation, and the expectation maximization algorithm. The Naive Bayes classifier is a statistical model for classification based on Bayes’ theorem and the Naive Bayes independence assumption. MAP (or MLE) estimation is a statistical technique for estimating the parameters of a posterior (or likelihood) distribution given fully or partially observed data. The EM algorithm is an interative method for calculating new parameters or MAP (or MLE) estimates given unobserved data in a latent model.</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Deisenroth, M. P., Ong, C. S., &amp; Faisa, A. A. (n.d.). <em>Mathematics for Machine Learning</em>. <a class="reference external" href="https://mml-book.github.io/book/mml-book.pdf">https://mml-book.github.io/book/mml-book.pdf</a></p></li>
+<li><p>Collins, M. (n.d.). <em>The Naive Bayes Model, Maximum-Likelihood Estimation, and the EM Algorithm</em>. <a class="reference external" href="http://web2.cs.columbia.edu/~mcollins/em.pdf">http://web2.cs.columbia.edu/~mcollins/em.pdf</a></p></li>
+<li><p>Jurafsky, D., &amp; Martin, J. H. (n.d.). Speech and Language Processing. <a class="reference external" href="https://web.stanford.edu/~jurafsky/slp3/">https://web.stanford.edu/~jurafsky/slp3/</a></p></li>
+<li><p>Papariello, L. (n.d.). <em>Language Identification Dataset</em>. <a class="reference external" href="https://huggingface.co/datasets/papluca/language-identification">https://huggingface.co/datasets/papluca/language-identification</a></p></li>
+<li><p>McCallum A., &amp; Nigam K. (n.d.). <em>A Comparison of Event Models for Naive Bayes Text Classification</em>. <a class="reference external" href="http://www.cs.cmu.edu/~dgovinda/pdf/multinomial-aaaiws98.pdf">http://www.cs.cmu.edu/~dgovinda/pdf/multinomial-aaaiws98.pdf</a></p></li>
+<li><p>Nigam K., McCallum A., &amp; Mitchell T. (n.d.). <em>Semi-Supervised Text Classification using EM</em>. <a class="reference external" href="https://www.cs.cmu.edu/~tom/pubs/NigamEtAl-bookChapter.pdf">https://www.cs.cmu.edu/~tom/pubs/NigamEtAl-bookChapter.pdf</a></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/contrib"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="data.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Machine Learning and Applied Statistics</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#naive-bayes-classifier">Naive Bayes Classifier</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-a-posteriori-estimation">Maximum A Posteriori Estimation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supervised-learning-with-labeled-data">Supervised Learning (with Labeled Data)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1">Exercise 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2">Exercise 2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3">Exercise 3</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bernoulli">Bernoulli</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#multinomial">Multinomial</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#expectation-maximization-algorithm">Expectation Maximization Algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pseudocode">Pseudocode</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python-implementation">Python Implementation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unsupervised-learning-with-unlabeled-data">Unsupervised Learning (with Unlabeled Data)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Alexander Dowling, et al.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

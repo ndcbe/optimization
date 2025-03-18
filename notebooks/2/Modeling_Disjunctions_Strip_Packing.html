@@ -1,0 +1,1349 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2.2. Modeling Disjunctions through the Strip Packing Problem &#8212; Optimization for Decision Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/2/Modeling_Disjunctions_Strip_Packing';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3. Dynamic Optimization" href="../3/dynamics.html" />
+    <link rel="prev" title="2.1. Logical Modeling and Generalized Disjunctive Programs" href="Logical_Modeling_GDP.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/cbe_logo.jpg" class="logo__image only-light" alt="Optimization for Decision Science - Home"/>
+    <script>document.write(`<img src="../../_static/cbe_logo.jpg" class="logo__image only-dark" alt="Optimization for Decision Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Optimization for Decision Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Fall 2024 Calendar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/workshop.html">Computational Optimization in Python (São Paulo, Brazil)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project1.html">Project 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms1.html">Algorithms Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms2.html">Algorithms Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project2.html">Project 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project (Spring 2023)</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/LP.html">1.4. Continuous Optimization: Linear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/NLP.html">1.5. Continuous Optimization: Nonlinear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.6. Integer Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.7. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="logic.html">2. Logical Modeling</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_car.html">3.1. Pyomo.DAE Example: Race Car</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_TCLab.html">3.2. Pyomo.DAE Example: Temperature Control Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_background.html">3.3. Differential Algebraic Equations (DAEs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_numeric_integration.html">3.4. Numeric Integration for DAEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_theory.html">3.5. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_example.html">3.6. Pyomo.DAE: Racing Example Revisited</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/blocks.html">4.2. Blocks and Other Pyomo Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/AdvancedTopics.html">4.3. Advanced Topics in Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.4. Risk Measures and Portfolio Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Optimizing Experiments with <code class="docutils literal notranslate"><span class="pre">Pyomo.DoE</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-1.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Newton-Methods.html">6.4. Newton-type Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Constraint-Qualifications.html">7.4. Constraint Qualifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Second-Order.html">7.5. Second Order Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/degeneracy_hunter.html">7.6. NLP Diagnostics with Degeneracy Hunter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/pyomo.html">More Pyomo Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/semiconductor_manufacturing.html">Semiconductor Production Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/student_diet.html">Optimization of Daily Diet Using Pyomo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/blending.html">Blending Under Uncertainty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/vehicle_routing.html">Vehicle Routing</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/portfolio_optimization_extended.html">Risk Measures and Portfolio Optimization: Expanded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/race_car_extended.html">Extended Race Car Optimization Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/hot_air_balloon.html">Hot Air Balloon Dynamic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/reactor_design.html">Chemical Reactor Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Disaster_Response_Plan.html">Disaster Response Plan Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Sudoku_Solver.html">Sudoku Solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/more_circle_packing.html">Circle Packing Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/modeling.html">Modeling Paradigms</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/multi_objective.html">Multi-Objective Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/advanced_stochastic_programming.html">Advanced Topics in Stochastic Programming</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/algorithms.html">Global Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Deterministic_Global_Optimization.html">Deterministic Global Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/sgd.html">Stochastic Gradient Descent</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/data.html">Machine Learning and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/2/Modeling_Disjunctions_Strip_Packing.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/2/Modeling_Disjunctions_Strip_Packing.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/2/Modeling_Disjunctions_Strip_Packing.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Modeling Disjunctions through the Strip Packing Problem</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-and-learning-objectives">2.2.1. Introduction and Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-modules">2.2.2. Import Modules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyomo-gdp-strip-packing-problem">2.2.3. Pyomo.GDP: Strip Packing Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-statement">2.2.3.1. Problem Statement</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-model-in-pyomo-with-gdp">2.2.3.2. Define model in Pyomo with GDP</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transform-and-solve-with-big-m-relaxation">2.2.3.3. Transform and Solve with Big M Relaxation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#big-m-implementation-in-pyomo">2.2.3.4. Big-M Implementation in Pyomo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transform-and-solve-with-convex-hull-relaxation">2.2.3.5. Transform and Solve with Convex Hull Relaxation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convex-hull-implementation-in-pyomo">2.2.3.6. Convex Hull Implementation in Pyomo</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion-questions">2.2.4. Discussion Questions</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="modeling-disjunctions-through-the-strip-packing-problem">
+<h1><span class="section-number">2.2. </span>Modeling Disjunctions through the Strip Packing Problem<a class="headerlink" href="#modeling-disjunctions-through-the-strip-packing-problem" title="Link to this heading">#</a></h1>
+<p><strong>Prepared by:</strong> Prof. Alexander Dowling (<a class="reference external" href="mailto:adowling&#37;&#52;&#48;nd&#46;edu">adowling<span>&#64;</span>nd<span>&#46;</span>edu</a>), <a class="reference external" href="https://github.com/hglynch">Hailey Lynch</a> (<a class="reference external" href="mailto:hlynch&#37;&#52;&#48;nd&#46;edu">hlynch<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2023)</p>
+<section id="introduction-and-learning-objectives">
+<h2><span class="section-number">2.2.1. </span>Introduction and Learning Objectives<a class="headerlink" href="#introduction-and-learning-objectives" title="Link to this heading">#</a></h2>
+<p>This notebook illustrates a more complicated example of generalized disjunctive programs. Students will practice applying concepts of Logical Modeling and Generalized Disjunctive Programs to the Strip Packing Problem. Critical thinking discussion questions will be included to connect concepts from CBE 60499.</p>
+<p>See the following notebook for a primer on Logical Modeling and Generalized Disjunctive Programs: [Logical Modeling and Generalized Disjunctive Programs](LINK HERE)</p>
+</section>
+<section id="import-modules">
+<h2><span class="section-number">2.2.2. </span>Import Modules<a class="headerlink" href="#import-modules" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="k">if</span> <span class="s2">&quot;google.colab&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+    <span class="o">!</span>wget<span class="w"> </span><span class="s2">&quot;https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/helper.py&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">easy_install</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;../&#39;</span><span class="p">)</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+<span class="n">helper</span><span class="o">.</span><span class="n">set_plotting_style</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">milp_solver</span> <span class="o">=</span> <span class="s1">&#39;cbc&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="pyomo-gdp-strip-packing-problem">
+<h2><span class="section-number">2.2.3. </span>Pyomo.GDP: Strip Packing Problem<a class="headerlink" href="#pyomo-gdp-strip-packing-problem" title="Link to this heading">#</a></h2>
+<p>We will be looking at the Strip Packing Problem using Pyomo.GDP as an example for modeling disjunctions.</p>
+<blockquote>
+<div><p>Aldo Vecchietti (1) and Ignacio Grossman (2) <br> (1) INGAR – Instituto de Desarrollo y Diseño – CONICET – UTN, Avellaneda 3657 – Santa Fe ‐ Argentina <br> (2) Carnegie Mellon University, 5000 Forbes Av. ‐ Pittsburgh, PA ‐ USA</p>
+</div></blockquote>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Additional Information</p></th>
+<th class="head"><p>Link</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Reference</p></td>
+<td><p><a class="reference external" href="https://www.minlp.org/library/problem/index.php?i=121&amp;amp;lib=GDP">https://www.minlp.org/library/problem/index.php?i=121&amp;lib=GDP</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p><a class="reference external" href="https://www.minlp.org/problems/ver/156/over/Strip-Packing-Overview.pdf">https://www.minlp.org/problems/ver/156/over/Strip-Packing-Overview.pdf</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Results</p></td>
+<td><p><a class="reference external" href="https://www.minlp.org/problems/ver/156/results/Strip-Packing-Results.pdf">https://www.minlp.org/problems/ver/156/results/Strip-Packing-Results.pdf</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Problem Formulation</p></td>
+<td><p><a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0098135405000992">https://www.sciencedirect.com/science/article/pii/S0098135405000992</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="problem-statement">
+<h3><span class="section-number">2.2.3.1. </span>Problem Statement<a class="headerlink" href="#problem-statement" title="Link to this heading">#</a></h3>
+<p>The objective in this problem consists of minimizing the length of the strip <span class="math notranslate nohighlight">\(lt\)</span> and by representing every rectangle by its coordinates in the <span class="math notranslate nohighlight">\((x,y)\)</span> space such that no overlap occurs between rectangles.</p>
+<p><span class="math notranslate nohighlight">\( \text{min} \ lt \)</span></p>
+<p>subject to…</p>
+<p>Thus, every rectangle <span class="math notranslate nohighlight">\(i \in N\)</span> has length <span class="math notranslate nohighlight">\(L_{i}\)</span>, height <span class="math notranslate nohighlight">\(H_{i}\)</span>, and coordinates <span class="math notranslate nohighlight">\((x_{i}, y_{i})\)</span>, where the point of reference corresponds to the upper left corner of every rectangle.</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+\ lt \geq x_{i} + L_{i} \ \ \forall i \in N
+\end{equation}
+\]</div>
+<p>By constraining every pair of rectangels <span class="math notranslate nohighlight">\((i,j)\)</span> where <span class="math notranslate nohighlight">\((i,j \in N, i&lt;j)\)</span> that no overlap occurs, we obtain a series of disjunctions with four disjuncts each, where each disjunct represents the position of rectangle <span class="math notranslate nohighlight">\(i\)</span> in relation to rectangle <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{equation}
+  \begin{bmatrix}
+  Y_{ij}^{1} \\
+  x_{i} + L_{i} \leq x_{j}
+  \end{bmatrix}
+ \lor
+  \begin{bmatrix}
+  Y_{ij}^{2} \\
+  x_{j} + L_{j} \leq x_{i}
+  \end{bmatrix}
+ \lor 
+  \begin{bmatrix}
+  Y_{ij}^{3} \\
+  y_{i} - H_{i} \geq y_{j}
+  \end{bmatrix}
+ \lor
+  \begin{bmatrix}
+  Y_{ij}^{4} \\
+  y_{j} - H_{j} \geq y_{i}
+  \end{bmatrix}
+\end{equation} 
+\end{split}\]</div>
+<p>Note that the y-coordinate of every rectange is bounded from above by the fixed width of the strip <span class="math notranslate nohighlight">\(W\)</span>, and that the upper bound <span class="math notranslate nohighlight">\(UB_{i}\)</span>, which in a best case scenario would correspond to the optimal value of <span class="math notranslate nohighlight">\(lt\)</span>, is obtained using a bottom-left rectangle-placing heurisitc and serves as an upper bound for the x-coordinate of every rectangle.</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+  x_{i} \leq UB_{i} - L_{i} \ \ \forall i \in N \tag{4}
+\end{equation}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+  H_{i} \leq y_{i} \leq W \ \ \forall i \in N \tag{5}
+\end{equation}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+ lt, x_{i}, y_{i} \in \mathbb{R}_{+}^{1}, Y_{ij}^{1}, Y_{ij}^{2}, Y_{ij}^{3}, Y_{ij}^{4} \in \text{\{True, False}\} \ \ \forall i, j \in N, i &lt; j
+\end{equation}
+\]</div>
+</section>
+<section id="define-model-in-pyomo-with-gdp">
+<h3><span class="section-number">2.2.3.2. </span>Define model in Pyomo with GDP<a class="headerlink" href="#define-model-in-pyomo-with-gdp" title="Link to this heading">#</a></h3>
+<p>First we will define the model for the Strip Packing Problem in Pyomo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Instead of using</span>
+<span class="sd"># import pyomo.environ as pyo</span>
+<span class="sd">We can import specific functions/objects</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyomo.environ</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">ConcreteModel</span><span class="p">,</span> <span class="n">NonNegativeReals</span><span class="p">,</span> <span class="n">Objective</span><span class="p">,</span> <span class="n">Param</span><span class="p">,</span>
+                           <span class="n">Set</span><span class="p">,</span> <span class="n">SolverFactory</span><span class="p">,</span> <span class="n">TransformationFactory</span><span class="p">,</span> <span class="n">Var</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+<span class="c1"># Strip-packing example from http://minlp.org/library/lib.php?lib=GDP</span>
+
+<span class="c1"># This model packs a set of rectangles without rotation or overlap within a</span>
+<span class="c1"># strip of a given width, minimizing the length of the strip.</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_model</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Build the strip packing problem model.</span>
+
+<span class="sd">    Return:</span>
+<span class="sd">    model: Pyomo model</span>
+<span class="sd">    </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="c1">## Model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">ConcreteModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Rectangles strip packing&quot;</span><span class="p">)</span>
+    
+    <span class="c1">## Sets</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">rectangles</span> <span class="o">=</span> <span class="n">Set</span><span class="p">(</span><span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+
+    <span class="c1">## Parameters</span>
+    <span class="c1"># Width and length of each rectangle</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">rect_width</span> <span class="o">=</span> <span class="n">Param</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">rectangles</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+                                      <span class="mi">6</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="mi">7</span><span class="p">})</span>
+    
+    <span class="c1"># Parameter indexed by each rectangle</span>
+    <span class="c1"># Length means height</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">rect_length</span> <span class="o">=</span> <span class="n">Param</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">rectangles</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                                      <span class="mi">6</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="mi">4</span><span class="p">})</span>
+
+    <span class="n">model</span><span class="o">.</span><span class="n">strip_width</span> <span class="o">=</span> <span class="n">Param</span><span class="p">(</span>
+        <span class="n">initialize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Available width of the strip&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Upperbound on length (default is sum of lengths of rectangles)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">max_length</span> <span class="o">=</span> <span class="n">Param</span><span class="p">(</span>
+        <span class="n">initialize</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">rect_length</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">rectangles</span><span class="p">),</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Maximum length of the strip (if all rectangles were arranged &quot;</span>
+        <span class="s2">&quot;lengthwise)&quot;</span><span class="p">)</span>
+
+    <span class="c1">## Variables</span>
+    <span class="c1"># x (length) and y (width) coordinates of each of the rectangles</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">rectangles</span><span class="p">,</span>
+                  <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">max_length</span><span class="p">),</span>
+                  <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Rectangle corner x-position (position across length)&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Width bounds</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">w_bounds</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">strip_width</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">rect_width</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">rectangles</span><span class="p">,</span>
+                  <span class="n">bounds</span><span class="o">=</span><span class="n">w_bounds</span><span class="p">,</span>
+                  <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Rectangle corner y-position (position down width)&quot;</span><span class="p">)</span>
+    <span class="c1"># String length</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">strip_length</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span>
+        <span class="n">within</span><span class="o">=</span><span class="n">NonNegativeReals</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Length of strip required.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Rectangle conflicts</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rec_pairs_filter</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">j</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">overlap_pairs</span> <span class="o">=</span> <span class="n">Set</span><span class="p">(</span>
+        <span class="n">initialize</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">rectangles</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">rectangles</span><span class="p">,</span>
+        <span class="n">dimen</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rec_pairs_filter</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Set of possible rectangle conflicts&quot;</span><span class="p">)</span>
+
+    <span class="c1">## Constraints</span>
+    <span class="nd">@model</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">rectangles</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">strip_ends_after_last_rec</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">strip_length</span> <span class="o">&gt;=</span> <span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">rect_length</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="c1">## Objective</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">total_length</span> <span class="o">=</span> <span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">strip_length</span><span class="p">,</span>
+                                   <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Minimize length&quot;</span><span class="p">)</span>
+
+    
+    <span class="c1">## Insert the no-overlap disjunctions here!</span>
+    
+    <span class="c1"># Add your solution here</span>
+
+    <span class="k">return</span> <span class="n">model</span>
+</pre></div>
+</div>
+</div>
+</div>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Click to see the solution to the activity</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@model</span><span class="o">.</span><span class="n">Disjunction</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">overlap_pairs</span><span class="p">,</span>
+    <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Make sure that none of the rectangles on the strip overlap in &quot;</span>
+    <span class="s2">&quot;either the x or y dimensions.&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">no_overlap</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">rect_length</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">rect_length</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">rect_width</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">rect_width</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+    <span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+<section id="transform-and-solve-with-big-m-relaxation">
+<h3><span class="section-number">2.2.3.3. </span>Transform and Solve with Big M Relaxation<a class="headerlink" href="#transform-and-solve-with-big-m-relaxation" title="Link to this heading">#</a></h3>
+<p>Now we will create the model and use Big-M Relaxation.</p>
+</section>
+<section id="big-m-implementation-in-pyomo">
+<h3><span class="section-number">2.2.3.4. </span>Big-M Implementation in Pyomo<a class="headerlink" href="#big-m-implementation-in-pyomo" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creating the model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, let’s transform the model. The updated model is really big, so we will not print it. This is because the transformation factory replaced the disjunctions with many Big-M constraints.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Applying Big-M relaxation to the model</span>
+<span class="c1"># Add your solution here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Click to see the solution to the activity</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">TransformationFactory</span><span class="p">(</span><span class="s1">&#39;gdp.bigm&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply_to</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>Finally, we’ll solve the model and examine the solution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Solve and print the solution</span>
+<span class="n">SolverFactory</span><span class="p">(</span><span class="n">milp_solver</span><span class="p">)</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">rectangles</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Rectangle </span><span class="si">%s</span><span class="s2">: (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">])))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">total_length</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Welcome to the CBC MILP Solver 
+Version: 2.10.10 
+Build Date: Jun  7 2023 
+
+command line - /Users/adowling/.idaes/bin/cbc -printingOptions all -import /var/folders/3w/vr4xmyqs451dg23xk88pqcg00000gq/T/tmpfr4nysg9.pyomo.lp -stat=1 -solve -solu /var/folders/3w/vr4xmyqs451dg23xk88pqcg00000gq/T/tmpfr4nysg9.pyomo.soln (default strategy 1)
+Option for printingOptions changed from normal to all
+Presolve 148 (0) rows, 129 (0) columns and 464 (0) elements
+Statistics for presolved model
+Original problem has 112 integers (112 of which binary)
+==== 128 zero objective 2 different
+128 variables have objective of 0
+1 variables have objective of 1
+==== absolute objective values 2 different
+128 variables have objective of 0
+1 variables have objective of 1
+==== for integers 112 zero objective 1 different
+112 variables have objective of 0
+==== for integers absolute objective values 1 different
+112 variables have objective of 0
+===== end objective counts
+
+
+Problem has 148 rows, 129 columns (1 with objective) and 464 elements
+Column breakdown:
+1 of type 0.0-&gt;inf, 16 of type 0.0-&gt;up, 0 of type lo-&gt;inf, 
+0 of type lo-&gt;up, 0 of type free, 0 of type fixed, 
+0 of type -inf-&gt;0.0, 0 of type -inf-&gt;up, 112 of type 0.0-&gt;1.0 
+Row breakdown:
+0 of type E 0.0, 28 of type E 1.0, 0 of type E -1.0, 
+0 of type E other, 0 of type G 0.0, 0 of type G 1.0, 
+0 of type G other, 0 of type L 0.0, 0 of type L 1.0, 
+120 of type L other, 0 of type Range 0.0-&gt;1.0, 0 of type Range other, 
+0 of type Free 
+Continuous objective value is 4 - 0.00 seconds
+Cgl0004I processed model has 139 rows, 120 columns (103 integer (103 of which binary)) and 434 elements
+Cbc0038I Initial state - 53 integers unsatisfied sum - 13.8138
+Cbc0038I Pass   1: suminf.    5.20000 (20) obj. 11 iterations 33
+Cbc0038I Pass   2: suminf.    2.20000 (10) obj. 12 iterations 28
+Cbc0038I Pass   3: suminf.    2.00000 (10) obj. 12 iterations 5
+Cbc0038I Pass   4: suminf.    1.60000 (8) obj. 12 iterations 16
+Cbc0038I Pass   5: suminf.    1.40000 (8) obj. 12 iterations 4
+Cbc0038I Pass   6: suminf.    2.20000 (8) obj. 12 iterations 9
+Cbc0038I Pass   7: suminf.    1.80000 (8) obj. 12 iterations 5
+Cbc0038I Pass   8: suminf.    1.20000 (6) obj. 14 iterations 14
+Cbc0038I Pass   9: suminf.    0.80000 (4) obj. 14 iterations 8
+Cbc0038I Pass  10: suminf.    0.80000 (4) obj. 14 iterations 6
+Cbc0038I Pass  11: suminf.    3.60000 (14) obj. 18 iterations 38
+Cbc0038I Pass  12: suminf.    2.80000 (12) obj. 19 iterations 14
+Cbc0038I Pass  13: suminf.    1.00000 (4) obj. 20 iterations 15
+Cbc0038I Pass  14: suminf.    0.40000 (2) obj. 20 iterations 6
+Cbc0038I Pass  15: suminf.    0.40000 (2) obj. 20 iterations 5
+Cbc0038I Pass  16: suminf.    4.37654 (21) obj. 13 iterations 62
+Cbc0038I Pass  17: suminf.    3.11232 (15) obj. 15 iterations 20
+Cbc0038I Pass  18: suminf.    1.72315 (7) obj. 16 iterations 23
+Cbc0038I Pass  19: suminf.    0.20000 (2) obj. 19 iterations 8
+Cbc0038I Pass  20: suminf.    0.35714 (1) obj. 16 iterations 4
+Cbc0038I Solution found of 16
+Cbc0038I Relaxing continuous gives 16
+Cbc0038I Before mini branch and bound, 24 integers at bound fixed and 0 continuous
+Cbc0038I Full problem 139 rows 120 columns, reduced to 110 rows 91 columns - 5 fixed gives 97, 78 - ok now
+Cbc0038I Full problem 139 rows 120 columns, reduced to 94 rows 75 columns
+Cbc0038I Mini branch and bound improved solution from 16 to 12 (0.04 seconds)
+Cbc0038I Round again with cutoff of 11.2
+Cbc0038I Pass  21: suminf.    5.20000 (20) obj. 11 iterations 0
+Cbc0038I Pass  22: suminf.    3.00000 (16) obj. 11 iterations 13
+Cbc0038I Pass  23: suminf.    1.62759 (9) obj. 11.2 iterations 22
+Cbc0038I Pass  24: suminf.    1.62759 (9) obj. 11.2 iterations 6
+Cbc0038I Pass  25: suminf.    1.60000 (8) obj. 11.2 iterations 18
+Cbc0038I Pass  26: suminf.    1.40000 (6) obj. 11.2 iterations 14
+Cbc0038I Pass  27: suminf.    1.40000 (6) obj. 11.2 iterations 8
+Cbc0038I Pass  28: suminf.    5.01376 (20) obj. 11.2 iterations 29
+Cbc0038I Pass  29: suminf.    2.93005 (11) obj. 11.2 iterations 14
+Cbc0038I Pass  30: suminf.    2.93005 (11) obj. 11.2 iterations 0
+Cbc0038I Pass  31: suminf.    1.79310 (9) obj. 11.2 iterations 17
+Cbc0038I Pass  32: suminf.    1.70246 (7) obj. 11.2 iterations 15
+Cbc0038I Pass  33: suminf.    1.60000 (6) obj. 11.2 iterations 12
+Cbc0038I Pass  34: suminf.    1.57143 (6) obj. 11.2 iterations 9
+Cbc0038I Pass  35: suminf.    4.91073 (21) obj. 11.2 iterations 28
+Cbc0038I Pass  36: suminf.    3.20172 (16) obj. 11.2 iterations 22
+Cbc0038I Pass  37: suminf.    2.72241 (14) obj. 11.2 iterations 2
+Cbc0038I Pass  38: suminf.    2.44261 (14) obj. 11.2 iterations 16
+Cbc0038I Pass  39: suminf.    2.82044 (18) obj. 11.2 iterations 28
+Cbc0038I Pass  40: suminf.    3.37586 (13) obj. 11.2 iterations 26
+Cbc0038I Pass  41: suminf.    2.76921 (13) obj. 11.2 iterations 5
+Cbc0038I Pass  42: suminf.    3.14058 (17) obj. 11.2 iterations 20
+Cbc0038I Pass  43: suminf.    2.14058 (15) obj. 11.2 iterations 5
+Cbc0038I Pass  44: suminf.    1.94975 (13) obj. 11.2 iterations 15
+Cbc0038I Pass  45: suminf.    1.16552 (7) obj. 11.2 iterations 16
+Cbc0038I Pass  46: suminf.    2.03793 (9) obj. 11.2 iterations 11
+Cbc0038I Pass  47: suminf.    2.03793 (9) obj. 11.2 iterations 0
+Cbc0038I Pass  48: suminf.    1.35862 (9) obj. 11.2 iterations 13
+Cbc0038I Pass  49: suminf.    1.16552 (9) obj. 11.2 iterations 2
+Cbc0038I Pass  50: suminf.    1.68769 (9) obj. 11.2 iterations 9
+Cbc0038I No solution found this major pass
+Cbc0038I Before mini branch and bound, 22 integers at bound fixed and 0 continuous
+Cbc0038I Full problem 139 rows 120 columns, reduced to 112 rows 93 columns - 11 fixed gives 74, 56 - ok now
+Cbc0038I Mini branch and bound did not improve solution (0.05 seconds)
+Cbc0038I After 0.05 seconds - Feasibility pump exiting with objective of 12 - took 0.05 seconds
+Cbc0012I Integer solution of 12 found by feasibility pump after 0 iterations and 0 nodes (0.05 seconds)
+Cbc0038I Full problem 139 rows 120 columns, reduced to 85 rows 66 columns
+Cbc0031I 48 added rows had average density of 4.2916667
+Cbc0013I At root node, 48 cuts changed objective from 4 to 9.699223 in 55 passes
+Cbc0014I Cut generator 0 (Probing) - 1733 row cuts average 3.7 elements, 0 column cuts (21 active)  in 0.018 seconds - new frequency is 1
+Cbc0014I Cut generator 1 (Gomory) - 531 row cuts average 22.5 elements, 0 column cuts (0 active)  in 0.008 seconds - new frequency is 1
+Cbc0014I Cut generator 2 (Knapsack) - 1 row cuts average 3.0 elements, 0 column cuts (0 active)  in 0.005 seconds - new frequency is -100
+Cbc0014I Cut generator 3 (Clique) - 0 row cuts average 0.0 elements, 0 column cuts (0 active)  in 0.001 seconds - new frequency is -100
+Cbc0014I Cut generator 4 (MixedIntegerRounding2) - 309 row cuts average 2.5 elements, 0 column cuts (0 active)  in 0.005 seconds - new frequency is 1
+Cbc0014I Cut generator 5 (FlowCover) - 9 row cuts average 2.0 elements, 0 column cuts (0 active)  in 0.007 seconds - new frequency is -100
+Cbc0014I Cut generator 6 (TwoMirCuts) - 416 row cuts average 11.8 elements, 0 column cuts (0 active)  in 0.007 seconds - new frequency is 1
+Cbc0010I After 0 nodes, 1 on tree, 12 best solution, best possible 9.699223 (0.18 seconds)
+Cbc0038I Full problem 139 rows 120 columns, reduced to 65 rows 46 columns
+Cbc0038I Full problem 139 rows 120 columns, reduced to 82 rows 63 columns
+Cbc0038I Full problem 139 rows 120 columns, reduced to 78 rows 59 columns
+Cbc0004I Integer solution of 11 found after 10939 iterations and 261 nodes (0.45 seconds)
+Cbc0001I Search completed - best objective 11, took 11062 iterations and 267 nodes (0.45 seconds)
+Cbc0032I Strong branching done 2076 times (15344 iterations), fathomed 12 nodes and fixed 38 variables
+Cbc0035I Maximum depth 23, 2 variables fixed on reduced cost
+Cuts at root node changed objective from 4 to 9.69922
+Probing was tried 339 times and created 5383 cuts of which 21 were active after adding rounds of cuts (0.044 seconds)
+Gomory was tried 244 times and created 1243 cuts of which 0 were active after adding rounds of cuts (0.019 seconds)
+Knapsack was tried 55 times and created 1 cuts of which 0 were active after adding rounds of cuts (0.005 seconds)
+Clique was tried 55 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.001 seconds)
+MixedIntegerRounding2 was tried 244 times and created 751 cuts of which 0 were active after adding rounds of cuts (0.014 seconds)
+FlowCover was tried 55 times and created 9 cuts of which 0 were active after adding rounds of cuts (0.007 seconds)
+TwoMirCuts was tried 244 times and created 775 cuts of which 0 were active after adding rounds of cuts (0.017 seconds)
+ZeroHalf was tried 1 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+ImplicationCuts was tried 38 times and created 54 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+
+Result - Optimal solution found
+
+Objective value:                11.00000000
+Enumerated nodes:               267
+Total iterations:               11062
+Time (CPU seconds):             0.46
+Time (Wallclock seconds):       0.53
+
+Total time (CPU seconds):       0.46   (Wallclock seconds):       0.53
+
+Rectangle 0: (7.0, 7.0)
+Rectangle 1: (4.0, 0.0)
+Rectangle 2: (2.0, 0.0)
+Rectangle 3: (0.0, 0.0)
+Rectangle 4: (0.0, 2.0)
+Rectangle 5: (0.0, 5.0)
+Rectangle 6: (7.0, 0.0)
+Rectangle 7: (3.0, 3.0)
+total_length : Size=1, Index=None, Active=True
+    Key  : Active : Value
+    None :   True :  11.0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="transform-and-solve-with-convex-hull-relaxation">
+<h3><span class="section-number">2.2.3.5. </span>Transform and Solve with Convex Hull Relaxation<a class="headerlink" href="#transform-and-solve-with-convex-hull-relaxation" title="Link to this heading">#</a></h3>
+<p>We will repeat the procedure above using Convex Hull Relaxation.</p>
+</section>
+<section id="convex-hull-implementation-in-pyomo">
+<h3><span class="section-number">2.2.3.6. </span>Convex Hull Implementation in Pyomo<a class="headerlink" href="#convex-hull-implementation-in-pyomo" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creating the model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">()</span>
+
+<span class="c1"># Applying convex hull relaxation to the model</span>
+<span class="c1"># Add your solution here</span>
+
+<span class="c1"># Solve and print the solution</span>
+<span class="n">SolverFactory</span><span class="p">(</span><span class="n">milp_solver</span><span class="p">)</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">rectangles</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Rectangle </span><span class="si">%s</span><span class="s2">: (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">])))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">total_length</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Welcome to the CBC MILP Solver 
+Version: 2.10.10 
+Build Date: Jun  7 2023 
+
+command line - /Users/adowling/.idaes/bin/cbc -printingOptions all -import /var/folders/3w/vr4xmyqs451dg23xk88pqcg00000gq/T/tmplx9dkbbu.pyomo.lp -stat=1 -solve -solu /var/folders/3w/vr4xmyqs451dg23xk88pqcg00000gq/T/tmplx9dkbbu.pyomo.soln (default strategy 1)
+Option for printingOptions changed from normal to all
+Presolve 484 (-112) rows, 353 (-112) columns and 1696 (0) elements
+Statistics for presolved model
+Original problem has 112 integers (112 of which binary)
+Presolved problem has 112 integers (112 of which binary)
+==== 352 zero objective 2 different
+352 variables have objective of 0
+1 variables have objective of 1
+==== absolute objective values 2 different
+352 variables have objective of 0
+1 variables have objective of 1
+==== for integers 112 zero objective 1 different
+112 variables have objective of 0
+==== for integers absolute objective values 1 different
+112 variables have objective of 0
+===== end objective counts
+
+
+Problem has 484 rows, 353 columns (1 with objective) and 1696 elements
+Column breakdown:
+1 of type 0.0-&gt;inf, 240 of type 0.0-&gt;up, 0 of type lo-&gt;inf, 
+0 of type lo-&gt;up, 0 of type free, 0 of type fixed, 
+0 of type -inf-&gt;0.0, 0 of type -inf-&gt;up, 112 of type 0.0-&gt;1.0 
+Row breakdown:
+0 of type E 0.0, 28 of type E 1.0, 0 of type E -1.0, 
+0 of type E other, 0 of type G 0.0, 0 of type G 1.0, 
+0 of type G other, 336 of type L 0.0, 0 of type L 1.0, 
+120 of type L other, 0 of type Range 0.0-&gt;1.0, 0 of type Range other, 
+0 of type Free 
+Continuous objective value is 6 - 0.00 seconds
+Cgl0003I 0 fixed, 0 tightened bounds, 21 strengthened rows, 0 substitutions
+Cgl0004I processed model has 463 rows, 332 columns (103 integer (103 of which binary)) and 1594 elements
+Cbc0038I Initial state - 57 integers unsatisfied sum - 14.153
+Cbc0038I Pass   1: suminf.    7.62993 (32) obj. 11.0857 iterations 154
+Cbc0038I Pass   2: suminf.    5.59836 (25) obj. 15.3 iterations 24
+Cbc0038I Pass   3: suminf.    5.19836 (21) obj. 15.8 iterations 2
+Cbc0038I Pass   4: suminf.    4.84663 (22) obj. 12.6207 iterations 12
+Cbc0038I Pass   5: suminf.    2.52062 (14) obj. 19.069 iterations 53
+Cbc0038I Pass   6: suminf.    2.35412 (12) obj. 15.6207 iterations 6
+Cbc0038I Pass   7: suminf.    2.02857 (11) obj. 22.5238 iterations 29
+Cbc0038I Pass   8: suminf.    1.96552 (9) obj. 23.069 iterations 4
+Cbc0038I Pass   9: suminf.    1.96552 (11) obj. 19.6207 iterations 1
+Cbc0038I Pass  10: suminf.    3.65681 (15) obj. 18.3333 iterations 28
+Cbc0038I Pass  11: suminf.    3.26348 (13) obj. 18.6207 iterations 8
+Cbc0038I Pass  12: suminf.    2.90633 (12) obj. 17.9286 iterations 9
+Cbc0038I Pass  13: suminf.    2.83218 (9) obj. 18.069 iterations 36
+Cbc0038I Pass  14: suminf.    2.73695 (9) obj. 18.069 iterations 5
+Cbc0038I Pass  15: suminf.    2.53695 (7) obj. 27 iterations 23
+Cbc0038I Pass  16: suminf.    1.73695 (9) obj. 27 iterations 10
+Cbc0038I Pass  17: suminf.    1.73695 (9) obj. 27 iterations 0
+Cbc0038I Pass  18: suminf.    3.14552 (10) obj. 27 iterations 19
+Cbc0038I Pass  19: suminf.    3.12062 (10) obj. 27 iterations 3
+Cbc0038I Pass  20: suminf.    2.23810 (8) obj. 27 iterations 29
+Cbc0038I Pass  21: suminf.    2.18367 (8) obj. 27 iterations 6
+Cbc0038I Pass  22: suminf.    2.56552 (8) obj. 27 iterations 31
+Cbc0038I Pass  23: suminf.    2.56552 (8) obj. 27 iterations 0
+Cbc0038I Pass  24: suminf.    1.16552 (5) obj. 27 iterations 25
+Cbc0038I Pass  25: suminf.    1.16552 (7) obj. 27 iterations 2
+Cbc0038I Pass  26: suminf.    2.18000 (8) obj. 27 iterations 17
+Cbc0038I Pass  27: suminf.    2.15510 (8) obj. 27 iterations 3
+Cbc0038I Pass  28: suminf.    1.66667 (6) obj. 27 iterations 25
+Cbc0038I Pass  29: suminf.    1.61224 (6) obj. 27 iterations 6
+Cbc0038I Pass  30: suminf.    1.60000 (5) obj. 27 iterations 27
+Cbc0038I No solution found this major pass
+Cbc0038I Before mini branch and bound, 36 integers at bound fixed and 114 continuous
+Cbc0038I Full problem 463 rows 332 columns, reduced to 287 rows 168 columns - too large
+Cbc0038I Mini branch and bound did not improve solution (0.02 seconds)
+Cbc0038I Full problem 464 rows 332 columns, reduced to 464 rows 332 columns - too large
+Cbc0038I After 0.03 seconds - Feasibility pump exiting - took 0.02 seconds
+Cbc0031I 24 added rows had average density of 56.416667
+Cbc0013I At root node, 24 cuts changed objective from 6 to 8 in 100 passes
+Cbc0014I Cut generator 0 (Probing) - 323 row cuts average 2.3 elements, 0 column cuts (0 active)  in 0.120 seconds - new frequency is 1
+Cbc0014I Cut generator 1 (Gomory) - 1530 row cuts average 170.6 elements, 0 column cuts (0 active)  in 0.071 seconds - new frequency is 1
+Cbc0014I Cut generator 2 (Knapsack) - 0 row cuts average 0.0 elements, 0 column cuts (0 active)  in 0.014 seconds - new frequency is -100
+Cbc0014I Cut generator 3 (Clique) - 0 row cuts average 0.0 elements, 0 column cuts (0 active)  in 0.003 seconds - new frequency is -100
+Cbc0014I Cut generator 4 (MixedIntegerRounding2) - 3 row cuts average 8.0 elements, 0 column cuts (0 active)  in 0.036 seconds - new frequency is -100
+Cbc0014I Cut generator 5 (FlowCover) - 0 row cuts average 0.0 elements, 0 column cuts (0 active)  in 0.043 seconds - new frequency is -100
+Cbc0014I Cut generator 6 (TwoMirCuts) - 291 row cuts average 67.1 elements, 0 column cuts (0 active)  in 0.026 seconds - new frequency is 1
+Cbc0010I After 0 nodes, 1 on tree, 1e+50 best solution, best possible 8 (0.82 seconds)
+Cbc0012I Integer solution of 19 found by DiveCoefficient after 10553 iterations and 5 nodes (1.16 seconds)
+Cbc0038I Full problem 463 rows 332 columns, reduced to 403 rows 253 columns - too large
+Cbc0012I Integer solution of 18 found by DiveCoefficient after 10558 iterations and 6 nodes (1.18 seconds)
+Cbc0016I Integer solution of 16 found by strong branching after 15117 iterations and 40 nodes (1.57 seconds)
+Cbc0038I Full problem 463 rows 332 columns, reduced to 279 rows 153 columns - 5 fixed gives 246, 132 - ok now
+Cbc0004I Integer solution of 12 found after 17131 iterations and 81 nodes (1.70 seconds)
+Cbc0038I Full problem 463 rows 332 columns, reduced to 205 rows 107 columns
+Cbc0038I Full problem 463 rows 332 columns, reduced to 264 rows 143 columns - 2 fixed gives 244, 130 - ok now
+Cbc0038I Full problem 463 rows 332 columns, reduced to 226 rows 127 columns
+Cbc0038I Full problem 463 rows 332 columns, reduced to 275 rows 148 columns - 1 fixed gives 272, 146 - still too large
+Cbc0038I Full problem 463 rows 332 columns, reduced to 270 rows 146 columns - too large
+Cbc0038I Full problem 463 rows 332 columns, reduced to 236 rows 127 columns
+Cbc0038I Full problem 463 rows 332 columns, reduced to 231 rows 125 columns
+Cbc0038I Full problem 463 rows 332 columns, reduced to 317 rows 182 columns - 3 fixed gives 292, 166 - still too large
+Cbc0038I Full problem 463 rows 332 columns, reduced to 288 rows 166 columns - too large
+Cbc0010I After 1000 nodes, 11 on tree, 12 best solution, best possible 8 (4.15 seconds)
+Cbc0038I Full problem 463 rows 332 columns, reduced to 304 rows 166 columns - 2 fixed gives 290, 158 - still too large
+Cbc0038I Full problem 463 rows 332 columns, reduced to 287 rows 158 columns - too large
+Cbc0038I Full problem 463 rows 332 columns, reduced to 364 rows 216 columns - 2 fixed gives 347, 203 - still too large
+Cbc0038I Full problem 463 rows 332 columns, reduced to 347 rows 203 columns - too large
+Cbc0038I Full problem 463 rows 332 columns, reduced to 372 rows 226 columns - 3 fixed gives 355, 216 - still too large
+Cbc0038I Full problem 463 rows 332 columns, reduced to 355 rows 216 columns - too large
+Cbc0038I Full problem 463 rows 332 columns, reduced to 291 rows 155 columns - 3 fixed gives 268, 138 - still too large
+Cbc0038I Full problem 463 rows 332 columns, reduced to 265 rows 138 columns - too large
+Cbc0010I After 2000 nodes, 21 on tree, 12 best solution, best possible 8 (6.05 seconds)
+Cbc0038I Full problem 463 rows 332 columns, reduced to 261 rows 138 columns - 4 fixed gives 234, 117 - ok now
+Cbc0038I Full problem 463 rows 332 columns, reduced to 219 rows 117 columns
+Cbc0010I After 3000 nodes, 14 on tree, 12 best solution, best possible 8 (7.34 seconds)
+Cbc0038I Full problem 463 rows 332 columns, reduced to 235 rows 129 columns
+Cbc0010I After 4000 nodes, 13 on tree, 12 best solution, best possible 8 (8.75 seconds)
+Cbc0038I Full problem 463 rows 332 columns, reduced to 277 rows 144 columns - 4 fixed gives 243, 124 - ok now
+Cbc0038I Full problem 463 rows 332 columns, reduced to 229 rows 124 columns
+Cbc0010I After 5000 nodes, 14 on tree, 12 best solution, best possible 8 (10.09 seconds)
+Cbc0004I Integer solution of 11 found after 285152 iterations and 5174 nodes (10.35 seconds)
+Cbc0001I Search completed - best objective 11, took 286086 iterations and 5185 nodes (10.41 seconds)
+Cbc0032I Strong branching done 3520 times (78869 iterations), fathomed 33 nodes and fixed 260 variables
+Cbc0035I Maximum depth 41, 7 variables fixed on reduced cost
+Cuts at root node changed objective from 6 to 8
+Probing was tried 5564 times and created 73868 cuts of which 0 were active after adding rounds of cuts (0.910 seconds)
+Gomory was tried 4529 times and created 25863 cuts of which 0 were active after adding rounds of cuts (0.602 seconds)
+Knapsack was tried 100 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.014 seconds)
+Clique was tried 100 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.003 seconds)
+MixedIntegerRounding2 was tried 100 times and created 3 cuts of which 0 were active after adding rounds of cuts (0.036 seconds)
+FlowCover was tried 100 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.043 seconds)
+TwoMirCuts was tried 4529 times and created 463 cuts of which 0 were active after adding rounds of cuts (0.563 seconds)
+ZeroHalf was tried 1 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+ImplicationCuts was tried 272 times and created 495 cuts of which 0 were active after adding rounds of cuts (0.002 seconds)
+
+Result - Optimal solution found
+
+Objective value:                11.00000000
+Enumerated nodes:               5185
+Total iterations:               286086
+Time (CPU seconds):             10.43
+Time (Wallclock seconds):       10.96
+
+Total time (CPU seconds):       10.43   (Wallclock seconds):       10.96
+
+Rectangle 0: (4.0, 7.0)
+Rectangle 1: (8.0, 7.0)
+Rectangle 2: (3.0, 0.0)
+Rectangle 3: (5.0, 0.0)
+Rectangle 4: (0.0, 0.0)
+Rectangle 5: (4.0, 2.0)
+Rectangle 6: (0.0, 3.0)
+Rectangle 7: (7.0, 0.0)
+total_length : Size=1, Index=None, Active=True
+    Key  : Active : Value
+    None :   True :  11.0
+</pre></div>
+</div>
+</div>
+</div>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Click to see the solution to the activity</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">TransformationFactory</span><span class="p">(</span><span class="s1">&#39;gdp.hull&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply_to</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+</section>
+<section id="discussion-questions">
+<h2><span class="section-number">2.2.4. </span>Discussion Questions<a class="headerlink" href="#discussion-questions" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>What is the advantage of using the decorator notation for optimization problems?</p></li>
+<li><p>How do disjunctions affect the degree of freedom analysis?</p></li>
+<li><p>Why is it necessary to make separate variables for length and width?</p></li>
+<li><p>Compare the outputs of Big-M and Convex Hull. How are they different (if at all)?</p></li>
+</ol>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Click to see the ideas for the discussion questions</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<ol class="arabic simple">
+<li><p class="sd-card-text">Decorators are a more compact (less typing) way to declare components in Pyomo.</p></li>
+<li><p class="sd-card-text">Disjunctions change the number of constraints.</p></li>
+<li><p class="sd-card-text">The coordinates for length and width differ.</p></li>
+<li><p class="sd-card-text">It gives the same optimal solution, but convex hull requires more iterations (for this problem and solver)</p></li>
+</ol>
+</div>
+</details></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/2"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Logical_Modeling_GDP.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2.1. </span>Logical Modeling and Generalized Disjunctive Programs</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../3/dynamics.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Dynamic Optimization</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-and-learning-objectives">2.2.1. Introduction and Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-modules">2.2.2. Import Modules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyomo-gdp-strip-packing-problem">2.2.3. Pyomo.GDP: Strip Packing Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-statement">2.2.3.1. Problem Statement</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-model-in-pyomo-with-gdp">2.2.3.2. Define model in Pyomo with GDP</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transform-and-solve-with-big-m-relaxation">2.2.3.3. Transform and Solve with Big M Relaxation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#big-m-implementation-in-pyomo">2.2.3.4. Big-M Implementation in Pyomo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transform-and-solve-with-convex-hull-relaxation">2.2.3.5. Transform and Solve with Convex Hull Relaxation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convex-hull-implementation-in-pyomo">2.2.3.6. Convex Hull Implementation in Pyomo</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion-questions">2.2.4. Discussion Questions</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Alexander Dowling, et al.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

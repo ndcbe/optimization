@@ -1,0 +1,1926 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2.1. Logical Modeling and Generalized Disjunctive Programs &#8212; Optimization for Decision Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/2/Logical_Modeling_GDP';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.2. Modeling Disjunctions through the Strip Packing Problem" href="Modeling_Disjunctions_Strip_Packing.html" />
+    <link rel="prev" title="2. Logical Modeling" href="logic.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/cbe_logo.jpg" class="logo__image only-light" alt="Optimization for Decision Science - Home"/>
+    <script>document.write(`<img src="../../_static/cbe_logo.jpg" class="logo__image only-dark" alt="Optimization for Decision Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Optimization for Decision Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Fall 2024 Calendar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/workshop.html">Computational Optimization in Python (São Paulo, Brazil)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project1.html">Project 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms1.html">Algorithms Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms2.html">Algorithms Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project2.html">Project 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project (Spring 2023)</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/LP.html">1.4. Continuous Optimization: Linear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/NLP.html">1.5. Continuous Optimization: Nonlinear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.6. Integer Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.7. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="logic.html">2. Logical Modeling</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_car.html">3.1. Pyomo.DAE Example: Race Car</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_TCLab.html">3.2. Pyomo.DAE Example: Temperature Control Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_background.html">3.3. Differential Algebraic Equations (DAEs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_numeric_integration.html">3.4. Numeric Integration for DAEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_theory.html">3.5. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_example.html">3.6. Pyomo.DAE: Racing Example Revisited</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/blocks.html">4.2. Blocks and Other Pyomo Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/AdvancedTopics.html">4.3. Advanced Topics in Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.4. Risk Measures and Portfolio Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Optimizing Experiments with <code class="docutils literal notranslate"><span class="pre">Pyomo.DoE</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-1.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Newton-Methods.html">6.4. Newton-type Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Constraint-Qualifications.html">7.4. Constraint Qualifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Second-Order.html">7.5. Second Order Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/degeneracy_hunter.html">7.6. NLP Diagnostics with Degeneracy Hunter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/pyomo.html">More Pyomo Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/semiconductor_manufacturing.html">Semiconductor Production Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/student_diet.html">Optimization of Daily Diet Using Pyomo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/blending.html">Blending Under Uncertainty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/vehicle_routing.html">Vehicle Routing</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/portfolio_optimization_extended.html">Risk Measures and Portfolio Optimization: Expanded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/race_car_extended.html">Extended Race Car Optimization Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/hot_air_balloon.html">Hot Air Balloon Dynamic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/reactor_design.html">Chemical Reactor Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Disaster_Response_Plan.html">Disaster Response Plan Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Sudoku_Solver.html">Sudoku Solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/more_circle_packing.html">Circle Packing Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/modeling.html">Modeling Paradigms</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/multi_objective.html">Multi-Objective Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/advanced_stochastic_programming.html">Advanced Topics in Stochastic Programming</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/algorithms.html">Global Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Deterministic_Global_Optimization.html">Deterministic Global Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/sgd.html">Stochastic Gradient Descent</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/data.html">Machine Learning and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/2/Logical_Modeling_GDP.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/2/Logical_Modeling_GDP.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/2/Logical_Modeling_GDP.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Logical Modeling and Generalized Disjunctive Programs</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-and-learning-objectives">2.1.1. Introduction and Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-modules">2.1.2. Import Modules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivating-example-separation">2.1.3. Motivating Example: Separation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logical-modeling">2.1.4. Logical Modeling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symbolic-logic-notation">2.1.4.1. Symbolic Logic Notation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vocabulary">2.1.4.2. Vocabulary</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#logical-statements-and-conjuctive-normal-form">2.1.4.3. Logical Statements and Conjuctive Normal Form</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-separation-sequence">2.1.4.4. Example: Separation Sequence</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-assembling-components">2.1.4.5. Example: Assembling Components</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modeling-disjunctions">2.1.5. Modeling Disjunctions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#general-notation">2.1.5.1. General Notation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-reactor-problem">2.1.6. Example: The Reactor Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-model-in-pyomo-with-gdp">2.1.6.1. Define Model in Pyomo with GDP</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transform-and-solve-with-big-m-relaxation">2.1.6.2. Transform and Solve with Big-M Relaxation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#big-m-relaxation-approach">2.1.6.3. Big-M Relaxation Approach</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#big-m-implementation-in-pyomo">2.1.6.4. Big-M Implementation in Pyomo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transform-and-solve-with-convex-hull-relaxation">2.1.6.5. Transform and Solve with Convex Hull Relaxation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convex-hull-relaxation-approach">2.1.6.6. Convex Hull Relaxation Approach</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convex-hull-implementation-in-pyomo">2.1.6.7. Convex Hull Implementation in Pyomo</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion-questions">2.1.7. Discussion Questions</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="logical-modeling-and-generalized-disjunctive-programs">
+<h1><span class="section-number">2.1. </span>Logical Modeling and Generalized Disjunctive Programs<a class="headerlink" href="#logical-modeling-and-generalized-disjunctive-programs" title="Link to this heading">#</a></h1>
+<p><strong>Prepared by:</strong> Prof. Alexander Dowling (<a class="reference external" href="mailto:adowling&#37;&#52;&#48;nd&#46;edu">adowling<span>&#64;</span>nd<span>&#46;</span>edu</a>), <a class="reference external" href="https://github.com/hglynch">Hailey Lynch</a> (<a class="reference external" href="mailto:hlynch&#37;&#52;&#48;nd&#46;edu">hlynch<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2023)</p>
+<section id="introduction-and-learning-objectives">
+<h2><span class="section-number">2.1.1. </span>Introduction and Learning Objectives<a class="headerlink" href="#introduction-and-learning-objectives" title="Link to this heading">#</a></h2>
+<p>This notebook introduces generalized disjunctive programs through an example in Pyomo.GDP. Students will learn concepts related to Logical Modeling and Modeling Disjunctions in this notebook. These techniques will be applied to the Reactor Problem and then implemented into Pyomo. Critical thinking discussion questions will be included to connect concepts from CBE 60499.</p>
+</section>
+<section id="import-modules">
+<h2><span class="section-number">2.1.2. </span>Import Modules<a class="headerlink" href="#import-modules" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="k">if</span> <span class="s2">&quot;google.colab&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+    <span class="o">!</span>wget<span class="w"> </span><span class="s2">&quot;https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/helper.py&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">easy_install</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;../&#39;</span><span class="p">)</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+<span class="n">helper</span><span class="o">.</span><span class="n">set_plotting_style</span><span class="p">()</span>
+
+<span class="n">milp_solver</span> <span class="o">=</span> <span class="s1">&#39;cbc&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="motivating-example-separation">
+<h2><span class="section-number">2.1.3. </span>Motivating Example: Separation<a class="headerlink" href="#motivating-example-separation" title="Link to this heading">#</a></h2>
+<p><em>The following excerpts are from Section 15.8 in Biegler, Grossmann, and Westerberg (1997).</em></p>
+<p>From <a class="reference internal" href="../1/IP.html"><span class="std std-doc">Integer Programs</span></a>, we saw that modeling “choose only 1 item” is straightforward:</p>
+<p><span class="math notranslate nohighlight">\( \sum_{i \in R} y_i = 1 \)</span></p>
+<p>Let’s consider something more complex:</p>
+<p>“If the absorber to recover the product is selected or the membrane is selected, then do not use cryogenic distillation.”</p>
+<p>Yes/No binary decisions:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(y_A\)</span>: absorber</p></li>
+<li><p><span class="math notranslate nohighlight">\(y_M\)</span>: membrane</p></li>
+<li><p><span class="math notranslate nohighlight">\(y_{CS}\)</span>: cryogenic separation</p></li>
+</ul>
+<p>How to translate this logical statement into a linear constraint?</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Click here to see answer</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">One option:</p>
+<p class="sd-card-text"><span class="math notranslate nohighlight">\( y_A + y_M + 2y_{CS} \leq 2 \)</span></p>
+<p class="sd-card-text">Another option:</p>
+<p class="sd-card-text"><span class="math notranslate nohighlight">\( y_A + y_{CS} \leq 1 \)</span></p>
+<p class="sd-card-text"><span class="math notranslate nohighlight">\( y_M + y_{CS} \leq 1 \)</span></p>
+<p class="sd-card-text">They are equivalent, but the latter is “tighter”; it constrains more of the feasible space. (Think of 3D visualization.)</p>
+</div>
+</details><p>We seek a formal system to go from logical statements to linear constraints.</p>
+</section>
+<section id="logical-modeling">
+<h2><span class="section-number">2.1.4. </span>Logical Modeling<a class="headerlink" href="#logical-modeling" title="Link to this heading">#</a></h2>
+<p>First we will look at important logic notation that is commonly used in logical modeling. This will enable us to convert logical expressions such as <strong>disjunctive clauses</strong> (<span class="math notranslate nohighlight">\(Q_i = P_1 \lor P_2 \ \lor ... \lor \ P_r\)</span>) into <strong>conjuctive normal form</strong> (<span class="math notranslate nohighlight">\(Q_1 \land Q_2 \ \land ... \land \ Q_s\)</span>).</p>
+<section id="symbolic-logic-notation">
+<h3><span class="section-number">2.1.4.1. </span>Symbolic Logic Notation<a class="headerlink" href="#symbolic-logic-notation" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Logical Operation</p></th>
+<th class="head"><p>Logical Symbol</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\text{OR}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\lor\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\text{AND}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\land\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\text{IMPLICATION}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\Rightarrow\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\text{NEGATION}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\neg\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\text{EQUIVALENCE}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\Leftrightarrow\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\text{EXCLUSIVE OR}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\veebar\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="vocabulary">
+<h3><span class="section-number">2.1.4.2. </span>Vocabulary<a class="headerlink" href="#vocabulary" title="Link to this heading">#</a></h3>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Literal_(mathematical_logic)"><strong>Literal</strong></a> <span class="math notranslate nohighlight">\(P_i\)</span> is a selection or action and <span class="math notranslate nohighlight">\(y_i\)</span> is the associated binary (true/false variable):</p>
+<p><span class="math notranslate nohighlight">\(
+y_i = \begin{cases} 1 &amp; \text{if~} P_i \text{~is~true} \\
+0 &amp; \text{otherwise} \end{cases}
+\)</span></p>
+<p><strong>Negation</strong> or complement <span class="math notranslate nohighlight">\(\neg P_i\)</span> implies <span class="math notranslate nohighlight">\(1 - y_i\)</span>.</p>
+<p><strong>Conjunctive normal form</strong>: sequence of clauses connected by AND operators</p>
+<p><strong>Atom</strong> or atomic formula: no deeper structure (e.g., no connectives or subformulas)</p>
+<p><strong>Literal</strong>: atom or its negation</p>
+<p><strong>Conjunctive clause</strong>: finite collection of literals connected with <span class="math notranslate nohighlight">\( \wedge \)</span>. (The clause is true when all literals are true.)</p>
+<p><strong>Disjunctive clause</strong>: finite collection connected with <span class="math notranslate nohighlight">\( \vee \)</span>. (The clause is true when at least one literal is true.)</p>
+<p>Example: <span class="math notranslate nohighlight">\( Q_i \)</span> is a disjunctive clause, <span class="math notranslate nohighlight">\( P_1 \vee P_2 \vee \dots \vee P_r \)</span>, such that <span class="math notranslate nohighlight">\( y_1 + \dots + y_r \geq 1 \)</span>.</p>
+<p>Need a system to convert logical statements into <strong>conjunctive normal form</strong>, e.g., <span class="math notranslate nohighlight">\(Q_1 \wedge Q_2 \wedge ... \wedge Q_n\)</span></p>
+</section>
+<section id="logical-statements-and-conjuctive-normal-form">
+<h3><span class="section-number">2.1.4.3. </span>Logical Statements and Conjuctive Normal Form<a class="headerlink" href="#logical-statements-and-conjuctive-normal-form" title="Link to this heading">#</a></h3>
+<p><em>The following excerpts are from Section 15.7 in Biegler, Grossmann, and Westerberg (1997).</em></p>
+<p>The three step procedure below shows how to convert logical statements into conjuctive normal form:</p>
+<p>Step 1: Replace the implication by its equivalent disjunction. Example:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-bbd79ee0-787e-4390-bd39-5705fc3b96c3">
+<span class="eqno">(2.1)<a class="headerlink" href="#equation-bbd79ee0-787e-4390-bd39-5705fc3b96c3" title="Permalink to this equation">#</a></span>\[\begin{equation}
+P_{1} \Rightarrow P_{2} \Leftrightarrow \neg P_{1} \lor P_{2} \tag{15.18}
+\end{equation}\]</div>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Click to further explore this example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">Let’s enumrate to better understand this example. We will look at all possible outcomes for <span class="math notranslate nohighlight">\(P_1\)</span> and <span class="math notranslate nohighlight">\(P_2\)</span> and then assess if the left and right statements are true or false.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p class="sd-card-text"><span class="math notranslate nohighlight">\(P_1\)</span></p></th>
+<th class="head"><p class="sd-card-text"><span class="math notranslate nohighlight">\(P_2\)</span></p></th>
+<th class="head"><p class="sd-card-text"><span class="math notranslate nohighlight">\(P_{1} \Rightarrow P_{2}\)</span></p></th>
+<th class="head"><p class="sd-card-text"><span class="math notranslate nohighlight">\(\neg P_{1} \lor P_{2}\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+</tr>
+<tr class="row-odd"><td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+</tr>
+<tr class="row-even"><td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+</tr>
+<tr class="row-odd"><td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</details><p>Step 2: Distribute the negation by applying DeMorgan’s Theorem. Examples:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-985b8d30-d03e-4913-b84a-aa4eda003b2f">
+<span class="eqno">(2.2)<a class="headerlink" href="#equation-985b8d30-d03e-4913-b84a-aa4eda003b2f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\neg (P_{1} \land P_{2}) \Leftrightarrow \neg P_{1} \lor \neg P_{2}\tag{15.19}
+\end{equation}\]</div>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Click to further explore this example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">Let’s enumrate to better understand this example</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p class="sd-card-text"><span class="math notranslate nohighlight">\(P_1\)</span></p></th>
+<th class="head"><p class="sd-card-text"><span class="math notranslate nohighlight">\(P_2\)</span></p></th>
+<th class="head"><p class="sd-card-text"><span class="math notranslate nohighlight">\(\neg (P_{1} \land P_{2})\)</span></p></th>
+<th class="head"><p class="sd-card-text"><span class="math notranslate nohighlight">\(\neg P_{1} \lor \neg P_{2}\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+</tr>
+<tr class="row-odd"><td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+</tr>
+<tr class="row-even"><td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+</tr>
+<tr class="row-odd"><td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="sd-card-text">The example holds.</p>
+</div>
+</details><div class="amsmath math notranslate nohighlight" id="equation-d1867f40-c1f1-4285-9826-55d5c6d4ee32">
+<span class="eqno">(2.3)<a class="headerlink" href="#equation-d1867f40-c1f1-4285-9826-55d5c6d4ee32" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\neg (P_{1} \lor P_{2}) \Leftrightarrow \neg P_{1} \land \neg P_{2}\tag{15.20}
+\end{equation}\]</div>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Click to further explore this example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">Let’s enumrate to better understand this example</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p class="sd-card-text"><span class="math notranslate nohighlight">\(P_1\)</span></p></th>
+<th class="head"><p class="sd-card-text"><span class="math notranslate nohighlight">\(P_2\)</span></p></th>
+<th class="head"><p class="sd-card-text"><span class="math notranslate nohighlight">\(\neg (P_{1} \lor P_{2})\)</span></p></th>
+<th class="head"><p class="sd-card-text"><span class="math notranslate nohighlight">\(\neg P_{1} \land \neg P_{2}\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+</tr>
+<tr class="row-odd"><td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+</tr>
+<tr class="row-even"><td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+</tr>
+<tr class="row-odd"><td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="sd-card-text">The example holds.</p>
+</div>
+</details><p>Step 3: Recursively distribute the <span class="math notranslate nohighlight">\(\textbf{OR}\)</span> over the <span class="math notranslate nohighlight">\(\textbf{AND}\)</span> by using the following equivalence. Example:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-e6f55001-aebc-4d13-b16c-3571ad7e08b8">
+<span class="eqno">(2.4)<a class="headerlink" href="#equation-e6f55001-aebc-4d13-b16c-3571ad7e08b8" title="Permalink to this equation">#</a></span>\[\begin{equation}
+(P_{1} \land P_{2}) \lor P_{3} \Leftrightarrow (P_{1} \lor P_{3}) \land (P_{2} \lor P_{3})\tag{15.21}
+\end{equation}\]</div>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Click to further explore this example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">Let’s enumrate to better understand this example</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p class="sd-card-text"><span class="math notranslate nohighlight">\(P_1\)</span></p></th>
+<th class="head"><p class="sd-card-text"><span class="math notranslate nohighlight">\(P_2\)</span></p></th>
+<th class="head"><p class="sd-card-text"><span class="math notranslate nohighlight">\(P_3\)</span></p></th>
+<th class="head"><p class="sd-card-text"><span class="math notranslate nohighlight">\((P_{1} \land P_{2}) \lor P_{3}\)</span></p></th>
+<th class="head"><p class="sd-card-text"><span class="math notranslate nohighlight">\((P_{1} \lor P_{3}) \land (P_{2} \lor P_{3})\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+</tr>
+<tr class="row-odd"><td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+</tr>
+<tr class="row-even"><td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+</tr>
+<tr class="row-odd"><td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+</tr>
+<tr class="row-even"><td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">true</p></td>
+</tr>
+<tr class="row-odd"><td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+</tr>
+<tr class="row-even"><td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">true</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+</tr>
+<tr class="row-odd"><td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+<td><p class="sd-card-text">false</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="sd-card-text">Again, the example holds.</p>
+</div>
+</details><p>Once in conjuctive normal form, we can apply the following rules:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Logical Relation</p></th>
+<th class="head"><p>Comments</p></th>
+<th class="head"><p>Boolean Expression</p></th>
+<th class="head"><p>Representation as Linear Inequalities</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Logical OR</p></td>
+<td><p></p></td>
+<td><p><span class="math notranslate nohighlight">\(P_{1}\)</span> <span class="math notranslate nohighlight">\(\lor\)</span> <span class="math notranslate nohighlight">\(P_{2}\)</span> <span class="math notranslate nohighlight">\(\lor \ .. \lor\)</span> <span class="math notranslate nohighlight">\(P_{r}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(y_{1} + y_{2}\)</span> <span class="math notranslate nohighlight">\( + \ ..\ +\)</span> <span class="math notranslate nohighlight">\(y_{r} \geq 1\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Logical AND</p></td>
+<td><p></p></td>
+<td><p><span class="math notranslate nohighlight">\(P_{1}\)</span> <span class="math notranslate nohighlight">\(\land\)</span> <span class="math notranslate nohighlight">\(P_{2}\)</span> <span class="math notranslate nohighlight">\(\land \ .. \land\)</span> <span class="math notranslate nohighlight">\(P_{r}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(y_{1} \geq 1\\ y_{2} \geq 1\\ .. \\ y_{r} \geq 1\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>Implication</p></td>
+<td><p><span class="math notranslate nohighlight">\(P_{1} \Rightarrow P_{2}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\neg P_{1} \lor P_{2}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(1-y_{1} + y_{2} \geq 1\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Equivalence</p></td>
+<td><p><span class="math notranslate nohighlight">\(P_{1}\)</span> <strong>iff</strong> <span class="math notranslate nohighlight">\(P_{2} (P_{1} \Rightarrow P_{2}) \land (P_{2} \Rightarrow P_{1})\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((\neg P_{1} \lor P_{2})\)</span> <span class="math notranslate nohighlight">\(\land\)</span> <span class="math notranslate nohighlight">\((\neg P_{2} \lor P_{1})\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(y_{1} = y_{2}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>Exclusive OR</p></td>
+<td><p><strong>Exactly one of the variables is true</strong></p></td>
+<td><p><span class="math notranslate nohighlight">\(P_{1} \veebar P_{2} \)</span> <span class="math notranslate nohighlight">\(\veebar \ .. \ \veebar\)</span> <span class="math notranslate nohighlight">\(P_{r}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(y_{1} + y_{2}\)</span> <span class="math notranslate nohighlight">\(+ \ ..\ +\)</span> <span class="math notranslate nohighlight">\(y_{r} = 1\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="example-separation-sequence">
+<h3><span class="section-number">2.1.4.4. </span>Example: Separation Sequence<a class="headerlink" href="#example-separation-sequence" title="Link to this heading">#</a></h3>
+<p>Let’s revist the example from the top of the notebook. Reformulate:</p>
+<div class="math notranslate nohighlight">
+\[ P_A \lor P_M \implies \neg P_{CS} \]</div>
+<p>Step 1:</p>
+<div class="math notranslate nohighlight">
+\[ \neg (P_A \lor P_M) \lor \neg P_{CS} \]</div>
+<p>Step 2:</p>
+<div class="math notranslate nohighlight">
+\[ (\neg P_A \land \neg P_M) \lor \neg P_{CS} \]</div>
+<p>Step 3:</p>
+<div class="math notranslate nohighlight">
+\[ (\neg P_A \lor \neg P_{CS}) \land (\neg P_M \lor \neg P_{CS}) \]</div>
+<p>Now substituting:</p>
+<p><span class="math notranslate nohighlight">\( \neg P_A \rightarrow 1 - y_A, \quad \neg P_{CS} \rightarrow 1 - y_{CS} \)</span></p>
+<p><span class="math notranslate nohighlight">\( \neg P_M \rightarrow 1 - y_M, \quad \neg P_{CS} \rightarrow 1 - y_{CS} \)</span></p>
+<p>We get:</p>
+<p><span class="math notranslate nohighlight">\( (1 - y_A) + (1 - y_{CS}) \geq 1 \)</span></p>
+<p><span class="math notranslate nohighlight">\( (1 - y_M) + (1 - y_{CS}) \geq 1 \)</span></p>
+<p>Rearrange:</p>
+<p><span class="math notranslate nohighlight">\( y_A + y_{CS} \leq 1 \)</span></p>
+<p><span class="math notranslate nohighlight">\( y_M + y_{CS} \leq 1 \)</span></p>
+</section>
+<section id="example-assembling-components">
+<h3><span class="section-number">2.1.4.5. </span>Example: Assembling Components<a class="headerlink" href="#example-assembling-components" title="Link to this heading">#</a></h3>
+<p>If you use (parts 1 and 2) or part 3, then you must also use parts 4 or 5.</p>
+<p><span class="math notranslate nohighlight">\(P_i\)</span> true means “use part <span class="math notranslate nohighlight">\(i\)</span>” (corresponding to <span class="math notranslate nohighlight">\(y_i\)</span>).</p>
+<div class="math notranslate nohighlight">
+\[ (P_1 \land P_2) \lor P_3 \implies (P_4 \lor P_5) \]</div>
+<p><strong>Step 1:</strong></p>
+<div class="math notranslate nohighlight">
+\[ \neg ((P_1 \land P_2) \lor P_3) \lor (P_4 \lor P_5) \]</div>
+<p>which simplifies to:</p>
+<div class="math notranslate nohighlight">
+\[ \neg (P_1 \land P_2) \land \neg P_3 \lor (P_4 \lor P_5) \]</div>
+<p><strong>Step 2:</strong></p>
+<div class="math notranslate nohighlight">
+\[ (\neg P_1 \lor \neg P_2) \land \neg P_3 \lor (P_4 \lor P_5) \]</div>
+<p><strong>Step 3:</strong></p>
+<div class="math notranslate nohighlight">
+\[ (\neg P_1 \lor \neg P_2 \lor P_4 \lor P_5) \land (\neg P_3 \lor P_4 \lor P_5) \]</div>
+<p>We now have our statement in conjunctive normal form.</p>
+<p>On the <strong>left</strong> of the <span class="math notranslate nohighlight">\(\land\)</span> is equivalent to:</p>
+<div class="math notranslate nohighlight">
+\[ (1 - y_1) + (1 - y_2) + y_4 + y_5 \geq 1 \]</div>
+<p>Simplifying:</p>
+<div class="math notranslate nohighlight">
+\[ -y_1 - y_2 + y_4 + y_5 \geq -1 \]</div>
+<p>Rearranging:</p>
+<div class="math notranslate nohighlight">
+\[ y_1 + y_2 - y_4 - y_5 \leq 1 \]</div>
+<p>On the <strong>right</strong> of the <span class="math notranslate nohighlight">\(\land\)</span> is equivalent to:</p>
+<div class="math notranslate nohighlight">
+\[ (1 - y_3) + y_4 + y_5 \geq 1 \]</div>
+<p>Simplifying:</p>
+<div class="math notranslate nohighlight">
+\[ y_3 - y_4 - y_5 \leq 0 \]</div>
+</section>
+</section>
+<section id="modeling-disjunctions">
+<h2><span class="section-number">2.1.5. </span>Modeling Disjunctions<a class="headerlink" href="#modeling-disjunctions" title="Link to this heading">#</a></h2>
+<p>When modeling disjunctions, we will have to represent logical constraints that involve continuous variables.</p>
+<section id="general-notation">
+<h3><span class="section-number">2.1.5.1. </span>General Notation<a class="headerlink" href="#general-notation" title="Link to this heading">#</a></h3>
+<div class="amsmath math notranslate nohighlight" id="equation-380602b9-be21-4555-bd38-4b72f384b050">
+<span class="eqno">(2.5)<a class="headerlink" href="#equation-380602b9-be21-4555-bd38-4b72f384b050" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\lor_{i \in D_{R}}
+\begin{bmatrix}
+Y_{ik}\\
+n_{ik}(x)\leq0\\
+c_{k} = \mu_{ik}
+\end{bmatrix} \ \ \ , \ \ \ \Omega(Y)= \text{True}
+\end{equation}\]</div>
+<p>where:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Notation</p></th>
+<th class="head"><p>Definition</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\lor\)</span></p></td>
+<td><p>The <strong>OR</strong> operator that connects a finite collection of disjunctive clauses</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(D_{R}\)</span></p></td>
+<td><p>The set of disjunctive terms</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(Y_{ij}\)</span></p></td>
+<td><p>Boolean “indicator variable”</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(n_{ik}(x)\leq0\)</span></p></td>
+<td><p>Constraint enforced when <span class="math notranslate nohighlight">\(Y_{ik}\)</span> is true</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\mu_{ik}\)</span></p></td>
+<td><p>Parameter values when indicator is true</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\Omega(Y)\)</span></p></td>
+<td><p>Additional logical constraints</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="example-the-reactor-problem">
+<h2><span class="section-number">2.1.6. </span>Example: The Reactor Problem<a class="headerlink" href="#example-the-reactor-problem" title="Link to this heading">#</a></h2>
+<p><em>The following excerpts are from Section 15.8 in Biegler, Grossmann, and Westerberg (1997).</em></p>
+<p>This modeling disjunctions example involves selecting between two reactors:</p>
+<ul class="simple">
+<li><p>If <em>reactor 1</em> is selected, then pressure <span class="math notranslate nohighlight">\(P\)</span> must be between <span class="math notranslate nohighlight">\(5\)</span> and <span class="math notranslate nohighlight">\(10\)</span> atmospheres.</p></li>
+<li><p>If <em>reactor 2</em> is selected, then pressure <span class="math notranslate nohighlight">\(P\)</span> must be between <span class="math notranslate nohighlight">\(20\)</span> and <span class="math notranslate nohighlight">\(30\)</span> atmospheres.</p></li>
+</ul>
+<p><strong>Linear Disjunction Form:</strong></p>
+<div class="amsmath math notranslate nohighlight" id="equation-dfe0d1ac-fe49-4f73-bfa7-98b53cbabe29">
+<span class="eqno">(2.6)<a class="headerlink" href="#equation-dfe0d1ac-fe49-4f73-bfa7-98b53cbabe29" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\lor_{i \in D}
+\begin{bmatrix}
+A_{i}x \leq b_{i}(x)
+\end{bmatrix}
+\end{equation}\]</div>
+<p><strong>Applied to the Reactor Problem:</strong></p>
+<div class="amsmath math notranslate nohighlight" id="equation-fb7d0ab0-608f-43be-8c8d-86200211ab50">
+<span class="eqno">(2.7)<a class="headerlink" href="#equation-fb7d0ab0-608f-43be-8c8d-86200211ab50" title="Permalink to this equation">#</a></span>\[\begin{equation}
+  \begin{bmatrix}
+    y_1\\
+    P \leq 10\\
+    -P \leq -5
+  \end{bmatrix} \lor
+  \begin{bmatrix}
+    y_2\\
+    P \leq 30\\
+    -P \leq -20
+  \end{bmatrix}
+\end{equation}\]</div>
+<p><br> where <span class="math notranslate nohighlight">\(y_{1}\)</span> represents <em>reactor 1</em> and <span class="math notranslate nohighlight">\(y_{2}\)</span> represents <em>reactor 2</em>.</p>
+<section id="define-model-in-pyomo-with-gdp">
+<h3><span class="section-number">2.1.6.1. </span>Define Model in Pyomo with GDP<a class="headerlink" href="#define-model-in-pyomo-with-gdp" title="Link to this heading">#</a></h3>
+<p>First we will define the model (including disjunctions) for the Reactor Problem in Pyomo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Instead of using</span>
+<span class="sd"># import pyomo.environ as pyo</span>
+<span class="sd">We can import specific functions/objects</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyomo.environ</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">ConcreteModel</span><span class="p">,</span> <span class="n">NonNegativeReals</span><span class="p">,</span> <span class="n">Objective</span><span class="p">,</span> <span class="n">Param</span><span class="p">,</span>
+                           <span class="n">Set</span><span class="p">,</span> <span class="n">SolverFactory</span><span class="p">,</span> <span class="n">TransformationFactory</span><span class="p">,</span> <span class="n">Var</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_model</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Build the reactor problem model.</span>
+<span class="sd">    </span>
+<span class="sd">    Return:</span>
+<span class="sd">    model: Pyomo model</span>
+<span class="sd">    </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1">## Model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">ConcreteModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Selecting a reactor&quot;</span><span class="p">)</span>
+
+    <span class="c1">## Sets</span>
+    <span class="c1"># Initialized for reactor 1 (1) and reactor 2 (2)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">reactors</span> <span class="o">=</span> <span class="n">Set</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="c1">## Parameters</span>
+    <span class="c1"># Initialized with a dictionary where the keys are 1 and 2 (the reactors)</span>
+    <span class="c1"># for the minimum and maximum pressure values (atm)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">min_pressure</span> <span class="o">=</span> <span class="n">Param</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">reactors</span><span class="p">,</span><span class="n">initialize</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">:</span><span class="mi">20</span><span class="p">})</span> 
+    <span class="n">model</span><span class="o">.</span><span class="n">max_pressure</span> <span class="o">=</span> <span class="n">Param</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">reactors</span><span class="p">,</span><span class="n">initialize</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">:</span><span class="mi">30</span><span class="p">})</span>
+    
+    <span class="c1">## Variables</span>
+    <span class="c1"># Reactor pressure bounded between the lower bound (5 atm) and upper bound (30 atm)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">P</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">30</span><span class="p">),</span><span class="n">doc</span><span class="o">=</span><span class="s1">&#39;Reactor pressure (atm)&#39;</span><span class="p">)</span>
+
+    <span class="c1">## Adding an objective for the example</span>
+    <span class="nd">@model</span><span class="o">.</span><span class="n">Objective</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">objective</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+      <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">P</span> 
+
+    <span class="c1">## Disjunctions</span>
+    <span class="c1"># Objective is bounded by the maximum and minimum pressure values</span>
+    <span class="c1"># Note: Pyomo.GDP by default treats the disjunction as a xor (choose only one)</span>
+    <span class="c1"># https://pyomo.readthedocs.io/en/latest/modeling_extensions/gdp/modeling.html</span>
+    <span class="nd">@model</span><span class="o">.</span><span class="n">Disjunction</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">reactors</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Pressure bounds for different reactor selections&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pressure_bounds</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">P</span> <span class="o">&lt;=</span> <span class="n">m</span><span class="o">.</span><span class="n">max_pressure</span><span class="p">[</span><span class="n">r</span><span class="p">],</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">P</span> <span class="o">&gt;=</span> <span class="n">m</span><span class="o">.</span><span class="n">min_pressure</span><span class="p">[</span><span class="n">r</span><span class="p">],</span>
+        <span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">model</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="transform-and-solve-with-big-m-relaxation">
+<h3><span class="section-number">2.1.6.2. </span>Transform and Solve with Big-M Relaxation<a class="headerlink" href="#transform-and-solve-with-big-m-relaxation" title="Link to this heading">#</a></h3>
+<p><em>The following excerpts are from Section 15.8 in Biegler, Grossmann, and
+Westerberg (1997).</em></p>
+<p>Use “Big-M” constraints to convert linear disjunctions into mixed-integer constraints to represent logic with continuous variables.</p>
+</section>
+<section id="big-m-relaxation-approach">
+<h3><span class="section-number">2.1.6.3. </span>Big-M Relaxation Approach<a class="headerlink" href="#big-m-relaxation-approach" title="Link to this heading">#</a></h3>
+<p><strong>General Notation:</strong></p>
+<div class="amsmath math notranslate nohighlight" id="equation-b5857702-c8f0-4799-a464-459f1a8b1736">
+<span class="eqno">(2.8)<a class="headerlink" href="#equation-b5857702-c8f0-4799-a464-459f1a8b1736" title="Permalink to this equation">#</a></span>\[\begin{equation}
+A_{i}(x) \leq b_{i} + M_{i}(1-y_{i})  \ , \  \forall i \in D
+\end{equation}\]</div>
+<div class="amsmath math notranslate nohighlight" id="equation-9536c15d-79d7-4f15-a37e-0d970c9028fc">
+<span class="eqno">(2.9)<a class="headerlink" href="#equation-9536c15d-79d7-4f15-a37e-0d970c9028fc" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\sum_{i \in D} y_{i} = 1
+\end{equation}\]</div>
+<div class="amsmath math notranslate nohighlight" id="equation-286c0098-f050-4ecb-be43-8c8e09c56124">
+<span class="eqno">(2.10)<a class="headerlink" href="#equation-286c0098-f050-4ecb-be43-8c8e09c56124" title="Permalink to this equation">#</a></span>\[\begin{equation}
+y_{i} \in \{0,1\} \ , \  \forall i \in D
+\end{equation}\]</div>
+<p><strong>Applied to the Reactor Problem:</strong></p>
+<div class="amsmath math notranslate nohighlight" id="equation-20ebba75-c0a9-4866-9830-5daf42eef1de">
+<span class="eqno">(2.11)<a class="headerlink" href="#equation-20ebba75-c0a9-4866-9830-5daf42eef1de" title="Permalink to this equation">#</a></span>\[\begin{equation}
+  P \leq 10 + M_{1}(1-y_{1})\\
+  -P \leq -5 + M_{1}(1-y_{1})\\
+  P \leq 30 + M_{2}(1-y_{2})\\
+  -P \leq -20 + M_{2}(1-y_{2})\\
+  y_{1} + y_{2} = 1
+\end{equation}\]</div>
+<p>When the <span class="math notranslate nohighlight">\(y\)</span>’s are considered continuous variables, weak bounds for the objective function are formed for large values such as:</p>
+<p><span class="math notranslate nohighlight">\(M_{1} = 100 \ \ \text{and} \ \ M_{2} = 100\)</span></p>
+<p><strong>Main Idea:</strong>
+Considering the special case where <span class="math notranslate nohighlight">\(h_{i}(x) = A_{i}x - b_{i} \leq 0,\)</span> <br>
+<span class="math notranslate nohighlight">\(M_{i}\)</span> is sufficiently large to relax <span class="math notranslate nohighlight">\(h_{i}(x) \leq 0\)</span> when <span class="math notranslate nohighlight">\(y_{i}=0\)</span></p>
+<p><strong>Key Takeaways:</strong></p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(M\)</span> is too <strong>large</strong>, we can get a “weak relaxation” because integer programming algorithms need more iterations.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(M\)</span> is too <strong>small</strong>, we can get unintended bounds.</p></li>
+</ul>
+<p><strong>Big-M is the best to use if the problem is small.</strong></p>
+</section>
+<section id="big-m-implementation-in-pyomo">
+<h3><span class="section-number">2.1.6.4. </span>Big-M Implementation in Pyomo<a class="headerlink" href="#big-m-implementation-in-pyomo" title="Link to this heading">#</a></h3>
+<p>First we will create and print the model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creating the model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">()</span>
+
+<span class="c1"># Printing the model</span>
+<span class="n">model</span><span class="o">.</span><span class="n">pprint</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1 Set Declarations
+    reactors : Size=1, Index=None, Ordered=Insertion
+        Key  : Dimen : Domain : Size : Members
+        None :     1 :    Any :    2 : {1, 2}
+
+2 Param Declarations
+    max_pressure : Size=2, Index=reactors, Domain=Any, Default=None, Mutable=False
+        Key : Value
+          1 :    10
+          2 :    30
+    min_pressure : Size=2, Index=reactors, Domain=Any, Default=None, Mutable=False
+        Key : Value
+          1 :     5
+          2 :    20
+
+1 Var Declarations
+    P : Reactor pressure (atm)
+        Size=1, Index=None
+        Key  : Lower : Value : Upper : Fixed : Stale : Domain
+        None :     5 :  None :    30 : False :  True :  Reals
+
+1 Objective Declarations
+    objective : Size=1, Index=None, Active=True
+        Key  : Active : Sense    : Expression
+        None :   True : minimize :          P
+
+1 Disjunct Declarations
+    pressure_bounds_disjuncts : Size=4, Index=Any, Active=True
+        pressure_bounds_disjuncts[0] : Active=True
+            1 Var Declarations
+                binary_indicator_var : Size=1, Index=None
+                    Key  : Lower : Value : Upper : Fixed : Stale : Domain
+                    None :     0 :  None :     1 : False :  True : Binary
+
+            1 Constraint Declarations
+                constraint : Size=1, Index={1}, Active=True
+                    Key : Lower : Body : Upper : Active
+                      1 :  -Inf :    P :  10.0 :   True
+
+            1 BooleanVar Declarations
+                indicator_var : Size=1, Index=None
+                    Key  : Value : Fixed : Stale
+                    None :  None : False :  True
+
+            1 LogicalConstraint Declarations
+                propositions : Size=0, Index={}, Active=True
+                    Key : Body : Active
+
+            4 Declarations: indicator_var binary_indicator_var constraint propositions
+        pressure_bounds_disjuncts[1] : Active=True
+            1 Var Declarations
+                binary_indicator_var : Size=1, Index=None
+                    Key  : Lower : Value : Upper : Fixed : Stale : Domain
+                    None :     0 :  None :     1 : False :  True : Binary
+
+            1 Constraint Declarations
+                constraint : Size=1, Index={1}, Active=True
+                    Key : Lower : Body : Upper : Active
+                      1 :   5.0 :    P :  +Inf :   True
+
+            1 BooleanVar Declarations
+                indicator_var : Size=1, Index=None
+                    Key  : Value : Fixed : Stale
+                    None :  None : False :  True
+
+            1 LogicalConstraint Declarations
+                propositions : Size=0, Index={}, Active=True
+                    Key : Body : Active
+
+            4 Declarations: indicator_var binary_indicator_var constraint propositions
+        pressure_bounds_disjuncts[2] : Active=True
+            1 Var Declarations
+                binary_indicator_var : Size=1, Index=None
+                    Key  : Lower : Value : Upper : Fixed : Stale : Domain
+                    None :     0 :  None :     1 : False :  True : Binary
+
+            1 Constraint Declarations
+                constraint : Size=1, Index={1}, Active=True
+                    Key : Lower : Body : Upper : Active
+                      1 :  -Inf :    P :  30.0 :   True
+
+            1 BooleanVar Declarations
+                indicator_var : Size=1, Index=None
+                    Key  : Value : Fixed : Stale
+                    None :  None : False :  True
+
+            1 LogicalConstraint Declarations
+                propositions : Size=0, Index={}, Active=True
+                    Key : Body : Active
+
+            4 Declarations: indicator_var binary_indicator_var constraint propositions
+        pressure_bounds_disjuncts[3] : Active=True
+            1 Var Declarations
+                binary_indicator_var : Size=1, Index=None
+                    Key  : Lower : Value : Upper : Fixed : Stale : Domain
+                    None :     0 :  None :     1 : False :  True : Binary
+
+            1 Constraint Declarations
+                constraint : Size=1, Index={1}, Active=True
+                    Key : Lower : Body : Upper : Active
+                      1 :  20.0 :    P :  +Inf :   True
+
+            1 BooleanVar Declarations
+                indicator_var : Size=1, Index=None
+                    Key  : Value : Fixed : Stale
+                    None :  None : False :  True
+
+            1 LogicalConstraint Declarations
+                propositions : Size=0, Index={}, Active=True
+                    Key : Body : Active
+
+            4 Declarations: indicator_var binary_indicator_var constraint propositions
+
+1 Disjunction Declarations
+    pressure_bounds : Pressure bounds for different reactor selections
+        Size=2, Index=reactors, Active=True
+        Key : Disjuncts                                                        : Active : XOR
+          1 : [&#39;pressure_bounds_disjuncts[0]&#39;, &#39;pressure_bounds_disjuncts[1]&#39;] :   True : True
+          2 : [&#39;pressure_bounds_disjuncts[2]&#39;, &#39;pressure_bounds_disjuncts[3]&#39;] :   True : True
+
+7 Declarations: reactors min_pressure max_pressure P objective pressure_bounds pressure_bounds_disjuncts
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, let’s transform using Big-M and print the model again.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Applying Big-M relaxation to the model</span>
+<span class="c1"># Add your solution here</span>
+
+<span class="c1"># Printing</span>
+<span class="n">model</span><span class="o">.</span><span class="n">pprint</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1 Set Declarations
+    reactors : Size=1, Index=None, Ordered=Insertion
+        Key  : Dimen : Domain : Size : Members
+        None :     1 :    Any :    2 : {1, 2}
+
+2 Param Declarations
+    max_pressure : Size=2, Index=reactors, Domain=Any, Default=None, Mutable=False
+        Key : Value
+          1 :    10
+          2 :    30
+    min_pressure : Size=2, Index=reactors, Domain=Any, Default=None, Mutable=False
+        Key : Value
+          1 :     5
+          2 :    20
+
+1 Var Declarations
+    P : Reactor pressure (atm)
+        Size=1, Index=None
+        Key  : Lower : Value : Upper : Fixed : Stale : Domain
+        None :     5 :  None :    30 : False :  True :  Reals
+
+1 Objective Declarations
+    objective : Size=1, Index=None, Active=True
+        Key  : Active : Sense    : Expression
+        None :   True : minimize :          P
+
+1 Block Declarations
+    _pyomo_gdp_bigm_reformulation : Size=1, Index=None, Active=True
+        1 Constraint Declarations
+            pressure_bounds_xor : Size=2, Index=Any, Active=True
+                Key : Lower : Body                                                                                                  : Upper : Active
+                  1 :   1.0 : pressure_bounds_disjuncts[0].binary_indicator_var + pressure_bounds_disjuncts[1].binary_indicator_var :   1.0 :   True
+                  2 :   1.0 : pressure_bounds_disjuncts[2].binary_indicator_var + pressure_bounds_disjuncts[3].binary_indicator_var :   1.0 :   True
+
+        1 Block Declarations
+            relaxedDisjuncts : Size=4, Index=NonNegativeIntegers, Active=True
+                _pyomo_gdp_bigm_reformulation.relaxedDisjuncts[0] : Active=True
+                    1 Constraint Declarations
+                        transformedConstraints : Size=1, Index=Any, Active=True
+                            Key                          : Lower : Body                                                             : Upper : Active
+                            (&#39;constraint[1]_0&#39;, 1, &#39;ub&#39;) :  -Inf : P - 20.0*(1 - pressure_bounds_disjuncts[0].binary_indicator_var) :  10.0 :   True
+
+                    1 Block Declarations
+                        localVarReferences : Size=1, Index=None, Active=True
+                            1 Var Declarations
+                                binary_indicator_var : Size=1, Index=UnindexedComponent_ReferenceSet, ReferenceTo=pressure_bounds_disjuncts[0].binary_indicator_var
+                                    Key  : Lower : Value : Upper : Fixed : Stale : Domain
+                                    None :     0 :  None :     1 : False :  True : Binary
+
+                            1 Declarations: binary_indicator_var
+
+                    2 Declarations: transformedConstraints localVarReferences
+                _pyomo_gdp_bigm_reformulation.relaxedDisjuncts[1] : Active=True
+                    1 Constraint Declarations
+                        transformedConstraints : Size=1, Index=Any, Active=True
+                            Key                          : Lower : Body                                                            : Upper : Active
+                            (&#39;constraint[1]_0&#39;, 1, &#39;lb&#39;) :   5.0 : P - 0.0*(1 - pressure_bounds_disjuncts[1].binary_indicator_var) :  +Inf :   True
+
+                    1 Block Declarations
+                        localVarReferences : Size=1, Index=None, Active=True
+                            1 Var Declarations
+                                binary_indicator_var : Size=1, Index=UnindexedComponent_ReferenceSet, ReferenceTo=pressure_bounds_disjuncts[1].binary_indicator_var
+                                    Key  : Lower : Value : Upper : Fixed : Stale : Domain
+                                    None :     0 :  None :     1 : False :  True : Binary
+
+                            1 Declarations: binary_indicator_var
+
+                    2 Declarations: transformedConstraints localVarReferences
+                _pyomo_gdp_bigm_reformulation.relaxedDisjuncts[2] : Active=True
+                    1 Constraint Declarations
+                        transformedConstraints : Size=1, Index=Any, Active=True
+                            Key                          : Lower : Body                                                            : Upper : Active
+                            (&#39;constraint[1]_0&#39;, 1, &#39;ub&#39;) :  -Inf : P - 0.0*(1 - pressure_bounds_disjuncts[2].binary_indicator_var) :  30.0 :   True
+
+                    1 Block Declarations
+                        localVarReferences : Size=1, Index=None, Active=True
+                            1 Var Declarations
+                                binary_indicator_var : Size=1, Index=UnindexedComponent_ReferenceSet, ReferenceTo=pressure_bounds_disjuncts[2].binary_indicator_var
+                                    Key  : Lower : Value : Upper : Fixed : Stale : Domain
+                                    None :     0 :  None :     1 : False :  True : Binary
+
+                            1 Declarations: binary_indicator_var
+
+                    2 Declarations: transformedConstraints localVarReferences
+                _pyomo_gdp_bigm_reformulation.relaxedDisjuncts[3] : Active=True
+                    1 Constraint Declarations
+                        transformedConstraints : Size=1, Index=Any, Active=True
+                            Key                          : Lower : Body                                                             : Upper : Active
+                            (&#39;constraint[1]_0&#39;, 1, &#39;lb&#39;) :  20.0 : P + 15.0*(1 - pressure_bounds_disjuncts[3].binary_indicator_var) :  +Inf :   True
+
+                    1 Block Declarations
+                        localVarReferences : Size=1, Index=None, Active=True
+                            1 Var Declarations
+                                binary_indicator_var : Size=1, Index=UnindexedComponent_ReferenceSet, ReferenceTo=pressure_bounds_disjuncts[3].binary_indicator_var
+                                    Key  : Lower : Value : Upper : Fixed : Stale : Domain
+                                    None :     0 :  None :     1 : False :  True : Binary
+
+                            1 Declarations: binary_indicator_var
+
+                    2 Declarations: transformedConstraints localVarReferences
+
+        2 Declarations: relaxedDisjuncts pressure_bounds_xor
+
+1 Disjunct Declarations
+    pressure_bounds_disjuncts : Size=4, Index=Any, Active=False
+        pressure_bounds_disjuncts[0] : Active=False
+            1 Var Declarations
+                binary_indicator_var : Size=1, Index=None
+                    Key  : Lower : Value : Upper : Fixed : Stale : Domain
+                    None :     0 :  None :     1 : False :  True : Binary
+
+            1 Constraint Declarations
+                constraint : Size=1, Index={1}, Active=True
+                    Key : Lower : Body : Upper : Active
+                      1 :  -Inf :    P :  10.0 :  False
+
+            1 BooleanVar Declarations
+                indicator_var : Size=1, Index=None
+                    Key  : Value : Fixed : Stale
+                    None :  None : False :  True
+
+            1 LogicalConstraint Declarations
+                propositions : Size=0, Index={}, Active=False
+                    Key : Body : Active
+
+            4 Declarations: indicator_var binary_indicator_var constraint propositions
+        pressure_bounds_disjuncts[1] : Active=False
+            1 Var Declarations
+                binary_indicator_var : Size=1, Index=None
+                    Key  : Lower : Value : Upper : Fixed : Stale : Domain
+                    None :     0 :  None :     1 : False :  True : Binary
+
+            1 Constraint Declarations
+                constraint : Size=1, Index={1}, Active=True
+                    Key : Lower : Body : Upper : Active
+                      1 :   5.0 :    P :  +Inf :  False
+
+            1 BooleanVar Declarations
+                indicator_var : Size=1, Index=None
+                    Key  : Value : Fixed : Stale
+                    None :  None : False :  True
+
+            1 LogicalConstraint Declarations
+                propositions : Size=0, Index={}, Active=False
+                    Key : Body : Active
+
+            4 Declarations: indicator_var binary_indicator_var constraint propositions
+        pressure_bounds_disjuncts[2] : Active=False
+            1 Var Declarations
+                binary_indicator_var : Size=1, Index=None
+                    Key  : Lower : Value : Upper : Fixed : Stale : Domain
+                    None :     0 :  None :     1 : False :  True : Binary
+
+            1 Constraint Declarations
+                constraint : Size=1, Index={1}, Active=True
+                    Key : Lower : Body : Upper : Active
+                      1 :  -Inf :    P :  30.0 :  False
+
+            1 BooleanVar Declarations
+                indicator_var : Size=1, Index=None
+                    Key  : Value : Fixed : Stale
+                    None :  None : False :  True
+
+            1 LogicalConstraint Declarations
+                propositions : Size=0, Index={}, Active=False
+                    Key : Body : Active
+
+            4 Declarations: indicator_var binary_indicator_var constraint propositions
+        pressure_bounds_disjuncts[3] : Active=False
+            1 Var Declarations
+                binary_indicator_var : Size=1, Index=None
+                    Key  : Lower : Value : Upper : Fixed : Stale : Domain
+                    None :     0 :  None :     1 : False :  True : Binary
+
+            1 Constraint Declarations
+                constraint : Size=1, Index={1}, Active=True
+                    Key : Lower : Body : Upper : Active
+                      1 :  20.0 :    P :  +Inf :  False
+
+            1 BooleanVar Declarations
+                indicator_var : Size=1, Index=None
+                    Key  : Value : Fixed : Stale
+                    None :  None : False :  True
+
+            1 LogicalConstraint Declarations
+                propositions : Size=0, Index={}, Active=False
+                    Key : Body : Active
+
+            4 Declarations: indicator_var binary_indicator_var constraint propositions
+
+1 Disjunction Declarations
+    pressure_bounds : Pressure bounds for different reactor selections
+        Size=2, Index=reactors, Active=False
+        Key : Disjuncts                                                        : Active : XOR
+          1 : [&#39;pressure_bounds_disjuncts[0]&#39;, &#39;pressure_bounds_disjuncts[1]&#39;] :  False : True
+          2 : [&#39;pressure_bounds_disjuncts[2]&#39;, &#39;pressure_bounds_disjuncts[3]&#39;] :  False : True
+
+8 Declarations: reactors min_pressure max_pressure P objective pressure_bounds pressure_bounds_disjuncts _pyomo_gdp_bigm_reformulation
+</pre></div>
+</div>
+</div>
+</div>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Click to see the solution to the activity</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">TransformationFactory</span><span class="p">(</span><span class="s1">&#39;gdp.bigm&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply_to</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>Finally, we’ll solve the model and examine the solution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Solve and print the solution</span>
+<span class="n">SolverFactory</span><span class="p">(</span><span class="n">milp_solver</span><span class="p">)</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">P</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Welcome to the CBC MILP Solver 
+Version: 2.10.10 
+Build Date: Jun  7 2023 
+
+command line - /Users/adowling/.idaes/bin/cbc -printingOptions all -import /var/folders/3w/vr4xmyqs451dg23xk88pqcg00000gq/T/tmpx99o357i.pyomo.lp -stat=1 -solve -solu /var/folders/3w/vr4xmyqs451dg23xk88pqcg00000gq/T/tmpx99o357i.pyomo.soln (default strategy 1)
+Option for printingOptions changed from normal to all
+Presolve 0 (-6) rows, 0 (-5) columns and 0 (-10) elements
+Statistics for presolved model
+Original problem has 4 integers (4 of which binary)
+
+
+Problem has 0 rows, 0 columns (0 with objective) and 0 elements
+Column breakdown:
+0 of type 0.0-&gt;inf, 0 of type 0.0-&gt;up, 0 of type lo-&gt;inf, 
+0 of type lo-&gt;up, 0 of type free, 0 of type fixed, 
+0 of type -inf-&gt;0.0, 0 of type -inf-&gt;up, 0 of type 0.0-&gt;1.0 
+Row breakdown:
+0 of type E 0.0, 0 of type E 1.0, 0 of type E -1.0, 
+0 of type E other, 0 of type G 0.0, 0 of type G 1.0, 
+0 of type G other, 0 of type L 0.0, 0 of type L 1.0, 
+0 of type L other, 0 of type Range 0.0-&gt;1.0, 0 of type Range other, 
+0 of type Free 
+Continuous objective value is 5 - 0.00 seconds
+Cgl0004I processed model has 0 rows, 0 columns (0 integer (0 of which binary)) and 0 elements
+Cbc3007W No integer variables - nothing to do
+Cuts at root node changed objective from 5 to -1.79769e+308
+Probing was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+Gomory was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+Knapsack was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+Clique was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+MixedIntegerRounding2 was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+FlowCover was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+TwoMirCuts was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+ZeroHalf was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+
+Result - Optimal solution found
+
+Objective value:                5.00000000
+Enumerated nodes:               0
+Total iterations:               0
+Time (CPU seconds):             0.00
+Time (Wallclock seconds):       0.00
+
+Total time (CPU seconds):       0.00   (Wallclock seconds):       0.01
+
+P : Reactor pressure (atm)
+    Size=1, Index=None
+    Key  : Lower : Value : Upper : Fixed : Stale : Domain
+    None :     5 :   5.0 :    30 : False : False :  Reals
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="transform-and-solve-with-convex-hull-relaxation">
+<h3><span class="section-number">2.1.6.5. </span>Transform and Solve with Convex Hull Relaxation<a class="headerlink" href="#transform-and-solve-with-convex-hull-relaxation" title="Link to this heading">#</a></h3>
+<p><em>The following excerpts are from Section 15.8 in Biegler, Grossmann, and Westerberg (1997).</em></p>
+<p>Convex hull can be used if we don’t want to implement Big-M parameters. This approach requires separating the continuous variables into its components.</p>
+</section>
+<section id="convex-hull-relaxation-approach">
+<h3><span class="section-number">2.1.6.6. </span>Convex Hull Relaxation Approach<a class="headerlink" href="#convex-hull-relaxation-approach" title="Link to this heading">#</a></h3>
+<p><strong>General Notation:</strong></p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+x = \sum_{i \in D} z_{i}
+\end{equation}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+A_{i} z_{i} \leq b_{i}y_{i}  \ , \ \forall i \in D
+\end{equation}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+\sum_{i \in D} y_{i} = 1
+\end{equation}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+0 \leq z_{i} \leq Uy_{i}  \ , \ \forall i \in D
+\end{equation}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+y_{i} = \{0,1\} \ , \ \forall i \in D
+\end{equation}
+\]</div>
+<p><span class="math notranslate nohighlight">\(z_{i}\)</span>: continuous variables separated into as many new variables as there are terms for the disjunctions.</p>
+<p><strong>Applied to the Reactor Problem:</strong> <br></p>
+<div class="amsmath math notranslate nohighlight" id="equation-a484f1ca-6e30-4565-a4bd-860d6e8c92ee">
+<span class="eqno">(2.12)<a class="headerlink" href="#equation-a484f1ca-6e30-4565-a4bd-860d6e8c92ee" title="Permalink to this equation">#</a></span>\[\begin{equation}
+  P = P_{1} + P_{2} \\
+  P_{1} \leq 10y_{1}\\
+  P_{2} \leq 30y_{2} \\
+  -P_{1} \leq -5y_{1}\\
+  -P_{2} \leq -20y_{2}\\
+  y_{1} + y_{2} = 1
+\end{equation}\]</div>
+<p><strong>Key Takeaways:</strong> <br></p>
+<p>(+) Constraints do not require Big-M parameters which produce a tight linear programming relaxation. <br>
+(–) A larger number of variables and constraints is required.</p>
+<p><strong>Convex hull is better to use over Big-M if the problem is large.</strong></p>
+</section>
+<section id="convex-hull-implementation-in-pyomo">
+<h3><span class="section-number">2.1.6.7. </span>Convex Hull Implementation in Pyomo<a class="headerlink" href="#convex-hull-implementation-in-pyomo" title="Link to this heading">#</a></h3>
+<p>We will repeat the procedure above but using Convex Hull now.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creating the model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">()</span>
+
+<span class="c1"># Applying convex hull relaxation to the model</span>
+<span class="c1"># Add your solution here</span>
+
+<span class="c1"># Solve and print the solution</span>
+<span class="n">SolverFactory</span><span class="p">(</span><span class="n">milp_solver</span><span class="p">)</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">P</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Welcome to the CBC MILP Solver 
+Version: 2.10.10 
+Build Date: Jun  7 2023 
+
+command line - /Users/adowling/.idaes/bin/cbc -printingOptions all -import /var/folders/3w/vr4xmyqs451dg23xk88pqcg00000gq/T/tmppgpvdtjh.pyomo.lp -stat=1 -solve -solu /var/folders/3w/vr4xmyqs451dg23xk88pqcg00000gq/T/tmppgpvdtjh.pyomo.soln (default strategy 1)
+Option for printingOptions changed from normal to all
+Presolve 10 (-6) rows, 5 (-4) columns and 24 (-10) elements
+Statistics for presolved model
+Original problem has 4 integers (4 of which binary)
+Presolved problem has 2 integers (2 of which binary)
+==== 4 zero objective 2 different
+4 variables have objective of 0
+1 variables have objective of 1
+==== absolute objective values 2 different
+4 variables have objective of 0
+1 variables have objective of 1
+==== for integers 2 zero objective 1 different
+2 variables have objective of 0
+==== for integers absolute objective values 1 different
+2 variables have objective of 0
+===== end objective counts
+
+
+Problem has 10 rows, 5 columns (1 with objective) and 24 elements
+Column breakdown:
+0 of type 0.0-&gt;inf, 2 of type 0.0-&gt;up, 0 of type lo-&gt;inf, 
+1 of type lo-&gt;up, 0 of type free, 0 of type fixed, 
+0 of type -inf-&gt;0.0, 0 of type -inf-&gt;up, 2 of type 0.0-&gt;1.0 
+Row breakdown:
+0 of type E 0.0, 0 of type E 1.0, 0 of type E -1.0, 
+0 of type E other, 0 of type G 0.0, 0 of type G 1.0, 
+0 of type G other, 5 of type L 0.0, 0 of type L 1.0, 
+5 of type L other, 0 of type Range 0.0-&gt;1.0, 0 of type Range other, 
+0 of type Free 
+Continuous objective value is 5 - 0.00 seconds
+Cgl0003I 0 fixed, 0 tightened bounds, 1 strengthened rows, 0 substitutions
+Cgl0003I 0 fixed, 0 tightened bounds, 1 strengthened rows, 0 substitutions
+Cgl0004I processed model has 8 rows, 5 columns (2 integer (2 of which binary)) and 21 elements
+Cbc0038I Initial state - 0 integers unsatisfied sum - 0
+Cbc0038I Solution found of 5
+Cbc0038I Relaxing continuous gives 5
+Cbc0038I Before mini branch and bound, 2 integers at bound fixed and 3 continuous
+Cbc0038I Mini branch and bound did not improve solution (0.00 seconds)
+Cbc0038I After 0.00 seconds - Feasibility pump exiting with objective of 5 - took 0.00 seconds
+Cbc0012I Integer solution of 5 found by feasibility pump after 0 iterations and 0 nodes (0.00 seconds)
+Cbc0001I Search completed - best objective 5, took 0 iterations and 0 nodes (0.00 seconds)
+Cbc0035I Maximum depth 0, 0 variables fixed on reduced cost
+Cuts at root node changed objective from 5 to 5
+Probing was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+Gomory was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+Knapsack was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+Clique was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+MixedIntegerRounding2 was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+FlowCover was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+TwoMirCuts was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+ZeroHalf was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+
+Result - Optimal solution found
+
+Objective value:                5.00000000
+Enumerated nodes:               0
+Total iterations:               0
+Time (CPU seconds):             0.00
+Time (Wallclock seconds):       0.00
+
+Total time (CPU seconds):       0.00   (Wallclock seconds):       0.00
+
+P : Reactor pressure (atm)
+    Size=1, Index=None
+    Key  : Lower : Value : Upper : Fixed : Stale : Domain
+    None :     5 :   5.0 :    30 : False : False :  Reals
+</pre></div>
+</div>
+</div>
+</div>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Click to see the solution to the activity</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">TransformationFactory</span><span class="p">(</span><span class="s1">&#39;gdp.hull&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply_to</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+</section>
+<section id="discussion-questions">
+<h2><span class="section-number">2.1.7. </span>Discussion Questions<a class="headerlink" href="#discussion-questions" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>How do we create a system to go from logical expressions to linear constraints?</p></li>
+<li><p>Are conjuctive or disjunctive clauses more common? Why might this be the case?</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(y_{i}=0\)</span> and <span class="math notranslate nohighlight">\(y_{i}=1\)</span>, what happens when a Big-M parameter is introduced in the general notation?</p></li>
+<li><p>When will the convex hull formulation simplify?</p></li>
+</ol>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Click to see the ideas for the discussion questions</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<ol class="arabic simple">
+<li><p class="sd-card-text">Using conjuctive normal form.</p></li>
+<li><p class="sd-card-text">Disjunctive clauses because the clause is true when at least one literal is true which occurs more often.</p></li>
+<li><p class="sd-card-text">The inequality becomes unnecessary when <span class="math notranslate nohighlight">\(y_{i}=0\)</span> and the inequality is applied when <span class="math notranslate nohighlight">\(y_{i}=1\)</span>.</p></li>
+<li><p class="sd-card-text">If the disjunction only has two terms and one of the terms requires the variable to take a value at 0.</p></li>
+</ol>
+</div>
+</details></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/2"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="logic.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>Logical Modeling</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Modeling_Disjunctions_Strip_Packing.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2.2. </span>Modeling Disjunctions through the Strip Packing Problem</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-and-learning-objectives">2.1.1. Introduction and Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-modules">2.1.2. Import Modules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivating-example-separation">2.1.3. Motivating Example: Separation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logical-modeling">2.1.4. Logical Modeling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symbolic-logic-notation">2.1.4.1. Symbolic Logic Notation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vocabulary">2.1.4.2. Vocabulary</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#logical-statements-and-conjuctive-normal-form">2.1.4.3. Logical Statements and Conjuctive Normal Form</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-separation-sequence">2.1.4.4. Example: Separation Sequence</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-assembling-components">2.1.4.5. Example: Assembling Components</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modeling-disjunctions">2.1.5. Modeling Disjunctions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#general-notation">2.1.5.1. General Notation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-reactor-problem">2.1.6. Example: The Reactor Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-model-in-pyomo-with-gdp">2.1.6.1. Define Model in Pyomo with GDP</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transform-and-solve-with-big-m-relaxation">2.1.6.2. Transform and Solve with Big-M Relaxation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#big-m-relaxation-approach">2.1.6.3. Big-M Relaxation Approach</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#big-m-implementation-in-pyomo">2.1.6.4. Big-M Implementation in Pyomo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transform-and-solve-with-convex-hull-relaxation">2.1.6.5. Transform and Solve with Convex Hull Relaxation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convex-hull-relaxation-approach">2.1.6.6. Convex Hull Relaxation Approach</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convex-hull-implementation-in-pyomo">2.1.6.7. Convex Hull Implementation in Pyomo</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion-questions">2.1.7. Discussion Questions</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Alexander Dowling, et al.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

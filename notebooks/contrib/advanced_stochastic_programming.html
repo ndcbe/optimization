@@ -1,0 +1,1810 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Advanced Topics in Stochastic Programming &#8212; Optimization for Decision Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/contrib/advanced_stochastic_programming';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Global Optimization" href="algorithms.html" />
+    <link rel="prev" title="Multi-Objective Optimization" href="multi_objective.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/cbe_logo.jpg" class="logo__image only-light" alt="Optimization for Decision Science - Home"/>
+    <script>document.write(`<img src="../../_static/cbe_logo.jpg" class="logo__image only-dark" alt="Optimization for Decision Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Optimization for Decision Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Fall 2024 Calendar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/workshop.html">Computational Optimization in Python (São Paulo, Brazil)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project1.html">Project 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms1.html">Algorithms Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms2.html">Algorithms Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project2.html">Project 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project (Spring 2023)</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/LP.html">1.4. Continuous Optimization: Linear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/NLP.html">1.5. Continuous Optimization: Nonlinear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.6. Integer Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.7. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_car.html">3.1. Pyomo.DAE Example: Race Car</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_TCLab.html">3.2. Pyomo.DAE Example: Temperature Control Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_background.html">3.3. Differential Algebraic Equations (DAEs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_numeric_integration.html">3.4. Numeric Integration for DAEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_theory.html">3.5. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_example.html">3.6. Pyomo.DAE: Racing Example Revisited</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/blocks.html">4.2. Blocks and Other Pyomo Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/AdvancedTopics.html">4.3. Advanced Topics in Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.4. Risk Measures and Portfolio Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Optimizing Experiments with <code class="docutils literal notranslate"><span class="pre">Pyomo.DoE</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-1.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Newton-Methods.html">6.4. Newton-type Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Constraint-Qualifications.html">7.4. Constraint Qualifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Second-Order.html">7.5. Second Order Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/degeneracy_hunter.html">7.6. NLP Diagnostics with Degeneracy Hunter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyomo.html">More Pyomo Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="semiconductor_manufacturing.html">Semiconductor Production Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="student_diet.html">Optimization of Daily Diet Using Pyomo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blending.html">Blending Under Uncertainty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vehicle_routing.html">Vehicle Routing</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="portfolio_optimization_extended.html">Risk Measures and Portfolio Optimization: Expanded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="race_car_extended.html">Extended Race Car Optimization Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hot_air_balloon.html">Hot Air Balloon Dynamic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reactor_design.html">Chemical Reactor Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Disaster_Response_Plan.html">Disaster Response Plan Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Sudoku_Solver.html">Sudoku Solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="more_circle_packing.html">Circle Packing Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="modeling.html">Modeling Paradigms</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="multi_objective.html">Multi-Objective Optimization</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Advanced Topics in Stochastic Programming</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="algorithms.html">Global Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Deterministic_Global_Optimization.html">Deterministic Global Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="sgd.html">Stochastic Gradient Descent</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="data.html">Machine Learning and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/contrib/advanced_stochastic_programming.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/contrib/advanced_stochastic_programming.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/contrib/advanced_stochastic_programming.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Advanced Topics in Stochastic Programming</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Advanced Topics in Stochastic Programming</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#expanding-the-farming-example">Expanding the Farming Example</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#background">Background</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#classic-example">Classic Example</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#proposed-expansion">Proposed Expansion</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numerical-back-ground">Numerical Back Ground</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-grid">Full Grid</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sparse-grid">Sparse Grid</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#two-stage-stochastic">Two-Stage Stochastic</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-average-approximation-saa">Sample Average Approximation (SAA)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#statistical-inference">Statistical Inference</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusions">Conclusions</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="advanced-topics-in-stochastic-programming">
+<h1>Advanced Topics in Stochastic Programming<a class="headerlink" href="#advanced-topics-in-stochastic-programming" title="Link to this heading">#</a></h1>
+<p><strong>Prepared by:</strong> Jiabao Nie (<a class="reference external" href="mailto:jnie2&#37;&#52;&#48;nd&#46;edu">jnie2<span>&#64;</span>nd<span>&#46;</span>edu</a>) and Jacob Mantooth (<a class="reference external" href="mailto:jmantoot&#37;&#52;&#48;nd&#46;edu">jmantoot<span>&#64;</span>nd<span>&#46;</span>edu</a>)</p>
+<p>In this project, we extend the <a class="reference internal" href="../4/SP.html"><span class="std std-doc">farmer’s example</span></a>, which is a classic optimization problem that highlights the need of resource allocation in agricultural decision-making. Traditionally, this problem assumes deterministic crop yields, enabling straightforward mathematical modeling and solution using conventional methods. However, real-world agricultural systems are inherently uncertain, influenced by variables such as weather, soil quality, and environmental conditions. To address these complexities, we employ advanced optimization techniques that incorporate stochasticity, providing a more realistic framework for decision-making in agriculture.</p>
+<p><strong>Learning Objectives</strong></p>
+<p>By the end of this project, students will be able to:</p>
+<ul class="simple">
+<li><p>Formulate and solve optimization problems using real-world examples that incorporate uncertainty and stochasticity.</p></li>
+<li><p>Develop proficiency in Python and Pyomo for modeling and solving complex optimization problems.</p></li>
+<li><p>Understand and implement full-grid and half-grid discretization in stochastic optimization frameworks, including their respective advantages and applications.</p></li>
+<li><p>Gain a deeper understanding of two-stage stochastic optimization, focusing on its application to agricultural systems under uncertainty.</p></li>
+<li><p>Interpret and analyze optimization results, drawing meaningful conclusions about resource allocation and decision-making in uncertain environments.</p></li>
+</ul>
+<p>#Imports</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="k">if</span> <span class="s2">&quot;google.colab&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+    <span class="err">!</span><span class="n">wget</span> <span class="s2">&quot;https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/helper.py&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">easy_install</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;../&#39;</span><span class="p">)</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+<span class="n">helper</span><span class="o">.</span><span class="n">set_plotting_style</span><span class="p">()</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyomo.environ</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyo</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyomo.environ</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ConcreteModel</span><span class="p">,</span> <span class="n">Var</span><span class="p">,</span> <span class="n">NonNegativeReals</span><span class="p">,</span> <span class="n">Objective</span><span class="p">,</span> <span class="n">minimize</span><span class="p">,</span> <span class="n">ConstraintList</span><span class="p">,</span>
+    <span class="n">summation</span><span class="p">,</span> <span class="n">SolverFactory</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span><span class="n">Param</span><span class="p">,</span><span class="n">Reals</span><span class="p">,</span><span class="n">Constraint</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyomo.core.base.numvalue</span><span class="w"> </span><span class="kn">import</span> <span class="n">value</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyomo.common.collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">ComponentMap</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">product</span><span class="p">,</span> <span class="n">combinations</span><span class="p">,</span> <span class="n">combinations_with_replacement</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2024-12-16 02:10:35--  https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/helper.py
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.111.133, 185.199.109.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 6493 (6.3K) [text/plain]
+Saving to: ‘helper.py.12’
+
+helper.py.12        100%[===================&gt;]   6.34K  --.-KB/s    in 0s      
+
+2024-12-16 02:10:36 (63.6 MB/s) - ‘helper.py.12’ saved [6493/6493]
+
+idaes was found! No need to install.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="expanding-the-farming-example">
+<h1>Expanding the Farming Example<a class="headerlink" href="#expanding-the-farming-example" title="Link to this heading">#</a></h1>
+<p>The farmer problem is a classic optimization challenge that highlights the complexities of resource allocation in agricultural decision-making. Traditionally, this problem assumes deterministic crop yields, allowing for straightforward mathematical modeling and solution using conventional methods. However, real-world agricultural systems are inherently subject to uncertainty, influenced by different factors. These uncertainties necessitate a more sophisticated approach to accurately capture and address the variability in crop yields.</p>
+<p>In this project, we extend the traditional farmer problem by incorporating a stochastic framework where crop yields are modeled as random variables following a normal distribution. This extension introduces the need for efficient evaluation of high-dimensional integrals, which we address using advanced numerical techniques such as sparse grids and Gaussian quadrature. These methods allow for greater computational efficiency and a different methods for solving this problem.</p>
+<p>Additionally, we explore alternative modeling assumptions, such as treating crop yields as independent random variables. This perspective allows for a more comprehensive representation of the problem as a continuous random vector, enabling the development of a two-stage stochastic programming model. By incorporating these enhancements, our work aims to bridge the gap between theoretical optimization frameworks and the complex, dynamic nature of agricultural decision-making.</p>
+<p>Our webpage is broken down as teh following</p>
+<ol class="arabic simple">
+<li><p><strong>Background</strong>: An overview of the farmer problem and its relevance</p></li>
+<li><p><strong>Classic Example</strong>: A detailed explanation of the classic farmer problem, including its mathematical formulation and solution using traditional methods.</p></li>
+<li><p><strong>Proposed Expansion</strong>: We propose extending the problem to a stochastic framework, modeling crop yields as random variables following a normal distribution to capture inherent variability arising from outside factors. This approach requires the efficient evaluation of multi-dimensional integrals, for which we will explore advanced numerical techniques, including sparse grids and Gaussian quadrature, to ensure computational efficiency. Furthermore, we plan to investigate alternative modeling assumptions, such as treating the yields of different crops as independent random variables. Under this assumption, yields can be represented as components of a continuous random vector, facilitating the development of a two-stage stochastic programming model.</p></li>
+</ol>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="background">
+<h1>Background<a class="headerlink" href="#background" title="Link to this heading">#</a></h1>
+<p>The classic farmer problem is an good example in applied mathematics and numerical analysis, showcasing the interplay between optimization, resource management, and decision making under constraints. At its core, the problem involves determining how to allocate limited resources to maximize outcomes like crop yield or profit, while meeting various constraints imposed by environmental, economic, and operational factors. These constraints often reflect real world complexities, such as limited water supply, variable soil conditions, or fluctuating market demands.</p>
+<p>While in its traditional deterministic form, the farmer problem has far-reaching implications, serving as a foundational model for more sophisticated studies in agricultural planning, resource optimization, and risk management. Its theoretical versatility has made it a powerful educational tool for introducing key concepts in optimization, such as linear programming, and numerical integration.</p>
+<p>However, the deterministic assumptions underlying the classic problem fall short of capturing the unpredictable realities faced by farmers. In practice, agricultural systems are subject to inherent uncertainties driven by dynamic and often uncontrollable factors. Crop yields, for example, are profoundly influenced by weather variability, soil health, pest outbreaks, and market volatility. These unpredictable elements create significant challenges, as farmers must navigate decision-making in environments characterized by incomplete or stochastic information.</p>
+<p>The growing need to address these uncertainties has propelled the development of stochastic extensions to the farmer problem. By introducing probabilistic models, we can account for the variability in key factors, offering more realistic and actionable insights for agricultural decision-making. Such extensions not only enhance the practical relevance of the model but also provide a platform for exploring advanced computational techniques, such as high-dimensional integration methods and stochastic programming.</p>
+<p>In this context, the farmer problem becomes a dynamic framework for bridging theoretical optimization with real-world agricultural challenges, paving the way for robust decision-making tools in the face of uncertainty.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="classic-example">
+<h1>Classic Example<a class="headerlink" href="#classic-example" title="Link to this heading">#</a></h1>
+<p>Recall key concepts from class <a class="reference external" href="https://ndcbe.github.io/optimization/notebooks/4/SP.html#key-concepts"> here</a> and refer to the <a class="reference download internal" download="" href="../../_downloads/a2a0e3646fceec8de529a0b6b24d426b/Farmers.pdf"><span class="xref download myst">lecture handout</span></a> This section revisits and breaks down previous work from the notebook originally created by <a class="reference external" href="https://github.com/jialuw96">Jialu Wang</a> and revised by <a class="reference external" href="https://github.com/MadelynnWatson">Maddie Watson</a> at the University of Notre Dame.</p>
+<p>The problem involves a European farmer managing a 500-acre farm, specializing in cultivating wheat, corn, and sugar beets. During the winter, the farmer plans how to allocate land for each crop effectively to optimize their yield and resources.</p>
+<p>The farmer knows that at least 200 tons (T) of wheat and 240 T of corn are required for cattle feed. These requirements can be met either through on-farm production or by purchasing from a wholesaler. Any surplus production beyond the feeding requirements can be sold. Over the past decade, the average selling prices have been 170 and 150 per ton for wheat and corn, respectively. However, purchasing these crops from a wholesaler incurs a 40% price premium due to transportation and margin costs.</p>
+<p>In addition to wheat and corn, sugar beet is another profitable crop. The farmer expects to sell sugar beets at 36 per ton. However, the European Commission imposes a production quota on sugar beets. Any yield exceeding the 6,000-ton quota can only be sold at a reduced price of 10 per ton.</p>
+<p>Based on historical data, the farmer estimates average yields of 2.5 T per acre for wheat, 3 T per acre for corn, and 20 T per acre for sugar beets.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\min \quad &amp; \underbrace{150x_1 + 230x_2 + 260x_3}_{\text{planting costs}} \underbrace{+ 238y_1 - 170w_1}_{\text{wheat purchases less sales}} \\
+       	&amp; \underbrace{+ 210y_2 - 150w_2}_\text{corn purchases less sales} ~
+		\underbrace{- 36w_3 - 10w_4}_{\text{sugar beet sales}} \\
+\text{s.t.} \quad &amp; x_1 + x_2 + x_3 \leq 500, \quad \text{(plant up to 500 acres)} \\
+       	&amp; 2.5x_1 + y_1 - w_1 \geq 200, \quad \text{(satisfy wheat demand)}\\
+       	&amp; 3x_2 + y_2 - w_2 \geq 240, \quad \text{(satisfy corn demand)}\\
+       	&amp; w_3 + w_4 \leq 20x_3, \quad \text{(beet sales cannot exceed production)}\\
+       	&amp; w_3 \leq 6000, \quad \text{(cap beet sales at favorable price)}\\
+       	&amp; x_1, x_2, x_3, y_1, y_2, w_1, w_2, w_3, w_4 \geq 0.
+\end{align*}
+\end{split}\]</div>
+<p>The following code was used from <a class="reference internal" href="../4/AdvancedTopics.html"><span class="std std-doc">Advanced Topics in Stochastic Programming</span></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_model</span><span class="p">(</span><span class="n">yields</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Code adapted from https://mpi-sppy.readthedocs.io/en/latest/examples.html#examples</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        yields: Yield information as a list, following the rank [wheat, corn, beets]</span>
+
+<span class="sd">    Return:</span>
+<span class="sd">        model: farmer problem model</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">ConcreteModel</span><span class="p">()</span>
+
+    <span class="c1"># Define sets</span>
+    <span class="n">all_crops</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">,</span> <span class="s2">&quot;CORN&quot;</span><span class="p">,</span> <span class="s2">&quot;BEETS&quot;</span><span class="p">]</span>
+    <span class="n">purchase_crops</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">,</span> <span class="s2">&quot;CORN&quot;</span><span class="p">]</span>
+    <span class="n">sell_crops</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">,</span> <span class="s2">&quot;CORN&quot;</span><span class="p">,</span> <span class="s2">&quot;BEETS_FAVORABLE&quot;</span><span class="p">,</span> <span class="s2">&quot;BEETS_UNFAVORABLE&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Crops field allocation</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">all_crops</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+    <span class="c1"># How many tons of crops to purchase</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">purchase_crops</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+    <span class="c1"># How many tons of crops to sell</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">sell_crops</span><span class="p">,</span><span class="n">within</span><span class="o">=</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+
+    <span class="c1"># Objective function</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">PLANTING_COST</span> <span class="o">=</span> <span class="mi">150</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">230</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">260</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;BEETS&quot;</span><span class="p">]</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">PURCHASE_COST</span> <span class="o">=</span> <span class="mi">238</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">210</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">SALES_REVENUE</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="mi">170</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">150</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="mi">36</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;BEETS_FAVORABLE&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;BEETS_UNFAVORABLE&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="c1"># Maximize the Obj is to minimize the negative of the Obj</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">OBJ</span> <span class="o">=</span> <span class="n">Objective</span><span class="p">(</span>
+        <span class="n">expr</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">PLANTING_COST</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">PURCHASE_COST</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">SALES_REVENUE</span><span class="p">,</span>
+        <span class="n">sense</span><span class="o">=</span><span class="n">minimize</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Constraints</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">CONSTR</span><span class="o">=</span> <span class="n">ConstraintList</span><span class="p">()</span>
+
+    <span class="n">model</span><span class="o">.</span><span class="n">CONSTR</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">summation</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">500</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">CONSTR</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+        <span class="n">yields</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">200</span>
+    <span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">CONSTR</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+        <span class="n">yields</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">240</span>
+    <span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">CONSTR</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+        <span class="n">yields</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;BEETS&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;BEETS_FAVORABLE&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;BEETS_UNFAVORABLE&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+    <span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;BEETS_FAVORABLE&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">setub</span><span class="p">(</span><span class="mi">6000</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">model</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#Solve the Optimimization Problem with Perfect yields</span>
+<span class="n">yields_perfect</span> <span class="o">=</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">build_model</span><span class="p">(</span><span class="n">yields_perfect</span><span class="p">)</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">SolverFactory</span><span class="p">(</span><span class="s2">&quot;ipopt&quot;</span><span class="p">)</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="c1">#Define a function for printing the optimal solution</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">print_opt_sol</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        model: solved farmer problem model</span>
+
+<span class="sd">    Return:</span>
+<span class="sd">        Prints the optimal solution</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;===Optimal solutions based on perfect information===&quot;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Culture.         | &#39;</span><span class="p">,</span> <span class="s1">&#39;Wheat |&#39;</span><span class="p">,</span> <span class="s1">&#39;Corn  |&#39;</span><span class="p">,</span> <span class="s1">&#39;Sugar Beets |&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Surface (acres)  | &#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">])</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;|&#39;</span><span class="p">,</span>
+          <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">])</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; |&#39;</span><span class="p">,</span>
+          <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;BEETS&quot;</span><span class="p">])</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39; |&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Yield (T)        | &#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">])</span><span class="o">*</span><span class="n">yields_perfect</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;|&#39;</span><span class="p">,</span>
+          <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">])</span><span class="o">*</span><span class="n">yields_perfect</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;|&#39;</span><span class="p">,</span>
+          <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;BEETS&quot;</span><span class="p">])</span><span class="o">*</span><span class="n">yields_perfect</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;|&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sales (T)        | &#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">])</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;|&#39;</span><span class="p">,</span>
+          <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">])</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;  |&#39;</span><span class="p">,</span>
+          <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;BEETS_FAVORABLE&quot;</span><span class="p">])</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;BEETS_UNFAVORABLE&quot;</span><span class="p">])</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;|&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Purchases (T)    | &#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">])</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;  |&#39;</span><span class="p">,</span>
+          <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">])</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;  |&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="s1">&#39;     |&#39;</span><span class="p">)</span>
+
+    <span class="n">profit</span> <span class="o">=</span> <span class="o">-</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">OBJ</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Overall profit: $&#39;</span><span class="p">,</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">profit</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">profit</span>
+
+<span class="n">profit_perfect</span> <span class="o">=</span> <span class="n">print_opt_sol</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>===Optimal solutions based on perfect information===
+Culture.         |  Wheat | Corn  | Sugar Beets |
+Surface (acres)  |  120.0 | 80.0  | 300.0  |
+Yield (T)        |  300.0 | 240.0 | 6000.0 |
+Sales (T)        |  100.0 | 0.0   | 6000.0 |
+Purchases (T)    |  0.0   | 0.0   | -      |
+Overall profit: $ 118600.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>The solution is straightforward and can be summarized as follows:</p>
+<ol class="arabic simple">
+<li><p><strong>Prioritize Sugar Beets</strong>: Allocate enough land to sugar beet cultivation to produce exactly 6,000 tons, meeting the quota imposed by the European Commission. This ensures the farmer maximizes profits from sugar beet sales at the higher price.</p></li>
+<li><p><strong>Meet Feeding Requirements</strong>: Dedicate sufficient land to wheat and corn to fulfill the minimum feeding requirements of 200 tons and 240 tons, respectively. This ensures the cattle feed needs are covered without incurring the added expense of purchasing from a wholesaler.</p></li>
+<li><p><strong>Optimize Remaining Land</strong>: Use any remaining acreage for wheat production. This is the most profitable option for utilizing the leftover land, as surplus wheat can be sold at a competitive price.
+By following this strategy, the farmer maximizes the efficiency of land use while adhering to the constraints and optimizing profits.</p></li>
+</ol>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="proposed-expansion">
+<h1>Proposed Expansion<a class="headerlink" href="#proposed-expansion" title="Link to this heading">#</a></h1>
+<p>We aim to enhance this project by addressing the inherent uncertainty in crop yields more comprehensively, empowering farmers to make more robust and realistic decisions. To capture this uncertainty, we model crop yields as random variables following a normal distribution, reflecting variability driven by environmental influences. This stochastic representation introduces the need to evaluate multi-dimensional integrals, as yield variability impacts optimization decisions across multiple crops and constraints.</p>
+<p>To efficiently compute these integrals, we utilize two advanced numerical techniques: full grids and sparse grids, both of which leverage Gaussian quadrature to achieve high-accuracy integration. Expanding the project would allow us to explore different modeling approaches, further optimize computational efficiency, and develop scalable solutions for a wider range of agricultural applications under uncertainty.</p>
+<p>An alternate approach involves assuming that crop yields across different crops are independent, allowing us to represent them as components of a continuous random vector. Under this formulation, land allocation decisions are treated as first-stage decisions—determined before yields are known. The optimization problem can then be structured using a two-stage stochastic programming framework, with the second stage capturing adjustments based on observed outcomes. Mathematically, the objective is expressed as:
+$<span class="math notranslate nohighlight">\(\begin{equation}
+\min_x \quad c^T x + E_{\xi}Q(x,\xi),
+\end{equation}\)</span><span class="math notranslate nohighlight">\(
+where \)</span>c<span class="math notranslate nohighlight">\( is the cost of initial planting, and \)</span>\xi = (\xi_1,\xi_2,\xi_3)$ is the scenario.</p>
+<p>To solve this stochastic optimization problem efficiently, we employ Sample Average Approximation (SAA), a widely used statistical method in stochastic programming. SAA replaces the expected value in the stochastic objective function,<span class="math notranslate nohighlight">\( E_{\xi}Q(x,\xi),\)</span> with a sample average computed from a finite set of scenarios. This transforms the stochastic problem into a deterministic one, which is more tractable.</p>
+<p>Looking ahead, we plan to extend the project by assuming that it is  a constraint convex problem, which is related to the second part of this class</p>
+<section id="numerical-back-ground">
+<h2>Numerical Back Ground<a class="headerlink" href="#numerical-back-ground" title="Link to this heading">#</a></h2>
+<p><strong>Full grid</strong></p>
+<p>Full grid methods are a classical approach to numerical integration, where the computational domain is discretized into a Cartesian product of points. For each dimension, a predetermined set of quadrature points is used, with Gaussian quadrature being a particularly efficient choice. Gaussian quadrature selects points and weights to maximize the accuracy of integration for polynomial functions up to a certain degree, reducing the error significantly compared to simple methods like midpoint or trapezoidal rules.
+For one-dimensional integration, Gaussian quadrature efficiently computes:
+$<span class="math notranslate nohighlight">\( \int^b_a f(x)dx ≈ \sum^n_{i=1} w_i f(x_i) \)</span>$</p>
+<p>where <span class="math notranslate nohighlight">\(x_i\)</span> are the quadrature points and <span class="math notranslate nohighlight">\(w_i\)</span> are the corresponding weights. When extended to d-dimensional problems, the full grid method involves the Cartesian product of these quadrature points across all dimensions. While highly accurate, the number of points required grows exponentially with the number of dimensions, leading to what is known as the curse of dimensionality.Specifically, the total number of points for d dimensions and
+n quadrature points per dimension is <span class="math notranslate nohighlight">\(n^d\)</span>
+, making this approach computationally infeasible for high-dimensional problems.</p>
+<p><strong>Sparse Grid</strong></p>
+<p>Sparse grids address the limitations of full grids by significantly reducing the number of points while maintaining comparable accuracy. The key idea is to focus on the most “informative” points in the integration domain, based on the hierarchical structure of the quadrature. Sparse grids achieve this by combining lower-dimensional full grids in a systematic way, effectively excluding redundant points.</p>
+<p>The foundation of sparse grids lies in the Smolyak algorithm, which constructs a sparse grid approximation for a d-dimensional integral as:
+$<span class="math notranslate nohighlight">\( \int_{[a,b]^d} f(x)dx ≈ \sum_{|i|&lt;m} c_i \prod^d_{k=1} \int^{b_k}_{a_k} f(x_k)dx_k \)</span><span class="math notranslate nohighlight">\(
+where \)</span>c_i$  are coefficients determined by the hierarchical structure. By selectively including quadrature points based on their contribution to the approximation accuracy, sparse grids avoid the exponential growth in points observed with full grids.One of the primary advantages of sparse grids is their efficiency in handling high-dimensional integrals.  However, sparse grids may exhibit slightly higher errors for functions with highly localized or non-smooth behavior due to the reduced number of points.</p>
+</section>
+<section id="full-grid">
+<h2>Full Grid<a class="headerlink" href="#full-grid" title="Link to this heading">#</a></h2>
+<p>Unlike the classical deterministic farmer problem, where crop yields are assumed to be known with certainty and we have perfect infomation, real-world scenarios often involve significant uncertainty. In this model, we account for this uncertainty by assuming that the yields of crops (WHEAT, CORN, and BEETS) follow a normal distribution characterized by a mean and standard deviation. By incorporating stochastic yields, we can create a more robust and realistic decision-making framework.</p>
+<p>To solve this problem, we employ a Full Grid Method using Gaussian quadrature to approximate the random variables. Gaussian quadrature allows us to efficiently represent the uncertainty in yields by selecting representative points (quadrature points) and associated weights, which capture the variability and likelihood of different yield outcomes. These points are combined to create scenarios that represent all possible combinations of crop yields, and scenario weights are calculated to reflect their probabilities.</p>
+<p>This approach ensures that the model captures the complexity and uncertainty of agricultural planning while leveraging stochastic programming techniques to optimize planting decisions, purchasing strategies, and sales, given the variability in crop yields.</p>
+<p>The choice to model crop yields with a normal distribution is grounded in practical and theoretical considerations. Crop yields are influenced by a multitude of factors, such as weather, soil quality, and pest outbreaks. Using a normal distribution to represent these uncertainties provides several advantages:</p>
+<ol class="arabic simple">
+<li><p>Central Limit Theorem (CLT): While the Central Limit Theorem (CLT) suggests that the sum of many independent random variables tends to approximate a normal distribution, real-world factors influencing crop yield—such as weather patterns and soil conditions—are often interdependent. Despite this, the normal distribution can still serve as a reasonable approximation for yield due to the aggregate effect of numerous contributing variables.</p></li>
+<li><p>Simplicity and Analytical Convenience:
+The normal distribution is well understood and widely used in stochastic modeling</p></li>
+<li><p>Tools like Gaussian quadrature can efficiently approximate expected values under normality, as was applied here using Hermite polynomials to generate points and weights.</p></li>
+<li><p>Practicality: Many agricultural studies and datasets report crop yields in terms of means and standard deviations, aligning naturally with normal distribution assumptions.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">build_model</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    -none</span>
+
+<span class="sd">    Return:</span>
+<span class="sd">    -farmer problem model</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">ConcreteModel</span><span class="p">()</span>
+
+    <span class="c1"># Define sets</span>
+    <span class="n">all_crops</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">,</span> <span class="s2">&quot;CORN&quot;</span><span class="p">,</span> <span class="s2">&quot;BEETS&quot;</span><span class="p">]</span>
+    <span class="n">purchase_crops</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">,</span> <span class="s2">&quot;CORN&quot;</span><span class="p">]</span>
+    <span class="n">sell_crops</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">,</span> <span class="s2">&quot;CORN&quot;</span><span class="p">,</span> <span class="s2">&quot;BEETS_FAVORABLE&quot;</span><span class="p">,</span> <span class="s2">&quot;BEETS_UNFAVORABLE&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Define random variables (mean and standard deviation for yields)</span>
+    <span class="n">yield_means</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s2">&quot;CORN&quot;</span><span class="p">:</span> <span class="mf">3.6</span><span class="p">,</span> <span class="s2">&quot;BEETS&quot;</span><span class="p">:</span> <span class="mf">20.0</span><span class="p">}</span>  <span class="c1"># Mean yields</span>
+    <span class="n">yield_stds</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;CORN&quot;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s2">&quot;BEETS&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>    <span class="c1"># Standard deviations</span>
+
+    <span class="c1"># Use Gaussian quadrature points and weights</span>
+    <span class="n">gauss_points</span><span class="p">,</span> <span class="n">gauss_weights</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
+    <span class="n">num_points</span> <span class="o">=</span> <span class="mi">7</span>  <span class="c1"># Number of points for quadrature</span>
+    <span class="k">for</span> <span class="n">crop</span> <span class="ow">in</span> <span class="n">all_crops</span><span class="p">:</span>
+        <span class="n">points</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">hermite</span><span class="o">.</span><span class="n">hermgauss</span><span class="p">(</span><span class="n">num_points</span><span class="p">)</span>
+        <span class="n">gauss_points</span><span class="p">[</span><span class="n">crop</span><span class="p">]</span> <span class="o">=</span> <span class="n">points</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">yield_stds</span><span class="p">[</span><span class="n">crop</span><span class="p">]</span> <span class="o">+</span> <span class="n">yield_means</span><span class="p">[</span><span class="n">crop</span><span class="p">]</span>
+        <span class="n">gauss_weights</span><span class="p">[</span><span class="n">crop</span><span class="p">]</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+
+    <span class="c1"># Generate scenarios (Full Grid using product of points)</span>
+    <span class="n">scenarios</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">gauss_points</span><span class="p">[</span><span class="n">crop</span><span class="p">]</span> <span class="k">for</span> <span class="n">crop</span> <span class="ow">in</span> <span class="n">all_crops</span><span class="p">]))</span>
+    <span class="n">scenario_weights</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">gauss_weights</span><span class="p">[</span><span class="n">crop</span><span class="p">]</span> <span class="k">for</span> <span class="n">crop</span> <span class="ow">in</span> <span class="n">all_crops</span><span class="p">]))</span>
+    <span class="n">scenario_weights</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="k">for</span> <span class="n">weights</span> <span class="ow">in</span> <span class="n">scenario_weights</span><span class="p">]</span>
+
+    <span class="c1"># Define variables</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">all_crops</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">NonNegativeReals</span><span class="p">)</span>  <span class="c1"># Crops field allocation</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">purchase_crops</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">NonNegativeReals</span><span class="p">)</span>  <span class="c1"># Tons of crops to purchase</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">sell_crops</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">NonNegativeReals</span><span class="p">)</span>  <span class="c1"># Tons of crops to sell</span>
+
+    <span class="c1"># Placeholder for scenario-based costs and revenues</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">ScenarioCosts</span> <span class="o">=</span> <span class="n">ComponentMap</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">ScenarioRevenues</span> <span class="o">=</span> <span class="n">ComponentMap</span><span class="p">()</span>
+
+    <span class="c1"># Constraints for each scenario</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">CONSTR</span> <span class="o">=</span> <span class="n">ConstraintList</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">scenario</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">scenarios</span><span class="p">):</span>
+        <span class="n">scenario_yields</span> <span class="o">=</span> <span class="p">{</span><span class="n">crop</span><span class="p">:</span> <span class="n">scenario</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">crop</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">all_crops</span><span class="p">)}</span>
+        <span class="n">scenario_weight</span> <span class="o">=</span> <span class="n">scenario_weights</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+        <span class="c1"># Calculate costs and revenues for this scenario</span>
+        <span class="n">planting_cost</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mi">150</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">230</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">260</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;BEETS&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">purchase_cost</span> <span class="o">=</span> <span class="mi">238</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">210</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]</span>
+        <span class="n">sales_revenue</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mi">170</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">150</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]</span>
+            <span class="o">+</span> <span class="mi">36</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;BEETS_FAVORABLE&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;BEETS_UNFAVORABLE&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Store scenario contributions</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">ScenarioCosts</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">scenario_weight</span> <span class="o">*</span> <span class="p">(</span><span class="n">planting_cost</span> <span class="o">+</span> <span class="n">purchase_cost</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">ScenarioRevenues</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">scenario_weight</span> <span class="o">*</span> <span class="n">sales_revenue</span>
+
+        <span class="c1"># Add constraints for this scenario</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">CONSTR</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">summation</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">500</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">CONSTR</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+            <span class="n">scenario_yields</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">200</span>
+        <span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">CONSTR</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+            <span class="n">scenario_yields</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">240</span>
+        <span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">CONSTR</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+            <span class="n">scenario_yields</span><span class="p">[</span><span class="s2">&quot;BEETS&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;BEETS&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;BEETS_FAVORABLE&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;BEETS_UNFAVORABLE&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Set upper bound for BEETS_FAVORABLE</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;BEETS_FAVORABLE&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">setub</span><span class="p">(</span><span class="mi">6000</span><span class="p">)</span>
+
+    <span class="c1"># Objective function: Weighted expected cost minus revenue</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">OBJ</span> <span class="o">=</span> <span class="n">Objective</span><span class="p">(</span>
+        <span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">ScenarioCosts</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">ScenarioRevenues</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">scenarios</span><span class="p">))),</span>
+        <span class="n">sense</span><span class="o">=</span><span class="n">minimize</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">model</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">build_model</span><span class="p">()</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">SolverFactory</span><span class="p">(</span><span class="s2">&quot;ipopt&quot;</span><span class="p">)</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">print_opt_sol</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        model: solved farmer problem model</span>
+
+<span class="sd">    Return:</span>
+<span class="sd">        Prints the optimal solution</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== Optimal solutions ===&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+
+    <span class="c1"># Table header</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:&lt;15}</span><span class="s2"> | </span><span class="si">{:&gt;8}</span><span class="s2"> | </span><span class="si">{:&gt;8}</span><span class="s2"> | </span><span class="si">{:&gt;12}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;Culture&quot;</span><span class="p">,</span> <span class="s2">&quot;Wheat&quot;</span><span class="p">,</span> <span class="s2">&quot;Corn&quot;</span><span class="p">,</span> <span class="s2">&quot;Sugar Beets&quot;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+
+    <span class="c1"># Surface (acres)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:&lt;15}</span><span class="s2"> | </span><span class="si">{:&gt;8.1f}</span><span class="s2"> | </span><span class="si">{:&gt;8.1f}</span><span class="s2"> | </span><span class="si">{:&gt;12.1f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="s2">&quot;Surface (acres)&quot;</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]),</span>
+        <span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]),</span>
+        <span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;BEETS&quot;</span><span class="p">])</span>
+    <span class="p">))</span>
+
+    <span class="c1"># Yield (T)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:&lt;15}</span><span class="s2"> | </span><span class="si">{:&gt;8.1f}</span><span class="s2"> | </span><span class="si">{:&gt;8.1f}</span><span class="s2"> | </span><span class="si">{:&gt;12.1f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="s2">&quot;Yield (T)&quot;</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="n">yields_perfect</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="n">yields_perfect</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;BEETS&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="n">yields_perfect</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="p">))</span>
+
+    <span class="c1"># Sales (T)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:&lt;15}</span><span class="s2"> | </span><span class="si">{:&gt;8.1f}</span><span class="s2"> | </span><span class="si">{:&gt;8.1f}</span><span class="s2"> | </span><span class="si">{:&gt;12.1f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="s2">&quot;Sales (T)&quot;</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]),</span>
+        <span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]),</span>
+        <span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;BEETS_FAVORABLE&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;BEETS_UNFAVORABLE&quot;</span><span class="p">])</span>
+    <span class="p">))</span>
+
+    <span class="c1"># Purchases (T)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:&lt;15}</span><span class="s2"> | </span><span class="si">{:&gt;8.1f}</span><span class="s2"> | </span><span class="si">{:&gt;8.1f}</span><span class="s2"> | </span><span class="si">{:&gt;12}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="s2">&quot;Purchases (T)&quot;</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]),</span>
+        <span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]),</span>
+        <span class="s2">&quot;-&quot;</span>
+    <span class="p">))</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+
+    <span class="c1"># Profit</span>
+    <span class="n">profit</span> <span class="o">=</span> <span class="o">-</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">OBJ</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:&lt;15}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;Overall profit:&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;$</span><span class="si">{</span><span class="n">profit</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">profit</span>
+
+<span class="n">profit_perfect</span> <span class="o">=</span> <span class="n">print_opt_sol</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Optimal solutions ===
+
+Culture         |    Wheat |     Corn |  Sugar Beets
+--------------------------------------------------
+Surface (acres) |     16.5 |    114.3 |        369.2
+Yield (T)       |     41.2 |    342.9 |       7384.8
+Sales (T)       |      0.0 |      0.0 |       6000.0
+Purchases (T)   |    181.5 |      0.0 |            -
+--------------------------------------------------
+Overall profit: $48047.3
+</pre></div>
+</div>
+</div>
+</div>
+<p>Out of the available land, 93.7 acres were allocated to wheat, 82.6 acres to corn, and 323.7 acres to sugar beets. This distribution indicates that sugar beets were identified as the most economically beneficial crop.</p>
+<p>The yield results support this prioritization. Wheat and corn produced 234.3 tons and 247.7 tons, respectively, while sugar beets yielded an impressive 6474.5 tons. Despite significant production of wheat and corn, no sales were reported for these crops. In contrast, 4792.4 tons of sugar beets were sold, making it evident that sugar beets were cultivated primarily for market sales and served as the primary revenue driver.</p>
+<p>The overall profit achieved through this plan was $55,311. Moreover, the absence of wheat and corn sales likely helped avoid additional costs such as storage, transportation, and market-related expenditures, further boosting profitability.</p>
+<p>In conclusion, the optimal plan demonstrates the importance of aligning crop selection with market dynamics and operational priorities. By prioritizing sugar beet production and focusing its sales efforts on the most profitable crop, the farm successfully maximized its profits while maintaining sustainability and resource efficiency</p>
+</section>
+<section id="sparse-grid">
+<h2>Sparse Grid<a class="headerlink" href="#sparse-grid" title="Link to this heading">#</a></h2>
+<p>To solve this problem, we now employ a Sparse Grid Method using Gaussian quadrature to approximate the random variables. The Sparse Grid Method builds on Gaussian quadrature by efficiently constructing a multidimensional grid that reduces the number of representative points (quadrature points) while maintaining accuracy. This approach strategically combines points from lower-dimensional grids to approximate the uncertainty in yields with fewer computational resources than a full grid.</p>
+<p>These quadrature points and their associated weights capture the variability and likelihood of different yield outcomes. The sparse grid approach generates scenarios that represent all possible combinations of crop yields in a computationally efficient manner, while scenario weights reflect the probabilities of these outcomes.</p>
+<p>By leveraging the Sparse Grid Method, the model captures the complexity and uncertainty of agricultural planning while optimizing planting decisions, purchasing strategies, and sales under stochastic programming principles, ensuring a practical yet rigorous framework for handling variability in crop yields.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sparse_grid_points_and_weights</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">all_crops</span><span class="p">,</span> <span class="n">yield_means</span><span class="p">,</span> <span class="n">yield_stds</span><span class="p">,</span> <span class="n">num_points</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct sparse grid points and weights using Smolyak&#39;s algorithm.</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    - d</span>
+<span class="sd">    - m</span>
+<span class="sd">    - all_crops (list): List of all crops.</span>
+<span class="sd">    - yield_means (dict): Mean yields for each crop.</span>
+<span class="sd">    - yield_stds (dict): Standard deviations for each crop.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - A tuple containing sparse grid points and weights.</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Generate 1D Gaussian quadrature points and weights</span>
+    <span class="n">points_1d</span><span class="p">,</span> <span class="n">weights_1d</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">crop</span> <span class="ow">in</span> <span class="n">all_crops</span><span class="p">:</span>
+        <span class="n">points</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">hermite</span><span class="o">.</span><span class="n">hermgauss</span><span class="p">(</span><span class="n">num_points</span><span class="p">)</span>
+        <span class="n">points_1d</span><span class="p">[</span><span class="n">crop</span><span class="p">]</span> <span class="o">=</span> <span class="n">points</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">yield_stds</span><span class="p">[</span><span class="n">crop</span><span class="p">]</span> <span class="o">+</span> <span class="n">yield_means</span><span class="p">[</span><span class="n">crop</span><span class="p">]</span>
+        <span class="n">weights_1d</span><span class="p">[</span><span class="n">crop</span><span class="p">]</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+
+    <span class="c1"># Combine 1D rules to form sparse grid</span>
+    <span class="n">sparse_points</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">sparse_weights</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">index_set</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">num_points</span><span class="p">))</span>  <span class="c1"># Index sets for 1D quadrature</span>
+
+    <span class="k">for</span> <span class="n">idx_comb</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="n">index_set</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="n">d</span><span class="p">):</span>
+        <span class="n">weights_product</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">([</span><span class="n">weights_1d</span><span class="p">[</span><span class="n">all_crops</span><span class="p">[</span><span class="n">k</span><span class="p">]][</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">idx_comb</span><span class="p">)])</span>
+        <span class="n">points_product</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">points_1d</span><span class="p">[</span><span class="n">all_crops</span><span class="p">[</span><span class="n">k</span><span class="p">]][</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">idx_comb</span><span class="p">))]</span>
+        <span class="n">sparse_weights</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">weights_product</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_product</span><span class="p">))</span>
+        <span class="n">sparse_points</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">points_product</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sparse_points</span><span class="p">,</span> <span class="n">sparse_weights</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">build_model</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    input: none</span>
+<span class="sd">    output: farmer problem model</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">ConcreteModel</span><span class="p">()</span>
+
+    <span class="c1"># Define sets</span>
+    <span class="n">all_crops</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">,</span> <span class="s2">&quot;CORN&quot;</span><span class="p">,</span> <span class="s2">&quot;BEETS&quot;</span><span class="p">]</span>
+    <span class="n">purchase_crops</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">,</span> <span class="s2">&quot;CORN&quot;</span><span class="p">]</span>
+    <span class="n">sell_crops</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">,</span> <span class="s2">&quot;CORN&quot;</span><span class="p">,</span> <span class="s2">&quot;BEETS_FAVORABLE&quot;</span><span class="p">,</span> <span class="s2">&quot;BEETS_UNFAVORABLE&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Define random variables (mean and standard deviation for yields)</span>
+    <span class="n">yield_means</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s2">&quot;CORN&quot;</span><span class="p">:</span> <span class="mf">3.6</span><span class="p">,</span> <span class="s2">&quot;BEETS&quot;</span><span class="p">:</span> <span class="mf">20.0</span><span class="p">}</span>  <span class="c1"># Mean yields</span>
+    <span class="n">yield_stds</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;CORN&quot;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s2">&quot;BEETS&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>     <span class="c1"># Standard deviations</span>
+
+    <span class="c1"># Generate sparse grid scenarios and weights</span>
+    <span class="n">sparse_points</span><span class="p">,</span> <span class="n">sparse_weights</span> <span class="o">=</span> <span class="n">sparse_grid_points_and_weights</span><span class="p">(</span>
+        <span class="n">d</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">all_crops</span><span class="p">),</span> <span class="n">m</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">all_crops</span><span class="o">=</span><span class="n">all_crops</span><span class="p">,</span> <span class="n">yield_means</span><span class="o">=</span><span class="n">yield_means</span><span class="p">,</span> <span class="n">yield_stds</span><span class="o">=</span><span class="n">yield_stds</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Define variables</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">all_crops</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">NonNegativeReals</span><span class="p">)</span>  <span class="c1"># Crops field allocation</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">purchase_crops</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">NonNegativeReals</span><span class="p">)</span>  <span class="c1"># Tons of crops to purchase</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">sell_crops</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">NonNegativeReals</span><span class="p">)</span>  <span class="c1"># Tons of crops to sell</span>
+
+    <span class="c1"># Placeholder for scenario-based costs and revenues</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">ScenarioCosts</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">ScenarioRevenues</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># Constraints for each scenario</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">CONSTR</span> <span class="o">=</span> <span class="n">ConstraintList</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">scenario</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sparse_points</span><span class="p">):</span>
+        <span class="n">scenario_yields</span> <span class="o">=</span> <span class="p">{</span><span class="n">crop</span><span class="p">:</span> <span class="n">scenario</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">crop</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">all_crops</span><span class="p">)}</span>
+        <span class="n">scenario_weight</span> <span class="o">=</span> <span class="n">sparse_weights</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+        <span class="c1"># Calculate costs and revenues for this scenario</span>
+        <span class="n">planting_cost</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mi">150</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">230</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">260</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;BEETS&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">purchase_cost</span> <span class="o">=</span> <span class="mi">238</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">210</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]</span>
+        <span class="n">sales_revenue</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mi">170</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">150</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]</span>
+            <span class="o">+</span> <span class="mi">36</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;BEETS_FAVORABLE&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;BEETS_UNFAVORABLE&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Store scenario contributions</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">ScenarioCosts</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">scenario_weight</span> <span class="o">*</span> <span class="p">(</span><span class="n">planting_cost</span> <span class="o">+</span> <span class="n">purchase_cost</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">ScenarioRevenues</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">scenario_weight</span> <span class="o">*</span> <span class="n">sales_revenue</span>
+
+        <span class="c1"># Add constraints for this scenario</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">CONSTR</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">crop</span><span class="p">]</span> <span class="k">for</span> <span class="n">crop</span> <span class="ow">in</span> <span class="n">all_crops</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">500</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">CONSTR</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+            <span class="n">scenario_yields</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;WHEAT&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">200</span>
+        <span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">CONSTR</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+            <span class="n">scenario_yields</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;CORN&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">240</span>
+        <span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">CONSTR</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+            <span class="n">scenario_yields</span><span class="p">[</span><span class="s2">&quot;BEETS&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;BEETS&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;BEETS_FAVORABLE&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;BEETS_UNFAVORABLE&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Set upper bound for BEETS_FAVORABLE</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="s2">&quot;BEETS_FAVORABLE&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">setub</span><span class="p">(</span><span class="mi">6000</span><span class="p">)</span>
+
+    <span class="c1"># Objective function: Weighted expected cost minus revenue</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">OBJ</span> <span class="o">=</span> <span class="n">Objective</span><span class="p">(</span>
+        <span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">ScenarioCosts</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">ScenarioRevenues</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sparse_points</span><span class="p">))),</span>
+        <span class="n">sense</span><span class="o">=</span><span class="n">minimize</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">model</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">build_model</span><span class="p">()</span>
+
+<span class="n">solver</span> <span class="o">=</span> <span class="n">SolverFactory</span><span class="p">(</span><span class="s2">&quot;ipopt&quot;</span><span class="p">)</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="n">profit_perfect</span> <span class="o">=</span> <span class="n">print_opt_sol</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Optimal solutions ===
+
+Culture         |    Wheat |     Corn |  Sugar Beets
+--------------------------------------------------
+Surface (acres) |     89.0 |     82.6 |        328.4
+Yield (T)       |    222.5 |    247.7 |       6568.9
+Sales (T)       |      0.0 |      0.0 |       6000.0
+Purchases (T)   |     10.1 |      0.0 |            -
+--------------------------------------------------
+Overall profit: $95869.5
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="two-stage-stochastic">
+<h2>Two-Stage Stochastic<a class="headerlink" href="#two-stage-stochastic" title="Link to this heading">#</a></h2>
+<p>Contrary to the assumption made in <a class="reference external" href="https://ndcbe.github.io/optimization/notebooks/4/SP.html">4.1. Stochastic Programming</a>, we may also assume that yields for the different crops are <strong>independent</strong>. In that case, we may as well consider a <strong>continuous random vector</strong> for the yields. Again, the decisions on land allocation are first-stage decisions because they are taken befor knowledge of the yields. Second-stage formulation can again be described as <span class="math notranslate nohighlight">\(E_{\xi}Q(x,\xi)\)</span>, where <span class="math notranslate nohighlight">\(Q(x,\xi)\)</span> is the value of the second stage for a given realization of the random vector. The optimization problem becomes:<br />
+$<span class="math notranslate nohighlight">\(\begin{equation}
+\min_x \quad c^T x + E_{\xi}Q(x,\xi),
+\end{equation}\)</span><span class="math notranslate nohighlight">\(
+where \)</span>c<span class="math notranslate nohighlight">\( is the cost of initial planting, and \)</span>\xi = (\xi_1,\xi_2,\xi_3)$ is the scenario.</p>
+<p>Now, in this particular example, the computation of <span class="math notranslate nohighlight">\(Q(x,\xi)\)</span> can be separated among the three crops due to independence of the random vector. We can then write:<br />
+$<span class="math notranslate nohighlight">\(\begin{equation}
+E_{\xi}Q(x,\xi) = \sum_{i=1}^3 E_{\xi}Q_i(x_i,\xi_i)
+\end{equation}\)</span><span class="math notranslate nohighlight">\(
+where \)</span>Q_i(x_i,\xi_i)<span class="math notranslate nohighlight">\( is the optimal second-stage value of purchases and sales for crop \)</span>i$.</p>
+<p>The remaining question is how to compute <span class="math notranslate nohighlight">\(E_{\xi}Q_i(x_i,\xi)\)</span>. This section introduces and implements the following methods to address this:</p>
+<ul class="simple">
+<li><p>Sample Average Approximation</p></li>
+<li><p>Exact Integral</p></li>
+</ul>
+<p>To illustate this, let us assume that the yield for each crop <span class="math notranslate nohighlight">\(i\)</span>, denoted by <span class="math notranslate nohighlight">\(t_i\)</span>, can be appropriately described by a uniform random variable, inside some range <span class="math notranslate nohighlight">\([l_i,u_i]\)</span>. For the sake of comparison, we may take <span class="math notranslate nohighlight">\(l_i\)</span> to be 80% of the mean yield and <span class="math notranslate nohighlight">\(u_i\)</span> to be 120% of the mean yield so that the expectations for the yields will be the same as in <a class="reference external" href="https://ndcbe.github.io/optimization/notebooks/4/SP.html">4.1. Stochastic Programming</a> (to calculate VSS, will see this later).</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\text{yield of wheat} &amp;\sim U[2,3], \\
+\text{yield of corn} &amp;\sim U[2.4,3.6], \\
+\text{yield of sugar beets} &amp;\sim U[16,24].
+\end{align}\end{split}\]</div>
+</section>
+<section id="sample-average-approximation-saa">
+<h2>Sample Average Approximation (SAA)<a class="headerlink" href="#sample-average-approximation-saa" title="Link to this heading">#</a></h2>
+<p>Sample Average Approximation (SAA) is a statistical method commonly used in stochastic programming and optimization to solve problems with uncertainty. The idea is to replace the expected values in a stochastic objective funtion (<span class="math notranslate nohighlight">\(E_{\xi} Q(x,\xi)\)</span>, in our case) with sample averages, using a finite set of random samples (scenarios). This converts the original stochastic problem into a deterministic one, which is often easier to solve. Here is a basic breakdown of the steps involved:</p>
+<ol class="arabic simple">
+<li><p><strong>Sample Generation</strong>: A finite number of random samples (or scenarios) are drawn from the probability distribution representing the uncertainty in the problem. These samples capture possible realizations of the uncertain parameters.</p></li>
+<li><p><strong>Objective Approximation</strong>: The expected objective function in the original stochastic problem is approximated by the sample average of the objective over these scenarios.</p></li>
+<li><p><strong>Deterministic Problem Formation</strong>: With the sample average objective function in place, the problem becomes deterministic and can be solved using standard optimization techniques.</p></li>
+</ol>
+<p>Typically, a larger sample size improves the quality of the approximation but increases computational costs.</p>
+<p>In the farmers’ example, the SAA approach estimates <span class="math notranslate nohighlight">\(E_{\xi}Q_i(x_i,\xi_i)\)</span> as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-73bc64b3-7707-45e9-aae4-a070f075008a">
+<span class="eqno">(17)<a class="headerlink" href="#equation-73bc64b3-7707-45e9-aae4-a070f075008a" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\frac{1}{N} \sum_{j=1}^N Q_i(x_i,\xi_{ij}),
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\xi_{i1}, \xi_{i2},...,\xi_{iN}\)</span> are independent samples of <span class="math notranslate nohighlight">\(\xi_i\)</span>, and N is the number of scenarios chosen. Specifically, for uniform random variable, each <span class="math notranslate nohighlight">\(\xi_{ij}\)</span> is drawn from <span class="math notranslate nohighlight">\(U_i[l_i,u_i]\)</span> randomly.</p>
+<p>Consequently, the optimization problem can be reformulated as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-f8f9b7c3-8abf-4226-b4ac-332ca3078cc9">
+<span class="eqno">(18)<a class="headerlink" href="#equation-f8f9b7c3-8abf-4226-b4ac-332ca3078cc9" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\min_x \quad c^T x + \frac{1}{N} \sum_{i=1}^3 \sum_{j=1}^N Q_i(x_i,\xi_{ij})
+\end{equation}\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">SAA_uniform_model</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    - N: Size of the problem</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - A Pyomo ConcreteModel representing the SAA uniform model.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Define the data</span>
+    <span class="n">all_crops</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Wheat&quot;</span><span class="p">,</span> <span class="s2">&quot;Corn&quot;</span><span class="p">,</span> <span class="s2">&quot;SugarBeets&quot;</span><span class="p">]</span>
+    <span class="n">purchase_crops</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Wheat&quot;</span><span class="p">,</span> <span class="s2">&quot;Corn&quot;</span><span class="p">]</span>
+    <span class="n">sale_crops</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Wheat&quot;</span><span class="p">,</span> <span class="s2">&quot;Corn&quot;</span><span class="p">,</span> <span class="s2">&quot;BEETS_FAVORABLE&quot;</span><span class="p">,</span> <span class="s2">&quot;BEETS_UNFAVORABLE&quot;</span><span class="p">]</span>
+
+    <span class="n">land_capacity</span> <span class="o">=</span> <span class="mi">500</span>
+    <span class="n">crop_costs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Wheat&quot;</span><span class="p">:</span> <span class="mi">150</span><span class="p">,</span> <span class="s2">&quot;Corn&quot;</span><span class="p">:</span> <span class="mi">230</span><span class="p">,</span> <span class="s2">&quot;SugarBeets&quot;</span><span class="p">:</span> <span class="mi">260</span><span class="p">}</span>
+    <span class="n">sale_price</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Wheat&quot;</span><span class="p">:</span> <span class="mi">170</span><span class="p">,</span> <span class="s2">&quot;Corn&quot;</span><span class="p">:</span> <span class="mi">150</span><span class="p">,</span> <span class="s2">&quot;BEETS_FAVORABLE&quot;</span><span class="p">:</span> <span class="mi">36</span><span class="p">,</span> <span class="s2">&quot;BEETS_UNFAVORABLE&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}</span>
+    <span class="n">purchase_price</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Wheat&quot;</span><span class="p">:</span> <span class="mi">238</span><span class="p">,</span> <span class="s2">&quot;Corn&quot;</span><span class="p">:</span> <span class="mi">210</span><span class="p">}</span>
+    <span class="n">min_require</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Wheat&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span> <span class="s2">&quot;Corn&quot;</span><span class="p">:</span> <span class="mi">240</span><span class="p">}</span>
+    <span class="n">avg_yield</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Wheat&quot;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span> <span class="s2">&quot;Corn&quot;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s2">&quot;SugarBeets&quot;</span><span class="p">:</span> <span class="mf">20.0</span><span class="p">}</span>
+    <span class="n">lower_yield</span> <span class="o">=</span> <span class="p">{</span><span class="n">crop</span><span class="p">:</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="n">avg_yield</span><span class="p">[</span><span class="n">crop</span><span class="p">]</span> <span class="k">for</span> <span class="n">crop</span> <span class="ow">in</span> <span class="n">all_crops</span><span class="p">}</span>
+    <span class="n">upper_yield</span> <span class="o">=</span> <span class="p">{</span><span class="n">crop</span><span class="p">:</span> <span class="mf">1.2</span> <span class="o">*</span> <span class="n">avg_yield</span><span class="p">[</span><span class="n">crop</span><span class="p">]</span> <span class="k">for</span> <span class="n">crop</span> <span class="ow">in</span> <span class="n">all_crops</span><span class="p">}</span>
+
+    <span class="c1"># Generate random yields for N scenarios</span>
+    <span class="n">yields</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">crop</span><span class="p">:</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">lower_yield</span><span class="p">[</span><span class="n">crop</span><span class="p">],</span> <span class="n">upper_yield</span><span class="p">[</span><span class="n">crop</span><span class="p">])</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)}</span>
+        <span class="k">for</span> <span class="n">crop</span> <span class="ow">in</span> <span class="n">all_crops</span>
+    <span class="p">}</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">ConcreteModel</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">all_crops</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">purchase_crops</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">domain</span><span class="o">=</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">sale_crops</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">domain</span><span class="o">=</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+
+    <span class="c1"># Parameter</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">yields</span> <span class="o">=</span> <span class="n">Param</span><span class="p">(</span>
+        <span class="n">all_crops</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">initialize</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">,</span> <span class="n">crop</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">yields</span><span class="p">[</span><span class="n">crop</span><span class="p">][</span><span class="n">n</span><span class="p">],</span> <span class="n">within</span><span class="o">=</span><span class="n">Reals</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Objective function</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">objective_rule</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+      <span class="n">first_stage_cost</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">crop_costs</span><span class="p">[</span><span class="n">crop</span><span class="p">]</span> <span class="o">*</span> <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">crop</span><span class="p">]</span> <span class="k">for</span> <span class="n">crop</span> <span class="ow">in</span> <span class="n">all_crops</span><span class="p">)</span>
+      <span class="n">second_stage_cost</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span>
+            <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span>
+                <span class="o">-</span><span class="n">sale_price</span><span class="p">[</span><span class="n">sale</span><span class="p">]</span> <span class="o">*</span> <span class="n">m</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="n">sale</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">sale</span> <span class="ow">in</span> <span class="n">sale_crops</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span>
+            <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span>
+                <span class="n">purchase_price</span><span class="p">[</span><span class="n">purchase</span><span class="p">]</span> <span class="o">*</span> <span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">purchase</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">purchase</span> <span class="ow">in</span> <span class="n">purchase_crops</span>
+                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+      <span class="k">return</span> <span class="n">first_stage_cost</span> <span class="o">+</span> <span class="n">second_stage_cost</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">Objective</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="n">objective_rule</span><span class="p">,</span> <span class="n">sense</span><span class="o">=</span><span class="n">minimize</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">land_constraint_rule</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+      <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">crop</span><span class="p">]</span> <span class="k">for</span> <span class="n">crop</span> <span class="ow">in</span> <span class="n">all_crops</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">land_capacity</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">land_constraint</span> <span class="o">=</span> <span class="n">Constraint</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="n">land_constraint_rule</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">wheat_produce_rule</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+      <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;Wheat&quot;</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">yields</span><span class="p">[</span><span class="s2">&quot;Wheat&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="s2">&quot;Wheat&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="s2">&quot;Wheat&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">min_require</span><span class="p">[</span><span class="s2">&quot;Wheat&quot;</span><span class="p">]</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">wheat_produce</span> <span class="o">=</span> <span class="n">Constraint</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">rule</span><span class="o">=</span><span class="n">wheat_produce_rule</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">corn_produce_rule</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+      <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;Corn&quot;</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">yields</span><span class="p">[</span><span class="s2">&quot;Corn&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="s2">&quot;Corn&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="s2">&quot;Corn&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">min_require</span><span class="p">[</span><span class="s2">&quot;Corn&quot;</span><span class="p">]</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">corn_produce</span> <span class="o">=</span> <span class="n">Constraint</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">rule</span><span class="o">=</span><span class="n">corn_produce_rule</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">beets_produce_rule</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+      <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="s2">&quot;BEETS_FAVORABLE&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="s2">&quot;BEETS_UNFAVORABLE&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">m</span><span class="o">.</span><span class="n">yields</span><span class="p">[</span><span class="s2">&quot;SugarBeets&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;SugarBeets&quot;</span><span class="p">]</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">beets_produce</span> <span class="o">=</span> <span class="n">Constraint</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">rule</span><span class="o">=</span><span class="n">beets_produce_rule</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">beets_favorable_rule</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+      <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="s2">&quot;BEETS_FAVORABLE&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">6000</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">beets_favorable</span> <span class="o">=</span> <span class="n">Constraint</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">rule</span><span class="o">=</span><span class="n">beets_favorable_rule</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">model</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example for N=10</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">SAA_uniform_model</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">SolverFactory</span><span class="p">(</span><span class="s2">&quot;ipopt&quot;</span><span class="p">)</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: 
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+
+This version of Ipopt was compiled from source code available at
+    https://github.com/IDAES/Ipopt as part of the Institute for the Design of
+    Advanced Energy Systems Process Systems Engineering Framework (IDAES PSE
+    Framework) Copyright (c) 2018-2019. See https://github.com/IDAES/idaes-pse.
+
+This version of Ipopt was compiled using HSL, a collection of Fortran codes
+    for large-scale scientific computation.  All technical papers, sales and
+    publicity material resulting from use of the HSL codes within IPOPT must
+    contain the following acknowledgement:
+        HSL, a collection of Fortran codes for large-scale scientific
+        computation. See http://www.hsl.rl.ac.uk.
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:        0
+Number of nonzeros in inequality constraint Jacobian.:      103
+Number of nonzeros in Lagrangian Hessian.............:        0
+
+Total number of variables............................:       63
+                     variables with only lower bounds:       63
+                variables with lower and upper bounds:        0
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:        0
+Total number of inequality constraints...............:       41
+        inequality constraints with only lower bounds:       20
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:       21
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  7.2199928e+00 2.40e+02 6.01e+00  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1  1.0961153e+02 2.39e+02 2.74e+01  -1.0 1.87e+02    -  4.58e-04 1.23e-02h  1
+   2  1.7737678e+02 2.39e+02 2.73e+01  -1.0 1.63e+02    -  2.06e-03 2.19e-03h  1
+   3  3.8485686e+02 2.37e+02 2.72e+01  -1.0 1.63e+02    -  1.03e-03 6.32e-03h  1
+   4  6.9645766e+02 2.35e+02 2.69e+01  -1.0 1.61e+02    -  3.41e-03 9.33e-03h  1
+   5  1.1190314e+03 2.32e+02 2.66e+01  -1.0 1.56e+02    -  8.44e-03 1.28e-02h  1
+   6  2.9315838e+03 2.19e+02 2.51e+01  -1.0 1.53e+02    -  3.53e-03 5.53e-02h  1
+   7  8.4633078e+03 1.79e+02 2.05e+01  -1.0 1.42e+02    -  1.13e-02 1.84e-01h  1
+   8  8.8850960e+03 1.74e+02 2.00e+01  -1.0 2.50e+02    -  2.03e-02 2.59e-02h  1
+   9  9.8115298e+03 1.66e+02 1.90e+01  -1.0 1.17e+02    -  9.64e-03 4.95e-02h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  10  9.7998826e+03 1.65e+02 1.89e+01  -1.0 2.18e+02    -  2.04e-03 5.27e-03f  1
+  11  9.8824285e+03 1.64e+02 1.88e+01  -1.0 1.17e+02    -  1.59e-02 5.04e-03h  1
+  12  1.0069094e+04 1.56e+02 1.79e+01  -1.0 2.30e+02    -  3.73e-03 4.85e-02h  1
+  13  1.0063950e+04 1.56e+02 1.79e+01  -1.0 7.52e+02    -  1.21e-02 1.17e-04f  1
+  14  1.0873846e+04 1.47e+02 1.68e+01  -1.0 1.17e+02    -  3.86e-03 6.03e-02h  1
+  15  1.0642981e+04 1.46e+02 1.67e+01  -1.0 1.09e+03    -  1.51e-03 2.40e-03f  1
+  16  1.0675561e+04 1.46e+02 1.67e+01  -1.0 1.08e+02    -  3.66e-02 2.28e-03h  1
+  17  1.0959826e+04 1.36e+02 1.56e+01  -1.0 1.43e+02    -  3.87e-04 6.72e-02h  1
+  18  1.0803055e+04 1.36e+02 1.56e+01  -1.0 3.00e+03    -  1.09e-03 5.19e-04f  1
+  19  1.0395432e+04 1.36e+02 1.56e+01  -1.0 9.86e+03    -  5.02e-04 5.21e-04f  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  20  1.0394980e+04 1.36e+02 1.56e+01  -1.0 2.25e+02    -  3.73e-02 2.83e-04h  1
+  21  1.0467561e+04 1.34e+02 1.54e+01  -1.0 1.30e+02    -  4.00e-04 1.32e-02h  1
+  22  1.0471944e+04 1.34e+02 1.54e+01  -1.0 1.11e+02    -  1.74e-02 4.24e-04h  1
+  23  1.0502607e+04 1.33e+02 1.53e+01  -1.0 1.48e+02    -  5.79e-04 6.39e-03h  1
+  24  1.0623796e+04 1.32e+02 1.51e+01  -1.0 1.02e+02    -  2.32e-02 9.62e-03h  1
+  25  8.9957165e+03 1.05e+02 1.20e+01  -1.0 2.69e+02    -  2.48e-04 2.06e-01f  1
+  26 -9.2428407e+04 1.01e+02 1.16e+01  -1.0 3.06e+04    -  1.55e-03 3.65e-02f  1
+  27 -9.3192171e+04 1.00e+02 4.96e+01  -1.0 1.12e+03    -  5.15e-01 8.55e-03f  1
+  28 -7.7188992e+04 4.74e+01 6.51e+00  -1.0 1.92e+02    -  1.89e-01 5.27e-01h  1
+  29 -6.2991915e+04 0.00e+00 3.84e+01  -1.0 9.41e+01    -  5.72e-02 1.00e+00h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  30 -7.9535160e+04 0.00e+00 3.79e+01  -1.0 2.08e+03    -  1.24e-02 1.00e+00f  1
+  31 -1.1030479e+05 0.00e+00 2.64e+01  -1.0 6.13e+03    -  3.05e-01 6.30e-01f  1
+  32 -1.1061324e+05 0.00e+00 1.82e+01  -1.0 2.75e+02    -  3.08e-01 1.40e-01f  1
+  33 -1.1076799e+05 0.00e+00 1.82e+01  -1.0 7.54e+01    -  3.36e-03 3.69e-01f  1
+  34 -1.1406306e+05 0.00e+00 9.01e-01  -1.0 1.08e+03    -  1.00e+00 5.70e-01f  1
+  35 -1.1409653e+05 0.00e+00 5.87e-01  -1.0 1.81e+01    -  6.16e-01 3.49e-01f  1
+  36 -1.1410890e+05 0.00e+00 3.15e-01  -1.0 9.49e+00    -  4.08e-01 4.63e-01f  1
+  37 -1.1412090e+05 0.00e+00 3.35e-01  -1.0 1.79e+01    -  2.17e-01 1.00e+00f  1
+  38 -1.1415302e+05 0.00e+00 8.53e-02  -1.0 6.38e+01    -  2.35e-01 7.43e-01f  1
+  39 -1.1415313e+05 0.00e+00 6.19e-04  -1.0 2.61e-01    -  9.96e-01 1.00e+00f  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  40 -1.1416825e+05 0.00e+00 3.71e-03  -2.5 2.52e-01    -  9.38e-01 9.66e-01f  1
+  41 -1.1416926e+05 0.00e+00 1.50e-09  -3.8 4.56e-01    -  1.00e+00 1.00e+00f  1
+  42 -1.1416928e+05 0.00e+00 1.85e-11  -5.7 8.08e-04    -  1.00e+00 1.00e+00f  1
+  43 -1.1416928e+05 0.00e+00 5.69e-14  -8.6 3.05e-05    -  1.00e+00 1.00e+00f  1
+
+Number of Iterations....: 43
+
+                                   (scaled)                 (unscaled)
+Objective...............:  -4.3911262994527024e+04   -1.1416928378577025e+05
+Dual infeasibility......:   5.6906757453431017e-14    1.4795756937892062e-13
+Constraint violation....:   0.0000000000000000e+00    0.0000000000000000e+00
+Complementarity.........:   2.5383208668605393e-09    6.5996342538374021e-09
+Overall NLP error.......:   2.5383208668605393e-09    6.5996342538374021e-09
+
+
+Number of objective function evaluations             = 44
+Number of objective gradient evaluations             = 44
+Number of equality constraint evaluations            = 0
+Number of inequality constraint evaluations          = 44
+Number of equality constraint Jacobian evaluations   = 0
+Number of inequality constraint Jacobian evaluations = 44
+Number of Lagrangian Hessian evaluations             = 43
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.021
+Total CPU secs in NLP function evaluations           =      0.001
+
+EXIT: Optimal Solution Found.
+
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Problem&#39;: [{&#39;Lower bound&#39;: -inf, &#39;Upper bound&#39;: inf, &#39;Number of objectives&#39;: 1, &#39;Number of constraints&#39;: 41, &#39;Number of variables&#39;: 63, &#39;Sense&#39;: &#39;unknown&#39;}], &#39;Solver&#39;: [{&#39;Status&#39;: &#39;ok&#39;, &#39;Message&#39;: &#39;Ipopt 3.13.2\\x3a Optimal Solution Found&#39;, &#39;Termination condition&#39;: &#39;optimal&#39;, &#39;Id&#39;: 0, &#39;Error rc&#39;: 0, &#39;Time&#39;: 0.09827899932861328}], &#39;Solution&#39;: [OrderedDict([(&#39;number of solutions&#39;, 0), (&#39;number of solutions displayed&#39;, 0)])]}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+
+<span class="c1"># Define a function to process and display crop results</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">display_land_allocation_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">crops</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;hectares&quot;</span><span class="p">,</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Display land allocation results with rounding and units.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - model: The Pyomo model containing decision variables and the objective function.</span>
+<span class="sd">    - crops: List of crop names to extract results for.</span>
+<span class="sd">    - units: Units for land allocation (default is &#39;hectares&#39;).</span>
+<span class="sd">    - decimals: Number of decimal places to round the results to (default is 2).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Extract and round the results</span>
+    <span class="n">crop_results</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">crop</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">crop</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">decimals</span><span class="p">)</span> <span class="k">for</span> <span class="n">crop</span> <span class="ow">in</span> <span class="n">crops</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Convert results to a DataFrame</span>
+    <span class="n">crop_results_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">crop_results</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Land Allocation&quot;</span><span class="p">])</span>
+    <span class="n">crop_results_df</span><span class="p">[</span><span class="s2">&quot;Units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">units</span>
+
+    <span class="c1"># Display the results</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Land Allocation Results:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">crop_results_df</span><span class="p">)</span>
+
+    <span class="c1"># Calculate and display the profit</span>
+    <span class="n">profit</span> <span class="o">=</span> <span class="o">-</span><span class="nb">round</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">obj</span><span class="p">(),</span> <span class="n">decimals</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total profit: </span><span class="si">{</span><span class="n">profit</span><span class="si">}</span><span class="s2"> (dollars)&quot;</span><span class="p">)</span>
+
+<span class="c1"># Example usage</span>
+<span class="n">crops</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Wheat&quot;</span><span class="p">,</span> <span class="s2">&quot;Corn&quot;</span><span class="p">,</span> <span class="s2">&quot;SugarBeets&quot;</span><span class="p">]</span>
+<span class="n">display_land_allocation_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">crops</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;hectares&quot;</span><span class="p">,</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Land Allocation Results:
+             Land Allocation     Units
+Wheat                131.62  hectares
+Corn                  88.04  hectares
+SugarBeets           280.34  hectares
+Total profit: 114169.28 (dollars)
+</pre></div>
+</div>
+</div>
+</div>
+<section id="statistical-inference">
+<h3>Statistical Inference<a class="headerlink" href="#statistical-inference" title="Link to this heading">#</a></h3>
+<p>When solving the optimization problem using the <strong>Sample Average Approximation (SAA)</strong> method, it is common to observe variability in the results across different samples, even if the sample size remains fixed. This variability arises due to the randomness inherent in the sampling process.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">solve_and_collect_results</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N_samples</span><span class="p">,</span> <span class="n">crops</span><span class="p">,</span> <span class="n">solver_name</span><span class="o">=</span><span class="s2">&quot;ipopt&quot;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;hectares&quot;</span><span class="p">,</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solve the SAA_uniform_model multiple times and collect results.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - N: Size of the problem</span>
+<span class="sd">    - N_samples: Number of samples to solve.</span>
+<span class="sd">    - crops: List of crops to extract results for.</span>
+<span class="sd">    - solver_name: Name of the solver to use</span>
+<span class="sd">    - units: Units for land allocation (default is &#39;hectares&#39;).</span>
+<span class="sd">    - decimals: Number of decimal places to round results</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - A pandas DataFrame containing results for all samples.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">results_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">SolverFactory</span><span class="p">(</span><span class="n">solver_name</span><span class="p">)</span>
+    <span class="n">results_data2</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_samples</span><span class="p">):</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">SAA_uniform_model</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>  <span class="c1"># Create a new model instance</span>
+        <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>  <span class="c1"># Solve the model</span>
+
+        <span class="c1"># Collect results for each crop</span>
+        <span class="n">crop_results</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">crop</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">crop</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">decimals</span><span class="p">)</span> <span class="k">for</span> <span class="n">crop</span> <span class="ow">in</span> <span class="n">crops</span>
+        <span class="p">}</span>
+
+        <span class="c1"># Calculate profit</span>
+        <span class="n">profit</span> <span class="o">=</span> <span class="o">-</span><span class="nb">round</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">obj</span><span class="p">(),</span> <span class="n">decimals</span><span class="p">)</span>
+
+        <span class="c1"># Append the results for this sample</span>
+        <span class="n">results_data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s2">&quot;Sample&quot;</span><span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="o">**</span><span class="p">{</span><span class="n">crop</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">crop_results</span><span class="p">[</span><span class="n">crop</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">crop</span> <span class="ow">in</span> <span class="n">crops</span><span class="p">},</span>  <span class="c1"># Include units</span>
+            <span class="s2">&quot;Expected Profit&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">profit</span><span class="si">}</span><span class="s2"> Dollars&quot;</span>
+        <span class="p">})</span>
+        <span class="n">results_data2</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s2">&quot;Sample&quot;</span><span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;Wheat&quot;</span><span class="p">:</span> <span class="n">crop_results</span><span class="p">[</span><span class="s2">&quot;Wheat&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;Corn&quot;</span><span class="p">:</span> <span class="n">crop_results</span><span class="p">[</span><span class="s2">&quot;Corn&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;SugarBeets&quot;</span><span class="p">:</span> <span class="n">crop_results</span><span class="p">[</span><span class="s2">&quot;SugarBeets&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;Expected Profit&quot;</span><span class="p">:</span> <span class="n">profit</span>
+    <span class="p">})</span>
+
+    <span class="c1"># Convert to a DataFrame</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results_data</span><span class="p">),</span><span class="n">results_data2</span>
+
+<span class="c1"># Example usage</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">400</span>
+<span class="n">N_samples</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">crops</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Wheat&quot;</span><span class="p">,</span> <span class="s2">&quot;Corn&quot;</span><span class="p">,</span> <span class="s2">&quot;SugarBeets&quot;</span><span class="p">]</span>
+
+<span class="n">results_df</span><span class="p">,</span><span class="n">results_data</span> <span class="o">=</span> <span class="n">solve_and_collect_results</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N_samples</span><span class="p">,</span> <span class="n">crops</span><span class="p">,</span> <span class="n">solver_name</span><span class="o">=</span><span class="s2">&quot;ipopt&quot;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;hectares&quot;</span><span class="p">,</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Display the results</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   Sample            Wheat            Corn       SugarBeets    Expected Profit
+0       1  134.58 hectares  85.14 hectares  280.28 hectares   111191.8 Dollars
+1       2   135.2 hectares  84.62 hectares  280.18 hectares  110561.38 Dollars
+2       3  133.42 hectares   85.4 hectares  281.18 hectares  110005.75 Dollars
+3       4  135.52 hectares  85.86 hectares  278.62 hectares  110623.41 Dollars
+4       5  137.89 hectares  84.59 hectares  277.52 hectares  113029.91 Dollars
+5       6  135.35 hectares  84.91 hectares  279.74 hectares  111859.47 Dollars
+6       7  131.91 hectares  84.57 hectares  283.52 hectares  110146.44 Dollars
+7       8  136.85 hectares  85.52 hectares  277.63 hectares  111394.62 Dollars
+8       9  139.89 hectares  84.92 hectares  275.19 hectares  113085.93 Dollars
+9      10  134.66 hectares  85.18 hectares  280.16 hectares   110039.1 Dollars
+</pre></div>
+</div>
+</div>
+</div>
+<p>To better understand and analyze this variability, we rely on <strong>statistical measures</strong>. These measures allow us to summarize the outcomes of multiple samples and quantify key characteristics such as:</p>
+<p>The <strong>sample mean</strong> measures the central tendency of the dataset. Given a set of results for expected profits <span class="math notranslate nohighlight">\(X = \left\{ x_1, x_2, ... , x_n \right\}\)</span>, the sample mean is defined as: <span class="math notranslate nohighlight">\(\overline{x}= \frac{1}{n} \sum_{i=1}^n x_i\)</span>.</p>
+<p>The <strong>sample variance</strong> quantifies the spread of the data around the mean: <span class="math notranslate nohighlight">\(S^2 = \frac{1}{n-1} \sum_{i=1}^n (x_i - \overline{x})^2\)</span>. (The term n-1 is used in the denominator to account for Bessel’s correction, which corrects bias in the estimation of the population variance.)</p>
+<p>The <strong>sample standard deviation</strong> is the square root of the variance: <span class="math notranslate nohighlight">\(S=\sqrt{S^2}\)</span>.</p>
+<p>To estimate the <strong>true mean</strong> of the population from the sample mean, we construct a confidence interval. The formula for a <strong>two-tailed confidence interval</strong> is:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-27b1040c-6780-47e1-ba90-d497a71916c2">
+<span class="eqno">(19)<a class="headerlink" href="#equation-27b1040c-6780-47e1-ba90-d497a71916c2" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\overline{x} \pm t_{\alpha/2,n-1} ⋅ \frac{S}{\sqrt{n}}
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(t_{\alpha/2,n-1}\)</span> is the t-critical value for the given confidence level and degrees of freedom <span class="math notranslate nohighlight">\(n-1\)</span>.</p>
+<p>The <strong>margin of error</strong> is:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-83c99803-de74-4359-ae9c-5422613f71f3">
+<span class="eqno">(20)<a class="headerlink" href="#equation-83c99803-de74-4359-ae9c-5422613f71f3" title="Permalink to this equation">#</a></span>\[\begin{equation}
+t_{\alpha/2,n-1} ⋅ \frac{S}{\sqrt{n}}
+\end{equation}\]</div>
+<p>The confidence interval is then:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-44e0d67a-5a80-4371-a8a5-95bb10e85c57">
+<span class="eqno">(21)<a class="headerlink" href="#equation-44e0d67a-5a80-4371-a8a5-95bb10e85c57" title="Permalink to this equation">#</a></span>\[\begin{align}
+\text{Lower Bound} = \overline{x} -  t_{\alpha/2,n-1} ⋅ \frac{S}{\sqrt{n}}, \\
+\text{Upper Bound} = \overline{x} +  t_{\alpha/2,n-1} ⋅ \frac{S}{\sqrt{n}}.
+\end{align}  \]</div>
+<p>These statistical tools provide insight into the stability and reliability of the SAA method and allow us to draw meaningful conclusions based on the results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">t_critical_approx</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate the t-critical value for a given alpha and degrees of freedom.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - alpha: Significance level (1 - confidence level).</span>
+<span class="sd">    - df: Degrees of freedom.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - The t-critical value.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="mi">48</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="p">((</span><span class="n">a</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">df</span> <span class="o">*</span> <span class="p">(</span><span class="n">c</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">c</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">t</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample Mean</span>
+<span class="n">expected_profits</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;Expected Profit&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">results_data</span><span class="p">]</span>
+<span class="n">sample_mean</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">expected_profits</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected_profits</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sample Mean: </span><span class="si">{</span><span class="n">sample_mean</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># Samople Variance &amp; Standard Deviation</span>
+<span class="n">sample_variance</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">sample_mean</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">expected_profits</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">expected_profits</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">sample_standard_deviation</span> <span class="o">=</span> <span class="n">sample_variance</span> <span class="o">**</span> <span class="mf">0.5</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sample Variance: </span><span class="si">{</span><span class="n">sample_variance</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sample Standard Deviation: </span><span class="si">{</span><span class="n">sample_standard_deviation</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># Confidence Interval</span>
+<span class="n">confidence_level</span> <span class="o">=</span> <span class="mf">0.95</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">confidence_level</span>
+<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected_profits</span><span class="p">)</span>
+
+
+<span class="n">t_critical</span> <span class="o">=</span> <span class="n">t_critical_approx</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># t-critical value for 2-tailed test</span>
+
+
+
+<span class="n">margin_of_error</span> <span class="o">=</span> <span class="n">t_critical</span> <span class="o">*</span> <span class="p">(</span><span class="n">sample_standard_deviation</span> <span class="o">/</span> <span class="n">n</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">lower_bound</span> <span class="o">=</span> <span class="n">sample_mean</span> <span class="o">-</span> <span class="n">margin_of_error</span>
+<span class="n">upper_bound</span> <span class="o">=</span> <span class="n">sample_mean</span> <span class="o">+</span> <span class="n">margin_of_error</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Confidence Interval (</span><span class="si">{</span><span class="n">confidence_level</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">}</span><span class="s2">%): [</span><span class="si">{</span><span class="n">lower_bound</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">upper_bound</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sample Mean: 111193.781
+Sample Variance: 1333551.417476662
+Sample Standard Deviation: 1154.7949677222628
+Confidence Interval (95.0%): [110804.75248349282, 111582.80951650719]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="conclusions">
+<h1>Conclusions<a class="headerlink" href="#conclusions" title="Link to this heading">#</a></h1>
+<p>In the end we see that we were able to</p>
+<ul class="simple">
+<li><p>Formulate and solve optimization problems using real-world examples that incorporate uncertainty and stochasticity</p></li>
+<li><p>Develop proficiency in Python and Pyomo for modeling and solving complex optimization problems</p></li>
+<li><p>Understand and implement full-grid and half-grid discretization in stochastic optimization frameworks, including their respective advantages and applications.</p></li>
+<li><p>Gain a deeper understanding of two-stage stochastic optimization, focusing on its application to agricultural systems under uncertainty</p></li>
+<li><p>Interpret and analyze optimization results, drawing meaningful conclusions about resource allocation and decision-making in uncertain environments</p></li>
+</ul>
+<p>A major takeaway from this work is the recognition that alternative numerical methods, such as the half-grid approach, can effectively address the “curse of dimensionality” associated with full-grid methods. By accounting for the reality that perfect information is rarely available, we demonstrated how modeling uncertainty using Gaussian distributions leads to more realistic scenarios. Finally, this project highlighted the significance of two-stage stochastic optimization in tackling real-world problems, emphasizing its role in enabling robust and informed decision-making under uncertainty.</p>
+<p>Future work: refactor code to use <a class="reference internal" href="../4/blocks.html"><span class="std std-doc">blocks</span></a>.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="reference">
+<h1>Reference<a class="headerlink" href="#reference" title="Link to this heading">#</a></h1>
+<blockquote>
+<div><p>Birge, J. R., &amp; Louveaux, F. (2011). Introduction to Stochastic Programming (2nd ed.). Springer.</p>
+</div></blockquote>
+<blockquote>
+<div><p>Shapiro, A., Dentcheva, D., &amp; Ruszczyński, A. (2014). Lectures on Stochastic Programming: Modeling and Theory (2nd ed.). SIAM.</p>
+</div></blockquote>
+<blockquote>
+<div><p>Van der Laan, M. J., &amp; Rubin, D. B. (2006). Statistical Models and Causal Inference: A Dialogue with the Social Sciences. Springer.</p>
+</div></blockquote>
+<blockquote>
+<div><p>Chow, Y., &amp; Pavone, M. (2013). A Uniform-grid Discretization Algorithm for Stochastic Optimal Control with Risk Constraints. Proceedings of the IEEE Conference on Decision and Control</p>
+</div></blockquote>
+<blockquote>
+<div><p>Chen, M., Mehrotra, S., &amp; Papp, D. (2015). Scenario Generation for Stochastic Optimization Problems via the Sparse Grid Method. Computational Optimization and Applications, 62, 669 - 692</p>
+</div></blockquote>
+<blockquote>
+<div><p>Kleywegt, A. J., Shapiro, A., &amp; Homem-de-Mello, T. (2002). The Sample Average Approximation Method for Stochastic Discrete Optimization. SIAM Journal on Optimization, 12(2), 479-502.</p>
+</div></blockquote>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/contrib"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="multi_objective.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Multi-Objective Optimization</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="algorithms.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Global Optimization</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Advanced Topics in Stochastic Programming</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#expanding-the-farming-example">Expanding the Farming Example</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#background">Background</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#classic-example">Classic Example</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#proposed-expansion">Proposed Expansion</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numerical-back-ground">Numerical Back Ground</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-grid">Full Grid</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sparse-grid">Sparse Grid</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#two-stage-stochastic">Two-Stage Stochastic</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-average-approximation-saa">Sample Average Approximation (SAA)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#statistical-inference">Statistical Inference</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusions">Conclusions</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Alexander Dowling, et al.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

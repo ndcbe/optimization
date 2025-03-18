@@ -1,0 +1,1499 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>3.1. Pyomo.DAE Example: Race Car &#8212; Optimization for Decision Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/3/PyomoDAE_car';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.2. Pyomo.DAE Example: Temperature Control Lab" href="PyomoDAE_TCLab.html" />
+    <link rel="prev" title="3. Dynamic Optimization" href="dynamics.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/cbe_logo.jpg" class="logo__image only-light" alt="Optimization for Decision Science - Home"/>
+    <script>document.write(`<img src="../../_static/cbe_logo.jpg" class="logo__image only-dark" alt="Optimization for Decision Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Optimization for Decision Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Fall 2024 Calendar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/workshop.html">Computational Optimization in Python (São Paulo, Brazil)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project1.html">Project 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms1.html">Algorithms Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms2.html">Algorithms Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project2.html">Project 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project (Spring 2023)</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/LP.html">1.4. Continuous Optimization: Linear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/NLP.html">1.5. Continuous Optimization: Nonlinear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.6. Integer Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.7. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="dynamics.html">3. Dynamic Optimization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.1. Pyomo.DAE Example: Race Car</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PyomoDAE_TCLab.html">3.2. Pyomo.DAE Example: Temperature Control Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DAE_background.html">3.3. Differential Algebraic Equations (DAEs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DAE_numeric_integration.html">3.4. Numeric Integration for DAEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PyomoDAE_theory.html">3.5. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PyomoDAE_example.html">3.6. Pyomo.DAE: Racing Example Revisited</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/blocks.html">4.2. Blocks and Other Pyomo Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/AdvancedTopics.html">4.3. Advanced Topics in Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.4. Risk Measures and Portfolio Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Optimizing Experiments with <code class="docutils literal notranslate"><span class="pre">Pyomo.DoE</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-1.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Newton-Methods.html">6.4. Newton-type Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Constraint-Qualifications.html">7.4. Constraint Qualifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Second-Order.html">7.5. Second Order Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/degeneracy_hunter.html">7.6. NLP Diagnostics with Degeneracy Hunter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/pyomo.html">More Pyomo Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/semiconductor_manufacturing.html">Semiconductor Production Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/student_diet.html">Optimization of Daily Diet Using Pyomo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/blending.html">Blending Under Uncertainty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/vehicle_routing.html">Vehicle Routing</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/portfolio_optimization_extended.html">Risk Measures and Portfolio Optimization: Expanded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/race_car_extended.html">Extended Race Car Optimization Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/hot_air_balloon.html">Hot Air Balloon Dynamic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/reactor_design.html">Chemical Reactor Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Disaster_Response_Plan.html">Disaster Response Plan Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Sudoku_Solver.html">Sudoku Solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/more_circle_packing.html">Circle Packing Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/modeling.html">Modeling Paradigms</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/multi_objective.html">Multi-Objective Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/advanced_stochastic_programming.html">Advanced Topics in Stochastic Programming</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/algorithms.html">Global Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Deterministic_Global_Optimization.html">Deterministic Global Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/sgd.html">Stochastic Gradient Descent</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/data.html">Machine Learning and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/3/PyomoDAE_car.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/3/PyomoDAE_car.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/3/PyomoDAE_car.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Pyomo.DAE Example: Race Car</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">3.1.1. Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-packages-and-load-modules">3.1.2. Install Packages and Load Modules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-statement-and-optimal-control-formulation">3.1.3. Problem Statement and Optimal Control Formulation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scale-time">3.1.3.1. Scale Time</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#declaring-our-model-with-pyomo-dae">3.1.3.2. Declaring our Model with Pyomo.DAE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discretize-transcribe-and-solve">3.1.3.3. Discretize/Transcribe and Solve</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-results">3.1.3.4. Plot Results</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finer-time-discretization">3.1.4. Finer Time Discretization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#another-version">3.1.5. Another Version</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="pyomo-dae-example-race-car">
+<h1><span class="section-number">3.1. </span>Pyomo.DAE Example: Race Car<a class="headerlink" href="#pyomo-dae-example-race-car" title="Link to this heading">#</a></h1>
+<p>Adapted from <a class="reference internal" href="PyomoDAE_example.html"><span class="std std-doc">Pyomo.DAE: Racing Example Revisited</span></a> and <a class="github reference external" href="https://github.com/Pyomo/pyomo/blob/master/examples/dae/car_example.py">Pyomo/pyomo</a></p>
+<section id="learning-objectives">
+<h2><span class="section-number">3.1.1. </span>Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Introduces syntax for Pyomo.DAE</p></li>
+<li><p>Shows time-scaling modeling trick</p></li>
+<li><p>Pratice using <a class="reference external" href="https://pyomo.readthedocs.io/en/stable/advanced_topics/units_container.html">units</a> feature in Pyomo</p></li>
+</ul>
+</section>
+<section id="install-packages-and-load-modules">
+<h2><span class="section-number">3.1.2. </span>Install Packages and Load Modules<a class="headerlink" href="#install-packages-and-load-modules" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="k">if</span> <span class="s2">&quot;google.colab&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+    <span class="o">!</span>wget<span class="w"> </span><span class="s2">&quot;https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/helper.py&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">easy_install</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;../&#39;</span><span class="p">)</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+<span class="n">helper</span><span class="o">.</span><span class="n">set_plotting_style</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyomo.environ</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyo</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyomo.dae</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dae</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyomo.environ</span><span class="w"> </span><span class="kn">import</span> <span class="n">units</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-statement-and-optimal-control-formulation">
+<h2><span class="section-number">3.1.3. </span>Problem Statement and Optimal Control Formulation<a class="headerlink" href="#problem-statement-and-optimal-control-formulation" title="Link to this heading">#</a></h2>
+<p>You are a race car driver with a simple goal. Drive distance <span class="math notranslate nohighlight">\(L\)</span> in the minimal amount of time <strong>but</strong> come to a complete stop at the finish line.</p>
+<p>Mathematically, you want to solve the following optimal control problem:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+\min_{u,t_f} \quad &amp; t_f \\
+\mathrm{s.t.} \quad &amp; \frac{dx}{dt} = v \\
+&amp; \frac{dv}{dt} = u - R v^2 \\
+&amp; x(t=0) = 0, ~~ x(t=t_f) = L \\
+&amp; v(t=0) = 0, ~~ v(t=t_f) = 0 \\
+&amp; -3 \leq u \leq 1
+\end{align*}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(u\)</span> is the acceleration/braking (your control variable) and <span class="math notranslate nohighlight">\(R\)</span> is the drag coefficient (parameter).</p>
+<section id="scale-time">
+<h3><span class="section-number">3.1.3.1. </span>Scale Time<a class="headerlink" href="#scale-time" title="Link to this heading">#</a></h3>
+<p>Let <span class="math notranslate nohighlight">\(t = \tau \cdot t_f\)</span> where <span class="math notranslate nohighlight">\(\tau \in [0,1]\)</span>. Thus <span class="math notranslate nohighlight">\(dt = t_f d\tau\)</span>. The optimal control problem becomes:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+\min_{u,t_f} \quad &amp; t_f \\
+\mathrm{s.t.} \quad &amp; \frac{dx}{d\tau} = t_f v \\
+&amp; \frac{dv}{d\tau} = t_f (u - R v^2) \\
+&amp; x(\tau = 0) = 0, ~~ x(\tau = 1) = L \\
+&amp; v(\tau = 0) = 0, ~~ v(\tau = 1) = 0 \\
+&amp; -3 \leq u \leq 1
+\end{align*}\end{split}\]</div>
+</section>
+<section id="declaring-our-model-with-pyomo-dae">
+<h3><span class="section-number">3.1.3.2. </span>Declaring our Model with Pyomo.DAE<a class="headerlink" href="#declaring-our-model-with-pyomo-dae" title="Link to this heading">#</a></h3>
+<p>We can use <code class="docutils literal notranslate"><span class="pre">Pyomo.dae</span></code> to automatically formulate the collocation equations (i.e., add constraints that numerically integrate the ODE model).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_model1</span><span class="p">():</span>
+
+    <span class="c1"># Define the  model</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+    <span class="c1"># Deine the model parameters</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>  <span class="c1"># Friction factor</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>    <span class="c1"># Final position</span>
+
+    <span class="c1"># Define time</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">tau</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">ContinuousSet</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>             <span class="c1"># Dimensionless time set</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">tf</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>         <span class="c1"># Final time</span>
+
+    <span class="c1"># Define remaining algebraic variables</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">m</span><span class="o">.</span><span class="n">L</span><span class="o">+</span><span class="mi">50</span><span class="o">*</span><span class="n">units</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>                              <span class="c1"># Position</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="kc">None</span><span class="p">),</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">m</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>                        <span class="c1"># Velocity</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">u</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">3.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">),</span><span class="n">initialize</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">m</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">s</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">s</span><span class="p">)</span> <span class="c1"># Acceleration</span>
+
+    <span class="c1"># Define derivative variables</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dx</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dv</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>
+
+    <span class="c1"># Declare the objective (minimize final time)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">tf</span><span class="p">)</span>
+
+    <span class="c1"># Define the constraints</span>
+    <span class="c1"># position</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_ode1</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">i</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="o">.</span><span class="n">Skip</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">tf</span> <span class="o">*</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">ode1</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_ode1</span><span class="p">)</span>
+
+    <span class="c1"># velocity</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_ode2</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">i</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="o">.</span><span class="n">Skip</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">tf</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">R</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">ode2</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_ode2</span><span class="p">)</span>
+
+    <span class="c1"># Define the inital/boundary conditions</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_init</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">yield</span> <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">L</span>
+        <span class="k">yield</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">yield</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+        
+    <span class="n">m</span><span class="o">.</span><span class="n">initcon</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConstraintList</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="n">_init</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">m</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">create_model1</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s inspect the model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span><span class="o">.</span><span class="n">pprint</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2 Param Declarations
+    L : Size=1, Index=None, Domain=Any, Default=None, Mutable=True, Units=m
+        Key  : Value
+        None : 100.0
+    R : Size=1, Index=None, Domain=Any, Default=None, Mutable=True, Units=1/m
+        Key  : Value
+        None : 0.001
+
+4 Var Declarations
+    tf : Size=1, Index=None, Units=s
+        Key  : Lower : Value : Upper : Fixed : Stale : Domain
+        None :  None :     1 :  None : False : False :  Reals
+    u : Size=2, Index=tau, Units=m/s**2
+        Key : Lower : Value : Upper : Fixed : Stale : Domain
+          0 :  -3.0 :     0 :   1.0 : False : False :  Reals
+          1 :  -3.0 :     0 :   1.0 : False : False :  Reals
+    v : Size=2, Index=tau, Units=m/s
+        Key : Lower : Value : Upper : Fixed : Stale : Domain
+          0 :     0 :  None :  None : False :  True :  Reals
+          1 :     0 :  None :  None : False :  True :  Reals
+    x : Size=2, Index=tau, Units=m
+        Key : Lower : Value : Upper : Fixed : Stale : Domain
+          0 :     0 :  None : 150.0 : False :  True :  Reals
+          1 :     0 :  None : 150.0 : False :  True :  Reals
+
+1 Objective Declarations
+    obj : Size=1, Index=None, Active=True
+        Key  : Active : Sense    : Expression
+        None :   True : minimize :         tf
+
+3 Constraint Declarations
+    initcon : Size=4, Index={1, 2, 3, 4}, Active=True
+        Key : Lower : Body : Upper : Active
+          1 :   0.0 : x[0] :   0.0 :   True
+          2 :     L : x[1] :     L :   True
+          3 :   0.0 : v[0] :   0.0 :   True
+          4 :   0.0 : v[1] :   0.0 :   True
+    ode1 : Size=1, Index=tau, Active=True
+        Key : Lower : Body            : Upper : Active
+          1 :   0.0 : dx[1] - tf*v[1] :   0.0 :   True
+    ode2 : Size=1, Index=tau, Active=True
+        Key : Lower : Body                          : Upper : Active
+          1 :   0.0 : dv[1] - tf*(u[1] - R*v[1]**2) :   0.0 :   True
+
+1 ContinuousSet Declarations
+    tau : Size=1, Index=None, Ordered=Sorted
+        Key  : Dimen : Domain : Size : Members
+        None :     1 : [0..1] :    2 : {0, 1}
+
+2 DerivativeVar Declarations
+    dv : Size=2, Index=tau
+        Key : Lower : Value : Upper : Fixed : Stale : Domain
+          0 :  None :  None :  None : False :  True :  Reals
+          1 :  None :  None :  None : False :  True :  Reals
+    dx : Size=2, Index=tau
+        Key : Lower : Value : Upper : Fixed : Stale : Domain
+          0 :  None :  None :  None : False :  True :  Reals
+          1 :  None :  None :  None : False :  True :  Reals
+
+13 Declarations: R L tau tf x v u dx dv obj ode1 ode2 initcon
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="discretize-transcribe-and-solve">
+<h3><span class="section-number">3.1.3.3. </span>Discretize/Transcribe and Solve<a class="headerlink" href="#discretize-transcribe-and-solve" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#discretizer = TransformationFactory(&#39;dae.finite_difference&#39;)</span>
+<span class="c1">#discretizer.apply_to(m,nfe=15,scheme=&#39;BACKWARD&#39;)</span>
+
+<span class="c1"># Declare the discretizer</span>
+<span class="n">discretizer</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">TransformationFactory</span><span class="p">(</span><span class="s1">&#39;dae.collocation&#39;</span><span class="p">)</span>
+<span class="n">discretizer</span><span class="o">.</span><span class="n">apply_to</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">nfe</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span><span class="n">scheme</span><span class="o">=</span><span class="s1">&#39;LAGRANGE-RADAU&#39;</span><span class="p">,</span><span class="n">ncp</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="c1">#discretizer.apply_to(m,nfe=15,scheme=&#39;LAGRANGE-LEGENDRE&#39;,ncp=3)</span>
+
+<span class="c1"># force piecewise constant controls (acceleration) over each finite element</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">discretizer</span><span class="o">.</span><span class="n">reduce_collocation_points</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">var</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">,</span><span class="n">ncp</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">contset</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">tau</span><span class="p">)</span>
+
+<span class="c1"># Solve</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;final time = </span><span class="si">%6.2f</span><span class="s2"> seconds&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">tf</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: 
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+
+This version of Ipopt was compiled from source code available at
+    https://github.com/IDAES/Ipopt as part of the Institute for the Design of
+    Advanced Energy Systems Process Systems Engineering Framework (IDAES PSE
+    Framework) Copyright (c) 2018-2019. See https://github.com/IDAES/idaes-pse.
+
+This version of Ipopt was compiled using HSL, a collection of Fortran codes
+    for large-scale scientific computation.  All technical papers, sales and
+    publicity material resulting from use of the HSL codes within IPOPT must
+    contain the following acknowledgement:
+        HSL, a collection of Fortran codes for large-scale scientific
+        computation. See http://www.hsl.rl.ac.uk.
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:      829
+Number of nonzeros in inequality constraint Jacobian.:        0
+Number of nonzeros in Lagrangian Hessian.............:      135
+
+Total number of variables............................:      228
+                     variables with only lower bounds:       46
+                variables with lower and upper bounds:       91
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:      214
+Total number of inequality constraints...............:        0
+        inequality constraints with only lower bounds:        0
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        0
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  1.0000000e+00 1.00e+02 1.30e+00  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1r 1.0000000e+00 1.00e+02 9.99e+02   2.0 0.00e+00    -  0.00e+00 3.26e-07R  8
+   2r 1.2449252e+00 9.95e+01 9.93e+02   2.0 1.26e+02    -  5.63e-03 6.22e-03f  1
+   3r 2.6155110e+00 9.91e+01 1.22e+02   0.6 1.56e+00    -  7.62e-01 8.77e-01f  1
+   4r 5.7407161e+00 9.81e+01 1.16e+02  -0.1 4.77e+01   0.0 2.43e-02 6.55e-02f  1
+   5r 6.9131266e+00 9.76e+01 1.19e+02  -0.1 4.77e+01    -  7.69e-02 2.46e-02f  1
+   6r 1.8926907e+01 9.25e+01 4.60e+02  -0.1 8.87e+01    -  2.39e-02 1.35e-01f  1
+   7r 1.9252497e+01 8.70e+01 3.95e+02  -0.1 1.08e+01    -  2.88e-02 8.03e-01f  1
+   8  2.0135727e+01 8.62e+01 6.54e+00  -1.0 2.64e+02    -  1.14e-01 9.09e-03h  5
+   9  2.0857378e+01 8.51e+01 1.12e+01  -1.0 3.10e+02    -  1.01e-01 1.20e-02h  6
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  10  2.1432701e+01 8.41e+01 1.85e+01  -1.0 3.11e+02    -  1.50e-01 1.20e-02h  6
+  11  2.2030985e+01 8.29e+01 3.02e+01  -1.0 2.93e+02    -  2.34e-01 1.41e-02h  6
+  12  2.2781040e+01 8.14e+01 4.72e+01  -1.0 2.74e+02    -  3.37e-01 1.87e-02h  6
+  13  1.4199237e+01 1.24e+02 3.11e+01  -1.0 2.62e+02    -  5.20e-01 4.38e-01H  1
+  14  2.1365014e+01 8.49e+01 1.03e+01  -1.0 9.32e+01    -  5.48e-02 2.34e-01h  2
+  15  2.2706495e+01 7.92e+01 8.10e+01  -1.0 1.15e+02    -  6.41e-01 6.36e-02h  4
+  16  2.3519561e+01 7.41e+01 1.19e+02  -1.0 8.53e+01    -  3.68e-01 6.19e-02h  5
+  17  2.3548373e+01 7.38e+01 2.26e+02  -1.0 6.83e+01    -  7.29e-01 3.34e-03h  9
+  18  2.0378731e+01 6.54e+01 1.94e+02  -1.0 2.92e+02    -  1.04e-01 1.28e-01h  1
+  19  1.9424173e+01 4.16e+01 7.83e+01  -1.0 1.12e+02    -  1.16e-01 3.70e-01h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  20  1.7710108e+01 1.68e+01 3.14e+01  -1.0 9.79e+01    -  3.38e-01 5.75e-01f  1
+  21  1.7993344e+01 8.23e+00 2.96e+02  -1.0 2.83e+01    -  1.00e+00 5.14e-01h  1
+  22  1.9147366e+01 4.90e-01 1.61e+01  -1.0 9.69e+00    -  1.00e+00 9.90e-01h  1
+  23  1.9205734e+01 1.67e-02 1.26e+03  -1.0 4.50e+00    -  1.00e+00 9.90e-01h  1
+  24  1.9211008e+01 4.04e-05 1.02e-06  -1.0 1.18e-01    -  1.00e+00 1.00e+00h  1
+  25  1.7317872e+01 3.20e+00 1.46e+06  -5.7 1.68e+01    -  7.50e-01 1.00e+00f  1
+  26  1.6683635e+01 7.56e-01 1.79e+05  -5.7 1.22e+01    -  8.77e-01 9.88e-01h  1
+  27  1.6527179e+01 7.58e-02 3.73e+04  -5.7 7.89e+00    -  7.92e-01 9.92e-01h  1
+  28  1.6520375e+01 6.03e-05 5.38e-07  -5.7 8.83e-02    -  1.00e+00 1.00e+00h  1
+  29  1.6520269e+01 6.27e-09 8.71e-11  -5.7 9.10e-04    -  1.00e+00 1.00e+00h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  30  1.6520192e+01 9.76e-09 1.62e-10  -8.6 1.19e-03    -  1.00e+00 1.00e+00h  1
+
+Number of Iterations....: 30
+
+                                   (scaled)                 (unscaled)
+Objective...............:   1.6520191521080950e+01    1.6520191521080950e+01
+Dual infeasibility......:   1.6219122342334269e-10    1.6219122342334269e-10
+Constraint violation....:   9.7603276572044706e-09    9.7603276572044706e-09
+Complementarity.........:   2.5852522114913472e-09    2.5852522114913472e-09
+Overall NLP error.......:   9.7603276572044706e-09    9.7603276572044706e-09
+
+
+Number of objective function evaluations             = 96
+Number of objective gradient evaluations             = 26
+Number of equality constraint evaluations            = 96
+Number of inequality constraint evaluations          = 0
+Number of equality constraint Jacobian evaluations   = 32
+Number of inequality constraint Jacobian evaluations = 0
+Number of Lagrangian Hessian evaluations             = 30
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.012
+Total CPU secs in NLP function evaluations           =      0.001
+
+EXIT: Optimal Solution Found.
+final time =  16.52 seconds
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="plot-results">
+<h3><span class="section-number">3.1.3.4. </span>Plot Results<a class="headerlink" href="#plot-results" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">extract_plot_model1_results</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+
+    <span class="c1"># Define empty lists</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>    <span class="c1"># position, units of length</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="p">[]</span>    <span class="c1"># velocity, units of length per time</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="p">[]</span>    <span class="c1"># acceleration, units of length per time squared</span>
+    <span class="n">time</span><span class="o">=</span><span class="p">[]</span>   <span class="c1"># time</span>
+    <span class="n">tf</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">tf</span><span class="p">)</span>
+
+    <span class="c1"># Loop over time and append the solution values for each variable to their respective lists</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">tau</span><span class="p">:</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">tf</span><span class="p">)</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+        <span class="n">v</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+        <span class="n">u</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+
+    <span class="c1"># Make a figure</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+
+    <span class="c1"># Format subplot 1 (position)    </span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">131</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;location (m)&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;time (s)&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s2">&quot;in&quot;</span><span class="p">,</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+
+    <span class="c1"># Format subplot 2 (velocity)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">132</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;v&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;time (s)&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;velocity (m/s)&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s2">&quot;in&quot;</span><span class="p">,</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+
+    <span class="c1"># Format subplot 3 (acceleration)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">133</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span><span class="n">u</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;time (s)&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;acceleration (m/s$^2$)&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s2">&quot;in&quot;</span><span class="p">,</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">extract_plot_model1_results</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/b359233a491ad915d80566ec462c17c1aed14f891d8ac6a87207ce6b73cf8042.png" src="../../_images/b359233a491ad915d80566ec462c17c1aed14f891d8ac6a87207ce6b73cf8042.png" />
+</div>
+</div>
+<p><strong>Discussion Questions</strong></p>
+<p>Do the results make sense?</p>
+<p>What do you know about the relationships between position, velocity, and acceleration? Do you see this relationship in the plots?</p>
+</section>
+</section>
+<section id="finer-time-discretization">
+<h2><span class="section-number">3.1.4. </span>Finer Time Discretization<a class="headerlink" href="#finer-time-discretization" title="Link to this heading">#</a></h2>
+<p>Does the intermediate braking force (see <span class="math notranslate nohighlight">\(u \approx -1.2\)</span> m/s/s around <span class="math notranslate nohighlight">\(t=12\)</span> s above) go away if we consider a finer time discretization?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">create_model1</span><span class="p">()</span>
+
+<span class="c1"># Declare the discretizer</span>
+<span class="n">discretizer</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">TransformationFactory</span><span class="p">(</span><span class="s1">&#39;dae.collocation&#39;</span><span class="p">)</span>
+<span class="n">discretizer</span><span class="o">.</span><span class="n">apply_to</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">nfe</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span><span class="n">scheme</span><span class="o">=</span><span class="s1">&#39;LAGRANGE-RADAU&#39;</span><span class="p">,</span><span class="n">ncp</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># force piecewise constant controls (acceleration) over each finite element</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">discretizer</span><span class="o">.</span><span class="n">reduce_collocation_points</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">var</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">,</span><span class="n">ncp</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">contset</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">tau</span><span class="p">)</span>
+
+<span class="c1"># Solve</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;final time = </span><span class="si">%6.2f</span><span class="s2"> seconds&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">tf</span><span class="p">)))</span>
+
+<span class="n">extract_plot_model1_results</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: 
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+
+This version of Ipopt was compiled from source code available at
+    https://github.com/IDAES/Ipopt as part of the Institute for the Design of
+    Advanced Energy Systems Process Systems Engineering Framework (IDAES PSE
+    Framework) Copyright (c) 2018-2019. See https://github.com/IDAES/idaes-pse.
+
+This version of Ipopt was compiled using HSL, a collection of Fortran codes
+    for large-scale scientific computation.  All technical papers, sales and
+    publicity material resulting from use of the HSL codes within IPOPT must
+    contain the following acknowledgement:
+        HSL, a collection of Fortran codes for large-scale scientific
+        computation. See http://www.hsl.rl.ac.uk.
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:    11004
+Number of nonzeros in inequality constraint Jacobian.:        0
+Number of nonzeros in Lagrangian Hessian.............:     1800
+
+Total number of variables............................:     3003
+                     variables with only lower bounds:      601
+                variables with lower and upper bounds:     1201
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:     2804
+Total number of inequality constraints...............:        0
+        inequality constraints with only lower bounds:        0
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        0
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  1.0000000e+00 1.00e+02 2.77e+00  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1  1.5275277e+01 9.98e+01 1.02e+02  -1.0 9.82e+03    -  9.91e-05 1.45e-03f  1
+   2  3.5437364e+01 8.51e+01 1.14e+05  -1.0 1.38e+02   2.0 1.74e-05 1.48e-01f  1
+   3  4.1813834e+01 7.61e+01 9.88e+04  -1.0 1.33e+02   1.5 7.52e-02 1.06e-01f  1
+   4  4.1825565e+01 7.61e+01 9.88e+04  -1.0 2.21e+02   1.0 1.39e-01 1.68e-04h  1
+   5  9.1089621e+01 6.96e+01 1.38e+05  -1.0 1.17e+02   1.5 2.29e-01 9.90e-01f  1
+   6  9.1067800e+01 6.95e+01 1.10e+06  -1.0 2.87e+01   2.8 6.30e-01 7.61e-04h  1
+   7  6.4034186e+01 2.10e+01 6.40e+05  -1.0 3.84e+01   2.3 9.56e-01 7.05e-01h  1
+   8  6.3919314e+01 2.09e+01 6.20e+05  -1.0 2.32e+01   1.8 9.51e-01 4.95e-03h  1
+   9  6.3915285e+01 2.09e+01 5.98e+05  -1.0 1.79e+01   2.3 1.00e+00 7.54e-04h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  10  5.7448459e+01 9.02e+00 2.38e+05  -1.0 2.62e+01   1.8 6.91e-01 6.45e-01h  1
+  11  5.7388561e+01 8.94e+00 2.36e+05  -1.0 1.23e+01   1.3 2.73e-02 9.11e-03h  1
+  12  5.7388118e+01 8.93e+00 2.31e+05  -1.0 6.72e+00   1.7 1.00e+00 4.37e-04h  1
+  13  5.5324660e+01 6.00e-01 9.44e+03  -1.0 1.07e+01   1.3 6.60e-01 9.91e-01h  1
+  14  5.5306134e+01 2.06e-04 1.27e+04  -1.0 1.54e-01   0.8 9.90e-01 1.00e+00f  1
+  15  5.5324754e+01 5.39e-05 2.90e-01  -1.0 1.41e-01   0.3 1.00e+00 1.00e+00f  1
+  16  5.5308157e+01 2.00e-05 1.72e-02  -3.8 2.51e-02  -0.2 1.00e+00 1.00e+00h  1
+  17  5.5251447e+01 2.33e-04 1.90e-02  -3.8 8.30e-02  -0.6 1.00e+00 1.00e+00h  1
+  18  5.5158417e+01 7.15e-04 1.51e-01  -3.8 2.40e-01  -1.1 1.00e+00 6.41e-01h  1
+  19  5.4800274e+01 9.41e-03 1.85e-02  -3.8 7.30e-01  -1.6 1.00e+00 1.00e+00f  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  20  5.4630079e+01 1.00e-02 3.70e-01  -3.8 2.01e+00  -2.1 1.00e+00 1.63e-01h  1
+  21  5.2283571e+01 4.13e-01 6.29e-02  -3.8 5.59e+00  -2.5 1.00e+00 1.00e+00f  1
+  22  5.0371547e+01 6.00e-01 3.68e-01  -3.8 1.48e+01  -3.0 1.00e+00 2.94e-01h  1
+  23  4.9652461e+01 6.13e-01 9.27e-01  -3.8 3.52e+01  -3.5 1.00e+00 5.20e-02h  1
+  24  4.5660379e+01 1.88e+00 1.28e+00  -3.8 8.65e+01  -4.0 5.55e-01 1.40e-01f  1
+  25  4.1365798e+01 3.19e+00 1.27e+00  -3.8 2.25e+02  -4.5 3.44e-03 5.73e-02f  1
+  26  3.9993870e+01 2.96e+00 1.16e+00  -3.8 6.64e+01  -4.0 9.24e-03 6.86e-02h  1
+  27  3.9864312e+01 2.91e+00 1.13e+00  -3.8 2.41e+01  -3.6 1.00e+00 1.78e-02h  1
+  28  3.8005102e+01 2.98e+00 1.03e+00  -3.8 6.37e+01  -4.1 3.89e-02 9.19e-02h  1
+  29  3.6991133e+01 2.72e+00 8.72e-01  -3.8 2.35e+01  -3.7 1.00e+00 1.51e-01h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  30  3.5743998e+01 2.49e+00 7.98e-01  -3.8 5.73e+01  -4.1 3.41e-02 8.17e-02h  1
+  31  3.5334903e+01 2.30e+00 7.33e-01  -3.8 2.40e+01  -3.7 1.00e+00 7.66e-02h  1
+  32  3.3879585e+01 2.38e+00 6.60e-01  -3.8 5.39e+01  -4.2 4.84e-02 9.84e-02h  1
+  33  3.2520352e+01 2.42e+00 6.20e-01  -3.8 3.40e+02  -4.7 9.16e-04 1.98e-02h  1
+  34  3.2175744e+01 2.35e+00 6.02e-01  -3.8 5.52e+01  -4.2 7.20e-01 2.71e-02h  1
+  35  3.2114696e+01 2.32e+00 5.92e-01  -3.8 2.16e+01  -3.8 1.00e+00 1.43e-02h  1
+  36  3.0152408e+01 2.46e+00 5.01e-01  -3.8 5.53e+01  -4.3 2.74e-01 1.61e-01h  1
+  37  2.9614879e+01 2.11e+00 4.26e-01  -3.8 2.08e+01  -3.9 1.00e+00 1.51e-01h  1
+  38  2.8390912e+01 2.15e+00 3.73e-01  -3.8 4.73e+01  -4.3 1.00e+00 1.27e-01h  1
+  39  2.6781248e+01 2.47e+00 3.56e-01  -3.8 4.96e+02  -4.8 9.48e-03 3.57e-02h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  40  2.6438503e+01 2.38e+00 1.02e+00  -3.8 4.19e+01  -4.4 1.00e+00 4.51e-02h  1
+  41  2.6056663e+01 2.39e+00 9.94e+00  -3.8 3.78e+02  -4.9 5.12e-02 1.13e-02h  1
+  42  2.4740408e+01 2.33e+00 1.59e+01  -3.8 3.97e+01  -4.4 7.77e-02 1.99e-01h  1
+  43  2.4542619e+01 2.32e+00 4.35e+01  -3.8 1.30e+02  -4.9 3.95e-02 1.01e-02h  1
+  44  2.4296444e+01 2.23e+00 6.40e+03  -3.8 3.80e+01  -4.5 3.11e-04 4.33e-02h  1
+  45  2.3385415e+01 2.40e+00 6.18e+03  -3.8 3.73e+02  -5.0 3.08e-04 3.40e-02f  1
+  46  2.3139353e+01 2.31e+00 5.90e+03  -3.8 3.73e+01  -4.5 8.78e-02 4.59e-02h  1
+  47  2.2596855e+01 2.35e+00 5.77e+03  -3.8 3.77e+02  -5.0 3.87e-02 2.30e-02h  1
+  48  2.2248895e+01 2.22e+00 5.33e+03  -3.8 3.58e+01  -4.6 1.17e-01 7.50e-02h  1
+  49  2.1868855e+01 2.22e+00 5.23e+03  -3.8 2.45e+02  -5.1 7.91e-02 2.16e-02h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  50  2.1305050e+01 2.04e+00 4.56e+03  -3.8 5.28e+01  -4.6 5.36e-03 1.36e-01h  1
+  51  2.0839022e+01 2.07e+00 4.40e+03  -3.8 1.28e+02  -5.1 1.44e-02 3.58e-02h  1
+  52  2.0594153e+01 1.95e+00 4.09e+03  -3.8 3.60e+01  -4.7 1.85e-01 6.83e-02h  1
+  53  2.0051011e+01 2.00e+00 3.88e+03  -3.8 1.08e+02  -5.2 3.66e-02 5.19e-02h  1
+  54  1.9902895e+01 1.92e+00 3.69e+03  -3.8 3.88e+01  -4.7 1.54e-01 4.83e-02h  1
+  55  1.9352610e+01 1.97e+00 3.45e+03  -3.8 9.04e+01  -5.2 1.73e-01 6.53e-02h  1
+  56  1.9300727e+01 1.93e+00 3.38e+03  -3.8 3.84e+01  -4.8 8.31e-02 2.03e-02h  1
+  57  1.8663238e+01 2.04e+00 3.05e+03  -3.8 8.07e+01  -5.3 4.28e-01 9.56e-02h  1
+  58  1.8436607e+01 2.07e+00 3.02e+03  -3.8 7.14e+02  -5.8 2.28e-02 9.08e-03h  1
+  59  1.8278142e+01 2.02e+00 2.91e+03  -3.8 6.26e+01  -5.3 3.26e-02 3.66e-02h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  60  1.8266892e+01 2.02e+00 2.91e+03  -3.8 2.45e+02  -5.8 1.26e-02 7.95e-04h  1
+  61  1.8262333e+01 2.00e+00 2.88e+03  -3.8 2.05e+03  -5.4 2.27e-04 8.92e-03h  1
+  62  1.7396198e+01 2.75e+00 2.69e+03  -3.8 1.96e+02  -5.9 2.69e-02 6.77e-02h  1
+  63  1.7044192e+01 2.93e+00 2.63e+03  -3.8 4.05e+02  -6.3 7.45e-03 2.31e-02h  1
+  64  1.6857375e+01 2.84e+00 2.47e+03  -3.8 1.04e+02  -5.9 1.07e-01 5.96e-02h  1
+  65  1.6780263e+01 2.81e+00 2.43e+03  -3.8 4.94e+02    -  9.31e-03 1.69e-02h  1
+  66  1.6605425e+01 2.69e+00 2.24e+03  -3.8 2.44e+02    -  2.21e-02 7.62e-02h  1
+  67  1.6550140e+01 2.54e+00 2.12e+03  -3.8 2.46e+02    -  3.52e-02 5.54e-02h  1
+  68  1.6535445e+01 2.50e+00 2.08e+03  -3.8 1.71e+02    -  2.81e-02 1.74e-02h  1
+  69  1.6465224e+01 2.32e+00 1.93e+03  -3.8 3.02e+02    -  2.12e-02 7.04e-02h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  70  1.6460090e+01 2.24e+00 1.86e+03  -3.8 8.66e+01    -  1.75e-02 3.77e-02h  1
+  71  1.6416854e+01 2.13e+00 1.77e+03  -3.8 1.66e+02    -  4.10e-02 4.91e-02h  1
+  72  1.6405953e+01 2.08e+00 1.74e+03  -3.8 1.37e+02    -  1.58e-01 2.03e-02h  1
+  73  1.6453958e+01 1.19e+00 9.91e+02  -3.8 2.67e+01    -  1.00e+00 4.30e-01h  1
+  74  1.6558852e+01 1.75e-02 9.09e-02  -3.8 2.75e+00    -  1.00e+00 1.00e+00h  1
+  75  1.6558690e+01 2.70e-06 7.66e-08  -3.8 2.63e-01    -  1.00e+00 1.00e+00h  1
+  76  1.6473396e+01 5.75e-02 2.41e+03  -5.7 1.11e+01    -  8.38e-01 1.00e+00f  1
+  77  1.6471743e+01 6.26e-04 6.35e+01  -5.7 6.23e+00    -  9.74e-01 1.00e+00h  1
+  78  1.6471737e+01 2.18e-08 2.02e-11  -5.7 6.29e-02    -  1.00e+00 1.00e+00h  1
+  79  1.6470638e+01 1.22e-05 6.67e-01  -8.6 1.83e-01    -  9.96e-01 1.00e+00f  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  80  1.6470638e+01 2.51e-11 2.54e-14  -8.6 5.63e-04    -  1.00e+00 1.00e+00h  1
+
+Number of Iterations....: 80
+
+                                   (scaled)                 (unscaled)
+Objective...............:   1.6470637653941068e+01    1.6470637653941068e+01
+Dual infeasibility......:   2.5424107263916085e-14    2.5424107263916085e-14
+Constraint violation....:   8.8391516328556463e-12    2.5050600753258665e-11
+Complementarity.........:   2.5063203280067963e-09    2.5063203280067963e-09
+Overall NLP error.......:   2.5063203280067963e-09    2.5063203280067963e-09
+
+
+Number of objective function evaluations             = 81
+Number of objective gradient evaluations             = 81
+Number of equality constraint evaluations            = 81
+Number of inequality constraint evaluations          = 0
+Number of equality constraint Jacobian evaluations   = 81
+Number of inequality constraint Jacobian evaluations = 0
+Number of Lagrangian Hessian evaluations             = 80
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.483
+Total CPU secs in NLP function evaluations           =      0.019
+
+EXIT: Optimal Solution Found.
+final time =  16.47 seconds
+</pre></div>
+</div>
+<img alt="../../_images/fe3eed4e76db049b2b52d33edec4c1399e3650198ec447b7c7a450c68307999c.png" src="../../_images/fe3eed4e76db049b2b52d33edec4c1399e3650198ec447b7c7a450c68307999c.png" />
+</div>
+</div>
+<p>Yes, the intermediate braking amount gets smaller. The car also reaches the finish line slightly faster.</p>
+</section>
+<section id="another-version">
+<h2><span class="section-number">3.1.5. </span>Another Version<a class="headerlink" href="#another-version" title="Link to this heading">#</a></h2>
+<p>Antoher modeling option to to define an extra differential equation to compute time.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+\min_{u} \quad &amp; t_f \\
+\mathrm{s.t.} \quad &amp; \frac{dx}{d\tau} = t_f v \\
+&amp; \frac{dv}{d\tau} = t_f (u - R v^2) \\
+&amp; \frac{dt}{d\tau} = t_f \\
+&amp; x(\tau = 0) = 0, ~~ x(\tau = 1) = L \\
+&amp; v(\tau = 0) = 0, ~~ v(\tau = 1) = 0 \\
+&amp; t(\tau = 0) = 0 \\
+&amp; -3 \leq u \leq 1
+\end{align*}\end{split}\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_model2</span><span class="p">():</span>
+
+    <span class="c1"># Define the  model</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+    <span class="c1"># Define the  model</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+    <span class="c1"># Deine the model parameters</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">m</span><span class="p">)</span> <span class="c1"># Friction factor</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">m</span><span class="p">)</span> <span class="c1"># Final position</span>
+
+    <span class="c1"># Define time</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">tau</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">ContinuousSet</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>                 <span class="c1"># Dimensionless time set</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="kc">None</span><span class="p">),</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">s</span><span class="p">)</span> <span class="c1"># Time</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">tf</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>             <span class="c1"># Final time</span>
+
+    <span class="c1"># Define remaining algebraic variables</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">m</span><span class="o">.</span><span class="n">L</span> <span class="o">+</span> <span class="mi">50</span><span class="o">*</span><span class="n">units</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>                    <span class="c1"># Position</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="kc">None</span><span class="p">),</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">m</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>                        <span class="c1"># Velocity</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">u</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">3.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">),</span><span class="n">initialize</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">m</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">s</span><span class="o">/</span><span class="n">units</span><span class="o">.</span><span class="n">s</span><span class="p">)</span> <span class="c1"># Acceleration</span>
+
+    <span class="c1"># Define derivative variables</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dtime</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dx</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dv</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>
+
+    <span class="c1"># Declare the objective (minimize final time)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">tf</span><span class="p">)</span>
+
+    <span class="c1"># Define the constraints</span>
+    <span class="c1"># position</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_ode1</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">i</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="o">.</span><span class="n">Skip</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">tf</span> <span class="o">*</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">ode1</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_ode1</span><span class="p">)</span>
+
+    <span class="c1"># velocity</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_ode2</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">i</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="o">.</span><span class="n">Skip</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">tf</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">R</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">ode2</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_ode2</span><span class="p">)</span>
+
+    <span class="c1"># time</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_ode3</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">i</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="o">.</span><span class="n">Skip</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dtime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">tf</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">ode3</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_ode3</span><span class="p">)</span>
+
+    <span class="c1"># Define the inital/boundary conditions</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_init</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">yield</span> <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">L</span>
+        <span class="k">yield</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">yield</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">yield</span> <span class="n">m</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+        
+    <span class="n">m</span><span class="o">.</span><span class="n">initcon</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConstraintList</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="n">_init</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">m</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">create_model2</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Declare the discretizer</span>
+<span class="n">discretizer</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">TransformationFactory</span><span class="p">(</span><span class="s1">&#39;dae.collocation&#39;</span><span class="p">)</span>
+<span class="n">discretizer</span><span class="o">.</span><span class="n">apply_to</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">nfe</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span><span class="n">scheme</span><span class="o">=</span><span class="s1">&#39;LAGRANGE-RADAU&#39;</span><span class="p">,</span><span class="n">ncp</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># force piecewise constant controls (acceleration) over each finite element</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">discretizer</span><span class="o">.</span><span class="n">reduce_collocation_points</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">var</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">,</span><span class="n">ncp</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">contset</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">tau</span><span class="p">)</span>
+
+<span class="c1"># Solve</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;final time = </span><span class="si">%6.2f</span><span class="s2"> seconds&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">tf</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: 
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+
+This version of Ipopt was compiled from source code available at
+    https://github.com/IDAES/Ipopt as part of the Institute for the Design of
+    Advanced Energy Systems Process Systems Engineering Framework (IDAES PSE
+    Framework) Copyright (c) 2018-2019. See https://github.com/IDAES/idaes-pse.
+
+This version of Ipopt was compiled using HSL, a collection of Fortran codes
+    for large-scale scientific computation.  All technical papers, sales and
+    publicity material resulting from use of the HSL codes within IPOPT must
+    contain the following acknowledgement:
+        HSL, a collection of Fortran codes for large-scale scientific
+        computation. See http://www.hsl.rl.ac.uk.
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:     1145
+Number of nonzeros in inequality constraint Jacobian.:        0
+Number of nonzeros in Lagrangian Hessian.............:      135
+
+Total number of variables............................:      319
+                     variables with only lower bounds:       92
+                variables with lower and upper bounds:       91
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:      305
+Total number of inequality constraints...............:        0
+        inequality constraints with only lower bounds:        0
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        0
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  1.0000000e+00 1.00e+02 3.48e-01  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1  9.9965381e-01 9.99e+01 1.09e+02  -1.0 1.00e+03    -  7.69e-05 1.26e-03f  1
+   2  1.0672606e+00 9.98e+01 1.21e+02  -1.0 8.13e+02    -  1.78e-04 1.13e-03f  1
+   3  1.6627950e+00 9.94e+01 3.76e+01  -1.0 6.32e+02    -  4.66e-04 3.48e-03f  1
+   4  2.1580706e+00 9.89e+01 2.13e+01  -1.0 3.70e+02    -  5.94e-03 4.73e-03f  1
+   5  3.3740442e+00 9.75e+01 2.13e+01  -1.0 2.83e+02    -  6.48e-03 1.47e-02f  1
+   6  3.4568065e+00 9.75e+01 2.12e+01  -1.0 3.65e+03  -2.0 9.05e-05 2.25e-04f  4
+   7  3.5166768e+00 9.75e+01 2.12e+01  -1.0 1.45e+05  -1.6 3.05e-07 2.70e-06f  4
+   8  3.6179009e+00 9.74e+01 2.11e+01  -1.0 4.56e+02  -1.1 6.90e-03 7.57e-04h  4
+   9  3.7394769e+00 9.74e+01 2.10e+01  -1.0 2.14e+03  -1.6 4.01e-04 2.70e-04h  3
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  10  3.9133700e+00 9.72e+01 2.10e+01  -1.0 3.70e+02  -1.2 1.66e-02 1.41e-03h  3
+  11  4.4185485e+00 9.71e+01 1.98e+01  -1.0 1.58e+03    -  2.59e-03 1.55e-03h  1
+  12  4.5952693e+00 9.69e+01 1.98e+01  -1.0 4.16e+02    -  5.05e-03 1.57e-03h  1
+  13  4.9840028e+00 9.66e+01 1.97e+01  -1.0 4.67e+02    -  7.60e-03 3.38e-03h  1
+  14  5.3631837e+00 9.61e+01 1.98e+01  -1.0 2.80e+02    -  6.53e-03 5.27e-03h  1
+  15  5.8588385e+00 9.55e+01 1.96e+01  -1.0 3.63e+02    -  7.97e-03 5.72e-03h  2
+  16  6.2740527e+00 9.51e+01 1.96e+01  -1.0 4.21e+02    -  1.56e-02 4.53e-03h  1
+  17  6.6359047e+00 9.45e+01 2.20e+01  -1.0 2.85e+02    -  1.32e-02 6.28e-03h  1
+  18  7.1860006e+00 9.36e+01 2.75e+01  -1.0 3.17e+02    -  1.47e-02 9.08e-03h  4
+  19  7.8876904e+00 9.27e+01 2.76e+01  -1.0 4.06e+02    -  1.29e-02 9.78e-03h  2
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  20  8.3302999e+00 9.20e+01 2.73e+01  -1.0 3.73e+02    -  7.91e-03 7.33e-03h  2
+  21  8.7005071e+00 9.15e+01 3.38e+01  -1.0 3.73e+02    -  1.67e-03 5.55e-03h  1
+  22  8.8614541e+00 9.12e+01 3.54e+01  -1.0 3.10e+02    -  1.44e-02 3.62e-03h  1
+  23  9.3754873e+00 9.01e+01 3.94e+01  -1.0 3.09e+02    -  1.59e-02 1.18e-02h  1
+  24  1.0173832e+01 8.84e+01 3.85e+01  -1.0 3.05e+02    -  4.92e-02 1.97e-02h  3
+  25  1.1806583e+01 8.59e+01 5.17e+01  -1.0 3.68e+02  -1.7 4.14e-03 2.80e-02h  2
+  26  1.3077594e+01 8.20e+01 3.75e+01  -1.0 2.75e+02  -1.3 6.22e-02 4.47e-02h  3
+  27  1.3909957e+01 8.03e+01 2.75e+01  -1.0 3.28e+02  -1.7 6.11e-02 2.12e-02h  3
+  28  1.4861686e+01 7.65e+01 3.46e+01  -1.0 2.40e+02  -1.3 2.30e-02 4.78e-02f  3
+  29  1.5847144e+01 7.35e+01 3.03e+01  -1.0 2.70e+02  -1.8 9.50e-02 3.85e-02h  5
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  30  1.7199412e+01 7.22e+01 2.99e+01  -1.0 5.15e+02  -2.3 2.07e-02 1.84e-02h  1
+  31  1.7264467e+01 7.20e+01 4.19e+01  -1.0 2.86e+02    -  1.06e-01 2.56e-03h  1
+  32  3.3947489e+01 5.88e+00 1.98e+02  -1.0 2.70e+02    -  7.07e-02 9.22e-01H  1
+  33  3.3892282e+01 7.53e-02 7.75e+01  -1.0 1.50e+01  -1.8 5.55e-01 9.90e-01h  1
+  34  3.1099781e+01 3.25e+00 4.34e+02  -1.0 2.09e+02    -  1.62e-01 1.83e-01f  1
+  35  3.3257932e+01 1.99e+00 9.45e+03  -1.0 2.87e+01    -  5.56e-01 9.92e-01f  1
+  36  3.0676688e+01 3.10e+00 1.40e+06  -1.0 3.75e+01    -  2.66e-01 9.12e-01f  1
+  37  2.8971974e+01 1.94e+00 5.27e+06  -1.0 3.39e+01    -  2.61e-01 1.00e+00f  1
+  38  2.7979354e+01 1.41e+00 9.55e+05  -1.0 2.59e+01    -  7.48e-01 5.84e-01h  1
+  39  2.5272864e+01 5.18e+00 1.26e+06  -1.0 1.17e+02    -  1.27e-01 5.83e-01f  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  40  2.5693827e+01 3.44e-01 1.27e+06  -1.0 2.11e+01    -  2.36e-01 1.00e+00f  1
+  41  2.2982818e+01 4.74e+00 7.78e+05  -1.0 9.26e+01    -  3.86e-01 6.26e-01f  1
+  42  2.0165927e+01 6.73e+00 5.59e+05  -1.0 6.11e+01    -  2.81e-01 8.52e-01f  1
+  43  1.8548643e+01 5.04e+00 3.42e+05  -1.0 6.52e+01    -  3.89e-01 5.46e-01f  1
+  44  1.9691536e+01 1.01e+00 4.17e-02  -1.0 1.57e+01    -  1.00e+00 1.00e+00f  1
+  45  1.9758985e+01 5.69e-02 3.33e-03  -1.0 1.62e+01    -  1.00e+00 1.00e+00h  1
+  46  1.7116764e+01 5.67e+00 2.62e+06  -2.5 2.17e+01    -  7.30e-01 1.00e+00f  1
+  47  1.6751093e+01 3.80e-01 9.60e+04  -2.5 1.33e+01    -  9.63e-01 1.00e+00h  1
+  48  1.6637572e+01 4.98e-02 8.50e-05  -2.5 7.31e+00    -  1.00e+00 1.00e+00h  1
+  49  1.6637598e+01 7.09e-07 2.95e-08  -2.5 1.37e-01    -  1.00e+00 1.00e+00h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  50  1.6521647e+01 2.19e-02 1.17e+04  -5.7 1.83e+00    -  9.59e-01 1.00e+00f  1
+  51  1.6520272e+01 3.39e-06 4.17e-08  -5.7 2.75e-02    -  1.00e+00 1.00e+00h  1
+  52  1.6520192e+01 9.39e-09 1.64e-10  -8.6 1.01e-03    -  1.00e+00 1.00e+00h  1
+
+Number of Iterations....: 52
+
+                                   (scaled)                 (unscaled)
+Objective...............:   1.6520191520761482e+01    1.6520191520761482e+01
+Dual infeasibility......:   1.6444812999846882e-10    1.6444812999846882e-10
+Constraint violation....:   9.3907885911903577e-09    9.3907885911903577e-09
+Complementarity.........:   2.5872224352029850e-09    2.5872224352029850e-09
+Overall NLP error.......:   9.3907885911903577e-09    9.3907885911903577e-09
+
+
+Number of objective function evaluations             = 110
+Number of objective gradient evaluations             = 53
+Number of equality constraint evaluations            = 110
+Number of inequality constraint evaluations          = 0
+Number of equality constraint Jacobian evaluations   = 53
+Number of inequality constraint Jacobian evaluations = 0
+Number of Lagrangian Hessian evaluations             = 52
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.024
+Total CPU secs in NLP function evaluations           =      0.001
+
+EXIT: Optimal Solution Found.
+final time =  16.52 seconds
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/3"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="dynamics.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Dynamic Optimization</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="PyomoDAE_TCLab.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3.2. </span>Pyomo.DAE Example: Temperature Control Lab</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">3.1.1. Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-packages-and-load-modules">3.1.2. Install Packages and Load Modules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-statement-and-optimal-control-formulation">3.1.3. Problem Statement and Optimal Control Formulation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scale-time">3.1.3.1. Scale Time</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#declaring-our-model-with-pyomo-dae">3.1.3.2. Declaring our Model with Pyomo.DAE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discretize-transcribe-and-solve">3.1.3.3. Discretize/Transcribe and Solve</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-results">3.1.3.4. Plot Results</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finer-time-discretization">3.1.4. Finer Time Discretization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#another-version">3.1.5. Another Version</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Alexander Dowling, et al.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

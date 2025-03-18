@@ -1,0 +1,1249 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Chemical Reactor Design &#8212; Optimization for Decision Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/contrib/reactor_design';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Disaster Response Plan Optimization" href="Disaster_Response_Plan.html" />
+    <link rel="prev" title="Hot Air Balloon Dynamic Control" href="hot_air_balloon.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/cbe_logo.jpg" class="logo__image only-light" alt="Optimization for Decision Science - Home"/>
+    <script>document.write(`<img src="../../_static/cbe_logo.jpg" class="logo__image only-dark" alt="Optimization for Decision Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Optimization for Decision Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Fall 2024 Calendar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/workshop.html">Computational Optimization in Python (São Paulo, Brazil)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project1.html">Project 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms1.html">Algorithms Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms2.html">Algorithms Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project2.html">Project 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project (Spring 2023)</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/LP.html">1.4. Continuous Optimization: Linear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/NLP.html">1.5. Continuous Optimization: Nonlinear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.6. Integer Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.7. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_car.html">3.1. Pyomo.DAE Example: Race Car</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_TCLab.html">3.2. Pyomo.DAE Example: Temperature Control Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_background.html">3.3. Differential Algebraic Equations (DAEs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_numeric_integration.html">3.4. Numeric Integration for DAEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_theory.html">3.5. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_example.html">3.6. Pyomo.DAE: Racing Example Revisited</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/blocks.html">4.2. Blocks and Other Pyomo Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/AdvancedTopics.html">4.3. Advanced Topics in Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.4. Risk Measures and Portfolio Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Optimizing Experiments with <code class="docutils literal notranslate"><span class="pre">Pyomo.DoE</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-1.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Newton-Methods.html">6.4. Newton-type Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Constraint-Qualifications.html">7.4. Constraint Qualifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Second-Order.html">7.5. Second Order Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/degeneracy_hunter.html">7.6. NLP Diagnostics with Degeneracy Hunter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="pyomo.html">More Pyomo Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="semiconductor_manufacturing.html">Semiconductor Production Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="student_diet.html">Optimization of Daily Diet Using Pyomo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blending.html">Blending Under Uncertainty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vehicle_routing.html">Vehicle Routing</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="portfolio_optimization_extended.html">Risk Measures and Portfolio Optimization: Expanded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="race_car_extended.html">Extended Race Car Optimization Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hot_air_balloon.html">Hot Air Balloon Dynamic Control</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Chemical Reactor Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Disaster_Response_Plan.html">Disaster Response Plan Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Sudoku_Solver.html">Sudoku Solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="more_circle_packing.html">Circle Packing Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="modeling.html">Modeling Paradigms</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="multi_objective.html">Multi-Objective Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_stochastic_programming.html">Advanced Topics in Stochastic Programming</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="algorithms.html">Global Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Deterministic_Global_Optimization.html">Deterministic Global Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="sgd.html">Stochastic Gradient Descent</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="data.html">Machine Learning and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/contrib/reactor_design.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/contrib/reactor_design.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/contrib/reactor_design.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chemical Reactor Design</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-statement-design-of-chemical-reactors-for-chemical-transformations">Problem Statement: Design of Chemical Reactors for Chemical Transformations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-packages-and-load-modules">Install Packages and Load Modules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#original-problem-from-the-reference-material">Original Problem from the Reference Material</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-model-formulation">Optimization Model Formulation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#degrees-of-freedom-analysis">Degrees of Freedom Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyomo-implementation-of-the-original-problem">Pyomo Implementation of the Original Problem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimal-solution-found-for-the-original-problem">Optimal Solution Found for the Original Problem</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extension-adding-a-new-species-c-and-considering-reaction-kinetics">Extension: Adding a New Species C and Considering Reaction Kinetics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Optimization Model Formulation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Degrees of Freedom Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyomo-implementation">Pyomo Implementation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyomo-enables-dynamic-chemical-reactor-design">Pyomo Enables Dynamic Chemical Reactor Design</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#take-away-messages">Take Away Messages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="chemical-reactor-design">
+<h1>Chemical Reactor Design<a class="headerlink" href="#chemical-reactor-design" title="Link to this heading">#</a></h1>
+<p><strong>Prepared by:</strong> Zhicheng Lu (<a class="reference external" href="mailto:zlu3&#37;&#52;&#48;nd&#46;edu">zlu3<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2024) and Shammah Lilonfe (<a class="reference external" href="mailto:slilonfe&#37;&#52;&#48;nd&#46;edu">slilonfe<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2024) at the University of Notre Dame.</p>
+<section id="learning-objectives">
+<h2>Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Review syntax for Pyomo and Pyomo.DAE</p></li>
+<li><p>Demonstrate the power of Pyomo in solving and optimizing complex dynamic process systems</p></li>
+</ul>
+</section>
+<section id="problem-statement-design-of-chemical-reactors-for-chemical-transformations">
+<h2>Problem Statement: Design of Chemical Reactors for Chemical Transformations<a class="headerlink" href="#problem-statement-design-of-chemical-reactors-for-chemical-transformations" title="Link to this heading">#</a></h2>
+<p>Chemical reactors are often the most important unit operations in a chemical plant. Reactors come in many forms, however two of the most common idealizations are the continuously stirred tank reactor (CSTR) and the plug flow reactor. The CSTR is often used in modeling studies, and it can be effectively modeled as a lumped parameter system. In this example, we will consider the following reaction scheme known as the Van de Vusse reaction:</p>
+<div class="math notranslate nohighlight">
+\[
+\text{A} \xrightarrow{k_1} \text{B} \xrightarrow{k_2} \text{C}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+2\text{A} \xrightarrow{k_3} \text{D}
+\]</div>
+<p>A diagram of the system is shown in figure below, where F is the volumetric flowrate. The reactor is assumed to be filled to a constant volume, and the mixture is assumed to have constant density, so the volumetric flowrate into the reactor is equal to the volumetric flowrate out of the reactor. Since the reactor is assumed to be wellmixed, the concentrations in the reactor are equivalent to the concentrations of each component flowing out of the reactor, given by <span class="math notranslate nohighlight">\(C_A\)</span>, <span class="math notranslate nohighlight">\(C_B\)</span>, <span class="math notranslate nohighlight">\(C_C\)</span>, and <span class="math notranslate nohighlight">\(C_D\)</span>.</p>
+<p><img alt="process scheme" src="https://raw.githubusercontent.com/ndcbe/optimization/main/media/contrib/reactor.png" /></p>
+<p>This example (both text and figure) was taken from Hart et al (2017).</p>
+</section>
+<section id="install-packages-and-load-modules">
+<h2>Install Packages and Load Modules<a class="headerlink" href="#install-packages-and-load-modules" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Importing the libraries needed for the project</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="k">if</span> <span class="s2">&quot;google.colab&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+    <span class="o">!</span>wget<span class="w"> </span><span class="s2">&quot;https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/helper.py&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">easy_install</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;../&#39;</span><span class="p">)</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+<span class="n">helper</span><span class="o">.</span><span class="n">set_plotting_style</span><span class="p">()</span>
+
+<span class="c1"># Importing packages to be used in this project</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyomo.environ</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyo</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyomo.dae</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dae</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="original-problem-from-the-reference-material">
+<h2>Original Problem from the Reference Material<a class="headerlink" href="#original-problem-from-the-reference-material" title="Link to this heading">#</a></h2>
+<p>The goal is to produce product B from a feed containing reactant A. If we design a reactor that is too small, we will obtain insufficient conversion of A to the desired product B. However, given the reaction scheme, if the reactor is too large (e.g., too much reaction is allowed to occur), a significant amount of the desired product B will be further reacted to form the undesired product C. As a result, the goal in this exercise will be to solve for the optimal reactor volume producing the maximum outlet concentration for product B.</p>
+<p>The steady-state mole balances for each of the four components are given by,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+&amp;0=\frac{F}{V}C_{Af}-\frac{F}{V}C_A-k_1C_A-2k_3C_A^2 \\
+&amp; 0=-\frac{F}{V}C_B+k_1C_A-k_2C_B\\
+&amp; 0=-\frac{F}{V}C_C+k_2C_B \\
+&amp; 0=-\frac{F}{V}C_D+k_3C_A^2
+\end{align*}\end{split}\]</div>
+<p>The known parameters for the system are,</p>
+<div class="math notranslate nohighlight">
+\[\begin{align*}
+C_{Af}=10^4\,\mathrm{\frac{gmol}{m^3}}\quad{k_1=\frac{5}{6}\,\mathrm{min^{-1}}}\quad{k_2=\frac{5}{3}\,\mathrm{min^{-1}}}\quad{k_3=\frac{1}{6000}\,\mathrm{\frac{m^3}{gmol\cdot min}}}
+\end{align*}\]</div>
+<p>Since the volumetric flowrate F always appears as the numerator over the reactor volume V, it is common to consider this ratio as a single variable, called the space velocity (sv). Our optimization formulation will seek to find the space-velocity that maximizes the outlet concentration of the desired product B.</p>
+<p>This original problem was taken from Hart et al (2017).</p>
+<section id="optimization-model-formulation">
+<h3>Optimization Model Formulation<a class="headerlink" href="#optimization-model-formulation" title="Link to this heading">#</a></h3>
+<p>Mathematically, we want to solve the following optimal reactor volume problem:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+\max_{S_v} \quad &amp; C_B \\ 
+\mathrm{s.t.} \quad &amp; 0=S_vC_{Af}-S_vC_A-k_1C_A-2k_3C_A^2 \\
+&amp; 0=-S_vC_B+k_1C_A-k_2C_B \\
+&amp; 0=-S_vC_C+k_2C_B \\
+&amp; 0=-S_vC_D+k_3C_A^2 \\
+&amp; C_A, C_B, C_C, C_D, S_v \geq 0.
+\end{align*}\end{split}\]</div>
+<p>Here “s.t.” means “subject to”, i.e., the constraints.</p>
+</section>
+<section id="degrees-of-freedom-analysis">
+<h3>Degrees of Freedom Analysis<a class="headerlink" href="#degrees-of-freedom-analysis" title="Link to this heading">#</a></h3>
+<p>From the optimization model formulated above:<br />
+Number of variables = 5 <br />
+Number of equality constraints = 4 <br />
+Therefore, the degrees of freedom = 5 - 4 = 1</p>
+</section>
+<section id="pyomo-implementation-of-the-original-problem">
+<h3>Pyomo Implementation of the Original Problem<a class="headerlink" href="#pyomo-implementation-of-the-original-problem" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># function that creates pyomo model for the reaction system</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_model</span><span class="p">(</span><span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">,</span> <span class="n">k3</span><span class="p">,</span> <span class="n">caf</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates reactor model</span>
+<span class="sd">    Argument:</span>
+<span class="sd">        caf: feed concentration of A, gmol/m^3</span>
+<span class="sd">        k1: rate constant for A to B, min^-1</span>
+<span class="sd">        k2: rate constant for B to C, min^-1</span>
+<span class="sd">        k3: rate constant for 2A to D, m^3/(gmol.min)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        model: pyomo model&quot;&quot;&quot;</span>
+    <span class="c1"># Create a Pyomo model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+    
+    <span class="c1"># create the variables</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">sv</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">PositiveReals</span><span class="p">)</span> <span class="c1"># space-velocity</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">ca</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mf">5000.0</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">PositiveReals</span><span class="p">)</span> <span class="c1"># concentration of A</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">cb</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mf">2000.0</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">PositiveReals</span><span class="p">)</span> <span class="c1"># concentration of B</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">cc</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mf">2000.0</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">PositiveReals</span><span class="p">)</span> <span class="c1"># concentration of C</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">cd</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">PositiveReals</span><span class="p">)</span> <span class="c1"># concentration of D</span>
+    
+    <span class="c1"># create the objective</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">cb</span><span class="p">,</span> <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">maximize</span><span class="p">)</span>
+    
+    <span class="c1"># create the constraints</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">ca_bal</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span> <span class="o">==</span> <span class="n">model</span><span class="o">.</span><span class="n">sv</span> <span class="o">*</span> <span class="n">caf</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">sv</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">ca</span> <span class="o">-</span> <span class="n">k1</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">ca</span> <span class="o">-</span> 
+                                          <span class="mf">2.0</span> <span class="o">*</span> <span class="n">k3</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">ca</span> <span class="o">**</span> <span class="mf">2.0</span><span class="p">))</span> <span class="c1"># species A mole balance</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">cb_bal</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span> <span class="o">==</span> <span class="o">-</span><span class="n">model</span><span class="o">.</span><span class="n">sv</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">cb</span> <span class="o">+</span> <span class="n">k1</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">ca</span> <span class="o">-</span> <span class="n">k2</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">cb</span><span class="p">))</span> <span class="c1"># species B mole balance</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">cc_bal</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span> <span class="o">==</span> <span class="o">-</span><span class="n">model</span><span class="o">.</span><span class="n">sv</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">cc</span> <span class="o">+</span> <span class="n">k2</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">cb</span><span class="p">))</span> <span class="c1"># species C mole balance</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">cd_bal</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span> <span class="o">==</span> <span class="o">-</span><span class="n">model</span><span class="o">.</span><span class="n">sv</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">cd</span> <span class="o">+</span> <span class="n">k3</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">ca</span> <span class="o">**</span> <span class="mf">2.0</span><span class="p">))</span> <span class="c1"># species D mole balance</span>
+    
+    <span class="k">return</span> <span class="n">model</span>
+
+<span class="c1"># define data</span>
+<span class="n">k1</span> <span class="o">=</span> <span class="mf">5.0</span><span class="o">/</span><span class="mf">6.0</span> <span class="c1"># min^-1</span>
+<span class="n">k2</span> <span class="o">=</span> <span class="mf">5.0</span><span class="o">/</span><span class="mf">3.0</span> <span class="c1"># min^-1</span>
+<span class="n">k3</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="mf">6000.0</span> <span class="c1"># m^3/(gmol.min)</span>
+<span class="n">caf</span> <span class="o">=</span> <span class="mf">10000.0</span> <span class="c1"># gmol/m^3</span>
+
+<span class="c1"># reactor model object</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">(</span><span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">,</span> <span class="n">k3</span><span class="p">,</span> <span class="n">caf</span><span class="p">)</span>
+
+<span class="c1"># solve model</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># print the solution of sv and the outlet concentration of B</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The optimum space-velocity is: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">sv</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2"> min^-1&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The outlet concentration of species B is: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">cb</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2"> gmol/m^3&quot;</span><span class="p">)</span>
+
+<span class="c1"># calculate optimum reactor volume for a volumetric flow rate of 1 m^3/min</span>
+<span class="n">F</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">optimum_reactor_volume</span> <span class="o">=</span> <span class="n">F</span> <span class="o">/</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">sv</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The optimum reactor volume is: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">optimum_reactor_volume</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2"> m^3&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: 
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+
+This version of Ipopt was compiled from source code available at
+    https://github.com/IDAES/Ipopt as part of the Institute for the Design of
+    Advanced Energy Systems Process Systems Engineering Framework (IDAES PSE
+    Framework) Copyright (c) 2018-2019. See https://github.com/IDAES/idaes-pse.
+
+This version of Ipopt was compiled using HSL, a collection of Fortran codes
+    for large-scale scientific computation.  All technical papers, sales and
+    publicity material resulting from use of the HSL codes within IPOPT must
+    contain the following acknowledgement:
+        HSL, a collection of Fortran codes for large-scale scientific
+        computation. See http://www.hsl.rl.ac.uk.
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:       11
+Number of nonzeros in inequality constraint Jacobian.:        0
+Number of nonzeros in Lagrangian Hessian.............:        5
+
+Total number of variables............................:        5
+                     variables with only lower bounds:        5
+                variables with lower and upper bounds:        0
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:        4
+Total number of inequality constraints...............:        0
+        inequality constraints with only lower bounds:        0
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        0
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0 -2.0000000e+03 7.50e+03 6.25e-01  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1 -1.0801475e+03 5.54e+02 2.46e+00  -1.0 1.39e+03    -  5.54e-01 1.00e+00h  1
+   2 -1.0763574e+03 8.86e+01 1.87e+02  -1.0 3.66e+02    -  9.31e-01 1.00e+00h  1
+   3 -1.0727252e+03 1.07e+01 5.26e+00  -1.0 9.35e+01    -  9.71e-01 1.00e+00h  1
+   4 -1.0726714e+03 4.01e+00 1.22e-01  -1.0 6.03e+01    -  9.68e-01 1.00e+00h  1
+   5 -1.0724371e+03 3.44e-04 2.93e-05  -2.5 4.19e-01    -  1.00e+00 1.00e+00h  1
+   6 -1.0724372e+03 1.63e-08 3.93e-09  -3.8 3.85e-03    -  1.00e+00 1.00e+00h  1
+   7 -1.0724372e+03 5.46e-11 2.70e-11  -5.7 2.24e-04    -  1.00e+00 1.00e+00h  1
+   8 -1.0724372e+03 4.55e-13 3.56e-14  -8.6 2.78e-06    -  1.00e+00 1.00e+00h  1
+
+Number of Iterations....: 8
+
+                                   (scaled)                 (unscaled)
+Objective...............:  -1.0724372001086319e+03   -1.0724372001086319e+03
+Dual infeasibility......:   3.5606114692563649e-14    3.5606114692563649e-14
+Constraint violation....:   4.5474735088646414e-14    4.5474735088646412e-13
+Complementarity.........:   2.5059065225787338e-09    2.5059065225787338e-09
+Overall NLP error.......:   2.5059065225787338e-09    2.5059065225787338e-09
+
+
+Number of objective function evaluations             = 9
+Number of objective gradient evaluations             = 9
+Number of equality constraint evaluations            = 9
+Number of inequality constraint evaluations          = 0
+Number of equality constraint Jacobian evaluations   = 9
+Number of inequality constraint Jacobian evaluations = 0
+Number of Lagrangian Hessian evaluations             = 8
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.000
+Total CPU secs in NLP function evaluations           =      0.000
+
+EXIT: Optimal Solution Found.
+The optimum space-velocity is: 1.34 min^-1
+The outlet concentration of species B is: 1072.44 gmol/m^3
+The optimum reactor volume is: 0.74 m^3
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="optimal-solution-found-for-the-original-problem">
+<h3>Optimal Solution Found for the Original Problem<a class="headerlink" href="#optimal-solution-found-for-the-original-problem" title="Link to this heading">#</a></h3>
+<p>The optimal space-velocity is <span class="math notranslate nohighlight">\(\mathrm{1.34\,min^{-1}}\)</span>, giving an outlet concentration for B of <span class="math notranslate nohighlight">\(\mathrm{1072.44\,gmol\cdot m^{-3}}\)</span>. For a volumetric flow rate of <span class="math notranslate nohighlight">\(\mathrm{1\,m^{3}\cdot min^{-1}}\)</span>, the optimum reactor volume is <span class="math notranslate nohighlight">\(\mathrm{0.74\,m^{3}}\)</span>.</p>
+</section>
+</section>
+<section id="extension-adding-a-new-species-c-and-considering-reaction-kinetics">
+<h2>Extension: Adding a New Species C and Considering Reaction Kinetics<a class="headerlink" href="#extension-adding-a-new-species-c-and-considering-reaction-kinetics" title="Link to this heading">#</a></h2>
+<p>In this project, species C is the desired product, and we are considering the dynamic state of the system (most often, industrial operations are dynamic). The goal of this work is to determine the volume of the reactor that will maximize the concentration of species C in the effluent after 10 minutes. Furthermore, for economic reasons, the reactor volume should not exceed <span class="math notranslate nohighlight">\(\mathrm{100\,m^3}\)</span>.</p>
+<p>The mole balance for each of the species in this system under dynamic state is given by:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+&amp;\frac{dC_A}{dt}=\frac{F}{V}C_{Af}-\frac{F}{V}C_A-k_1C_A-2k_3C_A^2 \\
+&amp; \frac{dC_B}{dt}=-\frac{F}{V}C_B+k_1C_A-k_2C_B\\
+&amp; \frac{dC_C}{dt}=-\frac{F}{V}C_C+k_2C_B \\
+&amp; \frac{dC_D}{dt}=-\frac{F}{V}C_D+k_3C_A^2
+\end{align*}\end{split}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(C_A\)</span>, <span class="math notranslate nohighlight">\(C_B\)</span>, <span class="math notranslate nohighlight">\(C_C\)</span> and <span class="math notranslate nohighlight">\(C_D\)</span> are the concentrations of species A, B, C and D, respectively. <span class="math notranslate nohighlight">\(F\)</span> is the feed flow rate, <span class="math notranslate nohighlight">\(C_{Af}\)</span> is the concentration of species A in the feed, <span class="math notranslate nohighlight">\(k_1\)</span>, <span class="math notranslate nohighlight">\(k_2\)</span> and <span class="math notranslate nohighlight">\(k_3\)</span> are the rate constants of reaction 1 (species A to B), reaction 2 (species B to C) and reaction 3 (species A to D), respectively.</p>
+<p>The data for the system are:
+$<span class="math notranslate nohighlight">\(\begin{align*}
+C_{Af}=10^4\,\mathrm{\frac{mol}{m^3}},\quad{k_1=\frac{5}{6}\,\mathrm{min^{-1}}},\quad{k_2=\frac{5}{3}\,\mathrm{min^{-1}}},\quad{k_3=\frac{1}{6000}\,\mathrm{\frac{m^3}{mol\cdot min}}},\quad{F=1\,\mathrm{\frac{m^3}{min}}}
+\end{align*}\)</span>$</p>
+<p>The data was obtained from Hart et al (2017).</p>
+<section id="id1">
+<h3>Optimization Model Formulation<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Mathematically, we want to solve the following optimal reactor volume problem:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+\max_{V} \quad &amp; C_C(t=10) \\
+\mathrm{s.t.} \quad &amp; \frac{dC_A}{dt}=\frac{F}{V}C_{Af}-\frac{F}{V}C_A-k_1C_A-2k_3C_A^2 \\
+&amp; \frac{dC_B}{dt}=-\frac{F}{V}C_B+k_1C_A-k_2C_B \\
+&amp; \frac{dC_C}{dt}=-\frac{F}{V}C_C+k_2C_B \\
+&amp; \frac{dC_D}{dt}=-\frac{F}{V}C_D+k_3C_A^2 \\
+&amp; V \leq 100 \\
+&amp; C_A(t=0) = 10000, ~~ C_B(t=0) = 0 \\
+&amp; C_C(t=0) = 0, ~~ C_D(t=0) = 0 \\
+\end{align*}\end{split}\]</div>
+</section>
+<section id="id2">
+<h3>Degrees of Freedom Analysis<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>From the optimization model formulated above:<br />
+Number of variables = 5 <br />
+Number of equality constraints = 4 <br />
+Therefore, the degrees of freedom = 5 - 4 = 1</p>
+</section>
+<section id="pyomo-implementation">
+<h3>Pyomo Implementation<a class="headerlink" href="#pyomo-implementation" title="Link to this heading">#</a></h3>
+<p>We can use <code class="docutils literal notranslate"><span class="pre">Pyomo.dae</span></code> to automatically formulate the collocation equations (i.e., add constraints that numerically integrate the ODE model).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># function that creates pyomo model for the dynamic reaction system</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_dynamic_model</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">CAF</span><span class="p">,</span> <span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">,</span> <span class="n">k3</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates reactor model</span>
+<span class="sd">    Argument:</span>
+<span class="sd">        F: feed volumetric flow rate in m^3/min</span>
+<span class="sd">        CAF: feed concentration of A, gmol/m^3</span>
+<span class="sd">        k1: rate constant for A to B, min^-1</span>
+<span class="sd">        k2: rate constant for B to C, min^-1</span>
+<span class="sd">        k3: rate constant for 2A to D, m^3/(gmol.min)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        model: pyomo model&quot;&quot;&quot;</span>
+
+    <span class="c1"># Create a Pyomo model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+    <span class="c1"># Define time as a continuous set</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">ContinuousSet</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>  <span class="c1"># time from 0 to 10 minutes</span>
+
+    <span class="c1"># Define variables for concentrations and reactor volume</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">CA</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span> <span class="c1"># concentration of A</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">CB</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span> <span class="c1"># concentration of B</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">CC</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span> <span class="c1"># concentration of C</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">CD</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">within</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span> <span class="c1"># concentration of D</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">V</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">within</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">initialize</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># reactor volume</span>
+
+    <span class="c1"># Define derivatives of concentrations</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">dCA_dt</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">CA</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">dCB_dt</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">CB</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">dCC_dt</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">CC</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">dCD_dt</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">CD</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="c1"># CA differential equation</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ca_rate_ode</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dCA_dt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="p">(</span><span class="n">F</span><span class="o">/</span><span class="n">m</span><span class="o">.</span><span class="n">V</span><span class="p">)</span><span class="o">*</span><span class="n">CAF</span> <span class="o">-</span> <span class="p">(</span><span class="n">F</span><span class="o">/</span><span class="n">m</span><span class="o">.</span><span class="n">V</span><span class="p">)</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">CA</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">-</span> <span class="n">k1</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">CA</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">k3</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">CA</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">CA_ode</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">ca_rate_ode</span><span class="p">)</span>
+
+    <span class="c1"># CB differential equation</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cb_rate_ode</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dCB_dt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="p">(</span><span class="n">F</span><span class="o">/</span><span class="n">m</span><span class="o">.</span><span class="n">V</span><span class="p">)</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">CB</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">k1</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">CA</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">-</span> <span class="n">k2</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">CB</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">CB_ode</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">cb_rate_ode</span><span class="p">)</span>
+
+    <span class="c1"># CC differential equation</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cc_rate_ode</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dCC_dt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="p">(</span><span class="n">F</span><span class="o">/</span><span class="n">m</span><span class="o">.</span><span class="n">V</span><span class="p">)</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">CC</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">k2</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">CB</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">CC_ode</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">cc_rate_ode</span><span class="p">)</span>
+
+    <span class="c1"># CD differential equation</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cd_rate_ode</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dCD_dt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="p">(</span><span class="n">F</span><span class="o">/</span><span class="n">m</span><span class="o">.</span><span class="n">V</span><span class="p">)</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">CD</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">k3</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">CA</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">CD_ode</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">cd_rate_ode</span><span class="p">)</span>
+
+    <span class="c1"># Initial conditions</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init_conditions</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">m</span><span class="o">.</span><span class="n">CA</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">CAF</span>
+        <span class="k">yield</span> <span class="n">m</span><span class="o">.</span><span class="n">CB</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">yield</span> <span class="n">m</span><span class="o">.</span><span class="n">CC</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">yield</span> <span class="n">m</span><span class="o">.</span><span class="n">CD</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">init_conditions</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConstraintList</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="n">init_conditions</span><span class="p">)</span>
+
+    <span class="c1"># Objective: Maximize concentration of C at t = 10 minutes</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">objective_function</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">CC</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">objective</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="n">objective_function</span><span class="p">,</span> <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">maximize</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">model</span>
+
+<span class="c1"># Parameters from data</span>
+<span class="n">conc_A_feed</span> <span class="o">=</span> <span class="mi">10000</span>  <span class="c1"># gmol/m^3</span>
+<span class="n">k1</span> <span class="o">=</span> <span class="mi">5</span><span class="o">/</span><span class="mi">6</span>  <span class="c1"># min^-1</span>
+<span class="n">k2</span> <span class="o">=</span> <span class="mi">5</span><span class="o">/</span><span class="mi">3</span>  <span class="c1"># min^-1</span>
+<span class="n">k3</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">6000</span>  <span class="c1"># m^3/gmol/min</span>
+<span class="n">feed_flowrate</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># m^3/min</span>
+
+<span class="c1"># reactor model object</span>
+<span class="n">reactor_model</span> <span class="o">=</span> <span class="n">create_dynamic_model</span><span class="p">(</span><span class="n">feed_flowrate</span><span class="p">,</span> <span class="n">conc_A_feed</span><span class="p">,</span> <span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">,</span> <span class="n">k3</span><span class="p">)</span>
+
+<span class="c1"># Discretize the model using collocation</span>
+<span class="n">discretizer</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">TransformationFactory</span><span class="p">(</span><span class="s1">&#39;dae.collocation&#39;</span><span class="p">)</span>
+<span class="n">discretizer</span><span class="o">.</span><span class="n">apply_to</span><span class="p">(</span><span class="n">reactor_model</span><span class="p">,</span> <span class="n">nfe</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ncp</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Solve the model</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">reactor_model</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># print optimal reactor volume</span>
+<span class="n">optimal_reactor_volume</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">reactor_model</span><span class="o">.</span><span class="n">V</span><span class="p">)</span> <span class="c1"># m^3</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Optimal reactor volume is: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">optimal_reactor_volume</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2"> m^3&quot;</span><span class="p">)</span>
+
+<span class="c1"># Extract the concentration of C at t = 10 minutes</span>
+<span class="n">optimal_concentration_C</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">reactor_model</span><span class="o">.</span><span class="n">CC</span><span class="p">[</span><span class="mi">10</span><span class="p">])</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># kmol/m^3</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum Concentration of C at optimal reactor volume is: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">optimal_concentration_C</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2"> kmol/m^3&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># Extract results for plotting</span>
+<span class="n">time</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">reactor_model</span><span class="o">.</span><span class="n">t</span><span class="p">]</span> <span class="c1"># minutes</span>
+<span class="n">CA_values</span> <span class="o">=</span> <span class="p">[(</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">reactor_model</span><span class="o">.</span><span class="n">CA</span><span class="p">[</span><span class="n">t</span><span class="p">])</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">))</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">reactor_model</span><span class="o">.</span><span class="n">t</span><span class="p">]</span> <span class="c1"># kmol/m^3</span>
+<span class="n">CB_values</span> <span class="o">=</span> <span class="p">[(</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">reactor_model</span><span class="o">.</span><span class="n">CB</span><span class="p">[</span><span class="n">t</span><span class="p">])</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">))</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">reactor_model</span><span class="o">.</span><span class="n">t</span><span class="p">]</span> <span class="c1"># kmol/m^3</span>
+<span class="n">CC_values</span> <span class="o">=</span> <span class="p">[(</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">reactor_model</span><span class="o">.</span><span class="n">CC</span><span class="p">[</span><span class="n">t</span><span class="p">])</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">))</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">reactor_model</span><span class="o">.</span><span class="n">t</span><span class="p">]</span> <span class="c1"># kmol/m^3</span>
+<span class="n">CD_values</span> <span class="o">=</span> <span class="p">[(</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">reactor_model</span><span class="o">.</span><span class="n">CD</span><span class="p">[</span><span class="n">t</span><span class="p">])</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">))</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">reactor_model</span><span class="o">.</span><span class="n">t</span><span class="p">]</span> <span class="c1"># kmol/m^3</span>
+
+<span class="c1"># Plot the results</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">CA_values</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\mathrm{C_</span><span class="si">{A}</span><span class="s1">}$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">CB_values</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\mathrm{C_</span><span class="si">{B}</span><span class="s1">}$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">CC_values</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\mathrm{C_</span><span class="si">{C}</span><span class="s1">}$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">CD_values</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\mathrm{C_</span><span class="si">{D}</span><span class="s1">}$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (min)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span><span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Concentration ($\mathbf{\dfrac</span><span class="si">{kmol}</span><span class="s1">{m^3}}$)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span><span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Concentration Profiles Over Time&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span><span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: 
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+
+This version of Ipopt was compiled from source code available at
+    https://github.com/IDAES/Ipopt as part of the Institute for the Design of
+    Advanced Energy Systems Process Systems Engineering Framework (IDAES PSE
+    Framework) Copyright (c) 2018-2019. See https://github.com/IDAES/idaes-pse.
+
+This version of Ipopt was compiled using HSL, a collection of Fortran codes
+    for large-scale scientific computation.  All technical papers, sales and
+    publicity material resulting from use of the HSL codes within IPOPT must
+    contain the following acknowledgement:
+        HSL, a collection of Fortran codes for large-scale scientific
+        computation. See http://www.hsl.rl.ac.uk.
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:    12619
+Number of nonzeros in inequality constraint Jacobian.:        0
+Number of nonzeros in Lagrangian Hessian.............:     1006
+
+Error in an AMPL evaluation. Run with &quot;halt_on_ampl_error yes&quot; to see details.
+Error evaluating Jacobian of equality constraints at user provided starting point.
+  No scaling factors for equality constraints computed!
+Total number of variables............................:     1609
+                     variables with only lower bounds:      804
+                variables with lower and upper bounds:        1
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:     1608
+Total number of inequality constraints...............:        0
+        inequality constraints with only lower bounds:        0
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        0
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0 -9.9999900e-03 1.00e+06 1.56e+00  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1 -9.9998726e-03 1.00e+06 8.10e+02  -1.0 1.01e+06    -  9.90e-07 7.52e-05h  1
+   2r-9.9998726e-03 1.00e+06 9.99e+02   6.0 0.00e+00    -  0.00e+00 3.10e-07R  3
+   3r-3.2550526e+00 8.36e+05 2.18e+09   6.0 1.09e+09    -  1.95e-04 1.95e-04f  1
+   4 -3.2756934e+00 7.01e+05 6.67e+06  -1.0 8.47e+05    -  5.03e-04 2.84e-01h  1
+   5 -3.3599969e+00 4.50e+05 4.28e+05  -1.0 2.51e+05    -  6.14e-02 9.85e-01h  1
+   6 -3.4374817e+00 2.50e+05 2.67e+05  -1.0 4.42e+05    -  2.83e-03 4.99e-01h  1
+   7 -3.6563863e+00 1.27e+05 2.54e+05  -1.0 2.24e+05    -  7.45e-02 9.90e-01h  1
+   8 -4.0376969e+00 6.23e+04 2.60e+05  -1.0 5.04e+04    -  4.10e-02 9.90e-01h  1
+   9 -4.2238169e+00 4.57e+04 2.56e+05  -1.0 1.87e+04    -  1.46e-02 3.26e-01h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  10 -4.8943726e+00 2.20e+04 2.14e+05  -1.0 1.48e+04    -  1.98e-02 9.98e-01h  1
+  11 -5.0999886e+00 1.69e+04 2.38e+06  -1.0 4.00e+03    -  1.90e-02 2.92e-01h  1
+  12 -5.8592444e+00 8.22e+03 8.43e+06  -1.0 3.31e+03    -  3.47e-02 1.00e+00h  1
+  13 -6.6724932e+00 7.12e+03 8.23e+06  -1.0 1.71e+03    -  3.91e-02 1.54e-01h  1
+  14 -2.5003886e+01 3.51e+03 8.41e+06  -1.0 1.55e+03    -  8.22e-02 1.00e+00h  1
+  15 -8.4301553e+01 3.08e+03 8.00e+06  -1.0 1.70e+03    -  4.83e-02 1.40e-01h  1
+  16 -1.2308262e+02 2.89e+03 7.06e+06  -1.0 1.70e+03    -  1.19e-01 6.44e-02h  1
+  17 -8.1386603e+02 1.44e+03 5.95e+06  -1.0 1.70e+03    -  1.57e-01 1.00e+00f  1
+  18 -2.0541698e+03 8.40e+02 3.71e+06  -1.0 1.77e+03    -  3.77e-01 7.14e-01f  1
+  19 -3.5049209e+03 4.20e+02 1.79e+06  -1.0 1.45e+03    -  5.17e-01 1.00e+00f  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  20 -3.7251819e+03 2.85e+02 2.82e+04  -1.0 4.62e+02    -  9.84e-01 4.76e-01f  1
+  21 -4.0002085e+03 1.42e+02 2.93e+03  -1.0 2.75e+02    -  8.98e-01 1.00e+00f  1
+  22 -4.0087092e+03 1.01e+02 2.07e+03  -1.0 7.06e+01    -  1.00e+00 4.15e-01h  1
+  23 -4.0087453e+03 1.00e+02 2.09e+03  -1.0 1.00e+02    -  7.72e-01 2.93e-03h  1
+  24 -4.0087456e+03 1.00e+02 5.80e+03  -1.0 1.00e+02    -  4.72e-03 2.92e-05h  1
+  25 -4.0087598e+03 1.00e+02 2.12e+03  -1.0 3.24e+02    -  4.40e-07 4.37e-05f  1
+  26 -4.3343427e+03 4.70e+00 1.83e+05  -1.0 3.26e+02    -  4.36e-05 1.00e+00f  1
+  27 -4.3141499e+03 8.39e-03 9.09e+01  -1.0 2.02e+01    -  1.00e+00 1.00e+00h  1
+  28 -4.3141284e+03 2.41e-08 1.08e+05  -1.7 2.15e-02    -  9.87e-01 1.00e+00h  1
+  29 -4.3141354e+03 7.14e-08 2.90e+04  -1.7 7.02e-03    -  7.31e-01 1.00e+00f  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  30 -4.3150872e+03 1.32e-03 2.82e+04  -1.7 9.52e-01    -  2.70e-02 1.00e+00f  1
+  31 -4.5157522e+03 2.76e+02 2.80e+04  -1.7 2.01e+02  -4.0 7.26e-03 1.00e+00f  1
+  32 -5.3180445e+03 1.11e+02 1.95e+04  -1.7 8.02e+02    -  3.05e-01 1.00e+00f  1
+  33 -5.0535790e+03 1.43e+00 1.26e+01  -1.7 2.64e+02  -4.5 1.00e+00 1.00e+00h  1
+  34 -5.0655151e+03 9.00e+00 2.23e+00  -1.7 6.01e+01    -  1.00e+00 1.00e+00h  1
+  35 -5.0601188e+03 1.92e-01 7.30e-02  -1.7 1.58e+01    -  1.00e+00 1.00e+00h  1
+  36 -5.0598090e+03 5.39e-03 4.07e-04  -2.5 1.48e+00    -  1.00e+00 1.00e+00h  1
+  37 -5.0598054e+03 1.71e-04 1.11e-06  -3.8 2.78e-01    -  1.00e+00 1.00e+00h  1
+  38 -5.0598053e+03 5.24e-07 2.29e-09  -5.7 1.55e-02    -  1.00e+00 1.00e+00h  1
+  39 -5.0598053e+03 1.94e-10 1.67e-13  -8.6 1.91e-04    -  1.00e+00 1.00e+00h  1
+
+Number of Iterations....: 39
+
+                                   (scaled)                 (unscaled)
+Objective...............:  -5.0598052797570590e+03   -5.0598052797570590e+03
+Dual infeasibility......:   1.6745249521991457e-13    1.6745249521991457e-13
+Constraint violation....:   1.9372237147763371e-10    1.9372237147763371e-10
+Complementarity.........:   2.5063723623922813e-09    2.5063723623922813e-09
+Overall NLP error.......:   2.5063723623922813e-09    2.5063723623922813e-09
+
+
+Number of objective function evaluations             = 43
+Number of objective gradient evaluations             = 40
+Number of equality constraint evaluations            = 43
+Number of inequality constraint evaluations          = 0
+Number of equality constraint Jacobian evaluations   = 41
+Number of inequality constraint Jacobian evaluations = 0
+Number of Lagrangian Hessian evaluations             = 39
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.351
+Total CPU secs in NLP function evaluations           =      0.008
+
+EXIT: Optimal Solution Found.
+Optimal reactor volume is: 11.35 m^3
+Maximum Concentration of C at optimal reactor volume is: 5.06 kmol/m^3
+</pre></div>
+</div>
+<img alt="../../_images/ef9e4d76bf76680376edfc6277305fbd9c01b163eb743a7b17567cb258eca6de.png" src="../../_images/ef9e4d76bf76680376edfc6277305fbd9c01b163eb743a7b17567cb258eca6de.png" />
+</div>
+</div>
+</section>
+<section id="pyomo-enables-dynamic-chemical-reactor-design">
+<h3>Pyomo Enables Dynamic Chemical Reactor Design<a class="headerlink" href="#pyomo-enables-dynamic-chemical-reactor-design" title="Link to this heading">#</a></h3>
+<p>From the concentration profile above, <span class="math notranslate nohighlight">\(C_{A}\)</span> decreases with time. This makes sense beacause species A is the reactant and it is continuously been consumed to form the products.</p>
+<p>Also, it is observed that <span class="math notranslate nohighlight">\(C_{B}\)</span> and <span class="math notranslate nohighlight">\(C_{D}\)</span> increase at the early phase of the reaction, but then start to decrease at a later time. This is because at the early phase of the reaction, only species B and D are produced until a later time when species C begins to form, and since the rate constant of species C (<span class="math notranslate nohighlight">\(k_2\)</span>) is faster than the rate constants of species B and D (<span class="math notranslate nohighlight">\(k_1\)</span> and <span class="math notranslate nohighlight">\(k_3\)</span> respectively), <span class="math notranslate nohighlight">\(C_{C}\)</span> continue to increase whereas <span class="math notranslate nohighlight">\(C_{B}\)</span> and <span class="math notranslate nohighlight">\(C_{D}\)</span> deplete.</p>
+<p>The optimization result shows that the optimal reactor volume required to maximize the desired product (species C)  is <span class="math notranslate nohighlight">\(\mathrm{11.35\,m^{3}}\)</span> and the corresponding species C concentration is <span class="math notranslate nohighlight">\(\mathrm{5.06\,kmol\cdot m^{-3}}\)</span>.</p>
+</section>
+</section>
+<section id="take-away-messages">
+<h2>Take Away Messages<a class="headerlink" href="#take-away-messages" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Pyomo is a powerful tool in solving complex dynamic optimization problems</p></li>
+<li><p>Proper modelling of the problem is key to obtaining quality results</p></li>
+</ul>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">#</a></h2>
+<p>Hart, W. E., Laird, C. D., Watson, J. P., Woodruff, D. L., Hackebeil, G. A., Nicholson, B. L., &amp; Siirola, J. D. (2017). Pyomo-optimization modeling in python (Vol. 67, p. 277). Berlin: Springer.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/contrib"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="hot_air_balloon.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Hot Air Balloon Dynamic Control</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Disaster_Response_Plan.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Disaster Response Plan Optimization</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-statement-design-of-chemical-reactors-for-chemical-transformations">Problem Statement: Design of Chemical Reactors for Chemical Transformations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-packages-and-load-modules">Install Packages and Load Modules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#original-problem-from-the-reference-material">Original Problem from the Reference Material</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-model-formulation">Optimization Model Formulation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#degrees-of-freedom-analysis">Degrees of Freedom Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyomo-implementation-of-the-original-problem">Pyomo Implementation of the Original Problem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimal-solution-found-for-the-original-problem">Optimal Solution Found for the Original Problem</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extension-adding-a-new-species-c-and-considering-reaction-kinetics">Extension: Adding a New Species C and Considering Reaction Kinetics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Optimization Model Formulation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Degrees of Freedom Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyomo-implementation">Pyomo Implementation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyomo-enables-dynamic-chemical-reactor-design">Pyomo Enables Dynamic Chemical Reactor Design</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#take-away-messages">Take Away Messages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Alexander Dowling, et al.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,2103 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Hot Air Balloon Dynamic Control &#8212; Optimization for Decision Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/contrib/hot_air_balloon';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Chemical Reactor Design" href="reactor_design.html" />
+    <link rel="prev" title="Extended Race Car Optimization Models" href="race_car_extended.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/cbe_logo.jpg" class="logo__image only-light" alt="Optimization for Decision Science - Home"/>
+    <script>document.write(`<img src="../../_static/cbe_logo.jpg" class="logo__image only-dark" alt="Optimization for Decision Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Optimization for Decision Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Fall 2024 Calendar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/workshop.html">Computational Optimization in Python (São Paulo, Brazil)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project1.html">Project 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms1.html">Algorithms Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms2.html">Algorithms Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project2.html">Project 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project (Spring 2023)</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/LP.html">1.4. Continuous Optimization: Linear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/NLP.html">1.5. Continuous Optimization: Nonlinear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.6. Integer Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.7. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_car.html">3.1. Pyomo.DAE Example: Race Car</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_TCLab.html">3.2. Pyomo.DAE Example: Temperature Control Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_background.html">3.3. Differential Algebraic Equations (DAEs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_numeric_integration.html">3.4. Numeric Integration for DAEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_theory.html">3.5. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_example.html">3.6. Pyomo.DAE: Racing Example Revisited</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/blocks.html">4.2. Blocks and Other Pyomo Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/AdvancedTopics.html">4.3. Advanced Topics in Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.4. Risk Measures and Portfolio Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Optimizing Experiments with <code class="docutils literal notranslate"><span class="pre">Pyomo.DoE</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-1.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Newton-Methods.html">6.4. Newton-type Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Constraint-Qualifications.html">7.4. Constraint Qualifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Second-Order.html">7.5. Second Order Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/degeneracy_hunter.html">7.6. NLP Diagnostics with Degeneracy Hunter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="pyomo.html">More Pyomo Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="semiconductor_manufacturing.html">Semiconductor Production Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="student_diet.html">Optimization of Daily Diet Using Pyomo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blending.html">Blending Under Uncertainty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vehicle_routing.html">Vehicle Routing</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="portfolio_optimization_extended.html">Risk Measures and Portfolio Optimization: Expanded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="race_car_extended.html">Extended Race Car Optimization Models</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Hot Air Balloon Dynamic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reactor_design.html">Chemical Reactor Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Disaster_Response_Plan.html">Disaster Response Plan Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Sudoku_Solver.html">Sudoku Solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="more_circle_packing.html">Circle Packing Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="modeling.html">Modeling Paradigms</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="multi_objective.html">Multi-Objective Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_stochastic_programming.html">Advanced Topics in Stochastic Programming</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="algorithms.html">Global Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Deterministic_Global_Optimization.html">Deterministic Global Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="sgd.html">Stochastic Gradient Descent</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="data.html">Machine Learning and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/contrib/hot_air_balloon.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/contrib/hot_air_balloon.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/contrib/hot_air_balloon.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Hot Air Balloon Dynamic Control</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hot-air-balloons">Hot Air Balloons</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-formulation-no-set-objective">Model Formulation: No Set Objective</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#degree-of-freedom-analysis">Degree of Freedom Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-model-constants">Define Model Constants</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#function-definition">Function Definition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#version-0-simulate-the-balloon-dynamics">Version 0: Simulate the Balloon Dynamics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#version-1-correcting-the-drag-force-calculation">Version 1: Correcting the Drag Force Calculation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-of-model-results-varying-fixed-lift-value">Analysis of Model Results: Varying Fixed Lift Value</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-does-the-set-lift-affect-the-velocity">How does the set lift affect the velocity?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-formulation-minimize-ise-objective">Model Formulation - Minimize ISE Objective</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Degree of Freedom Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-reach-a-desired-final-height">Version 2: Reach a Desired Final Height</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-of-model-results-reach-a-desired-final-height">Analysis of Model Results: Reach a Desired Final Height</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-maximum-achievable-height-in-200-seconds">What is maximum achievable height in 200 seconds?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#version-3-follow-a-linear-path">Version 3: Follow a Linear Path</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#version-4-follow-a-dynamic-flight-path">Version 4: Follow a Dynamic Flight Path</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusions">Conclusions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#take-away-messages">Take Away Messages</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#future-work">Future Work</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extensions-of-referenced-material">Extensions of Referenced Material</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="hot-air-balloon-dynamic-control">
+<h1>Hot Air Balloon Dynamic Control<a class="headerlink" href="#hot-air-balloon-dynamic-control" title="Link to this heading">#</a></h1>
+<p>Prepared by: Stephen Cini (<a class="reference external" href="mailto:scini&#37;&#52;&#48;nd&#46;edu">scini<span>&#64;</span>nd<span>&#46;</span>edu</a>, <a class="reference external" href="https://github.com/sscini">&#64;sscini</a>, 2024) and Oliver Harris (<a class="reference external" href="mailto:oharris2&#37;&#52;&#48;nd&#46;edu">oharris2<span>&#64;</span>nd<span>&#46;</span>edu</a>, <a class="reference external" href="https://github.com/OliverHarris47">&#64;OliverHarris47</a>, 2024)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install Pyomo and solvers for Google Colab</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="k">if</span> <span class="s2">&quot;google.colab&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+    <span class="o">!</span>wget<span class="w"> </span><span class="s2">&quot;https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/helper.py&quot;</span>
+    <span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>okabeito<span class="w"> </span>--quiet
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">easy_install</span><span class="p">()</span>
+
+<span class="k">else</span><span class="p">:</span>
+<span class="c1"># Make sure helper.py is installed locally in same location as notebook</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;../&#39;</span><span class="p">)</span>
+    <span class="o">%</span><span class="k">pip</span> install okabeito --quiet
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+
+<span class="n">helper</span><span class="o">.</span><span class="n">set_plotting_style</span><span class="p">()</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyomo.environ</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyo</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyomo.dae</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dae</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">idaes</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">okabeito</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Note: you may need to restart the kernel to use updated packages.
+</pre></div>
+</div>
+</div>
+</div>
+<section id="learning-objectives">
+<h2>Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Review syntax and components in Pyomo.DAE</p></li>
+<li><p>See how change in objective function can affect model behavior</p></li>
+<li><p>Highlight importance of realistic initialization conditions and parameter values</p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>In this notebook, we adapt the example in <a class="reference internal" href="#../notebooks/3/PyomoDAE_TCLab.ipynb"><code class="xref myst docutils literal notranslate"><span class="pre">../notebooks/3/PyomoDAE_TCLab.ipynb</span></code></a> to discuss the model formulation for controlling height in a hot air balloon during a planned hot air balloon ride.</p>
+<p><a class="reference external" href="https://raw.githubusercontent.com/ndcbe/optimization/main/media/contrib/balloon.jpg"></a></p>
+<p>Picture adapted from <a class="reference external" href="https://www.real-world-physics-problems.com/hot-air-balloon-physics.html">https://www.real-world-physics-problems.com/hot-air-balloon-physics.html</a>.</p>
+<p>Instead of controlling the temperature of the heater and sensor utilizing a heater, we control the height of the hot air balloon by utilizing the lift force generated by the balloon being heated.</p>
+<section id="hot-air-balloons">
+<h3>Hot Air Balloons<a class="headerlink" href="#hot-air-balloons" title="Link to this heading">#</a></h3>
+<p>A hot air balloon operates based on the principle of buoyancy, where hot air inside the balloon is less dense than the cooler air outside, causing the balloon to rise. The principle forces for hot air balloon operation are: lift, weight, and drag. The objective of our project, is to design a Pyomo model that controls a hot air balloon to follow the average path taken by a balloon during a tourism trip. A free body diagram describing how the principle forces act can be seen below.</p>
+<p><a class="reference external" href="https://raw.githubusercontent.com/ndcbe/optimization/main/media/contrib/ballon_freebody.png"></a></p>
+<p>Picture adapted from <a class="reference external" href="https://charm.stanford.edu/ENGR1052016/AnthonyBombikJayantMukhopadhaya">https://charm.stanford.edu/ENGR1052016/AnthonyBombikJayantMukhopadhaya</a>.</p>
+</section>
+</section>
+<section id="model-formulation-no-set-objective">
+<h2>Model Formulation: No Set Objective<a class="headerlink" href="#model-formulation-no-set-objective" title="Link to this heading">#</a></h2>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\max ~~ &amp; 0 \\
+\mathrm{s.t.}~~ &amp; \frac{dh}{dt} = v(t) \\
+ &amp; D(t) = b \cdot v(t)^2 \\
+ &amp; \frac{dv}{dt} \cdot m = L(t) - m \cdot g - D(t)  \\
+ &amp; h(t_0) = 0 \\
+ &amp; v(t_0) = 0 \\
+ &amp; L(t) = L_{ramp} = 10000, \quad \forall t \in [t_0, t_f]
+\end{align*}\]</div>
+<p>The equation of motion for the hot air balloon is then:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp; m \cdot \ddot{y} = L - m \cdot g - D \\
+&amp; D = b \dot{y}^2
+\end{align*}\]</div>
+<p>Where:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+m &amp; \text{ : Mass (kg)} \\
+\ddot{y} &amp; \text{ : Acceleration (m/s}^2\text{)}\\
+\dot{y} &amp; \text{ : Velocity (m/s)}\\
+L &amp; \text{ : Lift Force (N or kg m/s}^2\text{)} \\
+g &amp; \text{ : Gravitational Constant (m/s}^2\text{)} \\
+D &amp; \text{ : Drag Force (N)} \\
+b &amp; \text{ : Drag Constant (kg/m)}
+\end{align*}\]</div>
+<section id="degree-of-freedom-analysis">
+<h3>Degree of Freedom Analysis<a class="headerlink" href="#degree-of-freedom-analysis" title="Link to this heading">#</a></h3>
+<p><strong>Versions 0 –&gt; 1</strong></p>
+<p>In our model formulations for versions 0 and 1, we are simulating the balloon dynamics using a step-input (Lift). For plotting purposes, lift was defined as a variable with respect to time. However, a constraint was added that fixed the lift force to 10,000 Newtons. This effectively treats lift as a parameter and not a variable.</p>
+<p>Variables: h(t) , v(t) , D(t) <br />
+Number of Constraints: 3</p>
+<p><span class="math notranslate nohighlight">\(DOF = Variables - Constraints = 3 - 3 = 0\)</span></p>
+<p>For versions 0 and 1 of our model, the models have 0 DOF. This matches the <code class="docutils literal notranslate"><span class="pre">'ipopt'</span></code> solver output:</p>
+<p>Total Number of Variables: 364</p>
+<p>Total Number of Equality Constraints: 364</p>
+</section>
+<section id="define-model-constants">
+<h3>Define Model Constants<a class="headerlink" href="#define-model-constants" title="Link to this heading">#</a></h3>
+<p>Here, we define the characteristics of the balloon we will be simulating in this notebook.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define Fixed Parameters from model inspiration sources</span>
+<span class="n">rho_air</span> <span class="o">=</span> <span class="mf">1.225</span>       <span class="c1"># kg/m^3</span>
+<span class="n">g</span> <span class="o">=</span> <span class="mf">9.81</span>              <span class="c1"># m/s^2</span>
+<span class="n">radius</span> <span class="o">=</span> <span class="mi">10</span>          <span class="c1"># m</span>
+<span class="n">m_balloon</span> <span class="o">=</span> <span class="mi">750</span>       <span class="c1"># kg</span>
+<span class="n">cD</span> <span class="o">=</span> <span class="mf">0.47</span>
+
+<span class="n">S</span> <span class="o">=</span> <span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">radius</span><span class="o">**</span><span class="mi">2</span>    <span class="c1"># wetted surface area m^2</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">rho_air</span><span class="o">*</span><span class="n">cD</span><span class="o">*</span><span class="n">S</span> <span class="c1"># kg/m</span>
+
+<span class="c1"># Print calculated values</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;S = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">S</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1"> m^2&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;b = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1"> kg/m&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>S = 1256.64 m^2
+b = 361.75 kg/m
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="function-definition">
+<h3>Function Definition<a class="headerlink" href="#function-definition" title="Link to this heading">#</a></h3>
+<p>Here, we set up the Discretization/Initialization, Solve, and Plotting/Visualization Functions for use in each of our models for different scenarios with the hot air balloon. Similar to the TCLab, we use <code class="docutils literal notranslate"><span class="pre">dae.collocation</span></code> for discretizing the model, and use the continous solver <code class="docutils literal notranslate"><span class="pre">'ipopt'</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set-Up the Discretization/Initialization Function for the Model</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">discretize_initialize</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">nfe</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; Discretize and initialize model.</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">        m: Model to discretize.</span>
+<span class="sd">        nfe: Number of finite elements</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        m: Discretized model.</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># Transform the Model using the &#39;dae.collocation&#39; strategy.</span>
+    <span class="n">discretizer</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">TransformationFactory</span><span class="p">(</span><span class="s1">&#39;dae.collocation&#39;</span><span class="p">)</span>
+    <span class="n">discretizer</span><span class="o">.</span><span class="n">apply_to</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">nfe</span><span class="o">=</span><span class="n">nfe</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="c1"># default ncp = 3</span>
+
+    <span class="c1"># Specify Initial Conditions</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">h</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fix</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fix</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">m</span>
+
+<span class="c1"># Set-Up Solve Function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">solve_model</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">tee</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; Solves model with ipopt.</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">        m: Model to solve.</span>
+<span class="sd">        tee: Whether to print full output</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        m: Solved model.</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># Specify Solver</span>
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+    <span class="c1"># Solve the Model</span>
+    <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="n">tee</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">m</span>
+
+<span class="c1"># Set up list for colors using okabeito color scheme</span>
+<span class="n">okabeito_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">okabeito</span><span class="o">.</span><span class="n">lightblue</span><span class="p">,</span> <span class="n">okabeito</span><span class="o">.</span><span class="n">yellow</span><span class="p">,</span> <span class="n">okabeito</span><span class="o">.</span><span class="n">orange</span><span class="p">,</span>
+                 <span class="n">okabeito</span><span class="o">.</span><span class="n">green</span><span class="p">,</span> <span class="n">okabeito</span><span class="o">.</span><span class="n">purple</span><span class="p">,</span> <span class="n">okabeito</span><span class="o">.</span><span class="n">red</span><span class="p">,</span> <span class="n">okabeito</span><span class="o">.</span><span class="n">blue</span><span class="p">,</span>
+                 <span class="n">okabeito</span><span class="o">.</span><span class="n">black</span><span class="p">]</span> <span class="c1">#list of colors from the okabeito color pallete</span>
+
+<span class="c1"># Set-Up the Plotting/Visualization Function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">visualize_model</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; Plotting model function with publication quality for main plots</span>
+<span class="sd">    used in notebook.</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">        m: Model to plot</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        fig, ax: Plot information from model. Allows for further additions.&#39;&#39;&#39;</span>
+    <span class="c1"># Collect the data</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="p">[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="p">[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="p">[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">/</span><span class="mi">1000</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">]</span> <span class="c1">#plotting in kN</span>
+
+    <span class="c1"># Plot with subplots</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">12.8</span><span class="p">))</span>
+
+    <span class="n">colors</span> <span class="o">=</span> <span class="n">okabeito_list</span>
+    <span class="c1"># Plot Height vs Time</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;height_model&#39;</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Height (m)&#39;</span><span class="p">,</span> <span class="n">fontweight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+
+    <span class="c1"># Plot Velocity vs Time</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Velocity (m/s)&#39;</span><span class="p">,</span> <span class="n">fontweight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+
+    <span class="c1"># Lift (m/s^2) vs time</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">,</span> <span class="n">fontweight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Lift (kN)&#39;</span><span class="p">,</span> <span class="n">fontweight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+
+    <span class="c1"># Adjust layout to prevent overlap and add spacing</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">direction</span> <span class="o">=</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">direction</span> <span class="o">=</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">direction</span> <span class="o">=</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="version-0-simulate-the-balloon-dynamics">
+<h3>Version 0: Simulate the Balloon Dynamics<a class="headerlink" href="#version-0-simulate-the-balloon-dynamics" title="Link to this heading">#</a></h3>
+<p>We modeled our hot air balloon with an adapted model from CHARM Lab at Stanford University (<a class="reference external" href="https://charm.stanford.edu/ENGR1052016/AnthonyBombikJayantMukhopadhaya">https://charm.stanford.edu/ENGR1052016/AnthonyBombikJayantMukhopadhaya</a>). Their analysis was initially done in MATLAB with Simulink to define a controller for the hot air balloon. Our first step was to transfer the model to python and model with zero degrees of freedom to see if we get the expected output.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up our model as a function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_balloon_model_v0</span><span class="p">():</span>
+
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; Model function. All other models are modified versions.</span>
+<span class="sd">        Inputs: None</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            m: Base model to be discretized, initialized, solved, and plotted.&#39;&#39;&#39;</span>
+
+    <span class="c1"># Create a Pyomo Model</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">(</span><span class="s1">&#39;Hot Air Balloon&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Define Time Domain</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">ContinuousSet</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+
+    <span class="c1"># Define Fixed Control Input</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>   <span class="c1"># Newtons</span>
+
+    <span class="c1"># Define State Variables as Functions of Time</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="c1"># Define Derivatives of the State Variables</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dhdt</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">h</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dvdt</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="c1"># Define Differential Constraints</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dh_con</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dhdt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dh_con</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">dh_con</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">dv_con</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dvdt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="n">m_balloon</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">L</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">-</span> <span class="n">m_balloon</span><span class="o">*</span><span class="n">g</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dv_con</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">dv_con</span><span class="p">)</span>
+
+    <span class="c1"># Define Algebraic Constraints</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">drag_con</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">b</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">drag_con</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">drag_con</span><span class="p">)</span>
+
+    <span class="c1"># Define L</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">l_con</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">L</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="mi">10000</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">l_con</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">l_con</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">m</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Once each model is defined, we discretize, initialize, solve, and plot the results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a Model Instance</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">create_balloon_model_v0</span><span class="p">()</span>
+
+<span class="c1"># Specify Number of Finite Elements</span>
+<span class="n">NFE</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c1"># Call the Discretization/Initialization Function</span>
+<span class="n">discretize_initialize</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">NFE</span><span class="p">)</span>
+
+<span class="c1"># Call the Solve Function</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="c1"># Plot the Results</span>
+<span class="n">visualize_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: 
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+
+This version of Ipopt was compiled from source code available at
+    https://github.com/IDAES/Ipopt as part of the Institute for the Design of
+    Advanced Energy Systems Process Systems Engineering Framework (IDAES PSE
+    Framework) Copyright (c) 2018-2019. See https://github.com/IDAES/idaes-pse.
+
+This version of Ipopt was compiled using HSL, a collection of Fortran codes
+    for large-scale scientific computation.  All technical papers, sales and
+    publicity material resulting from use of the HSL codes within IPOPT must
+    contain the following acknowledgement:
+        HSL, a collection of Fortran codes for large-scale scientific
+        computation. See http://www.hsl.rl.ac.uk.
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:      540
+Number of nonzeros in inequality constraint Jacobian.:        0
+Number of nonzeros in Lagrangian Hessian.............:       30
+
+Total number of variables............................:      184
+                     variables with only lower bounds:       30
+                variables with lower and upper bounds:        0
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:      184
+Total number of inequality constraints...............:        0
+        inequality constraints with only lower bounds:        0
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        0
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  0.0000000e+00 2.64e+03 1.00e+00  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1  0.0000000e+00 2.81e+06 2.87e+10  -1.0 1.76e+04    -  5.62e-07 2.50e-01f  3
+   2  0.0000000e+00 7.01e+05 7.18e+09  -1.0 2.74e+03    -  2.87e-01 1.00e+00h  1
+   3  0.0000000e+00 1.74e+05 1.79e+09  -1.0 1.08e+03    -  1.00e+00 1.00e+00h  1
+   4  0.0000000e+00 4.30e+04 4.43e+08  -1.0 5.22e+02    -  1.00e+00 1.00e+00h  1
+   5  0.0000000e+00 1.01e+04 1.03e+08  -1.0 2.36e+02    -  1.00e+00 1.00e+00h  1
+   6  0.0000000e+00 2.00e+03 1.73e+07  -1.0 8.86e+01    -  1.00e+00 1.00e+00h  1
+   7  0.0000000e+00 2.14e+02 1.23e+06  -1.0 2.11e+01    -  1.00e+00 1.00e+00h  1
+   8  0.0000000e+00 3.89e+00 1.19e+04  -1.0 3.12e+00    -  1.00e+00 1.00e+00h  1
+   9  0.0000000e+00 1.35e-03 2.26e+00  -1.0 1.17e-01    -  1.00e+00 1.00e+00h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  10  0.0000000e+00 1.52e-10 1.00e-06  -1.0 7.82e-05    -  1.00e+00 1.00e+00h  1
+
+Number of Iterations....: 10
+
+                                   (scaled)                 (unscaled)
+Objective...............:   0.0000000000000000e+00    0.0000000000000000e+00
+Dual infeasibility......:   0.0000000000000000e+00    0.0000000000000000e+00
+Constraint violation....:   1.5234036254696548e-10    1.5234036254696548e-10
+Complementarity.........:   0.0000000000000000e+00    0.0000000000000000e+00
+Overall NLP error.......:   1.5234036254696548e-10    1.5234036254696548e-10
+
+
+Number of objective function evaluations             = 12
+Number of objective gradient evaluations             = 11
+Number of equality constraint evaluations            = 15
+Number of inequality constraint evaluations          = 0
+Number of equality constraint Jacobian evaluations   = 11
+Number of inequality constraint Jacobian evaluations = 0
+Number of Lagrangian Hessian evaluations             = 10
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.002
+Total CPU secs in NLP function evaluations           =      0.000
+
+EXIT: Optimal Solution Found.
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&lt;Figure size 1600x2560 with 3 Axes&gt;,
+ array([&lt;Axes: ylabel=&#39;Height (m)&#39;&gt;, &lt;Axes: ylabel=&#39;Velocity (m/s)&#39;&gt;,
+        &lt;Axes: xlabel=&#39;Time (s)&#39;, ylabel=&#39;Lift (kN)&#39;&gt;], dtype=object))
+</pre></div>
+</div>
+<img alt="../../_images/3878b88285747179cfe490c370a8a3129f56c20afbc4e5cbfd3bdc6229ec8e56.png" src="../../_images/3878b88285747179cfe490c370a8a3129f56c20afbc4e5cbfd3bdc6229ec8e56.png" />
+</div>
+</div>
+</section>
+<section id="version-1-correcting-the-drag-force-calculation">
+<h3>Version 1: Correcting the Drag Force Calculation<a class="headerlink" href="#version-1-correcting-the-drag-force-calculation" title="Link to this heading">#</a></h3>
+<p>After creating the base model, we noticed a potential problem in the Drag Force calculation. According to the drag force calculation using <span class="math notranslate nohighlight">\(y^2\)</span>, the value of drag will always be subtracted from the other forces.</p>
+<p>After consulting with Dr. Dowling, drag calculation was adjusted to what is shown in the next iteration of the model, using <span class="math notranslate nohighlight">\(D = b|v|v\)</span>. Absolute value is not continuous, having a discontinuity at 0, so to model in Pyomo, we adjusted to make the function continuous by making <span class="math notranslate nohighlight">\(|v| = \sqrt{v^2 + eps}\)</span> to take away the singularity at zero.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\max ~~ &amp; 0 \\
+\mathrm{s.t.}~~ &amp; \frac{dh}{dt} = v(t) \\
+ &amp; D(t) = b \cdot v(t) \sqrt{v(t)^2 + \epsilon^2} \\
+ &amp; \frac{dv}{dt} \cdot m = L(t) - m \cdot g - D(t)  \\
+ &amp; h(t_0) = 0 \\
+ &amp; v(t_0) = 0 \\
+ &amp; L(t) = L_{ramp} = 10000, \quad \forall t \in [t_0, t_f]
+\end{align*}\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set-Up our Model as Function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_balloon_model_v1</span><span class="p">():</span>
+
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; Modified from v0. Fixed drag.&#39;&#39;&#39;</span>
+
+    <span class="c1"># Define a value ~0 to Help Stabilize the Drag Force Differential Equation</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-6</span>
+
+    <span class="c1"># Create a Pyomo Model</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">(</span><span class="s1">&#39;Hot Air Balloon&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Define time Domain</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">ContinuousSet</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+
+    <span class="c1"># Define State Variables as Functions of Time</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="c1"># Define Fixed Control Input</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+
+    <span class="c1"># Define derivatives</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dhdt</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">h</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dvdt</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+
+    <span class="c1"># Reformulate m.D to Add Stability</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">drag_con</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">b</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">eps</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">drag_con</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">drag_con</span><span class="p">)</span>
+
+    <span class="c1"># Define Differential Constraints</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dh_con</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dhdt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dh_con</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">dh_con</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">dv_con</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dvdt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="n">m_balloon</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">L</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">-</span> <span class="n">m_balloon</span><span class="o">*</span><span class="n">g</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dv_con</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">dv_con</span><span class="p">)</span>
+
+    <span class="c1"># Define L</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">l_con</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">L</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="mi">10000</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">l_con</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">l_con</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">m</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a Model Instance</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">create_balloon_model_v1</span><span class="p">()</span>
+
+<span class="c1"># Call the Discretization/Initialization Function</span>
+<span class="n">discretize_initialize</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">NFE</span><span class="p">)</span>
+
+<span class="c1"># Call the Solve Function</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="c1"># Visualize solution</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">visualize_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: 
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+
+This version of Ipopt was compiled from source code available at
+    https://github.com/IDAES/Ipopt as part of the Institute for the Design of
+    Advanced Energy Systems Process Systems Engineering Framework (IDAES PSE
+    Framework) Copyright (c) 2018-2019. See https://github.com/IDAES/idaes-pse.
+
+This version of Ipopt was compiled using HSL, a collection of Fortran codes
+    for large-scale scientific computation.  All technical papers, sales and
+    publicity material resulting from use of the HSL codes within IPOPT must
+    contain the following acknowledgement:
+        HSL, a collection of Fortran codes for large-scale scientific
+        computation. See http://www.hsl.rl.ac.uk.
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:      540
+Number of nonzeros in inequality constraint Jacobian.:        0
+Number of nonzeros in Lagrangian Hessian.............:       30
+
+Total number of variables............................:      184
+                     variables with only lower bounds:       30
+                variables with lower and upper bounds:        0
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:      184
+Total number of inequality constraints...............:        0
+        inequality constraints with only lower bounds:        0
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        0
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  0.0000000e+00 9.50e+03 1.00e+00  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1  0.0000000e+00 4.49e+07 4.59e+11  -1.0 1.76e+04    -  5.62e-07 1.00e+00f  1
+   2  0.0000000e+00 1.12e+07 1.15e+11  -1.0 8.81e+03    -  1.00e+00 1.00e+00h  1
+   3  0.0000000e+00 2.81e+06 2.87e+10  -1.0 4.40e+03    -  1.00e+00 1.00e+00h  1
+   4  0.0000000e+00 7.01e+05 7.18e+09  -1.0 2.19e+03    -  1.00e+00 1.00e+00h  1
+   5  0.0000000e+00 1.75e+05 1.79e+09  -1.0 1.08e+03    -  1.00e+00 1.00e+00h  1
+   6  0.0000000e+00 4.30e+04 4.43e+08  -1.0 5.23e+02    -  1.00e+00 1.00e+00h  1
+   7  0.0000000e+00 1.01e+04 1.03e+08  -1.0 2.36e+02    -  1.00e+00 1.00e+00h  1
+   8  0.0000000e+00 2.00e+03 1.73e+07  -1.0 8.87e+01    -  1.00e+00 1.00e+00h  1
+   9  0.0000000e+00 2.14e+02 1.23e+06  -1.0 2.11e+01    -  1.00e+00 1.00e+00h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  10  0.0000000e+00 3.90e+00 1.19e+04  -1.0 3.12e+00    -  1.00e+00 1.00e+00h  1
+  11  0.0000000e+00 1.35e-03 2.26e+00  -1.0 1.17e-01    -  1.00e+00 1.00e+00h  1
+  12  0.0000000e+00 1.54e-10 1.00e-06  -1.0 7.84e-05    -  1.00e+00 1.00e+00h  1
+
+Number of Iterations....: 12
+
+                                   (scaled)                 (unscaled)
+Objective...............:   0.0000000000000000e+00    0.0000000000000000e+00
+Dual infeasibility......:   0.0000000000000000e+00    0.0000000000000000e+00
+Constraint violation....:   1.5415935195051134e-10    1.5415935195051134e-10
+Complementarity.........:   0.0000000000000000e+00    0.0000000000000000e+00
+Overall NLP error.......:   1.5415935195051134e-10    1.5415935195051134e-10
+
+
+Number of objective function evaluations             = 13
+Number of objective gradient evaluations             = 13
+Number of equality constraint evaluations            = 13
+Number of inequality constraint evaluations          = 0
+Number of equality constraint Jacobian evaluations   = 13
+Number of inequality constraint Jacobian evaluations = 0
+Number of Lagrangian Hessian evaluations             = 12
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.002
+Total CPU secs in NLP function evaluations           =      0.000
+
+EXIT: Optimal Solution Found.
+</pre></div>
+</div>
+<img alt="../../_images/3878b88285747179cfe490c370a8a3129f56c20afbc4e5cbfd3bdc6229ec8e56.png" src="../../_images/3878b88285747179cfe490c370a8a3129f56c20afbc4e5cbfd3bdc6229ec8e56.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment to view model printout after solving</span>
+<span class="c1"># model.pprint()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="analysis-of-model-results-varying-fixed-lift-value">
+<h2>Analysis of Model Results: Varying Fixed Lift Value<a class="headerlink" href="#analysis-of-model-results-varying-fixed-lift-value" title="Link to this heading">#</a></h2>
+<section id="how-does-the-set-lift-affect-the-velocity">
+<h3>How does the set lift affect the velocity?<a class="headerlink" href="#how-does-the-set-lift-affect-the-velocity" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set-Up our Model as Function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_balloon_model_v1b</span><span class="p">():</span>
+
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; Modified from v0. Fixed drag, made m.L a mutable parameter.&#39;&#39;&#39;</span>
+
+    <span class="c1"># Define a Samll Constant to Help Stablize the Drag Force Differential Equation</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-6</span>
+
+    <span class="c1"># Create a Pyomo Model</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">(</span><span class="s1">&#39;Hot Air Balloon&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Define time Domain</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">ContinuousSet</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+
+    <span class="c1">#Define State Variables as Functions of Time</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="c1">#Define Fixed Control Input</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">mutable</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Define derivatives</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dhdt</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">h</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dvdt</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+
+    <span class="c1"># Reformulate m.D to Add Stability</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">drag_con</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">b</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">eps</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">drag_con</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">drag_con</span><span class="p">)</span>
+
+    <span class="c1"># Define Differential Constraints</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dh_con</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dhdt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dh_con</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">dh_con</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">dv_con</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dvdt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="n">m_balloon</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">L</span> <span class="o">-</span> <span class="n">m_balloon</span><span class="o">*</span><span class="n">g</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dv_con</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">dv_con</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">m</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a Model Instance</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">create_balloon_model_v1b</span><span class="p">()</span>
+<span class="n">nfe</span> <span class="o">=</span> <span class="mi">20</span>
+
+<span class="c1"># Discretize</span>
+<span class="c1"># Transform the Model using the &#39;dae.collocation&#39; strategy.</span>
+<span class="n">discretizer</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">TransformationFactory</span><span class="p">(</span><span class="s1">&#39;dae.collocation&#39;</span><span class="p">)</span>
+<span class="n">discretizer</span><span class="o">.</span><span class="n">apply_to</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">nfe</span><span class="o">=</span><span class="n">nfe</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+<span class="c1"># Set initial conditions</span>
+<span class="n">m</span><span class="o">.</span><span class="n">h</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fix</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># Setting initial height above 0 to allow negative movement</span>
+<span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fix</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">12.8</span><span class="p">))</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="n">okabeito_list</span>
+
+<span class="n">lift_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lift_range</span><span class="p">:</span>
+    <span class="c1"># print(i) Uncomment to print lift_range[i] and track progress</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">i</span><span class="o">*</span><span class="mi">1000</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">tee</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">h</span><span class="p">[</span><span class="n">j</span><span class="p">]()</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">j</span><span class="p">]()</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;L = </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> kN&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">count</span><span class="p">])</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">count</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">,</span> <span class="n">fontweight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Height (m)&#39;</span><span class="p">,</span> <span class="n">fontweight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Velocity (m/s)&#39;</span><span class="p">,</span> <span class="n">fontweight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">direction</span> <span class="o">=</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">direction</span> <span class="o">=</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/6f12e5134354a33fa97646a7c4e6598b44e510f98ddd86931ff4ec92de583802.png" src="../../_images/6f12e5134354a33fa97646a7c4e6598b44e510f98ddd86931ff4ec92de583802.png" />
+</div>
+</div>
+<p><strong>Do these results make sense?</strong></p>
+<p>Let’s do a quick calculation to check our work.
+The lift force needs to be at least equal to the mass of the balloon, which is set to 750 kg. Therefore, the value needs to be at least (750 kg) * (9.81 m/s^2), or ~ 7360 N. We decided to use a value of 10,000 N to see the balloon reach a constant velocity.</p>
+<p>To estimate the result of the solver, we calculate the velocity achieved by setting the Equation 1 = 0 for the force balance on the balloon. We then derived the velocity.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+ &amp; 0 = L - mg - bv^2 \\
+ &amp; v = (\frac{L - mg}{b})^{0.5}  \\
+\end{align*}\]</div>
+<p>So with the known values of L, mg, and b, the velocity should be 2.7 m/s. This matches the resulting value from the solved model (green line).</p>
+</section>
+</section>
+<section id="model-formulation-minimize-ise-objective">
+<h2>Model Formulation - Minimize ISE Objective<a class="headerlink" href="#model-formulation-minimize-ise-objective" title="Link to this heading">#</a></h2>
+<p>The next phase of model development involving adding a reference height or path and having the model objective be to minimize the integral of squared error between the height at each model step and the reference.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\min_{u(t)} ~~ &amp; \int_{t_0}^{t_f} \|~h(t) - r(t)~\|^2\,dt \\
+\mathrm{s.t.}~~ &amp; \frac{dh}{dt} = v(t) \\
+ &amp; D(t) = b \cdot v(t) \sqrt{v(t)^2 + \epsilon^2} \\
+ &amp; \frac{dv}{dt} \cdot m = L(t) - m \cdot g - D(t)  \\
+ &amp; h(t_0) = 0 \\
+ &amp; v(t_0) = 0 \\
+ &amp; L(t_0) = 10000
+\end{align*}\]</div>
+<section id="id1">
+<h3>Degree of Freedom Analysis<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p><strong>Versions 2 –&gt; 4</strong></p>
+<p>In model formulations for versions 2, 3, and 4, the lift force is now treated as a variable with respect to time and is no longer fixed. Lift became the control variable and added a degree of freedom to our system.</p>
+<p>Variables: h(t) , v(t) , D(t) , L(t)
+Number of Constraints: 3</p>
+<p><span class="math notranslate nohighlight">\( DOF = 4-3 = 0 \)</span></p>
+<p>Versions 2 through 4 of our model have 1 DOF allowing the optimizer to freely manipulate our decision variable.</p>
+</section>
+<section id="version-2-reach-a-desired-final-height">
+<h3>Version 2: Reach a Desired Final Height<a class="headerlink" href="#version-2-reach-a-desired-final-height" title="Link to this heading">#</a></h3>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\min_{u(t)} ~~ &amp; \int_{t_0}^{t_f} \|~h(t_f) - h_{desired}~\|^2\,dt \\
+\mathrm{s.t.}~~ &amp; \frac{dh}{dt} = v(t) \\
+ &amp; D(t) = b \cdot v(t) \sqrt{v(t)^2 + \epsilon^2} \\
+ &amp; \frac{dv}{dt} \cdot m = L(t) - m \cdot g - D(t)  \\
+ &amp; h(t_0) = 0 \\
+ &amp; v(t_0) = 0 \\
+ &amp; L(t_0) = 10000
+\end{align*}\]</div>
+<p>In the next iteration of the model, we add an objective to minimize the sum of squared error (SSE) between a target height the height reached at the end of the model.</p>
+<p>This is the first iteration containing the control variable being utilized as a variable in the model. Therefore, we needed to define reasonable bounds for the lift of our balloon.</p>
+<p>The lift force, as stated in Engineering Toolbox, is defined by the following equation:
+<span class="math notranslate nohighlight">\( L[t] = V(ρ_{out} - ρ_{in}) \times g \)</span></p>
+<p><strong>Volume</strong>:
+We defined parameters regarding the balloon earlier in the notebook. In the referenced CHARM Lab balloon model, they chose to make a hemispherical balloon with a radius of 10 m. For this model, we made a fully spherical balloon of the same radius. So the volume of our balloon is <span class="math notranslate nohighlight">\(4/3*π*R^3\)</span>, or roughly 4190 <span class="math notranslate nohighlight">\(m^3\)</span>.</p>
+<p><strong>Density</strong>:
+The density of air at 100°C (373.15 K) is approximately 0.946 <span class="math notranslate nohighlight">\(kg/m^3\)</span>, and at 20 °C is 1.205 <span class="math notranslate nohighlight">\(kg/m^3\)</span>.</p>
+<p><strong>Gravity</strong>:
+We use the approximation of gravity <span class="math notranslate nohighlight">\(9.81 m/s^2\)</span> in all relevant notebook calculations.</p>
+<p>For the maximum value of lift, we use the lift force calculation with our size balloon.</p>
+<p>For the minimum value, we chose a limiting velocity of -2 <span class="math notranslate nohighlight">\(m/s\)</span> for the descent of the balloon, and calculated the lift force required to maintain that velocity using the model equations.</p>
+<p><span class="math notranslate nohighlight">\( v = (\frac{L - mg}{b})^{0.5} \)</span></p>
+<p><span class="math notranslate nohighlight">\( L = bv^2 + mg \)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculating bounds for L</span>
+<span class="n">V</span> <span class="o">=</span> <span class="mi">4</span><span class="o">/</span><span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">radius</span><span class="o">**</span><span class="mi">3</span>
+<span class="n">L_ub</span> <span class="o">=</span> <span class="n">V</span><span class="o">*</span><span class="p">(</span><span class="n">rho_air</span><span class="o">-</span><span class="mf">0.946</span><span class="p">)</span><span class="o">*</span><span class="n">g</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;V = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">V</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1"> m^3&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;L_ub = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">L_ub</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1"> N&#39;</span><span class="p">)</span>
+
+<span class="n">L_lb</span> <span class="o">=</span> <span class="n">b</span><span class="o">*-</span><span class="mi">1</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">m_balloon</span><span class="o">*</span><span class="n">g</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;L_lb = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">L_lb</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1"> N&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>V = 4188.79 m^3
+L_ub = 11464.68 N
+L_lb = 5910.48 N
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_balloon_model_v2</span><span class="p">(</span><span class="n">height_ref</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; Fixed drag, added objective for difference of final height from height ref, sqaured.</span>
+
+<span class="sd">    Input:</span>
+<span class="sd">        height_ref: Reference desired final height (m).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        m: Initial model v2.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+    <span class="c1"># Set a Target Height</span>
+    <span class="n">desired_height</span> <span class="o">=</span> <span class="n">height_ref</span>
+    <span class="n">endtime</span> <span class="o">=</span> <span class="mi">200</span>
+
+    <span class="c1"># Define a Small Constant to Help Stabilize the Drag Force Constraint</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-6</span>
+
+    <span class="c1"># Create a Pyomo Model</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">(</span><span class="s1">&#39;Hot Air Balloon&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Define Time Domain</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">ContinuousSet</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">endtime</span><span class="p">))</span>
+
+    <span class="c1"># Define State Variables as Function of Time</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="c1"># Define Control Variable (Lift) as a Function of Time</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">L_lb</span><span class="p">,</span> <span class="n">L_ub</span><span class="p">))</span>
+
+    <span class="c1"># Define Derivative Variables</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dhdt</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">h</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dvdt</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="c1"># Define Derivative Constraints</span>
+    <span class="c1"># Height derivative constraint (dh/dt = v)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dh_con</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dhdt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dh_con</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">dh_con</span><span class="p">)</span>
+
+    <span class="c1"># Velocity derivative, acceleration constraint (m * dv/dt = L - mg - D)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dv_con</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dvdt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">*</span> <span class="n">m_balloon</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">L</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">-</span> <span class="n">m_balloon</span> <span class="o">*</span> <span class="n">g</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dv_con</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">dv_con</span><span class="p">)</span>
+
+    <span class="c1"># Drag force calculation (D = b * v^2)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">drag_con</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">b</span> <span class="o">*</span> <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">eps</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">drag_con</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">drag_con</span><span class="p">)</span>
+
+    <span class="c1"># Set Initial conditions</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">h</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fix</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fix</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fix</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
+
+    <span class="c1"># Define the objective: Minimize the difference between final height and the desired height</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">objective_rule</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">h</span><span class="p">[</span><span class="n">endtime</span><span class="p">]</span> <span class="o">-</span> <span class="n">desired_height</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>  <span class="c1"># Minimize squared difference at final time</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">objective</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="n">objective_rule</span><span class="p">,</span> <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">minimize</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">m</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a Model Instance</span>
+<span class="n">ref_height</span> <span class="o">=</span> <span class="mi">600</span>
+<span class="n">NFE</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">create_balloon_model_v2</span><span class="p">(</span><span class="n">ref_height</span><span class="p">)</span>
+
+<span class="c1"># Call the Discretization/Initialization Function</span>
+<span class="n">discretize_initialize</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">NFE</span><span class="p">)</span>
+
+<span class="c1"># Call the Solve Function</span>
+<span class="c1"># To view Ipopt output, set tee = True</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tee</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Visualize solution</span>
+<span class="n">visualize_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&lt;Figure size 1600x2560 with 3 Axes&gt;,
+ array([&lt;Axes: ylabel=&#39;Height (m)&#39;&gt;, &lt;Axes: ylabel=&#39;Velocity (m/s)&#39;&gt;,
+        &lt;Axes: xlabel=&#39;Time (s)&#39;, ylabel=&#39;Lift (kN)&#39;&gt;], dtype=object))
+</pre></div>
+</div>
+<img alt="../../_images/d5970d5caf7aa7ddc9d85909deb783bd4e0d30a377520804f24b456e2accbc7a.png" src="../../_images/d5970d5caf7aa7ddc9d85909deb783bd4e0d30a377520804f24b456e2accbc7a.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="analysis-of-model-results-reach-a-desired-final-height">
+<h2>Analysis of Model Results: Reach a Desired Final Height<a class="headerlink" href="#analysis-of-model-results-reach-a-desired-final-height" title="Link to this heading">#</a></h2>
+<section id="what-is-maximum-achievable-height-in-200-seconds">
+<h3>What is maximum achievable height in 200 seconds?<a class="headerlink" href="#what-is-maximum-achievable-height-in-200-seconds" title="Link to this heading">#</a></h3>
+<p>To answer this question, let’s test a few reference heights in the version 2 model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">NFE</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># Set figure to hold plots</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">12.8</span><span class="p">))</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="n">okabeito_list</span>
+
+<span class="c1"># Assign reference heights</span>
+<span class="n">ref_heights</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">700</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ref_heights</span><span class="p">:</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">create_balloon_model_v2</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">discretize_initialize</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">NFE</span><span class="p">)</span>
+    <span class="n">solve_model</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">tee</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">h</span><span class="p">[</span><span class="n">j</span><span class="p">]()</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">j</span><span class="p">]()</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;ref_height = </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> m&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">count</span><span class="p">])</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">count</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">,</span> <span class="n">fontweight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Height (m)&#39;</span><span class="p">,</span> <span class="n">fontweight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Velocity (m/s)&#39;</span><span class="p">,</span> <span class="n">fontweight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="c1"># Format for publication quality</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">direction</span> <span class="o">=</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">direction</span> <span class="o">=</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/919d7afe53009dcd7e5f4e39a3500c22a6ecf1703017e140ae29b1692699fa7f.png" src="../../_images/919d7afe53009dcd7e5f4e39a3500c22a6ecf1703017e140ae29b1692699fa7f.png" />
+</div>
+</div>
+<p>From the graph, it looks like the maximum height is just under 700 m.</p>
+<p><strong>Check our work</strong></p>
+<p>With a quick calculation, let’s check the model solution with a hand calculation. The maximum height would use the maximum allowable lift.</p>
+<p>Using our upper bound for lift, and the derived velocity from earlier in the notebook, the velocity achievable would be:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Maximum velocity uses maximum lift</span>
+<span class="n">max_v</span> <span class="o">=</span> <span class="p">((</span><span class="n">L_ub</span> <span class="o">-</span> <span class="n">m_balloon</span><span class="o">*</span><span class="n">g</span><span class="p">)</span><span class="o">/</span><span class="n">b</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Maximum velocity = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">max_v</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1"> m/s&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Maximum velocity = 3.37 m/s
+</pre></div>
+</div>
+</div>
+</div>
+<p>The height would then be <span class="math notranslate nohighlight">\( \int_{t_0}^{t_f} v(t) dt \)</span>,</p>
+<p>or <span class="math notranslate nohighlight">\(t_f \times v(t) \)</span> when <span class="math notranslate nohighlight">\( t_0 = 0 \)</span>.</p>
+<p>Therefore, the maximum calculated height should be approximately 674 m, matching the plotted result.</p>
+</section>
+<section id="version-3-follow-a-linear-path">
+<h3>Version 3: Follow a Linear Path<a class="headerlink" href="#version-3-follow-a-linear-path" title="Link to this heading">#</a></h3>
+<p>Now let’s solve the optimal control problem to find a control policy <span class="math notranslate nohighlight">\(u(t)\)</span> for the interval <span class="math notranslate nohighlight">\(t_0 \leq t \leq t_f\)</span> which causes the output <span class="math notranslate nohighlight">\(T_H(t)\)</span> to track a desired setpoint or reference tracjectory <span class="math notranslate nohighlight">\(SP(t)\)</span>.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\min_{L(t)} ~~ &amp; \int_{t_0}^{t_f} \|~h(t) - r(t)~\|^2\,dt \\
+\mathrm{s.t.}~~ &amp; \frac{dh}{dt} = v(t) \\
+ &amp; D(t) = b \cdot v(t) \sqrt{v(t)^2 + \epsilon^2} \\
+ &amp; \frac{dv}{dt} \cdot m = L(t) - m \cdot g - D(t)  \\
+ &amp; h(t_0) = 0 \\
+ &amp; v(t_0) = 0 \\
+ &amp; L(t_0) = 10000
+\end{align*}\]</div>
+<p>For the first path, we have the model follow a linear trajectory up defined by a slope.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># make a controlled path up</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">linear</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; Linear function with slope 2.5.</span>
+<span class="sd">    Inputs:</span>
+<span class="sd">        t: Time (s)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">        2.5*t:&#39;&#39;&#39;</span>
+
+    <span class="k">return</span> <span class="mf">2.5</span><span class="o">*</span><span class="n">t</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_balloon_model_v3</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; Fixed drag, added integrated squared error between model and reference function, objective to minimize ise.&#39;&#39;&#39;</span>
+
+    <span class="c1"># Define a Samll Constant to Help Stabalize the Drag Force Differential Equation</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-6</span>
+
+    <span class="c1"># Create a Pyomo Model</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">(</span><span class="s1">&#39;Hot Air Balloon&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Define Time Domain</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">ContinuousSet</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">tf</span><span class="p">))</span>
+
+    <span class="c1"># Define State Variables as Function of Time</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="c1"># Define Control Variable (Lift) as a Function of Time</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="n">L_lb</span><span class="p">,</span> <span class="n">L_ub</span><span class="p">))</span>
+
+    <span class="c1"># Define Derivative Variables</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dhdt</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">h</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dvdt</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="c1"># Define Derivative Constraints</span>
+    <span class="c1"># Height derivative constraint (dh/dt = v)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dh_con</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dhdt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dh_con</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">dh_con</span><span class="p">)</span>
+
+    <span class="c1"># Velocity derivative, acceleration constraint (m * dv/dt = L - mg - D)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dv_con</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dvdt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">*</span> <span class="n">m_balloon</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">L</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">-</span> <span class="n">m_balloon</span> <span class="o">*</span> <span class="n">g</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dv_con</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">dv_con</span><span class="p">)</span>
+
+    <span class="c1"># Drag force calculation (D = b * v^2)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">drag_con</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">b</span> <span class="o">*</span> <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">eps</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">drag_con</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">drag_con</span><span class="p">)</span>
+
+    <span class="c1"># Set Initial conditions</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fix</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
+
+    <span class="c1"># Define the objective: Minimize the difference between final height and the desired height</span>
+    <span class="nd">@m</span><span class="o">.</span><span class="n">Integral</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ise</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">h</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">-</span> <span class="n">linear</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span>  <span class="c1"># Minimize squared difference at final time</span>
+
+
+    <span class="c1"># Define the objective function</span>
+    <span class="nd">@m</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">minimize</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">objective</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">ise</span>
+
+    <span class="k">return</span> <span class="n">m</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a Model Instance</span>
+<span class="n">tf</span> <span class="o">=</span> <span class="mi">90</span>
+<span class="n">nfe</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">create_balloon_model_v3</span><span class="p">()</span>
+
+<span class="c1"># Call the Discretization/Initialization Function</span>
+<span class="n">discretize_initialize</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">NFE</span><span class="p">)</span>
+
+<span class="c1"># Call the Solve Function</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="c1"># Display the results</span>
+<span class="c1"># for t in model.t:</span>
+<span class="c1">#     # if t % 2 == 0:</span>
+<span class="c1">#         print(f&quot;Time {t}: Height = {pyo.value(model.h[t])}, Velocity = {pyo.value(model.v[t])}, Lift = {pyo.value(model.L[t])}&quot;)</span>
+
+<span class="c1"># Visualize solution</span>
+<span class="n">visualize_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: 
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+
+This version of Ipopt was compiled from source code available at
+    https://github.com/IDAES/Ipopt as part of the Institute for the Design of
+    Advanced Energy Systems Process Systems Engineering Framework (IDAES PSE
+    Framework) Copyright (c) 2018-2019. See https://github.com/IDAES/idaes-pse.
+
+This version of Ipopt was compiled using HSL, a collection of Fortran codes
+    for large-scale scientific computation.  All technical papers, sales and
+    publicity material resulting from use of the HSL codes within IPOPT must
+    contain the following acknowledgement:
+        HSL, a collection of Fortran codes for large-scale scientific
+        computation. See http://www.hsl.rl.ac.uk.
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:     1018
+Number of nonzeros in inequality constraint Jacobian.:        0
+Number of nonzeros in Lagrangian Hessian.............:      120
+
+Total number of variables............................:      363
+                     variables with only lower bounds:       60
+                variables with lower and upper bounds:       60
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:      303
+Total number of inequality constraints...............:        0
+        inequality constraints with only lower bounds:        0
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        0
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  1.5188628e+06 2.64e+03 1.01e+02  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1  1.5188502e+06 2.64e+03 1.01e+02  -1.0 1.77e+03    -  2.44e-03 8.71e-04f  1
+   2  1.5186759e+06 2.63e+03 1.04e+02  -1.0 1.91e+03    -  1.06e-03 2.95e-03f  1
+   3  1.5168410e+06 2.60e+03 1.03e+02  -1.0 2.04e+03    -  1.57e-03 1.34e-02f  1
+   4  1.5167698e+06 2.60e+03 1.03e+02  -1.0 2.22e+03    -  1.87e-03 2.65e-04f  1
+   5  1.4937278e+06 2.44e+03 6.37e+02  -1.0 2.30e+03    -  1.28e-03 5.87e-02f  1
+   6  1.4876568e+06 2.41e+03 6.55e+02  -1.0 2.43e+03    -  2.04e-03 1.34e-02f  1
+   7  1.4811581e+06 2.39e+03 6.57e+02  -1.0 2.44e+03    -  4.05e-03 8.86e-03f  1
+   8  1.3458283e+06 2.01e+03 9.87e+02  -1.0 2.54e+03    -  6.84e-03 1.57e-01f  1
+   9  1.3420699e+06 1.99e+03 9.76e+02  -1.0 1.86e+03  -2.0 1.05e-02 1.14e-02f  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  10  1.1623797e+06 2.50e+03 4.48e+03  -1.0 2.85e+03  -2.5 7.54e-03 3.38e-01f  1
+  11  1.1512002e+06 1.80e+03 3.14e+03  -1.0 1.11e+03  -2.1 8.71e-02 2.88e-01f  1
+  12  1.1587460e+06 1.74e+03 3.02e+03  -1.0 6.69e+02  -1.6 3.75e-02 3.52e-02h  1
+  13  1.0209893e+06 1.88e+02 3.13e+03  -1.0 7.67e+02  -2.1 5.86e-04 1.00e+00f  1
+  14  8.4096869e+05 5.04e+01 4.04e+03  -1.0 2.18e+02  -1.7 6.77e-02 1.00e+00f  1
+  15  7.9700441e+05 1.27e+01 8.70e+02  -1.0 1.04e+02  -1.3 9.05e-01 1.00e+00f  1
+  16  6.7846696e+05 4.08e+01 5.07e+02  -1.0 1.74e+02  -1.7 3.38e-01 1.00e+00f  1
+  17  5.0445588e+05 8.79e+01 3.55e+02  -1.0 2.63e+02  -2.2 6.32e-01 1.00e+00f  1
+  18  4.8052369e+05 5.90e+01 4.29e+02  -1.0 1.97e+02  -1.8 8.69e-01 5.49e-01f  1
+  19  4.6855432e+05 5.21e+01 3.93e+02  -1.0 3.11e+02  -2.3 9.59e-01 1.07e-01f  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  20  2.6538853e+05 2.41e+03 5.68e+03  -1.0 1.21e+03  -2.7 8.39e-01 1.00e+00f  1
+  21  2.3818489e+05 3.49e+02 7.61e+02  -1.0 7.50e+02  -2.3 2.30e-03 1.00e+00f  1
+  22  1.5467211e+05 1.04e+02 6.44e+02  -1.0 3.45e+02  -2.8 9.73e-01 1.00e+00f  1
+  23  1.3415801e+05 3.77e+01 3.94e+02  -1.0 1.88e+02  -2.4 1.00e+00 1.00e+00f  1
+  24  9.0305340e+04 8.74e+01 3.32e+01  -1.0 3.13e+02  -2.8 1.00e+00 1.00e+00f  1
+  25  7.8475811e+04 4.11e+01 1.43e+02  -1.0 1.60e+02  -2.4 1.00e+00 1.00e+00f  1
+  26  5.3203594e+04 1.90e+02 3.71e+01  -1.0 3.48e+02  -2.9 1.00e+00 1.00e+00f  1
+  27  2.4627608e+04 1.16e+02 1.63e+02  -1.0 5.63e+02  -3.4 3.66e-01 1.00e+00f  1
+  28  1.9009784e+04 1.90e+01 2.65e+01  -1.0 1.53e+02  -2.9 1.00e+00 1.00e+00f  1
+  29  9.7811777e+03 2.54e+02 5.64e+01  -1.0 4.78e+02  -3.4 7.29e-01 1.00e+00f  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  30  7.4903736e+03 1.21e+02 9.45e+01  -1.0 2.05e+02  -3.0 1.00e+00 1.00e+00f  1
+  31  4.7416733e+03 1.03e+02 6.61e+01  -1.0 2.45e+02  -3.5 1.00e+00 1.00e+00f  1
+  32  2.2754878e+03 5.07e+02 1.78e+02  -1.0 8.22e+02  -3.9 1.00e+00 1.00e+00f  1
+  33  6.4402017e+02 3.56e+03 7.39e+02  -1.0 4.18e+03  -4.4 1.75e-01 8.92e-01f  1
+  34  6.2752648e+02 3.46e+03 7.17e+02  -1.0 1.57e+03  -4.9 1.00e+00 2.89e-02h  1
+  35  2.3136066e+02 1.30e+03 2.92e+02  -1.0 1.98e+03  -5.4 9.92e-01 6.36e-01f  1
+  36  5.7556626e+01 1.06e+02 2.17e+01  -1.0 8.67e+02  -5.9 1.00e+00 1.00e+00h  1
+  37  3.1487527e+01 7.06e+01 8.01e-01  -1.0 9.42e+02  -6.3 5.75e-01 1.00e+00h  1
+  38  1.3241605e+01 4.78e+02 2.24e+00  -1.0 3.27e+03    -  7.43e-01 8.63e-01h  1
+  39  5.4301539e+00 2.10e+02 1.43e+00  -1.0 1.54e+03    -  5.15e-01 1.00e+00h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  40  1.2734319e+00 1.19e+03 4.43e-01  -1.0 1.76e+03    -  1.00e+00 1.00e+00h  1
+  41  4.0712458e-01 1.06e+02 2.98e-02  -1.0 1.61e+03    -  1.00e+00 1.00e+00h  1
+  42  4.0696177e-01 2.26e+00 3.08e-04  -1.0 2.41e+02    -  1.00e+00 1.00e+00h  1
+  43  4.0811904e-01 3.39e-02 1.42e-05  -1.0 2.55e+01    -  1.00e+00 1.00e+00h  1
+  44  2.2549099e-01 1.96e+00 5.37e-03  -2.5 2.07e+02    -  9.28e-01 1.00e+00h  1
+  45  3.6572299e-02 6.23e+00 1.02e-03  -2.5 5.62e+02    -  1.00e+00 1.00e+00h  1
+  46  1.2564837e-02 1.30e+00 2.18e-04  -2.5 2.43e+02    -  1.00e+00 1.00e+00h  1
+  47  1.0187450e-02 4.61e-02 8.98e-06  -2.5 4.65e+01    -  1.00e+00 1.00e+00h  1
+  48  1.0102786e-02 4.30e-05 2.83e-08  -2.5 1.59e+00    -  1.00e+00 1.00e+00h  1
+  49  1.3082483e-03 9.93e-01 1.78e-04  -3.8 2.09e+02    -  1.00e+00 1.00e+00h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  50  1.6383481e-04 2.94e-01 2.43e-05  -3.8 1.06e+02    -  1.00e+00 1.00e+00h  1
+  51  8.6281572e-05 6.29e-03 6.93e-07  -3.8 1.61e+01    -  1.00e+00 1.00e+00h  1
+  52  8.4483514e-05 3.92e-06 1.50e-09  -3.8 4.17e-01    -  1.00e+00 1.00e+00h  1
+  53  6.1634104e-07 2.97e-02 3.42e-06  -5.7 3.46e+01    -  1.00e+00 1.00e+00h  1
+  54  1.5812176e-08 2.18e-04 2.24e-08  -5.7 2.95e+00    -  1.00e+00 1.00e+00h  1
+  55  1.4889146e-08 5.77e-09 1.85e-11  -5.7 1.60e-02    -  1.00e+00 1.00e+00h  1
+  56  9.2271233e-14 6.42e-06 7.29e-10  -8.6 5.08e-01    -  1.00e+00 1.00e+00h  1
+  57  2.7530416e-14 9.55e-12 3.12e-14  -8.6 6.20e-04    -  1.00e+00 1.00e+00h  1
+
+Number of Iterations....: 57
+
+                                   (scaled)                 (unscaled)
+Objective...............:   3.2761697935018366e-15    2.7530416414891780e-14
+Dual infeasibility......:   3.1191097252860303e-14    2.6210604148534641e-13
+Constraint violation....:   9.5496943686157465e-12    9.5496943686157465e-12
+Complementarity.........:   2.5059065181173505e-09    2.1057715041936681e-08
+Overall NLP error.......:   2.5059065181173505e-09    2.1057715041936681e-08
+
+
+Number of objective function evaluations             = 58
+Number of objective gradient evaluations             = 58
+Number of equality constraint evaluations            = 58
+Number of inequality constraint evaluations          = 0
+Number of equality constraint Jacobian evaluations   = 58
+Number of inequality constraint Jacobian evaluations = 0
+Number of Lagrangian Hessian evaluations             = 57
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.018
+Total CPU secs in NLP function evaluations           =      0.001
+
+EXIT: Optimal Solution Found.
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&lt;Figure size 1600x2560 with 3 Axes&gt;,
+ array([&lt;Axes: ylabel=&#39;Height (m)&#39;&gt;, &lt;Axes: ylabel=&#39;Velocity (m/s)&#39;&gt;,
+        &lt;Axes: xlabel=&#39;Time (s)&#39;, ylabel=&#39;Lift (kN)&#39;&gt;], dtype=object))
+</pre></div>
+</div>
+<img alt="../../_images/9dc421c13fc547b66b5bff9acc76fda06f6912a5d6f08369e6904f45cf0674c2.png" src="../../_images/9dc421c13fc547b66b5bff9acc76fda06f6912a5d6f08369e6904f45cf0674c2.png" />
+</div>
+</div>
+</section>
+<section id="version-4-follow-a-dynamic-flight-path">
+<h3>Version 4: Follow a Dynamic Flight Path<a class="headerlink" href="#version-4-follow-a-dynamic-flight-path" title="Link to this heading">#</a></h3>
+<p>Lastly, we have the model follow a flight path containing multiple set heights and velocities.</p>
+<p>First, using <code class="docutils literal notranslate"><span class="pre">np.interp</span></code>, we define the reference path.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># time grid</span>
+<span class="n">tf</span> <span class="o">=</span> <span class="mi">6000</span> <span class="c1">#sec in 100 minuts minutes</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">n</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">tf</span> <span class="o">/</span> <span class="n">dt</span><span class="p">)</span>
+<span class="n">t_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">tf</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+
+<span class="c1"># setpoint/reference</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">r</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">550</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">1200</span><span class="p">,</span> <span class="mi">1350</span><span class="p">,</span> <span class="mi">1850</span><span class="p">,</span> <span class="mi">2350</span><span class="p">,</span> <span class="mi">2850</span><span class="p">,</span> <span class="mi">4400</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">5900</span><span class="p">,</span> <span class="n">tf</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">900</span><span class="p">,</span> <span class="mi">900</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+
+
+<span class="c1"># plot the setpoint function</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">dpi</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span> <span class="p">(</span><span class="mf">6.4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">r</span><span class="p">(</span><span class="n">t_grid</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;setpoint&quot;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">okabeito_list</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">,</span> <span class="n">fontweight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Height (m)&#39;</span><span class="p">,</span> <span class="n">fontweight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">direction</span> <span class="o">=</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/a6c6d1349d99982f90d9ededc5edde1c00f69e33e2fa87c7f2193e6f20f66ce8.png" src="../../_images/a6c6d1349d99982f90d9ededc5edde1c00f69e33e2fa87c7f2193e6f20f66ce8.png" />
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">r(t)</span></code> is then used as the reference path in the previously set model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_balloon_model_v4</span><span class="p">():</span>
+
+
+    <span class="c1"># Define a Samll Constant to Help Stabalize the Drag Force Differential Equation</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-6</span>
+
+    <span class="c1"># Create a Pyomo Model</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">(</span><span class="s1">&#39;Hot Air Balloon&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Define Time Domain</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">ContinuousSet</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">tf</span><span class="p">))</span>
+
+    <span class="c1"># Define State Variables as Function of Time</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="c1"># Define Control Variable (Lift) as a Function of Time</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="n">L_lb</span><span class="p">,</span> <span class="n">L_ub</span><span class="p">))</span>
+
+    <span class="c1"># Define Derivative Variables</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dhdt</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">h</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dvdt</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="c1"># Define Derivative Constraints</span>
+    <span class="c1"># Height derivative constraint (dh/dt = v)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dh_con</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dhdt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dh_con</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">dh_con</span><span class="p">)</span>
+
+    <span class="c1"># Velocity derivative, acceleration constraint (m * dv/dt = L - mg - D)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dv_con</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dvdt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">*</span> <span class="n">m_balloon</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">L</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">-</span> <span class="n">m_balloon</span> <span class="o">*</span> <span class="n">g</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dv_con</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">dv_con</span><span class="p">)</span>
+
+    <span class="c1"># Define Algebraic Contraints</span>
+    <span class="c1"># Drag force calculation (D = b * v^2)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">drag_con</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">b</span> <span class="o">*</span> <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">eps</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">drag_con</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">drag_con</span><span class="p">)</span>
+
+    <span class="c1"># Define the objective: Minimize the difference between final height and the desired height</span>
+    <span class="nd">@m</span><span class="o">.</span><span class="n">Integral</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ise</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">h</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">-</span> <span class="n">r</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span>  <span class="c1"># Minimize squared difference at final time</span>
+
+
+    <span class="c1"># Define the objective function</span>
+    <span class="nd">@m</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">minimize</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">objective</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">ise</span>
+
+    <span class="c1"># Set Initial conditions</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fix</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">m</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create model instance</span>
+<span class="n">tf</span> <span class="o">=</span> <span class="mi">6000</span>
+<span class="n">NFE</span> <span class="o">=</span> <span class="mi">60</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">create_balloon_model_v4</span><span class="p">()</span>
+
+<span class="c1"># Call the Discretization/Initialization Function</span>
+<span class="n">discretize_initialize</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">NFE</span><span class="p">)</span>
+
+<span class="c1"># Call the Solve Function</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tee</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># # Display the results</span>
+<span class="c1"># for t in model.t:</span>
+<span class="c1">#     if t % 300 == 0:</span>
+<span class="c1">#         print(f&quot;Time {t}: Height = {pyo.value(model.h[t])}, Velocity = {pyo.value(model.v[t])}, Lift = {pyo.value(model.L[t])}&quot;)</span>
+
+<span class="c1"># Visualize solution</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">visualize_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="c1"># Add in plot for set height</span>
+<span class="n">h_set</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">]</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">h_set</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;reference&quot;</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">okabeito_list</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">direction</span> <span class="o">=</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">,</span> <span class="n">fontweight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Lift (kN)&#39;</span><span class="p">,</span> <span class="n">fontweight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/890840cc271211ebe6f534b284d9a5425d1ec268c4691c3e529853f699184c05.png" src="../../_images/890840cc271211ebe6f534b284d9a5425d1ec268c4691c3e529853f699184c05.png" />
+</div>
+</div>
+<p>While solution peaks look very sharp, keep in mind this is over a period of 6000s to simulate a full hot air balloon ride, which are usually around 90 minutes in length. Zooming in to the first quarter of the plot (0 - 1500s).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let us zoom in on key areas of the plot</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">]</span>
+<span class="n">L</span> <span class="o">=</span> <span class="p">[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">/</span><span class="mi">1000</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">]</span> <span class="c1">#lift in kN</span>
+
+<span class="n">figure</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">dpi</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mf">6.4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span> <span class="mi">1500</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">direction</span> <span class="o">=</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">,</span> <span class="n">fontweight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Lift (kN)&#39;</span><span class="p">,</span> <span class="n">fontweight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/fb1611ad5c7157f82372902d554597fea7fbddb51efcc3d86420ee00dd6073ff.png" src="../../_images/fb1611ad5c7157f82372902d554597fea7fbddb51efcc3d86420ee00dd6073ff.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="conclusions">
+<h2>Conclusions<a class="headerlink" href="#conclusions" title="Link to this heading">#</a></h2>
+<section id="take-away-messages">
+<h3>Take Away Messages<a class="headerlink" href="#take-away-messages" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>It is important to check that initial values and conditions make sense for the physical system.</p></li>
+<li><p>Understanding the model on paper saves a ton of time coding into pyomo.</p></li>
+<li><p>Examples like TCLab have a large potential to be modified for a variety of applications including a hot air balloon.</p></li>
+</ol>
+</section>
+<section id="future-work">
+<h3>Future Work<a class="headerlink" href="#future-work" title="Link to this heading">#</a></h3>
+<p>Potential next steps for this model include:</p>
+<ol class="arabic simple">
+<li><p>Making a fuel estimation calculator. The lift would need to be related to the propane flowrate from the burner, and this would allow for a cost minimization tool in trip planning for hot air balloons.</p></li>
+<li><p>Having the hot air balloon drag and lift calculations depend on height and temperature. This would add further complexity to the model and make the resulting curves more realistic.</p></li>
+<li><p>Adding in horizontal movement from wind would allow for a multidimensional hot air balloon model.</p></li>
+<li><p>Taking a specific design for a hot air balloon, a digital twin could be made to match the specifications and conduct uncertainty quantification against historic data.</p></li>
+</ol>
+</section>
+</section>
+<section id="extensions-of-referenced-material">
+<h2>Extensions of Referenced Material<a class="headerlink" href="#extensions-of-referenced-material" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Instead of defining a PID Controller, we implemented the equations of motion for a hot-air balloon in Pyomo and used an objective function to control the decision variable, lift.</p></li>
+<li><p>The Charm Lab at Stanford only investigated the ascent of a ballon as it traveled to a set height. They did not account for the balloon moving downward; thus, their formulation could not be extended to path planning. We extended their formulation by modifying the Drag equation and defining a flight path for a balloon to reach a set of heights during the balloon’s ascent and descent.</p></li>
+</ol>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>(Hot Air Balloon Model) Bombik, A., &amp; Mukhopadhaya, J. (2016). Controlling Team Rocket’s Hot Air Balloon. Stanford University. <a class="reference external" href="https://charm.stanford.edu/ENGR1052016/AnthonyBombikJayantMukhopadhaya">https://charm.stanford.edu/ENGR1052016/AnthonyBombikJayantMukhopadhaya</a></p></li>
+<li><p>(Pyomo.DAE Example) Temperature Control Lab: Dowling, A., et al. (2023). Optimal control with Pyomo.DAE. Notre Dame CBE 30324/40324: Process Optimization. Retrieved October 7, 2024, from <a class="reference external" href="https://ndcbe.github.io/optimization/notebooks/3/PyomoDAE_TCLab.html">https://ndcbe.github.io/optimization/notebooks/3/PyomoDAE_TCLab.html</a></p></li>
+<li><p>(Hot Air Balloon Physics: Real-World Physics Problems) (n.d.). Hot air balloon physics. Retrieved October 7, 2024, from <a class="reference external" href="https://www.real-world-physics-problems.com/hot-air-balloon-physics.html">https://www.real-world-physics-problems.com/hot-air-balloon-physics.html</a></p></li>
+<li><p>(Engineering Toolbox: Calculating the Lift Force) The Engineering ToolBox. (n.d.). Hot air balloon lifting force. Retrieved October 7, 2024, from <a class="reference external" href="https://www.engineeringtoolbox.com/hot-air-balloon-lifting-force-d_562.html">https://www.engineeringtoolbox.com/hot-air-balloon-lifting-force-d_562.html</a></p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/contrib"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="race_car_extended.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Extended Race Car Optimization Models</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="reactor_design.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Chemical Reactor Design</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hot-air-balloons">Hot Air Balloons</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-formulation-no-set-objective">Model Formulation: No Set Objective</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#degree-of-freedom-analysis">Degree of Freedom Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-model-constants">Define Model Constants</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#function-definition">Function Definition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#version-0-simulate-the-balloon-dynamics">Version 0: Simulate the Balloon Dynamics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#version-1-correcting-the-drag-force-calculation">Version 1: Correcting the Drag Force Calculation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-of-model-results-varying-fixed-lift-value">Analysis of Model Results: Varying Fixed Lift Value</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-does-the-set-lift-affect-the-velocity">How does the set lift affect the velocity?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-formulation-minimize-ise-objective">Model Formulation - Minimize ISE Objective</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Degree of Freedom Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-reach-a-desired-final-height">Version 2: Reach a Desired Final Height</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-of-model-results-reach-a-desired-final-height">Analysis of Model Results: Reach a Desired Final Height</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-maximum-achievable-height-in-200-seconds">What is maximum achievable height in 200 seconds?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#version-3-follow-a-linear-path">Version 3: Follow a Linear Path</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#version-4-follow-a-dynamic-flight-path">Version 4: Follow a Dynamic Flight Path</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusions">Conclusions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#take-away-messages">Take Away Messages</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#future-work">Future Work</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extensions-of-referenced-material">Extensions of Referenced Material</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Alexander Dowling, et al.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

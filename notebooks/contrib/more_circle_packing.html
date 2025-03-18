@@ -1,0 +1,1752 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Circle Packing Optimization &#8212; Optimization for Decision Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/contrib/more_circle_packing';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Modeling Paradigms" href="modeling.html" />
+    <link rel="prev" title="Sudoku Solver" href="Sudoku_Solver.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/cbe_logo.jpg" class="logo__image only-light" alt="Optimization for Decision Science - Home"/>
+    <script>document.write(`<img src="../../_static/cbe_logo.jpg" class="logo__image only-dark" alt="Optimization for Decision Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Optimization for Decision Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Fall 2024 Calendar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/workshop.html">Computational Optimization in Python (São Paulo, Brazil)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project1.html">Project 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms1.html">Algorithms Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms2.html">Algorithms Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project2.html">Project 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project (Spring 2023)</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/LP.html">1.4. Continuous Optimization: Linear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/NLP.html">1.5. Continuous Optimization: Nonlinear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.6. Integer Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.7. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_car.html">3.1. Pyomo.DAE Example: Race Car</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_TCLab.html">3.2. Pyomo.DAE Example: Temperature Control Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_background.html">3.3. Differential Algebraic Equations (DAEs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_numeric_integration.html">3.4. Numeric Integration for DAEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_theory.html">3.5. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_example.html">3.6. Pyomo.DAE: Racing Example Revisited</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/blocks.html">4.2. Blocks and Other Pyomo Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/AdvancedTopics.html">4.3. Advanced Topics in Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.4. Risk Measures and Portfolio Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Optimizing Experiments with <code class="docutils literal notranslate"><span class="pre">Pyomo.DoE</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-1.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Newton-Methods.html">6.4. Newton-type Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Constraint-Qualifications.html">7.4. Constraint Qualifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Second-Order.html">7.5. Second Order Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/degeneracy_hunter.html">7.6. NLP Diagnostics with Degeneracy Hunter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="pyomo.html">More Pyomo Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="semiconductor_manufacturing.html">Semiconductor Production Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="student_diet.html">Optimization of Daily Diet Using Pyomo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blending.html">Blending Under Uncertainty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vehicle_routing.html">Vehicle Routing</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="portfolio_optimization_extended.html">Risk Measures and Portfolio Optimization: Expanded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="race_car_extended.html">Extended Race Car Optimization Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hot_air_balloon.html">Hot Air Balloon Dynamic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reactor_design.html">Chemical Reactor Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Disaster_Response_Plan.html">Disaster Response Plan Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Sudoku_Solver.html">Sudoku Solver</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Circle Packing Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="modeling.html">Modeling Paradigms</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="multi_objective.html">Multi-Objective Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_stochastic_programming.html">Advanced Topics in Stochastic Programming</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="algorithms.html">Global Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Deterministic_Global_Optimization.html">Deterministic Global Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="sgd.html">Stochastic Gradient Descent</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="data.html">Machine Learning and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/contrib/more_circle_packing.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/contrib/more_circle_packing.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/contrib/more_circle_packing.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Circle Packing Optimization</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objective">Learning Objective</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#primary-source">Primary Source</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-import-packages">Install/Import Packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#packing-optimization-model-description-and-formulation">Packing Optimization: Model Description and Formulation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-overlap-constraint">Non-overlap constraint:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#boundary-constraint">Boundary constraint:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attempt-1-no-radius-initialization">Attempt 1: No Radius Initialization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization-function">Visualization Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#packing-density-vs-number-of-circles">Packing Density vs. Number of Circles</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attempt-2-providing-arbitrary-initialization-to-the-radius">Attempt 2: Providing Arbitrary Initialization to the Radius</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#packing-density-vs-radius-initializations-graph">Packing Density vs. Radius Initializations Graph</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attempt-3-iterative-algorithm">Attempt 3: Iterative Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="circle-packing-optimization">
+<h1>Circle Packing Optimization<a class="headerlink" href="#circle-packing-optimization" title="Link to this heading">#</a></h1>
+<p><strong>Prepared by:</strong> Landi Wang (<a class="reference external" href="mailto:lwang25&#37;&#52;&#48;nd&#46;edu">lwang25<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2024) &amp; Yi Liu (<a class="reference external" href="mailto:yliu66&#37;&#52;&#48;nd&#46;edu">yliu66<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2024)</p>
+<section id="learning-objective">
+<h2>Learning Objective<a class="headerlink" href="#learning-objective" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Review syntax for Pyomo package</p></li>
+<li><p>Demonstrate the power of Pyomo in solving and optimizing complex dynamic process systems</p></li>
+<li><p>Learn how to formulate non-linear optimization problem</p></li>
+<li><p>Verify Hexagonal Lattice Theory</p></li>
+</ul>
+</section>
+<section id="primary-source">
+<h2>Primary Source<a class="headerlink" href="#primary-source" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://ndcbe.github.io/optimization/notebooks/1/NLP.html">https://ndcbe.github.io/optimization/notebooks/1/NLP.html</a></p>
+<p>Going from the circle packing example mentioned above, we wanted to examine the validity of the hexagonal lattice theory and thus changed and reformulated our model. Compared to the circle packing example demonstrated in the link above, which was optimizing finding the optimal radius for each individual circle and their centers’ locations respectively, we aim to set all the radii of circles to be equal to each other, while the values of all radii and the coordinates of the circles are left to be determined by the model.</p>
+</section>
+<section id="install-import-packages">
+<h2>Install/Import Packages<a class="headerlink" href="#install-import-packages" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="k">if</span> <span class="s2">&quot;google.colab&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+    <span class="err">!</span><span class="n">wget</span> <span class="s2">&quot;https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/helper.py&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">easy_install</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;../&#39;</span><span class="p">)</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+<span class="n">helper</span><span class="o">.</span><span class="n">set_plotting_style</span><span class="p">()</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyomo.environ</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyo</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">patches</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Math</span>
+
+<span class="c1">### Suppress warning when initializing the problem to values outside the bounds</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;pyomo.core&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2024-12-19 00:52:23--  https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/helper.py
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.111.133, 185.199.110.133, 185.199.108.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.111.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 6493 (6.3K) [text/plain]
+Saving to: ‘helper.py’
+
+helper.py           100%[===================&gt;]   6.34K  --.-KB/s    in 0s      
+
+2024-12-19 00:52:24 (68.8 MB/s) - ‘helper.py’ saved [6493/6493]
+
+Installing idaes via pip...
+idaes was successfully installed
+idaes, version 2.7.0
+
+
+Running idaes get-extensions to install Ipopt, k_aug, and more...
+Checking solver versions:
+Ipopt 3.13.2 (x86_64-pc-linux-gnu), ASL(20190605)
+
+
+
+[K_AUG] 0.1.0, Part of the IDAES PSE framework
+Please visit https://idaes.org/ (x86_64-pc-linux-gnu), ASL(20190605)
+
+
+
+Couenne 0.5.8 -- an Open-Source solver for Mixed Integer Nonlinear Optimization
+Mailing list: couenne@list.coin-or.org
+Instructions: http://www.coin-or.org/Couenne
+couenne (x86_64-pc-linux-gnu), ASL(20190605)
+
+
+
+Bonmin 1.8.8 using Cbc 2.10.10 and Ipopt 3.13.2
+bonmin (x86_64-pc-linux-gnu), ASL(20190605)
+
+
+
+Ipopt 3.13.3 (x86_64-pc-linux-gnu), ASL(20190605)
+
+
+
+1.0 dot_1&#39; (x86_64-pc-linux-gnu), ASL(20190605)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="packing-optimization-model-description-and-formulation">
+<h2>Packing Optimization: Model Description and Formulation<a class="headerlink" href="#packing-optimization-model-description-and-formulation" title="Link to this heading">#</a></h2>
+<p>In our scenario, we want to fit the given number of circles within the given rectangle (Width 10 and Length 8 in our case). The objective is to maximize the packing density, which is defined by the following formula:</p>
+<div class="math notranslate nohighlight">
+\[
+\eta_{\text{opt}} = \max\left(\frac{n \pi r^2}{A \times B}\right)
+\]</div>
+<p>The constraints are as follows:</p>
+<section id="non-overlap-constraint">
+<h3>Non-overlap constraint:<a class="headerlink" href="#non-overlap-constraint" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[
+\sqrt{(x_i - x_j)^2 + (y_i - y_j)^2} \geq 2r, \quad \text{for all} \, i &lt; j
+\]</div>
+</section>
+<section id="boundary-constraint">
+<h3>Boundary constraint:<a class="headerlink" href="#boundary-constraint" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[
+r \leq x_i \leq A - r, \quad r \leq y_i \leq B - r
+\]</div>
+</section>
+</section>
+<section id="attempt-1-no-radius-initialization">
+<h2>Attempt 1: No Radius Initialization<a class="headerlink" href="#attempt-1-no-radius-initialization" title="Link to this heading">#</a></h2>
+<p>We intended this to be simple and to introduce the optimization problem, with no initialization at all on the radius. The objective is to maximize the packing density of the system, while there can be no overlaps between circles or circles being out of bounaries that we appointed. The number of circles is given by the user, while the algorithm deterimines the coordinates of the center of the circles as well as the radius of the circles.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Data</span>
+<span class="n">L</span> <span class="o">=</span> <span class="mi">8</span>  <span class="c1"># Length of the rectangle</span>
+<span class="n">W</span> <span class="o">=</span> <span class="mi">10</span>   <span class="c1"># Width of the rectangle</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">20</span>   <span class="c1"># Preset number of circles</span>
+
+<span class="c1"># Model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+<span class="c1"># Sets</span>
+<span class="n">model</span><span class="o">.</span><span class="n">circles</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">RangeSet</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+<span class="c1"># Variables</span>
+<span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">within</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>  <span class="c1"># Radius of all circles</span>
+<span class="n">model</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">L</span><span class="p">))</span>  <span class="c1"># x-coordinates of circle centers</span>
+<span class="n">model</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">W</span><span class="p">))</span>  <span class="c1"># y-coordinates of circle centers</span>
+
+<span class="c1"># Objective: Maximize the total area occupied by circles</span>
+<span class="n">model</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span>
+    <span class="n">expr</span><span class="o">=</span><span class="n">N</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">maximize</span>
+<span class="p">)</span>
+
+<span class="c1"># Constraints</span>
+<span class="c1"># Ensure circles do not overlap</span>
+<span class="n">model</span><span class="o">.</span><span class="n">no_overlap</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConstraintList</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">no_overlap</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">&gt;=</span>
+            <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+        <span class="p">)</span>
+
+<span class="c1"># Ensure circles stay within the rectangle</span>
+<span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConstraintList</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">:</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&lt;=</span> <span class="n">L</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&lt;=</span> <span class="n">W</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Solve</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>  <span class="c1"># Nonlinear solver</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Results</span>
+<span class="n">optimal_radius</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Optimal Radius: </span><span class="si">{</span><span class="n">optimal_radius</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">total_area_circles</span> <span class="o">=</span> <span class="n">N</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">optimal_radius</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">rectangle_area</span> <span class="o">=</span> <span class="n">L</span> <span class="o">*</span> <span class="n">W</span>
+<span class="n">packing_density</span> <span class="o">=</span> <span class="n">total_area_circles</span> <span class="o">/</span> <span class="n">rectangle_area</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Packing Density: </span><span class="si">{</span><span class="n">packing_density</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Circle Placements:&quot;</span><span class="p">)</span>
+<span class="n">x_coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">]</span>
+<span class="n">y_coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Circle </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: Center=(</span><span class="si">{</span><span class="n">x_coords</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">y_coords</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimal Radius: 0.97
+Packing Density: 0.73
+
+Circle Placements:
+Circle 1: Center=(5.98, 5.48)
+Circle 2: Center=(2.64, 7.41)
+Circle 3: Center=(3.69, 9.03)
+Circle 4: Center=(5.36, 8.07)
+Circle 5: Center=(7.03, 1.93)
+Circle 6: Center=(0.97, 2.59)
+Circle 7: Center=(7.03, 7.10)
+Circle 8: Center=(2.64, 3.55)
+Circle 9: Center=(4.31, 6.45)
+Circle 10: Center=(5.36, 0.97)
+Circle 11: Center=(5.36, 2.90)
+Circle 12: Center=(0.97, 4.52)
+Circle 13: Center=(1.09, 8.92)
+Circle 14: Center=(7.03, 3.86)
+Circle 15: Center=(7.03, 9.03)
+Circle 16: Center=(2.64, 5.48)
+Circle 17: Center=(2.02, 0.97)
+Circle 18: Center=(0.97, 6.45)
+Circle 19: Center=(4.31, 4.52)
+Circle 20: Center=(3.69, 1.93)
+</pre></div>
+</div>
+</div>
+</div>
+<section id="visualization-function">
+<h3>Visualization Function<a class="headerlink" href="#visualization-function" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">visualize_equal_radius_packing</span><span class="p">(</span><span class="n">rect_length</span><span class="p">,</span> <span class="n">rect_width</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">x_coords</span><span class="p">,</span> <span class="n">y_coords</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visualize the rectangle, equal-radius packed circles, and their centers.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        rect_length (float): Length of the rectangle.</span>
+<span class="sd">        rect_width (float): Width of the rectangle.</span>
+<span class="sd">        radius (float): Radius of the circles.</span>
+<span class="sd">        x_coords (list): x-coordinates of the circle centers.</span>
+<span class="sd">        y_coords (list): y-coordinates of the circle centers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+    <span class="c1"># Draw the rectangle</span>
+    <span class="n">rect</span> <span class="o">=</span> <span class="n">patches</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">rect_length</span><span class="p">,</span> <span class="n">rect_width</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+
+    <span class="c1"># Draw each circle and its center</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_coords</span><span class="p">)):</span>
+        <span class="c1"># Draw circle</span>
+        <span class="n">circle</span> <span class="o">=</span> <span class="n">patches</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="n">x_coords</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y_coords</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">radius</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;lightblue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">circle</span><span class="p">)</span>
+
+        <span class="c1"># Plot circle center</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_coords</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y_coords</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;ro&#39;</span><span class="p">)</span>  <span class="c1"># Red dot for the center</span>
+
+        <span class="c1"># Label the circle center with its index</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x_coords</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y_coords</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Set plot limits</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">rect_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">rect_width</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Add labels and title</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Equal Radius Circle Packing Visualization&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;X-axis&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Y-axis&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s1">&#39;box&#39;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">visualize_equal_radius_packing</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">optimal_radius</span><span class="p">,</span> <span class="n">x_coords</span><span class="p">,</span> <span class="n">y_coords</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/23f06f8d1c4624e9c2beecb4e4febf7fab9197a825268f15c03575653d90a293.png" src="../../_images/23f06f8d1c4624e9c2beecb4e4febf7fab9197a825268f15c03575653d90a293.png" />
+</div>
+</div>
+<p>In this example, we have used the IPOPT solver. Although IPOPT is designed for convex problems and our circle packing problem is non-convex, discontinuous at certain points, and thus may have multiple local solutions or no solutions at all with different initialization points, we did decide to use it for its convenience as well as its capability of solving non-integer problems. This mismatch between the solver and the nature of our problem also caused the number of iterations to be extremely high, at 993.</p>
+</section>
+<section id="packing-density-vs-number-of-circles">
+<h3>Packing Density vs. Number of Circles<a class="headerlink" href="#packing-density-vs-number-of-circles" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">N_max</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># Upper bound for the number of circles</span>
+
+<span class="c1"># Function to solve the circle packing problem for a given N</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">solve_circle_packing</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+    <span class="c1"># Sets</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">circles</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">RangeSet</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+    <span class="c1"># Variables</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">within</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>  <span class="c1"># Radius of all circles</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">L</span><span class="p">))</span>  <span class="c1"># x-coordinates of circle centers</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">W</span><span class="p">))</span>  <span class="c1"># y-coordinates of circle centers</span>
+
+    <span class="c1"># Objective: Maximize the total area occupied by circles</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span>
+        <span class="n">expr</span><span class="o">=</span><span class="n">N</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">maximize</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Constraints</span>
+    <span class="c1"># Ensure circles do not overlap</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">no_overlap</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConstraintList</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">no_overlap</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">&gt;=</span>
+                <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+            <span class="p">)</span>
+
+    <span class="c1"># Ensure circles stay within the rectangle</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConstraintList</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&lt;=</span> <span class="n">L</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&lt;=</span> <span class="n">W</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># Solve</span>
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>  <span class="c1"># Nonlinear solver</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Check if the solver found an optimal solution</span>
+    <span class="k">if</span> <span class="n">results</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">termination_condition</span> <span class="o">==</span> <span class="n">pyo</span><span class="o">.</span><span class="n">TerminationCondition</span><span class="o">.</span><span class="n">optimal</span><span class="p">:</span>
+        <span class="n">optimal_radius</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
+        <span class="n">total_area_circles</span> <span class="o">=</span> <span class="n">N</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">optimal_radius</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">rectangle_area</span> <span class="o">=</span> <span class="n">L</span> <span class="o">*</span> <span class="n">W</span>
+        <span class="n">packing_density</span> <span class="o">=</span> <span class="n">total_area_circles</span> <span class="o">/</span> <span class="n">rectangle_area</span>
+        <span class="n">x_coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">]</span>
+        <span class="n">y_coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">packing_density</span><span class="p">,</span> <span class="n">optimal_radius</span><span class="p">,</span> <span class="n">x_coords</span><span class="p">,</span> <span class="n">y_coords</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+<span class="c1"># Iterate through N values and store results</span>
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">N</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">packing_density</span><span class="p">,</span> <span class="n">optimal_radius</span><span class="p">,</span> <span class="n">x_coords</span><span class="p">,</span> <span class="n">y_coords</span> <span class="o">=</span> <span class="n">solve_circle_packing</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">packing_density</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">packing_density</span><span class="p">,</span> <span class="n">optimal_radius</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No feasible solution for N = </span><span class="si">{</span><span class="n">N</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Plot results</span>
+<span class="k">if</span> <span class="n">results</span><span class="p">:</span>
+    <span class="n">N_values</span><span class="p">,</span> <span class="n">packing_densities</span><span class="p">,</span> <span class="n">radii</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">results</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">N_values</span><span class="p">,</span> <span class="n">packing_densities</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Packing Density&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Packing Density vs Number of Circles&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Number of Circles (N)&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Packing Density&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No feasible solution for N = 3
+No feasible solution for N = 4
+No feasible solution for N = 5
+No feasible solution for N = 6
+No feasible solution for N = 7
+No feasible solution for N = 8
+No feasible solution for N = 9
+No feasible solution for N = 18
+No feasible solution for N = 19
+</pre></div>
+</div>
+<img alt="../../_images/a0ae45ffd18c5d1272444d0003d9b0c01031e1e44da7e9393b942dec87f59583.png" src="../../_images/a0ae45ffd18c5d1272444d0003d9b0c01031e1e44da7e9393b942dec87f59583.png" />
+</div>
+</div>
+<p>As exhibited in the graph and the textual output, for circle numbers 3, 4, 5, 6, 7, 8, 9, 18, 19, no feasible solutions are found by our model (with no initialization). We have thus made the hypothesis that if an adequate initialization is given to our model as the radius, the model would gurantee a local optimal output.</p>
+</section>
+</section>
+<section id="attempt-2-providing-arbitrary-initialization-to-the-radius">
+<h2>Attempt 2: Providing Arbitrary Initialization to the Radius<a class="headerlink" href="#attempt-2-providing-arbitrary-initialization-to-the-radius" title="Link to this heading">#</a></h2>
+<p>In this section, we have attempted to give an arbitray initialization radius to our model, and also attempting to initialize the circle center coordinates in a grid-like pattern. Both practices serve the purpose of providing the model an initialization point to start with.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Data</span>
+<span class="n">L</span> <span class="o">=</span> <span class="mi">8</span>  <span class="c1"># Length of the rectangle</span>
+<span class="n">W</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># Width of the rectangle</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">25</span>  <span class="c1"># Preset number of circles</span>
+<span class="n">radius_init</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="c1"># Model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+<span class="c1"># Sets</span>
+<span class="n">model</span><span class="o">.</span><span class="n">circles</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">RangeSet</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+<span class="c1"># Variables</span>
+<span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">within</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="n">radius_init</span><span class="p">)</span>  <span class="c1"># Initial radius guess</span>
+<span class="n">model</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">L</span><span class="p">))</span>  <span class="c1"># x-coordinates of circle centers</span>
+<span class="n">model</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">W</span><span class="p">))</span>  <span class="c1"># y-coordinates of circle centers</span>
+
+<span class="c1"># Initialize circle positions with a simple grid or rough arrangement</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">init_positions</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="c1"># Initial guess: arrange circles in a grid pattern (simple layout)</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">N</span> <span class="o">/</span> <span class="n">rows</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">:</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="n">cols</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">cols</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">L</span> <span class="o">/</span> <span class="n">cols</span><span class="p">)</span> <span class="o">*</span> <span class="n">col</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">W</span> <span class="o">/</span> <span class="n">rows</span><span class="p">)</span> <span class="o">*</span> <span class="n">row</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">value</span>
+
+<span class="n">init_positions</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="c1"># Objective: Maximize the total area occupied by circles</span>
+<span class="n">model</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span>
+    <span class="n">expr</span><span class="o">=</span><span class="n">N</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">maximize</span>
+<span class="p">)</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">no_overlap</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConstraintList</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">no_overlap</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">&gt;=</span>
+            <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+        <span class="p">)</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConstraintList</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">:</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&lt;=</span> <span class="n">L</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&lt;=</span> <span class="n">W</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Solver</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>  <span class="c1"># Nonlinear solver</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Results</span>
+<span class="n">optimal_radius</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Optimal Radius: </span><span class="si">{</span><span class="n">optimal_radius</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">total_area_circles</span> <span class="o">=</span> <span class="n">N</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">optimal_radius</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">rectangle_area</span> <span class="o">=</span> <span class="n">L</span> <span class="o">*</span> <span class="n">W</span>
+<span class="n">packing_density</span> <span class="o">=</span> <span class="n">total_area_circles</span> <span class="o">/</span> <span class="n">rectangle_area</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Packing Density: </span><span class="si">{</span><span class="n">packing_density</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Circle Placements</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Circle Placements:&quot;</span><span class="p">)</span>
+<span class="n">x_coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">]</span>
+<span class="n">y_coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Circle </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: Center=(</span><span class="si">{</span><span class="n">x_coords</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">y_coords</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimal Radius: 0.88
+Packing Density: 0.76
+
+Circle Placements:
+Circle 1: Center=(0.88, 0.88)
+Circle 2: Center=(4.08, 1.76)
+Circle 3: Center=(5.60, 0.88)
+Circle 4: Center=(7.12, 1.75)
+Circle 5: Center=(7.12, 3.52)
+Circle 6: Center=(2.33, 1.87)
+Circle 7: Center=(4.11, 3.56)
+Circle 8: Center=(5.60, 2.64)
+Circle 9: Center=(5.63, 4.44)
+Circle 10: Center=(7.12, 5.37)
+Circle 11: Center=(0.88, 2.87)
+Circle 12: Center=(2.37, 3.80)
+Circle 13: Center=(4.14, 5.38)
+Circle 14: Center=(5.63, 6.30)
+Circle 15: Center=(7.12, 7.24)
+Circle 16: Center=(0.88, 4.73)
+Circle 17: Center=(2.40, 5.61)
+Circle 18: Center=(2.40, 7.36)
+Circle 19: Center=(4.15, 7.24)
+Circle 20: Center=(5.64, 8.18)
+Circle 21: Center=(0.88, 6.49)
+Circle 22: Center=(0.88, 8.24)
+Circle 23: Center=(2.40, 9.12)
+Circle 24: Center=(4.16, 9.12)
+Circle 25: Center=(7.12, 9.12)
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this attempt, our model did give us an output that makes sense, in other words local optimal points. However, we also found that with different initialization points, the output are slightly different, meaning that different initialization points would lead to different local optimal points. The specific packing density vs. initial radius is plotted as below:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="k">def</span><span class="w"> </span><span class="nf">packing_density_visualization</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">radius_init</span><span class="p">,</span> <span class="n">min_circles</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">max_circles</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">packing_densities</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">num_circles_range</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">min_circles</span><span class="p">,</span> <span class="n">max_circles</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+    <span class="n">unsolved_points</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># List to store N values where the solution was not found</span>
+
+    <span class="k">for</span> <span class="n">N</span> <span class="ow">in</span> <span class="n">num_circles_range</span><span class="p">:</span>
+        <span class="c1"># Model setup</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">circles</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">RangeSet</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">within</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="n">radius_init</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">L</span><span class="p">))</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">W</span><span class="p">))</span>
+
+        <span class="c1"># Initialize circle positions</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">init_positions</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+            <span class="n">cols</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">N</span> <span class="o">/</span> <span class="n">rows</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">:</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="n">cols</span>
+                <span class="n">col</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">cols</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">L</span> <span class="o">/</span> <span class="n">cols</span><span class="p">)</span> <span class="o">*</span> <span class="n">col</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">value</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">W</span> <span class="o">/</span> <span class="n">rows</span><span class="p">)</span> <span class="o">*</span> <span class="n">row</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">init_positions</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+        <span class="c1"># Objective function and constraints (same as in original code)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span>
+            <span class="n">expr</span><span class="o">=</span><span class="n">N</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">maximize</span>
+        <span class="p">)</span>
+
+        <span class="n">model</span><span class="o">.</span><span class="n">no_overlap</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConstraintList</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">no_overlap</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                    <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">&gt;=</span>
+                    <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+                <span class="p">)</span>
+
+        <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConstraintList</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">:</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&lt;=</span> <span class="n">L</span><span class="p">)</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&lt;=</span> <span class="n">W</span><span class="p">)</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Solve the model</span>
+        <span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># Check if the solver has found a solution</span>
+        <span class="k">if</span> <span class="n">results</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverStatus</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+            <span class="n">unsolved_points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>  <span class="c1"># Add N to the unsolved_points list if no solution was found</span>
+            <span class="n">packing_densities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># Mark as None when there&#39;s no solution</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Calculate packing density</span>
+            <span class="n">optimal_radius</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
+            <span class="n">total_area_circles</span> <span class="o">=</span> <span class="n">N</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">optimal_radius</span><span class="o">**</span><span class="mi">2</span>
+            <span class="n">rectangle_area</span> <span class="o">=</span> <span class="n">L</span> <span class="o">*</span> <span class="n">W</span>
+            <span class="n">packing_density</span> <span class="o">=</span> <span class="n">total_area_circles</span> <span class="o">/</span> <span class="n">rectangle_area</span>
+            <span class="n">packing_densities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">packing_density</span><span class="p">)</span>
+
+    <span class="c1"># Print unsolved points where no solution was found</span>
+    <span class="k">if</span> <span class="n">unsolved_points</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Solutions were not found for the following numbers of circles: </span><span class="si">{</span><span class="n">unsolved_points</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Plot packing density vs number of circles with styling similar to the provided graph</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">num_circles_range</span><span class="p">,</span> <span class="n">packing_densities</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Packing Density&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Packing Density vs Number of Circles&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Number of Circles (N)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Packing Density&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Call the function to visualize packing density for different numbers of circles with smaller steps</span>
+<span class="n">packing_density_visualization</span><span class="p">(</span><span class="n">L</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">radius_init</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">min_circles</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_circles</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/6f641c0621674a9c54a5fea3e5c321188f4538091157d23683dd42fe3cac6299.png" src="../../_images/6f641c0621674a9c54a5fea3e5c321188f4538091157d23683dd42fe3cac6299.png" />
+</div>
+</div>
+<section id="packing-density-vs-radius-initializations-graph">
+<h3>Packing Density vs. Radius Initializations Graph<a class="headerlink" href="#packing-density-vs-radius-initializations-graph" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Data</span>
+<span class="n">L</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># Length of the rectangle</span>
+<span class="n">W</span> <span class="o">=</span> <span class="mi">8</span>   <span class="c1"># Width of the rectangle</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">25</span>   <span class="c1"># Number of circles</span>
+<span class="n">initial_radii</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">))</span> <span class="o">+</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">solve_circle_packing_with_initial_radius</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">r_init</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solve the circle packing problem with a given initial radius.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        N (int): Number of circles</span>
+<span class="sd">        L (float): Length of the rectangle</span>
+<span class="sd">        W (float): Width of the rectangle</span>
+<span class="sd">        r_init (float): Initial radius guess</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        packing_density (float): Packing density from the optimal solution</span>
+<span class="sd">        optimal_radius (float): Optimized radius</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+    <span class="c1"># Sets</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">circles</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">RangeSet</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+    <span class="c1"># Variables</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">within</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>  <span class="c1"># Radius of all circles</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">L</span><span class="p">))</span>  <span class="c1"># x-coordinates of circle centers</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">W</span><span class="p">))</span>  <span class="c1"># y-coordinates of circle centers</span>
+
+    <span class="c1"># Objective: Maximize the total area occupied by circles</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span>
+        <span class="n">expr</span><span class="o">=</span><span class="n">N</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">maximize</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Constraints</span>
+    <span class="c1"># Ensure circles do not overlap</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">no_overlap</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConstraintList</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">no_overlap</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">&gt;=</span>
+                <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+            <span class="p">)</span>
+
+    <span class="c1"># Ensure circles stay within the rectangle</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConstraintList</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&lt;=</span> <span class="n">L</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&lt;=</span> <span class="n">W</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># Set initial radius</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">r_init</span><span class="p">)</span>
+
+    <span class="c1"># Solve</span>
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Check if the solver found an optimal solution</span>
+    <span class="k">if</span> <span class="n">results</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">termination_condition</span> <span class="o">==</span> <span class="n">pyo</span><span class="o">.</span><span class="n">TerminationCondition</span><span class="o">.</span><span class="n">optimal</span><span class="p">:</span>
+        <span class="n">optimal_radius</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
+        <span class="n">total_area_circles</span> <span class="o">=</span> <span class="n">N</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">optimal_radius</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">rectangle_area</span> <span class="o">=</span> <span class="n">L</span> <span class="o">*</span> <span class="n">W</span>
+        <span class="n">packing_density</span> <span class="o">=</span> <span class="n">total_area_circles</span> <span class="o">/</span> <span class="n">rectangle_area</span>
+        <span class="k">return</span> <span class="n">packing_density</span><span class="p">,</span> <span class="n">optimal_radius</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+<span class="c1"># Iterate through different initial radii and store results</span>
+<span class="n">packing_densities</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">optimal_radii</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">r_init</span> <span class="ow">in</span> <span class="n">initial_radii</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Trying initial radius: </span><span class="si">{</span><span class="n">r_init</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+    <span class="n">packing_density</span><span class="p">,</span> <span class="n">optimal_radius</span> <span class="o">=</span> <span class="n">solve_circle_packing_with_initial_radius</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">r_init</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">packing_density</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">packing_densities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">packing_density</span><span class="p">)</span>
+        <span class="n">optimal_radii</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">optimal_radius</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Packing Density: </span><span class="si">{</span><span class="n">packing_density</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Optimal Radius: </span><span class="si">{</span><span class="n">optimal_radius</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">packing_densities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">optimal_radii</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No feasible solution found.&quot;</span><span class="p">)</span>
+
+<span class="c1"># Adding labels and title</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">initial_radii</span><span class="p">,</span> <span class="n">packing_densities</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Packing Density&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">initial_radii</span><span class="p">)</span>
+
+<span class="c1"># Adding labels and title</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Correlation Between Initial Radius and Packing Density&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Initial Radius&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Packing Density&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="c1"># Display the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trying initial radius: 0.1...
+No feasible solution found.
+Trying initial radius: 0.2...
+No feasible solution found.
+Trying initial radius: 0.30000000000000004...
+No feasible solution found.
+Trying initial radius: 0.4...
+Packing Density: 0.7536, Optimal Radius: 0.8761
+Trying initial radius: 0.5...
+Packing Density: 0.7324, Optimal Radius: 0.8637
+Trying initial radius: 0.6...
+Packing Density: 0.7324, Optimal Radius: 0.8637
+Trying initial radius: 0.7000000000000001...
+Packing Density: 0.7317, Optimal Radius: 0.8633
+Trying initial radius: 0.8...
+Packing Density: 0.7285, Optimal Radius: 0.8614
+Trying initial radius: 0.9...
+Packing Density: 0.7285, Optimal Radius: 0.8614
+Trying initial radius: 1.0...
+Packing Density: 0.7285, Optimal Radius: 0.8614
+Trying initial radius: 2...
+Packing Density: 0.7588, Optimal Radius: 0.8791
+Trying initial radius: 3...
+Packing Density: 0.7467, Optimal Radius: 0.8721
+Trying initial radius: 4...
+Packing Density: 0.7262, Optimal Radius: 0.8601
+Trying initial radius: 5...
+Packing Density: 0.7588, Optimal Radius: 0.8791
+Trying initial radius: 10...
+Packing Density: 0.7588, Optimal Radius: 0.8791
+</pre></div>
+</div>
+<img alt="../../_images/fc4a5fe3b79949cf121ca943dd3bd565fd6a674f732285f976cd6ef1ffed445c.png" src="../../_images/fc4a5fe3b79949cf121ca943dd3bd565fd6a674f732285f976cd6ef1ffed445c.png" />
+</div>
+</div>
+<p>As shown in the graph, on the left hand side, the packing density fluctuates extensively with different initialization values given to the radius. We believe this is because the non-convex nature of our problem and the existence of multiple local optimal points that has led our model to behave this way.</p>
+</section>
+</section>
+<section id="attempt-3-iterative-algorithm">
+<h2>Attempt 3: Iterative Algorithm<a class="headerlink" href="#attempt-3-iterative-algorithm" title="Link to this heading">#</a></h2>
+<p>After learning from the 2nd attempt, we had the idea of building a iterative refinement algorithm for solving for the local optimal solution. The skeleton of our algorithm is still starting off with a arbitrary starting point, preferably large, solving the model with the given point and retrieve a temporary solution of the radius; using the latest temporary radius solution as our new initialization value for the radius, and so on so forth. The stopping criteria is when the increase in our packing density compared to the last iteration is less than a certain threshold, in our case is set to 1E-4.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Data</span>
+<span class="n">L</span> <span class="o">=</span> <span class="mi">8</span>  <span class="c1"># Length of the rectangle</span>
+<span class="n">W</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># Width of the rectangle</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">25</span>  <span class="c1"># Preset number of circles</span>
+<span class="n">threshold</span> <span class="o">=</span> <span class="mf">1e-4</span>  <span class="c1"># Stopping threshold for packing density change</span>
+
+<span class="c1"># Model creation function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_model</span><span class="p">(</span><span class="n">radius_init</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+    <span class="c1"># Sets</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">circles</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">RangeSet</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+    <span class="c1"># Variables</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">within</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="n">radius_init</span><span class="p">)</span>  <span class="c1"># Initialize radius</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">L</span><span class="p">))</span>  <span class="c1"># x-coordinates of circle centers</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">W</span><span class="p">))</span>  <span class="c1"># y-coordinates of circle centers</span>
+
+    <span class="c1"># Initialize circle positions with a simple grid or rough arrangement</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init_positions</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+        <span class="c1"># Initial guess: arrange circles in a grid pattern (simple layout)</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+        <span class="n">cols</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">N</span> <span class="o">/</span> <span class="n">rows</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">:</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="n">cols</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">cols</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">L</span> <span class="o">/</span> <span class="n">cols</span><span class="p">)</span> <span class="o">*</span> <span class="n">col</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">W</span> <span class="o">/</span> <span class="n">rows</span><span class="p">)</span> <span class="o">*</span> <span class="n">row</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="n">init_positions</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="c1"># Objective: Maximize the total area occupied by circles</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span>
+        <span class="n">expr</span><span class="o">=</span><span class="n">N</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">maximize</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Relaxed Overlap Constraint: Allow circles to be closer initially (2 * radius)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">no_overlap</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConstraintList</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">no_overlap</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">&gt;=</span>
+                <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>  <span class="c1"># Relaxed distance between circles</span>
+            <span class="p">)</span>
+
+    <span class="c1"># Strict Boundary Constraints: Circle must remain within the boundary</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConstraintList</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&lt;=</span> <span class="n">L</span><span class="p">)</span>  <span class="c1"># Circle should stay within the right boundary</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># Circle should stay within the left boundary</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&lt;=</span> <span class="n">W</span><span class="p">)</span>  <span class="c1"># Circle should stay within the top boundary</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">boundary_constraints</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">radius</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># Circle should stay within the bottom boundary</span>
+
+    <span class="k">return</span> <span class="n">model</span>
+
+<span class="c1"># Iterative Optimization Algorithm</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">iterative_optimization</span><span class="p">(</span><span class="n">initial_radius</span><span class="p">,</span> <span class="n">max_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">prev_packing_density</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">current_packing_density</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">iteration</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">radius</span> <span class="o">=</span> <span class="n">initial_radius</span>
+    <span class="n">x_coords</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">y_coords</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">while</span> <span class="n">iteration</span> <span class="o">&lt;</span> <span class="n">max_iterations</span><span class="p">:</span>
+        <span class="c1"># Create and solve the model with the current radius</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+        <span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>  <span class="c1"># Nonlinear solver</span>
+        <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># Retrieve the optimal radius and packing density</span>
+        <span class="n">optimal_radius</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
+        <span class="n">total_area_circles</span> <span class="o">=</span> <span class="n">N</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">optimal_radius</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">rectangle_area</span> <span class="o">=</span> <span class="n">L</span> <span class="o">*</span> <span class="n">W</span>
+        <span class="n">current_packing_density</span> <span class="o">=</span> <span class="n">total_area_circles</span> <span class="o">/</span> <span class="n">rectangle_area</span>
+
+        <span class="c1"># Store the circle positions for visualization</span>
+        <span class="n">x_coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">]</span>
+        <span class="n">y_coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">circles</span><span class="p">]</span>
+
+        <span class="c1"># Print iteration results</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Iteration </span><span class="si">{</span><span class="n">iteration</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">: Optimal Radius = </span><span class="si">{</span><span class="n">optimal_radius</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Packing Density = </span><span class="si">{</span><span class="n">current_packing_density</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Check for convergence (packing density change is below the threshold)</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">current_packing_density</span> <span class="o">-</span> <span class="n">prev_packing_density</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Converged at iteration </span><span class="si">{</span><span class="n">iteration</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="k">break</span>
+
+        <span class="c1"># Update for next iteration</span>
+        <span class="n">prev_packing_density</span> <span class="o">=</span> <span class="n">current_packing_density</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="n">optimal_radius</span>  <span class="c1"># Use the optimal radius for the next iteration</span>
+        <span class="n">iteration</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">optimal_radius</span><span class="p">,</span> <span class="n">current_packing_density</span><span class="p">,</span> <span class="n">x_coords</span><span class="p">,</span> <span class="n">y_coords</span>
+
+<span class="c1"># Visualization Function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">visualize_packing</span><span class="p">(</span><span class="n">x_coords</span><span class="p">,</span> <span class="n">y_coords</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">circle</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="n">x_coords</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y_coords</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">radius</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;lightblue&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">circle</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">L</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="s1">&#39;box&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Packing of </span><span class="si">{</span><span class="n">N</span><span class="si">}</span><span class="s2"> Circles with Radius </span><span class="si">{</span><span class="n">radius</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s1">&#39;box&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Initial guess for radius</span>
+<span class="n">initial_radius</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c1"># Run the iterative optimization</span>
+<span class="n">optimal_radius</span><span class="p">,</span> <span class="n">packing_density</span><span class="p">,</span> <span class="n">x_coords</span><span class="p">,</span> <span class="n">y_coords</span> <span class="o">=</span> <span class="n">iterative_optimization</span><span class="p">(</span><span class="n">initial_radius</span><span class="p">)</span>
+
+<span class="c1"># Final result</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Final Optimal Radius: </span><span class="si">{</span><span class="n">optimal_radius</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Final Packing Density: </span><span class="si">{</span><span class="n">packing_density</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Visualize the final packing</span>
+<span class="n">visualize_packing</span><span class="p">(</span><span class="n">x_coords</span><span class="p">,</span> <span class="n">y_coords</span><span class="p">,</span> <span class="n">optimal_radius</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iteration 1: Optimal Radius = 0.86
+Packing Density = 0.725273
+Iteration 2: Optimal Radius = 0.88
+Packing Density = 0.755294
+Iteration 3: Optimal Radius = 0.90
+Packing Density = 0.793792
+Iteration 4: Optimal Radius = 0.90
+Packing Density = 0.793792
+Converged at iteration 4.
+
+Final Optimal Radius: 0.90
+Final Packing Density: 0.793792
+</pre></div>
+</div>
+<img alt="../../_images/aa2c27dc442367816f7871161dfc185bd7f713827f9968c8ee346ecdbb82e9cc.png" src="../../_images/aa2c27dc442367816f7871161dfc185bd7f713827f9968c8ee346ecdbb82e9cc.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">initial_radii</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>  <span class="c1"># Increased number of points for better visualization</span>
+<span class="n">final_radii</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">initial_radii</span><span class="p">:</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">iterative_optimization</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">final_radii</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">initial_radii</span><span class="p">,</span> <span class="n">final_radii</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Initial Radius&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Final Radius&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Initial Radius vs Final Radius&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iteration 1: Optimal Radius = 0.90
+Packing Density = 0.793792
+Iteration 2: Optimal Radius = 0.90
+Packing Density = 0.793792
+Converged at iteration 2.
+Iteration 1: Optimal Radius = 0.87
+Packing Density = 0.740478
+Iteration 2: Optimal Radius = 0.88
+Packing Density = 0.755294
+Iteration 3: Optimal Radius = 0.90
+Packing Density = 0.793792
+Iteration 4: Optimal Radius = 0.90
+Packing Density = 0.793792
+Converged at iteration 4.
+Iteration 1: Optimal Radius = 0.86
+Packing Density = 0.732372
+Iteration 2: Optimal Radius = 0.88
+Packing Density = 0.755294
+Iteration 3: Optimal Radius = 0.90
+Packing Density = 0.793792
+Iteration 4: Optimal Radius = 0.90
+Packing Density = 0.793792
+Converged at iteration 4.
+Iteration 1: Optimal Radius = 0.86
+Packing Density = 0.728479
+Iteration 2: Optimal Radius = 0.88
+Packing Density = 0.755294
+Iteration 3: Optimal Radius = 0.90
+Packing Density = 0.793792
+Iteration 4: Optimal Radius = 0.90
+Packing Density = 0.793792
+Converged at iteration 4.
+Iteration 1: Optimal Radius = 0.90
+Packing Density = 0.793792
+Iteration 2: Optimal Radius = 0.90
+Packing Density = 0.793792
+Converged at iteration 2.
+Iteration 1: Optimal Radius = 0.88
+Packing Density = 0.757652
+Iteration 2: Optimal Radius = 0.90
+Packing Density = 0.793792
+Iteration 3: Optimal Radius = 0.90
+Packing Density = 0.793792
+Converged at iteration 3.
+Iteration 1: Optimal Radius = 0.86
+Packing Density = 0.728479
+Iteration 2: Optimal Radius = 0.88
+Packing Density = 0.755294
+Iteration 3: Optimal Radius = 0.90
+Packing Density = 0.793792
+Iteration 4: Optimal Radius = 0.90
+Packing Density = 0.793792
+Converged at iteration 4.
+Iteration 1: Optimal Radius = 0.88
+Packing Density = 0.758778
+Iteration 2: Optimal Radius = 0.90
+Packing Density = 0.793792
+Iteration 3: Optimal Radius = 0.90
+Packing Density = 0.793792
+Converged at iteration 3.
+Iteration 1: Optimal Radius = 0.88
+Packing Density = 0.757652
+Iteration 2: Optimal Radius = 0.90
+Packing Density = 0.793792
+Iteration 3: Optimal Radius = 0.90
+Packing Density = 0.793792
+Converged at iteration 3.
+Iteration 1: Optimal Radius = 0.88
+Packing Density = 0.758778
+Iteration 2: Optimal Radius = 0.90
+Packing Density = 0.793792
+Iteration 3: Optimal Radius = 0.90
+Packing Density = 0.793792
+Converged at iteration 3.
+Iteration 1: Optimal Radius = 0.00
+Packing Density = 0.000000
+Converged at iteration 1.
+Iteration 1: Optimal Radius = 0.00
+Packing Density = 0.000000
+Converged at iteration 1.
+Iteration 1: Optimal Radius = 0.88
+Packing Density = 0.758778
+Iteration 2: Optimal Radius = 0.90
+Packing Density = 0.793792
+Iteration 3: Optimal Radius = 0.90
+Packing Density = 0.793792
+Converged at iteration 3.
+Iteration 1: Optimal Radius = 0.00
+Packing Density = 0.000000
+Converged at iteration 1.
+Iteration 1: Optimal Radius = 0.88
+Packing Density = 0.758778
+Iteration 2: Optimal Radius = 0.90
+Packing Density = 0.793792
+Iteration 3: Optimal Radius = 0.90
+Packing Density = 0.793792
+Converged at iteration 3.
+Iteration 1: Optimal Radius = 0.86
+Packing Density = 0.728479
+Iteration 2: Optimal Radius = 0.88
+Packing Density = 0.755294
+Iteration 3: Optimal Radius = 0.90
+Packing Density = 0.793792
+Iteration 4: Optimal Radius = 0.90
+Packing Density = 0.793792
+Converged at iteration 4.
+Iteration 1: Optimal Radius = 0.86
+Packing Density = 0.732622
+Iteration 2: Optimal Radius = 0.88
+Packing Density = 0.755294
+Iteration 3: Optimal Radius = 0.90
+Packing Density = 0.793792
+Iteration 4: Optimal Radius = 0.90
+Packing Density = 0.793792
+Converged at iteration 4.
+Iteration 1: Optimal Radius = 0.00
+Packing Density = 0.000000
+Converged at iteration 1.
+Iteration 1: Optimal Radius = 0.00
+Packing Density = 0.000000
+Converged at iteration 1.
+Iteration 1: Optimal Radius = 0.87
+Packing Density = 0.744339
+Iteration 2: Optimal Radius = 0.88
+Packing Density = 0.755294
+Iteration 3: Optimal Radius = 0.90
+Packing Density = 0.793792
+Iteration 4: Optimal Radius = 0.90
+Packing Density = 0.793792
+Converged at iteration 4.
+</pre></div>
+</div>
+<img alt="../../_images/adb931134bb8cfe49d647f100dfed7ff02b7f7d9bd3840959e87da6e32bf1f7c.png" src="../../_images/adb931134bb8cfe49d647f100dfed7ff02b7f7d9bd3840959e87da6e32bf1f7c.png" />
+</div>
+</div>
+<p>As shown in the graph above, for the majority of the starting points (15 out of 20), the radius converged to the same solution (to 1E-4), which is a significant improvement from the standard solution. However, we still cannot completely evade the issue of the model not converging in certain scenarios as the nature of our problem is non-convex.</p>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
+<p>In this project, we aimed to solve the circle packing problem by deriving the radius and coordinates of circles within a given rectangular boundary to maximize the packing density. Initially, we attempted to model the problem using Pyomo, but encountered challenges due to the discontinuous and nonconvex nature of the problem, which often prevented the model from finding an optimal solution. After considering the problem’s complexity, we introduced an arbitrary initial starting point, leading to the discovery of different optimal solutions for the same number of circles depending on the starting conditions. To address this issue, we developed an iterative algorithm that refines the solution in each iteration, using the previous iteration’s optimal solution as the starting point. This approach allowed us to significantly improve convergence, with most cases converging to a single optimal solution, while a few starting points still did not yield solutions due to the discontinuity of our problem. Overall, our iterative approach provided a more reliable method for solving the circle packing problem, demonstrating the importance of considering the problem’s nature and refining the solution process.</p>
+<p>Future work: Try using a <a class="reference internal" href="Deterministic_Global_Optimization.html"><span class="std std-doc">global optimization solver</span></a>.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/contrib"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Sudoku_Solver.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Sudoku Solver</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="modeling.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Modeling Paradigms</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objective">Learning Objective</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#primary-source">Primary Source</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-import-packages">Install/Import Packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#packing-optimization-model-description-and-formulation">Packing Optimization: Model Description and Formulation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-overlap-constraint">Non-overlap constraint:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#boundary-constraint">Boundary constraint:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attempt-1-no-radius-initialization">Attempt 1: No Radius Initialization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization-function">Visualization Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#packing-density-vs-number-of-circles">Packing Density vs. Number of Circles</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attempt-2-providing-arbitrary-initialization-to-the-radius">Attempt 2: Providing Arbitrary Initialization to the Radius</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#packing-density-vs-radius-initializations-graph">Packing Density vs. Radius Initializations Graph</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attempt-3-iterative-algorithm">Attempt 3: Iterative Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Alexander Dowling, et al.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

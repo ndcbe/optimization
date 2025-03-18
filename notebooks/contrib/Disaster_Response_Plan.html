@@ -1,0 +1,1683 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Disaster Response Plan Optimization &#8212; Optimization for Decision Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/contrib/Disaster_Response_Plan';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Sudoku Solver" href="Sudoku_Solver.html" />
+    <link rel="prev" title="Chemical Reactor Design" href="reactor_design.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/cbe_logo.jpg" class="logo__image only-light" alt="Optimization for Decision Science - Home"/>
+    <script>document.write(`<img src="../../_static/cbe_logo.jpg" class="logo__image only-dark" alt="Optimization for Decision Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Optimization for Decision Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Fall 2024 Calendar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/workshop.html">Computational Optimization in Python (São Paulo, Brazil)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project1.html">Project 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms1.html">Algorithms Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms2.html">Algorithms Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project2.html">Project 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project (Spring 2023)</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/LP.html">1.4. Continuous Optimization: Linear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/NLP.html">1.5. Continuous Optimization: Nonlinear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.6. Integer Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.7. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_car.html">3.1. Pyomo.DAE Example: Race Car</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_TCLab.html">3.2. Pyomo.DAE Example: Temperature Control Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_background.html">3.3. Differential Algebraic Equations (DAEs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_numeric_integration.html">3.4. Numeric Integration for DAEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_theory.html">3.5. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_example.html">3.6. Pyomo.DAE: Racing Example Revisited</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/blocks.html">4.2. Blocks and Other Pyomo Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/AdvancedTopics.html">4.3. Advanced Topics in Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.4. Risk Measures and Portfolio Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Optimizing Experiments with <code class="docutils literal notranslate"><span class="pre">Pyomo.DoE</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-1.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Newton-Methods.html">6.4. Newton-type Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Constraint-Qualifications.html">7.4. Constraint Qualifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Second-Order.html">7.5. Second Order Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/degeneracy_hunter.html">7.6. NLP Diagnostics with Degeneracy Hunter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="pyomo.html">More Pyomo Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="semiconductor_manufacturing.html">Semiconductor Production Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="student_diet.html">Optimization of Daily Diet Using Pyomo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blending.html">Blending Under Uncertainty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vehicle_routing.html">Vehicle Routing</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="portfolio_optimization_extended.html">Risk Measures and Portfolio Optimization: Expanded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="race_car_extended.html">Extended Race Car Optimization Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hot_air_balloon.html">Hot Air Balloon Dynamic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reactor_design.html">Chemical Reactor Design</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Disaster Response Plan Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Sudoku_Solver.html">Sudoku Solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="more_circle_packing.html">Circle Packing Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="modeling.html">Modeling Paradigms</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="multi_objective.html">Multi-Objective Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_stochastic_programming.html">Advanced Topics in Stochastic Programming</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="algorithms.html">Global Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Deterministic_Global_Optimization.html">Deterministic Global Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="sgd.html">Stochastic Gradient Descent</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="data.html">Machine Learning and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/contrib/Disaster_Response_Plan.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/contrib/Disaster_Response_Plan.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/contrib/Disaster_Response_Plan.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Disaster Response Plan Optimization</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preamble-install-pyomo-and-a-solver">Preamble: Install Pyomo and a solver</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-definition">Problem Definition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description">Description</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-model-typeset">Optimization Model Typeset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#degree-of-freedom-analysis">Degree of Freedom Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-model-implemented">Optimization Model Implemented</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#heatmap-analysis">Heatmap Analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-arrays-for-heatmap">Creating Arrays for heatmap</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#heatmap-plotting">Heatmap Plotting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization">Visualization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sensitivity-analysis-via-monte-carlo-simulations">Sensitivity Analysis via Monte Carlo Simulations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#insights">Insights</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diving-deeper">Diving Deeper</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion">Discussion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="disaster-response-plan-optimization">
+<h1>Disaster Response Plan Optimization<a class="headerlink" href="#disaster-response-plan-optimization" title="Link to this heading">#</a></h1>
+<p><strong>Prepared by:</strong> Pauline Wang (<a class="reference external" href="mailto:pwang7&#37;&#52;&#48;nd&#46;edu">pwang7<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2024) and Mariam Jafri (<a class="reference external" href="mailto:mjafri&#37;&#52;&#48;nd&#46;edu">mjafri<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2024)</p>
+<p>By the end of this project, we hope to:</p>
+<ul class="simple">
+<li><p>Gain experience in defining and evaluating optimization problems manually.</p></li>
+<li><p>Build skills in Python programming and using the Pyomo library.</p></li>
+<li><p>Interpret and communicate findings from disaster response plan optimization</p></li>
+</ul>
+<section id="preamble-install-pyomo-and-a-solver">
+<h2>Preamble: Install Pyomo and a solver<a class="headerlink" href="#preamble-install-pyomo-and-a-solver" title="Link to this heading">#</a></h2>
+<p>We consolidated the package installation commands for pyomo and highspy into a single line and grouped the imports for improved readability, but we made no significant changes to the functionality of the original code from the original source.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="k">if</span> <span class="s1">&#39;google.colab&#39;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+    <span class="c1"># %pip install pyomo highspy &gt;/dev/null 2&gt;/dev/null</span>
+    <span class="o">!</span>wget<span class="w"> </span><span class="s2">&quot;https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/helper.py&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">easy_install</span><span class="p">()</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">install_glpk</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;../&#39;</span><span class="p">)</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+
+    <span class="c1"># Import solvers</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">idaes</span>
+<span class="n">helper</span><span class="o">.</span><span class="n">set_plotting_style</span><span class="p">()</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyomo.environ</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyo</span>
+
+<span class="c1">#solver = &#39;appsi_highs&#39;</span>
+<span class="c1">#SOLVER = pyo.SolverFactory(solver)</span>
+<span class="c1">#assert SOLVER.available(), f&quot;Solver {solver} is not available.&quot;</span>
+
+<span class="c1"># Additional imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="c1"># import highspy</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-definition">
+<h2>Problem Definition<a class="headerlink" href="#problem-definition" title="Link to this heading">#</a></h2>
+<p>This problem focuses on optimizing the distribution of supplies to various regions over time in response to their needs during disasters. The goal is to minimize the difference between the demand for supplies in each region and the actual supplies consumed, while accounting for constraints such as storage levels, supply limits, and dynamic inventory updates. The model considers factors like danger levels, and positions of regions. The model also ensures that supply storage and distribution quantities remain non-negative.</p>
+</section>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
+<p>This optimization problem is inspired by disaster relief plans, where we aim to determine the most efficient disaster response system, taking into consideration the severity of the disaster, the level of need, and the available inventory of supplies. Accordingly, this project develops the optimization model from scratch using simulation, of which the data is hypothetical.</p>
+</section>
+<section id="optimization-model-typeset">
+<h2>Optimization Model Typeset<a class="headerlink" href="#optimization-model-typeset" title="Link to this heading">#</a></h2>
+<p>Sets:</p>
+<ul class="simple">
+<li><p>Time intervals and Regions are sets modeled by:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  t = {1,...N_t}
+  \\
+  R = {1,....N_R}
+\end{split}\]</div>
+<p>Data:</p>
+<ul class="simple">
+<li><p>supplies needed in region k at time t is modeled by:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+  S_{k,t} ≥ 0
+\]</div>
+<ul class="simple">
+<li><p>danger is modeled by</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+  d_{k,t} ≥ 0
+\]</div>
+<ul class="simple">
+<li><p>position of region k is modeled by</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+  p_{k} ≥ 0
+\]</div>
+<p>Decisions:</p>
+<ul class="simple">
+<li><p>amount of supplies distributed to region k at time t</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+  x_{k,t} ≥ 0
+\]</div>
+<ul class="simple">
+<li><p>amount of supplies stored in region k at time t</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+  I_{k,t} ≥ 0
+\]</div>
+<p>Objective:</p>
+<ul class="simple">
+<li><p>minimizing difference between demand for a region k at time t and the supplies consumed for that region at that time</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+  \min ∑∑s̄_{k,t} - s_{k,t}
+\]</div>
+<p>Constraints:</p>
+<ul class="simple">
+<li><p>updated storage for region k at time t is dependent on storage for region k and time t-1, subtracted by the supplies being consumed at region k at time t, plus the amount of supplies distributed to region k at time t</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+  I_{k,t} = I_{k,t-1} - S_{k,t} + x_{k,t}
+\]</div>
+<ul class="simple">
+<li><p>amount consumed for region k at time t will always be greater than 0 and less than the demand for that region</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+  0 ≤ S_{k,t} ≤ s̄_{k,t}
+\]</div>
+<ul class="simple">
+<li><p>Inventory of a region k at time t must never go below 0 and amount of supplies distributed must never go below 0</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+  I_{k,t} ≥ 0, \space x_{k,t} ≥ 0
+\]</div>
+</section>
+<section id="degree-of-freedom-analysis">
+<h2>Degree of Freedom Analysis<a class="headerlink" href="#degree-of-freedom-analysis" title="Link to this heading">#</a></h2>
+<p>In this model, there are three decision variables for each region and time interval:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(x_{k,t}\)</span> (supplies distributed)</p></li>
+<li><p><span class="math notranslate nohighlight">\(I_{k,t}\)</span> (supplies stored)</p></li>
+<li><p><span class="math notranslate nohighlight">\(S_{k,t}\)</span> (supplies consumed).</p></li>
+</ol>
+<p>This results in a total of (3 \times (N_R \times N_t)) decision variables, where (N_R) is the number of regions and (N_t) is the number of time intervals. The inventory update rule introduces one equality constraint for each region and time interval, giving (N_R \times N_t) equality constraints. Therefore, the degree of freedom is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[
+DOF = 3 \times (N_R \times N_t) - (N_R \times N_t) = 2 \times (N_R \times N_t).
+\]</div>
+</section>
+<section id="optimization-model-implemented">
+<h2>Optimization Model Implemented<a class="headerlink" href="#optimization-model-implemented" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">m_model</span><span class="p">(</span><span class="n">S_needed_data</span><span class="p">,</span> <span class="n">d_data</span><span class="p">,</span> <span class="n">p_data</span><span class="p">,</span> <span class="n">I_initial_data</span><span class="p">,</span> <span class="n">N_t</span><span class="p">,</span> <span class="n">N_R</span><span class="p">,</span> <span class="n">print_verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Build and solve an optimization model for disaster response planning.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - S_needed (dict): Supplies needed in each region at each time, represented as a dictionary with keys (region, time).</span>
+<span class="sd">    - d (float): Danger level associated with each region, which may influence prioritization of supply distribution.</span>
+<span class="sd">    - p (float): Position or proximity of each region, potentially impacting logistical considerations.</span>
+<span class="sd">    - I_initial (dict): Initial inventory levels in each region, represented as a dictionary with keys (region).</span>
+<span class="sd">    - N_t (int): Number of timesteps</span>
+<span class="sd">    - N_R (int): Number of regions</span>
+
+<span class="sd">    Decision Variables:</span>
+<span class="sd">    - x_i: amount of supplies s at region R at time t</span>
+
+<span class="sd">    Objective:</span>
+<span class="sd">    -  minimizing difference between demand for a region k at time t and the supplies consumed for that region at that time,</span>
+<span class="sd">        calcuated as ∑∑s̄_{k,t} - s_{k,t}</span>
+
+<span class="sd">    Constraints:</span>
+<span class="sd">    - updated storage for region k at time t is dependent on storage for region k and time t-1, subtracted by the supplies being consumed at region k at time t, plus the amount of supplies distributed to region k at time t</span>
+<span class="sd">      I_{k,t} = I_{k,t-1} - S_{k,t} + x_{k,t}</span>
+
+<span class="sd">    - amount consumed for region k at time t will always be greater than 0 and less than the demand for that region</span>
+<span class="sd">      0 ≤ S_{k,t} ≤ s̄_{k,t}</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - model: The Pyomo ConcreteModel instance containing the defined objective and constraints.</span>
+
+<span class="sd">    Prints:</span>
+<span class="sd">    - x: array of N_t*N_R where each space shows the amount distributed to the region at time t for Region r</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">(</span><span class="s2">&quot;Disaster planning&quot;</span><span class="p">)</span>
+
+    <span class="c1">#Sets</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">RangeSet</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span><span class="p">)</span>  <span class="c1"># Time intervals</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">RangeSet</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span><span class="p">)</span>  <span class="c1"># Regions</span>
+
+    <span class="c1">#Parameters</span>
+    <span class="c1">#model.S_max = pyo.Param(model.R, model.t, initialize=S_max_data)  # Max supplies consumption</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">S_needed</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="n">S_needed_data</span><span class="p">)</span>  <span class="c1"># Supplies needed</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">d</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="n">d_data</span><span class="p">)</span>  <span class="c1"># Danger (not used in constraints, just data)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="n">p_data</span><span class="p">)</span>  <span class="c1"># Position of regions</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">I_initial</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="n">I_initial_data</span><span class="p">)</span>  <span class="c1"># Initial inventory</span>
+
+    <span class="c1"># Decision Variables</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>  <span class="c1"># Supplies distributed</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">I</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>  <span class="c1"># Supplies stored</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">S</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>  <span class="c1"># Supplies consumed</span>
+
+
+    <span class="c1"># Objective Function</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">obj_rule</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+      <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">S_needed</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">R</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="n">model</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="n">obj_rule</span><span class="p">,</span> <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">minimize</span><span class="p">)</span>
+
+    <span class="c1"># Constraints</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inventory_update_rule</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+      <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+          <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">I</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">model</span><span class="o">.</span><span class="n">I_initial</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span>
+      <span class="k">else</span><span class="p">:</span>
+          <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">I</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">model</span><span class="o">.</span><span class="n">I</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span>
+
+    <span class="n">model</span><span class="o">.</span><span class="n">inventory_update</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">inventory_update_rule</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">supply_constraint_rule_lower</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+       <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">supply_constraint_rule_upper</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+       <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">model</span><span class="o">.</span><span class="n">S_needed</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span>
+
+    <span class="n">model</span><span class="o">.</span><span class="n">supply_constraint_lower</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">supply_constraint_rule_lower</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">supply_constraint_upper</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">supply_constraint_rule_upper</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">non_negativity_rule_inventory</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">I</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">non_negativity_rule_distribution</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+
+    <span class="n">model</span><span class="o">.</span><span class="n">non_negativity_inventory</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">non_negativity_rule_inventory</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">non_negativity_distribution</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">non_negativity_rule_distribution</span><span class="p">)</span>
+
+
+    <span class="c1"># Solver</span>
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;cbc&#39;</span><span class="p">)</span>
+    <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="n">print_verbose</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="heatmap-analysis">
+<h2>Heatmap Analysis<a class="headerlink" href="#heatmap-analysis" title="Link to this heading">#</a></h2>
+<section id="creating-arrays-for-heatmap">
+<h3>Creating Arrays for heatmap<a class="headerlink" href="#creating-arrays-for-heatmap" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">dist_array</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<span class="w">  </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  Param: model from m_model</span>
+<span class="sd">  Return: array of distributed supplies</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="c1">#results are extracted into arrays</span>
+  <span class="n">regions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">R</span><span class="p">)</span>  <span class="c1"># Regions</span>
+  <span class="n">time_intervals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>  <span class="c1"># Time intervals</span>
+
+  <span class="c1">#create an array to store the distributed supplies</span>
+  <span class="n">supplies_distributed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">regions</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">time_intervals</span><span class="p">)))</span>
+
+  <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">regions</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">time_intervals</span><span class="p">:</span>
+      <span class="c1">#extract distributed supplies value</span>
+      <span class="n">supplies_distributed</span><span class="p">[</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span>
+  <span class="k">return</span> <span class="s2">&quot;Supplies Distributed&quot;</span><span class="p">,</span> <span class="n">supplies_distributed</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">inventory_array</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<span class="w">  </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  Param: model from m_model</span>
+<span class="sd">  Return: array of inventory supplies</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="c1">#results are extracted into arrays</span>
+  <span class="n">regions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">R</span><span class="p">)</span>  <span class="c1"># Regions</span>
+  <span class="n">time_intervals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>  <span class="c1"># Time intervals</span>
+
+  <span class="c1">#create an array to store the inventory supplies</span>
+  <span class="n">supplies_inventory</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">regions</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">time_intervals</span><span class="p">)))</span>
+
+  <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">regions</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">time_intervals</span><span class="p">:</span>
+      <span class="c1">#extract inventory supplies value</span>
+      <span class="n">supplies_inventory</span><span class="p">[</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">I</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span>
+  <span class="k">return</span> <span class="s2">&quot;Supplies in Inventory&quot;</span><span class="p">,</span> <span class="n">supplies_inventory</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">needed_array</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<span class="w">  </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  Param: model from m_model</span>
+<span class="sd">  Return: array of Supplies Needed</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="c1">#results are extracted into arrays</span>
+  <span class="n">regions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">R</span><span class="p">)</span>  <span class="c1"># Regions</span>
+  <span class="n">time_intervals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>  <span class="c1"># Time intervals</span>
+
+  <span class="c1">#create an array to store the supplies needed</span>
+  <span class="n">supplies_needed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">regions</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">time_intervals</span><span class="p">)))</span>
+
+  <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">regions</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">time_intervals</span><span class="p">:</span>
+      <span class="c1">#extract supplies needed</span>
+      <span class="n">supplies_needed</span><span class="p">[</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span>
+  <span class="k">return</span> <span class="s2">&quot;Supplies Needed&quot;</span><span class="p">,</span> <span class="n">supplies_needed</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">final_array</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<span class="w">  </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  Param: model from m_model</span>
+<span class="sd">  Return: final state arrary indicating need met</span>
+<span class="sd">    ex. 0: need met</span>
+<span class="sd">        a positive number indicating need still being met</span>
+<span class="sd">        negative representing need being more than fulfilled with excess inventory.</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="c1">#results are extracted into arrays</span>
+  <span class="n">regions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">R</span><span class="p">)</span>  <span class="c1"># Regions</span>
+  <span class="n">time_intervals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>  <span class="c1"># Time intervals</span>
+
+  <span class="c1">#create an array to store the need met</span>
+  <span class="n">supplies_final</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">regions</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">time_intervals</span><span class="p">)))</span>
+
+  <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">regions</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">time_intervals</span><span class="p">:</span>
+      <span class="c1">#extract need met</span>
+      <span class="n">supplies_final</span><span class="p">[</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="o">-</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">I</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="o">-</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span>
+  <span class="k">return</span> <span class="s2">&quot;Final Need&quot;</span><span class="p">,</span> <span class="n">supplies_final</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="heatmap-plotting">
+<h3>Heatmap Plotting<a class="headerlink" href="#heatmap-plotting" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_heatmap</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plots heatmaps for the solutions of the disaster response model.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - func: the function that generates the heatmap data</span>
+<span class="sd">      ex. dist_array, inventory_array, needed_array, final_array</span>
+<span class="sd">    - model: The Pyomo ConcreteModel instance after solving the optimization problem.</span>
+
+<span class="sd">    Return: Heatmap</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">regions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">R</span><span class="p">)</span>  <span class="c1"># Regions</span>
+    <span class="n">time_intervals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>  <span class="c1"># Time intervals</span>
+
+    <span class="n">title</span><span class="p">,</span> <span class="n">arr</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Heatmap of &#39;</span> <span class="o">+</span> <span class="n">title</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time Intervals&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Regions&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">time_intervals</span><span class="p">)),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;T</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">time_intervals</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">regions</span><span class="p">)),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;R</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">regions</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">arr</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="visualization">
+<h3>Visualization<a class="headerlink" href="#visualization" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Initial testing data</span>
+<span class="n">N_R</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1">#num of regions</span>
+<span class="n">N_t</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1">#num of time intervals</span>
+<span class="n">S_needed_data</span> <span class="o">=</span> <span class="p">{(</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+<span class="n">d_data</span> <span class="o">=</span> <span class="p">{(</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+<span class="n">p_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">())</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+<span class="n">I_initial_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+
+<span class="c1">#creating model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">m_model</span><span class="p">(</span><span class="n">S_needed_data</span><span class="p">,</span> <span class="n">d_data</span><span class="p">,</span> <span class="n">p_data</span><span class="p">,</span> <span class="n">I_initial_data</span><span class="p">,</span> <span class="n">N_t</span><span class="o">=</span><span class="n">N_t</span><span class="p">,</span> <span class="n">N_R</span><span class="o">=</span><span class="n">N_R</span><span class="p">)</span>
+
+<span class="c1">#Mapping supplies distributed, inventory, needed, and final heatmaps</span>
+<span class="n">supplies_distributed</span> <span class="o">=</span> <span class="n">plot_heatmap</span><span class="p">(</span><span class="n">dist_array</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+<span class="n">inventory</span> <span class="o">=</span> <span class="n">plot_heatmap</span><span class="p">(</span><span class="n">inventory_array</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+<span class="n">needed</span> <span class="o">=</span> <span class="n">plot_heatmap</span><span class="p">(</span><span class="n">needed_array</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+<span class="n">final</span> <span class="o">=</span> <span class="n">plot_heatmap</span><span class="p">(</span><span class="n">final_array</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Welcome to the CBC MILP Solver 
+Version: 2.10.10 
+Build Date: Jun  7 2023 
+
+command line - /Users/adowling/.idaes/bin/cbc -printingOptions all -import /var/folders/b1/m1_w6rrd109bgym0_8fsxw_80000gp/T/tmpxuhg916o.pyomo.lp -stat=1 -solve -solu /var/folders/b1/m1_w6rrd109bgym0_8fsxw_80000gp/T/tmpxuhg916o.pyomo.soln (default strategy 1)
+Option for printingOptions changed from normal to all
+Presolve 0 (-250) rows, 0 (-151) columns and 0 (-395) elements
+Statistics for presolved model
+
+
+Problem has 0 rows, 0 columns (0 with objective) and 0 elements
+Column breakdown:
+0 of type 0.0-&gt;inf, 0 of type 0.0-&gt;up, 0 of type lo-&gt;inf, 
+0 of type lo-&gt;up, 0 of type free, 0 of type fixed, 
+0 of type -inf-&gt;0.0, 0 of type -inf-&gt;up, 0 of type 0.0-&gt;1.0 
+Row breakdown:
+0 of type E 0.0, 0 of type E 1.0, 0 of type E -1.0, 
+0 of type E other, 0 of type G 0.0, 0 of type G 1.0, 
+0 of type G other, 0 of type L 0.0, 0 of type L 1.0, 
+0 of type L other, 0 of type Range 0.0-&gt;1.0, 0 of type Range other, 
+0 of type Free 
+Presolve 0 (-250) rows, 0 (-151) columns and 0 (-395) elements
+Empty problem - 0 rows, 0 columns and 0 elements
+Optimal - objective value 0
+After Postsolve, objective 0, infeasibilities - dual 0 (0), primal 0 (0)
+Optimal objective 0 - 0 iterations time 0.002, Presolve 0.00
+Total time (CPU seconds):       0.00   (Wallclock seconds):       0.01
+</pre></div>
+</div>
+<img alt="../../_images/415d9a460b48123e34ec4a3e4cb997d9cd7ba043ac6c2d47d317f9a9f7afa6bd.png" src="../../_images/415d9a460b48123e34ec4a3e4cb997d9cd7ba043ac6c2d47d317f9a9f7afa6bd.png" />
+<img alt="../../_images/4c9ecbb360f8d32bb7475ee9e90f5a327c6553e3f5ab051ef49a8cad3065dfe7.png" src="../../_images/4c9ecbb360f8d32bb7475ee9e90f5a327c6553e3f5ab051ef49a8cad3065dfe7.png" />
+<img alt="../../_images/9ed3fe1bd0b69d96b34df7d1c46438a4ade61ebd880612ed0ae3306cbfea4abd.png" src="../../_images/9ed3fe1bd0b69d96b34df7d1c46438a4ade61ebd880612ed0ae3306cbfea4abd.png" />
+<img alt="../../_images/5c380190fe9749271693e2eca31d5a93bf1826040b465271db132be87a81df84.png" src="../../_images/5c380190fe9749271693e2eca31d5a93bf1826040b465271db132be87a81df84.png" />
+</div>
+</div>
+<p><strong>Supplies Distributed</strong>: The heatmap reveals a highly dynamic allocation of supplies across regions and time intervals. Certain regions and times received significantly higher distributions (indicated by bright yellow areas), which align with periods of elevated need or prioritization. This suggests that critical demands were met in these instances. However, some regions consistently received lower supplies, which highlights areas with reduced urgency or lower demand levels.</p>
+<p><strong>Supplies in Inventory</strong>: The inventory heatmap shows that supplies in stock decrease sharply in regions and times of high distribution activity. On the other hand, regions with less immediate demand or lower prioritization maintain higher inventory levels.</p>
+<p><strong>Supplies Needed</strong>: The supplies needed heatmap confirms the variability of demand across regions and time intervals. The bright areas (indicating higher needs) coincide with regions and times that received higher supplies in the distribution heatmap. This alignment suggests the system’s responsiveness to actual demand. However, the scattered bright areas also highlight that demand is not uniform.</p>
+<p><strong>Final Need</strong>: The heatmap of final unmet need reveals areas where the model succeeded in meeting demand (dark regions) versus areas with residual unmet need (lighter regions). In most cases, unmet needs are minimal, indicating efficient resource allocation. However, regions with persistent lighter areas highlight potential gaps in distribution, which could be due to constraints like supply limits or prioritization criteria.</p>
+</section>
+</section>
+<section id="sensitivity-analysis-via-monte-carlo-simulations">
+<h2>Sensitivity Analysis via Monte Carlo Simulations<a class="headerlink" href="#sensitivity-analysis-via-monte-carlo-simulations" title="Link to this heading">#</a></h2>
+<p>This project employs Monte Carlo simulations to explore the variability and sensitivity of our disaster response model across a range of different possible scenarios. This involves randomly varying key input parameters—such as supply needs, danger levels, and resource availability—within predefined ranges to mimic realistic conditions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="c1"># import plotly.express as px</span>
+
+<span class="n">N_R</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1">#num of regions</span>
+<span class="n">N_t</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1">#num of time intervals</span>
+
+<span class="c1"># Number of simulations</span>
+<span class="n">n_simulations</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Define the ranges for random sampling</span>
+<span class="n">S_needed_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">d_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># assuming uniform random between 0 and 1</span>
+<span class="n">p_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">I_initial_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># Store results</span>
+<span class="n">sensitivity_results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">results_std</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># Perform Monte Carlo simulations</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_simulations</span><span class="p">):</span>
+    <span class="c1"># Sample random values for each parameter</span>
+    <span class="n">S_needed_data</span> <span class="o">=</span> <span class="p">{(</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">*</span><span class="n">S_needed_range</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+    <span class="n">d_data</span> <span class="o">=</span> <span class="p">{(</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+    <span class="n">p_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+    <span class="n">I_initial_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">*</span><span class="n">I_initial_range</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+
+    <span class="c1"># Run the model with the sampled inputs</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">m_model</span><span class="p">(</span><span class="n">S_needed_data</span><span class="p">,</span> <span class="n">d_data</span><span class="p">,</span> <span class="n">p_data</span><span class="p">,</span> <span class="n">I_initial_data</span><span class="p">,</span> <span class="n">N_t</span><span class="o">=</span><span class="n">N_t</span><span class="p">,</span> <span class="n">N_R</span><span class="o">=</span><span class="n">N_R</span><span class="p">,</span> <span class="n">print_verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Extract the output of interest (e.g., supplies final)</span>
+
+    <span class="n">final</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="o">-</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">I</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="o">-</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>
+
+    <span class="c1">#use the middle column in final</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="n">final</span><span class="p">[:,</span> <span class="n">N_t</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="c1"># Save some statistic (e.g., mean of the supplies final)</span>
+    <span class="n">sensitivity_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">col</span><span class="p">))</span>
+    <span class="n">results_std</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">col</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#creating histogram of sensitivity results</span>
+<span class="c1">#fig = px.histogram(x=sensitivity_results, nbins=20, title=&#39;Monte Carlo Simulation: Sensitivity Analysis of Supplies State: Means&#39;)</span>
+<span class="c1">#make the bars thinner</span>
+<span class="c1">#fig.update_traces(marker_line_width=0.5)</span>
+<span class="c1">#fig.update_layout(bargap=0.2)</span>
+<span class="c1">#fig.show()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sensitivity_results</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Monte Carlo Simulation: Sensitivity Analysis of Supplies State: Means&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Mean of Supplies State&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/fa3dcde2d33f7d76986d2a19dfbbd64ac07888ece74aa173e3eac2767c2115c5.png" src="../../_images/fa3dcde2d33f7d76986d2a19dfbbd64ac07888ece74aa173e3eac2767c2115c5.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#fig_s = px.histogram(x=results_std, nbins=20, title=&#39;Monte Carlo Simulation: Sensitivity Analysis of Supplies State: Standard Deviataion&#39;)</span>
+<span class="c1">#make the bars thinner</span>
+<span class="c1">#fig_s.update_traces(marker_line_width=0.5)</span>
+<span class="c1">#fig.update_layout(bargap=0.2)</span>
+<span class="c1">#fig_s.show()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">results_std</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Monte Carlo Simulation: Sensitivity Analysis of Supplies State: Standard Deviataion&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Standard Deviation of Supplies State&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/180560dc7bc747130f7bbae472b43ae1a0ff82bcc7118792fcde54bcac556880.png" src="../../_images/180560dc7bc747130f7bbae472b43ae1a0ff82bcc7118792fcde54bcac556880.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_R</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1">#num of regions</span>
+<span class="n">N_t</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1">#num of time intervals</span>
+
+<span class="c1"># Number of simulations</span>
+<span class="n">n_simulations</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Define the ranges for random sampling</span>
+<span class="n">S_needed_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">d_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># assuming uniform random between 0 and 1</span>
+<span class="n">p_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">I_initial_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># Store results</span>
+<span class="n">sensitivity_results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">results_std</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># Perform Monte Carlo simulations</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_simulations</span><span class="p">):</span>
+    <span class="c1"># Sample random values for each parameter</span>
+    <span class="n">S_needed_data</span> <span class="o">=</span> <span class="p">{(</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">*</span><span class="n">S_needed_range</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+    <span class="n">d_data</span> <span class="o">=</span> <span class="p">{(</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+    <span class="n">p_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+    <span class="n">I_initial_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">*</span><span class="n">I_initial_range</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+
+    <span class="c1"># Run the model with the sampled inputs</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">m_model</span><span class="p">(</span><span class="n">S_needed_data</span><span class="p">,</span> <span class="n">d_data</span><span class="p">,</span> <span class="n">p_data</span><span class="p">,</span> <span class="n">I_initial_data</span><span class="p">,</span> <span class="n">N_t</span><span class="o">=</span><span class="n">N_t</span><span class="p">,</span> <span class="n">N_R</span><span class="o">=</span><span class="n">N_R</span><span class="p">,</span> <span class="n">print_verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Extract the output of interest (e.g., supplies final)</span>
+
+    <span class="n">final</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="o">-</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">I</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="o">-</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>
+
+    <span class="c1">#use the last col</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="n">final</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># Save some statistic (e.g., mean of the supplies final)</span>
+    <span class="n">sensitivity_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">col</span><span class="p">))</span>
+    <span class="n">results_std</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">col</span><span class="p">))</span>
+
+
+<span class="c1"># Analyze the results</span>
+<span class="c1">#fig = px.histogram(x=sensitivity_results,  title=&#39;Monte Carlo Simulation: Supplies State Final: Means&#39;)</span>
+<span class="c1">#make the bars thinner</span>
+<span class="c1">#fig.update_traces(marker_line_width=0.5)</span>
+<span class="c1">#fig.update_layout(bargap=0.2)</span>
+<span class="c1">#fig.show()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sensitivity_results</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Monte Carlo Simulation: Supplies State Final Time Step: Means&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Mean of State at Final Time&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1">#fig_s = px.histogram(x=results_std, title=&#39;Monte Carlo Simulation: Supplies State Final Time Step: Standard Deviataion&#39;)</span>
+<span class="c1">#make the bars thinner</span>
+<span class="c1">#fig_s.show()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">results_std</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Monte Carlo Simulation: Supplies State Final Time Step: Standard Deviataion&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Standard Deviation of State at Final Time&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/55336dff46e5b3086eeea341710b6a65b0d38b87f6dbec0626844dc3fd7dc778.png" src="../../_images/55336dff46e5b3086eeea341710b6a65b0d38b87f6dbec0626844dc3fd7dc778.png" />
+<img alt="../../_images/b9c1e80072e1285a635d5c0a4df1a1836383c1eb9853dfdece6c092ab801cab9.png" src="../../_images/b9c1e80072e1285a635d5c0a4df1a1836383c1eb9853dfdece6c092ab801cab9.png" />
+</div>
+</div>
+</section>
+<section id="insights">
+<h2>Insights<a class="headerlink" href="#insights" title="Link to this heading">#</a></h2>
+<p>The first two graphs show a Monte Carlo Simulation on need met described as the need a region has subtracted by the inventory of supplies it has and distribution it recieves. Therefore a negative value means need has been more than met and a positive value means need is still not met. This simulation is based on the middle timetep to see how the model is responding at the half-way point.</p>
+<p>The mean graph shows a slightly binominal distribution which makes sense because at the halfway point, some neeed may still not be met in regions while in others it may be. The variability is also very high as seen in the standard deviation graph meaning the model is very sensitive to inputs. We can dive deeper into what inputs it is sensitive to.</p>
+<p>The last graph shows the same mean and standard deviation as above but for the last timestep. What we can see here is that mean and standard deviation are 0 which means that by the final timestep, need has been met and there is low variability.</p>
+</section>
+<section id="diving-deeper">
+<h2>Diving Deeper<a class="headerlink" href="#diving-deeper" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_R</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1">#num of regions</span>
+<span class="n">N_t</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1">#num of time intervals</span>
+
+<span class="c1"># Number of simulations</span>
+<span class="n">n_simulations</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Define the ranges for random sampling</span>
+<span class="n">S_needed_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">d_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># assuming uniform random between 0 and 1</span>
+<span class="n">p_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">I_initial_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># Store results</span>
+<span class="n">sensitivity_results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">results_std</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">S_needed_data</span> <span class="o">=</span> <span class="p">{(</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">*</span><span class="n">S_needed_range</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+<span class="n">d_data</span> <span class="o">=</span> <span class="p">{(</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+<span class="n">p_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+<span class="c1"># Perform Monte Carlo simulations</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_simulations</span><span class="p">):</span>
+    <span class="c1"># Sample random values for each parameter</span>
+    <span class="n">I_initial_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">*</span><span class="n">I_initial_range</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+
+    <span class="c1"># Run the model with the sampled inputs</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">m_model</span><span class="p">(</span><span class="n">S_needed_data</span><span class="p">,</span> <span class="n">d_data</span><span class="p">,</span> <span class="n">p_data</span><span class="p">,</span> <span class="n">I_initial_data</span><span class="p">,</span> <span class="n">N_t</span><span class="o">=</span><span class="n">N_t</span><span class="p">,</span> <span class="n">N_R</span><span class="o">=</span><span class="n">N_R</span><span class="p">,</span> <span class="n">print_verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Extract the output of interest (e.g., supplies final)</span>
+
+    <span class="n">final</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="o">-</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">I</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="o">-</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>
+
+    <span class="c1">#use the middle column in final</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="n">final</span><span class="p">[:,</span> <span class="n">N_t</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="c1"># Save some statistic (e.g., mean of the supplies final)</span>
+    <span class="n">sensitivity_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">col</span><span class="p">))</span>
+    <span class="n">results_std</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">col</span><span class="p">))</span>
+
+<span class="c1"># Analyze the results</span>
+<span class="c1">#fig = px.histogram(x=sensitivity_results, nbins=20, title=&#39;Monte Carlo Simulation: Sensitivity Analysis on Inventory: Means&#39;)</span>
+<span class="c1">#make the bars thinner</span>
+<span class="c1">#fig.update_traces(marker_line_width=0.5)</span>
+<span class="c1">#fig.update_layout(bargap=0.2)</span>
+<span class="c1">#fig.show()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sensitivity_results</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Monte Carlo Simulation: Sensitivity Analysis on Inventory: Means&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Mean of Inventory&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1">#fig_s = px.histogram(x=results_std, nbins=20, title=&#39;Monte Carlo Simulation: Sensitivity Analysis on Inventory: Standard Deviataion&#39;)</span>
+<span class="c1">#make the bars thinner</span>
+<span class="c1">#fig_s.update_traces(marker_line_width=0.5)</span>
+<span class="c1">#fig.update_layout(bargap=0.2)</span>
+<span class="c1">#fig_s.show()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">results_std</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Monte Carlo Simulation: Sensitivity Analysis on Inventory: Standard Deviataion&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Standard Deviation of Inventory&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/29bf5548383fd3f5de09f35da750d958a7d66c05c786e53f323b430dbe43b9a4.png" src="../../_images/29bf5548383fd3f5de09f35da750d958a7d66c05c786e53f323b430dbe43b9a4.png" />
+<img alt="../../_images/137c2cd3804dd7ddbc2e25599a403f323191c609d0addf343e96310eb1055b93.png" src="../../_images/137c2cd3804dd7ddbc2e25599a403f323191c609d0addf343e96310eb1055b93.png" />
+</div>
+</div>
+<p>The graph is more normally distributed when just inventory is being changed at each timestep. This means that when inventory is changing while the other three inputs are kept stable, the model is able meet need much better. However, the standard deviation is still high which means there is still high variability and so, the inventory is causing high variability in the model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_R</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1">#num of regions</span>
+<span class="n">N_t</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1">#num of time intervals</span>
+
+<span class="c1"># Number of simulations</span>
+<span class="n">n_simulations</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Define the ranges for random sampling</span>
+<span class="n">S_needed_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">d_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># assuming uniform random between 0 and 1</span>
+<span class="n">p_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">I_initial_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># Store results</span>
+<span class="n">sensitivity_results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">results_std</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">d_data</span> <span class="o">=</span> <span class="p">{(</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+<span class="n">p_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+<span class="n">I_initial_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">*</span><span class="n">I_initial_range</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+
+<span class="c1"># Perform Monte Carlo simulations</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_simulations</span><span class="p">):</span>
+    <span class="c1"># Sample random values for each parameter</span>
+    <span class="n">S_needed_data</span> <span class="o">=</span> <span class="p">{(</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">*</span><span class="n">S_needed_range</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+
+    <span class="c1"># Run the model with the sampled inputs</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">m_model</span><span class="p">(</span><span class="n">S_needed_data</span><span class="p">,</span> <span class="n">d_data</span><span class="p">,</span> <span class="n">p_data</span><span class="p">,</span> <span class="n">I_initial_data</span><span class="p">,</span> <span class="n">N_t</span><span class="o">=</span><span class="n">N_t</span><span class="p">,</span> <span class="n">N_R</span><span class="o">=</span><span class="n">N_R</span><span class="p">,</span> <span class="n">print_verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Extract the output of interest (e.g., supplies final)</span>
+
+    <span class="n">final</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="o">-</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">I</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="o">-</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>
+
+    <span class="c1">#use the middle column in final</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="n">final</span><span class="p">[:,</span> <span class="n">N_t</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="c1"># Save some statistic (e.g., mean of the supplies final)</span>
+    <span class="n">sensitivity_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">col</span><span class="p">))</span>
+    <span class="n">results_std</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">col</span><span class="p">))</span>
+<span class="c1"># Analyze the results</span>
+<span class="c1">##send the text output to another</span>
+<span class="c1">#fig = px.histogram(x=sensitivity_results, nbins=20, title=&#39;Monte Carlo Simulation: Sensitivity Analysis on Supplies Needed: Means&#39;)</span>
+<span class="c1">#make the bars thinner</span>
+<span class="c1">#fig.update_traces(marker_line_width=0.5)</span>
+<span class="c1">#fig.update_layout(bargap=0.2)</span>
+<span class="c1">#fig.show()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sensitivity_results</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Monte Carlo Simulation: Sensitivity Analysis on Supplies Needed: Means&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Mean of Supplies Needed&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1">#fig_s = px.histogram(x=results_std, nbins=20, title=&#39;Monte Carlo Simulation: Sensitivity Analysis on Supplies Needed: Standard Deviataion&#39;)</span>
+<span class="c1">#make the bars thinner</span>
+<span class="c1">#fig_s.update_traces(marker_line_width=0.5)</span>
+<span class="c1">#fig.update_layout(bargap=0.2)</span>
+<span class="c1">#fig_s.show()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">results_std</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Monte Carlo Simulation: Sensitivity Analysis on Supplies Needed: Standard Deviataion&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Standard Deviation of Supplies Needed&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/ad765b83c022f30d793970aef357be6658c87af02f52a08601a869728d95ea44.png" src="../../_images/ad765b83c022f30d793970aef357be6658c87af02f52a08601a869728d95ea44.png" />
+<img alt="../../_images/187de3849ca12d5c7f3c5b3a183e3f112501a30bb26f1f43acca1e63018a3730.png" src="../../_images/187de3849ca12d5c7f3c5b3a183e3f112501a30bb26f1f43acca1e63018a3730.png" />
+</div>
+</div>
+<p>Again, the graph is more normally distributed when just supplies needed is being changed at each timestep. This means that when supplies needed is changing while the other three inputs are kept stable, the model is able meet need much better. However, the standard deviation is still high which means there is still high variability and so, supplies needed is causing high variability in the model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_R</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1">#num of regions</span>
+<span class="n">N_t</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1">#num of time intervals</span>
+
+<span class="c1"># Number of simulations</span>
+<span class="n">n_simulations</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Define the ranges for random sampling</span>
+<span class="n">S_needed_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">d_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># assuming uniform random between 0 and 1</span>
+<span class="n">p_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">I_initial_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># Store results</span>
+<span class="n">sensitivity_results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">results_std</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">d_data</span> <span class="o">=</span> <span class="p">{(</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+<span class="n">I_initial_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">*</span><span class="n">I_initial_range</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+<span class="n">S_needed_data</span> <span class="o">=</span> <span class="p">{(</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">*</span><span class="n">S_needed_range</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+
+<span class="c1"># Perform Monte Carlo simulations</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_simulations</span><span class="p">):</span>
+    <span class="c1"># Sample random values for each parameter</span>
+    <span class="n">p_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+
+    <span class="c1"># Run the model with the sampled inputs</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">m_model</span><span class="p">(</span><span class="n">S_needed_data</span><span class="p">,</span> <span class="n">d_data</span><span class="p">,</span> <span class="n">p_data</span><span class="p">,</span> <span class="n">I_initial_data</span><span class="p">,</span> <span class="n">N_t</span><span class="o">=</span><span class="n">N_t</span><span class="p">,</span> <span class="n">N_R</span><span class="o">=</span><span class="n">N_R</span><span class="p">,</span> <span class="n">print_verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Extract the output of interest (e.g., supplies final)</span>
+
+    <span class="n">final</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="o">-</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">I</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="o">-</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>
+
+    <span class="c1">#use the middle column in final</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="n">final</span><span class="p">[:,</span> <span class="n">N_t</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="c1"># Save some statistic (e.g., mean of the supplies final)</span>
+    <span class="n">sensitivity_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">col</span><span class="p">))</span>
+    <span class="n">results_std</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">col</span><span class="p">))</span>
+<span class="c1"># Analyze the results</span>
+<span class="c1">##send the text output to another</span>
+<span class="c1">#fig = px.histogram(x=sensitivity_results, nbins=20, title=&#39;Monte Carlo Simulation: Sensitivity Analysis on Distance: Means&#39;)</span>
+<span class="c1">#make the bars thinner</span>
+<span class="c1">#fig.update_traces(marker_line_width=0.5)</span>
+<span class="c1">#fig.update_layout(bargap=0.2)</span>
+<span class="c1">#fig.show()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sensitivity_results</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Monte Carlo Simulation: Sensitivity Analysis on Distance: Means&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Mean of Distance&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1">#fig_s = px.histogram(x=results_std, nbins=20, title=&#39;Monte Carlo Simulation: Sensitivity Analysis on Supplies Distance: Standard Deviataion&#39;)</span>
+<span class="c1">#make the bars thinner</span>
+<span class="c1">#fig_s.update_traces(marker_line_width=0.5)</span>
+<span class="c1">#fig.update_layout(bargap=0.2)</span>
+<span class="c1">#fig_s.show()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">results_std</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Monte Carlo Simulation: Sensitivity Analysis on Distance: Standard Deviation&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Standard Deviation of Distance&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d9ccbd3187a5a4896fa3f26ad428fbe1e98997fdbf2d9f44e046e561134d6a28.png" src="../../_images/d9ccbd3187a5a4896fa3f26ad428fbe1e98997fdbf2d9f44e046e561134d6a28.png" />
+<img alt="../../_images/241ca26eae431231235910fd14b1774d140d5e6c1f8c84351a5f5bca571dbaae.png" src="../../_images/241ca26eae431231235910fd14b1774d140d5e6c1f8c84351a5f5bca571dbaae.png" />
+</div>
+</div>
+<p>When position of different regions is changing while the 3 other inputs are kept stable, the mean graph shows that need is not being met. Because the variability is so low, this means that position is not affecting the model as much as the other 3 inputs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_R</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1">#num of regions</span>
+<span class="n">N_t</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1">#num of time intervals</span>
+
+<span class="c1"># Number of simulations</span>
+<span class="n">n_simulations</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Define the ranges for random sampling</span>
+<span class="n">S_needed_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">d_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># assuming uniform random between 0 and 1</span>
+<span class="n">p_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">I_initial_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># Store results</span>
+<span class="n">sensitivity_results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">results_std</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">p_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+<span class="n">I_initial_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">*</span><span class="n">I_initial_range</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+<span class="n">S_needed_data</span> <span class="o">=</span> <span class="p">{(</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">*</span><span class="n">S_needed_range</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+
+<span class="c1"># Perform Monte Carlo simulations</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_simulations</span><span class="p">):</span>
+    <span class="c1"># Sample random values for each parameter</span>
+    <span class="n">d_data</span> <span class="o">=</span> <span class="p">{(</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+
+    <span class="c1"># Run the model with the sampled inputs</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">m_model</span><span class="p">(</span><span class="n">S_needed_data</span><span class="p">,</span> <span class="n">d_data</span><span class="p">,</span> <span class="n">p_data</span><span class="p">,</span> <span class="n">I_initial_data</span><span class="p">,</span> <span class="n">N_t</span><span class="o">=</span><span class="n">N_t</span><span class="p">,</span> <span class="n">N_R</span><span class="o">=</span><span class="n">N_R</span><span class="p">,</span> <span class="n">print_verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Extract the output of interest (e.g., supplies final)</span>
+
+    <span class="n">final</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="o">-</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">I</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="o">-</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>
+
+    <span class="c1">#use the middle column in final</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="n">final</span><span class="p">[:,</span> <span class="n">N_t</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="c1"># Save some statistic (e.g., mean of the supplies final)</span>
+    <span class="n">sensitivity_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">col</span><span class="p">))</span>
+    <span class="n">results_std</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">col</span><span class="p">))</span>
+<span class="c1"># Analyze the results</span>
+<span class="c1">##send the text output to another</span>
+<span class="c1">#fig = px.histogram(x=sensitivity_results, nbins=20, title=&#39;Monte Carlo Simulation: Sensitivity Analysis on Danger: Means&#39;)</span>
+<span class="c1">#make the bars thinner</span>
+<span class="c1">#fig.update_traces(marker_line_width=0.5)</span>
+<span class="c1">#fig.update_layout(bargap=0.2)</span>
+<span class="c1">#fig.show()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sensitivity_results</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Monte Carlo Simulation: Sensitivity Analysis on Danger: Means&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Mean of Danger&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1">#fig_s = px.histogram(x=results_std, nbins=20, title=&#39;Monte Carlo Simulation: Sensitivity Analysis on Danger: Standard Deviataion&#39;)</span>
+<span class="c1">#make the bars thinner</span>
+<span class="c1">#fig_s.update_traces(marker_line_width=0.5)</span>
+<span class="c1">#fig.update_layout(bargap=0.2)</span>
+<span class="c1">#fig_s.show()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">results_std</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Monte Carlo Simulation: Sensitivity Analysis on Danger: Standard Deviation&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Standard Deviation of Danger&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/55e05ffbcebe6e55c2d8e22f103c024c03e34814562907412ee4190baba0d3ec.png" src="../../_images/55e05ffbcebe6e55c2d8e22f103c024c03e34814562907412ee4190baba0d3ec.png" />
+<img alt="../../_images/dde278a4fddd7f4e3fcb9af46d15e11016170f60ebf76918f1e528b9c3b2af35.png" src="../../_images/dde278a4fddd7f4e3fcb9af46d15e11016170f60ebf76918f1e528b9c3b2af35.png" />
+</div>
+</div>
+<p>When danger of different regions is changing while the 3 other inputs are kept stable, the mean graph shows that need is not being met. Because the variability is so low, this means that danger is not affecting the model as much as the other 3 inputs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_R</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1">#num of regions</span>
+<span class="n">N_t</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1">#num of time intervals</span>
+
+<span class="c1"># Number of simulations</span>
+<span class="n">n_simulations</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Define the ranges for random sampling</span>
+<span class="n">S_needed_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">d_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># assuming uniform random between 0 and 1</span>
+<span class="n">p_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">I_initial_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># Store results</span>
+<span class="n">sensitivity_results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">results_std</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Perform Monte Carlo simulations</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_simulations</span><span class="p">):</span>
+    <span class="c1"># Sample random values for each parameter</span>
+    <span class="n">I_initial_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">*</span><span class="n">I_initial_range</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+    <span class="n">S_needed_data</span> <span class="o">=</span> <span class="p">{(</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">*</span><span class="n">S_needed_range</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+    <span class="n">d_data</span> <span class="o">=</span> <span class="p">{(</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+    <span class="n">p_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+    <span class="c1"># Run the model with the sampled inputs</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">m_model</span><span class="p">(</span><span class="n">S_needed_data</span><span class="p">,</span> <span class="n">d_data</span><span class="p">,</span> <span class="n">p_data</span><span class="p">,</span> <span class="n">I_initial_data</span><span class="p">,</span> <span class="n">N_t</span><span class="o">=</span><span class="n">N_t</span><span class="p">,</span> <span class="n">N_R</span><span class="o">=</span><span class="n">N_R</span><span class="p">,</span> <span class="n">print_verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Extract the output of interest (e.g., supplies final)</span>
+
+    <span class="n">final</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>
+
+    <span class="c1">#use the middle column in final</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="n">final</span><span class="p">[:,</span> <span class="n">N_t</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="c1"># Save some statistic (e.g., mean of the supplies final)</span>
+    <span class="n">sensitivity_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">col</span><span class="p">))</span>
+    <span class="n">results_std</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">col</span><span class="p">))</span>
+<span class="c1"># Analyze the results</span>
+<span class="c1">##send the text output to another</span>
+<span class="c1">#fig = px.histogram(x=sensitivity_results, nbins=20, title=&#39;Monte Carlo Simulation: Sensitivity Analysis on Distribution: Means&#39;)</span>
+<span class="c1">#make the bars thinner</span>
+<span class="c1">#fig.update_traces(marker_line_width=0.5)</span>
+<span class="c1">#fig.update_layout(bargap=0.2)</span>
+<span class="c1">#fig.show()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sensitivity_results</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Monte Carlo Simulation: Sensitivity Analysis on Distribution: Means&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1">#fig_s = px.histogram(x=results_std, nbins=20, title=&#39;Monte Carlo Simulation: Sensitivity Analysis on Distribution: Standard Deviataion&#39;)</span>
+<span class="c1">#make the bars thinner</span>
+<span class="c1">#fig_s.update_traces(marker_line_width=0.5)</span>
+<span class="c1">#fig.update_layout(bargap=0.2)</span>
+<span class="c1">#fig_s.show()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">results_std</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Monte Carlo Simulation: Sensitivity Analysis on Distribution: Standard Deviataion&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/249a127218fae207c5605bc00c6fda37b2daf5d695930a21b5051ccad3352c54.png" src="../../_images/249a127218fae207c5605bc00c6fda37b2daf5d695930a21b5051ccad3352c54.png" />
+<img alt="../../_images/07826056093032504d739ed6a5d9e105eb2e153b1433f22897f52c9887dc025a.png" src="../../_images/07826056093032504d739ed6a5d9e105eb2e153b1433f22897f52c9887dc025a.png" />
+</div>
+</div>
+<p>The graph above is calculating the average and standard deviations of distributions that regions recieve. This graph still shows a slightly binomial distribution with peaks around 6 and 13. Overall the standard deviation graph is still very high meaning that like the overall need met, the distribution graph is still sensitive to the 4 inputs.</p>
+<p>To validate the model, this sensitivity analysis was conducted through utilizing Monte Carlo simulations. The result reveals the variability in the average supplies distributed across regions and time intervals under uncertain input parameters such as supply needs, danger levels, positional priorities, and initial inventories. The histogram of results highlights a distribution centered near zero. This indicates that, on average, the optimization model balances supply and demand effectively. However, the spread of the results reflects the influence of random fluctuations in the parameters, suggesting that certain scenarios may lead to significant deviations in supplies allocated to regions. This variability underscores the significance of robust planning in disaster response scenarios, where uncertainties in demand, resource availability, and prioritization can significantly impact the overall system performance.</p>
+</section>
+<section id="discussion">
+<h2>Discussion<a class="headerlink" href="#discussion" title="Link to this heading">#</a></h2>
+<p>Through this example, we were able to go beyond the reference material, by creating a new and unique application of the optimization problem. By applying this to a real life situation, we were able to create a simplified model to represent a real life situation that could be expanded to create real social good.</p>
+<p>For example, government planning can be used to understand based on existing data, what regions to distribute to which can expediate the process.</p>
+<p>Future Work Ideas:</p>
+<ul class="simple">
+<li><p>Refine the Monte Carlo sensitivity analysis</p></li>
+<li><p>Adjust input data such that there will be a supply shortage at the final time</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/contrib"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="reactor_design.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Chemical Reactor Design</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Sudoku_Solver.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Sudoku Solver</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preamble-install-pyomo-and-a-solver">Preamble: Install Pyomo and a solver</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-definition">Problem Definition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description">Description</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-model-typeset">Optimization Model Typeset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#degree-of-freedom-analysis">Degree of Freedom Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-model-implemented">Optimization Model Implemented</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#heatmap-analysis">Heatmap Analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-arrays-for-heatmap">Creating Arrays for heatmap</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#heatmap-plotting">Heatmap Plotting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization">Visualization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sensitivity-analysis-via-monte-carlo-simulations">Sensitivity Analysis via Monte Carlo Simulations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#insights">Insights</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diving-deeper">Diving Deeper</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion">Discussion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Alexander Dowling, et al.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

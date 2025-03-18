@@ -1,0 +1,1289 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>6.6. Descent and Globalization &#8212; Optimization for Decision Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/6/Globalization';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="7. Constrained Nonlinear Optimization" href="../7/constrained.html" />
+    <link rel="prev" title="6.5. Quasi-Newton Methods for Unconstrained Optimization" href="Quasi-Newton-Methods.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/cbe_logo.jpg" class="logo__image only-light" alt="Optimization for Decision Science - Home"/>
+    <script>document.write(`<img src="../../_static/cbe_logo.jpg" class="logo__image only-dark" alt="Optimization for Decision Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Optimization for Decision Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Fall 2024 Calendar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/workshop.html">Computational Optimization in Python (São Paulo, Brazil)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project1.html">Project 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms1.html">Algorithms Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms2.html">Algorithms Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project2.html">Project 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project (Spring 2023)</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/LP.html">1.4. Continuous Optimization: Linear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/NLP.html">1.5. Continuous Optimization: Nonlinear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.6. Integer Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.7. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_car.html">3.1. Pyomo.DAE Example: Race Car</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_TCLab.html">3.2. Pyomo.DAE Example: Temperature Control Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_background.html">3.3. Differential Algebraic Equations (DAEs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_numeric_integration.html">3.4. Numeric Integration for DAEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_theory.html">3.5. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_example.html">3.6. Pyomo.DAE: Racing Example Revisited</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/blocks.html">4.2. Blocks and Other Pyomo Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/AdvancedTopics.html">4.3. Advanced Topics in Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.4. Risk Measures and Portfolio Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Optimizing Experiments with <code class="docutils literal notranslate"><span class="pre">Pyomo.DoE</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="unconstrained.html">6. Unconstrained Nonlinear Optimization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Math-Primer-1.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Math-Primer-2.html">6.2. Mathematics Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Newton-Methods.html">6.4. Newton-type Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.6. Descent and Globalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Constraint-Qualifications.html">7.4. Constraint Qualifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Second-Order.html">7.5. Second Order Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/degeneracy_hunter.html">7.6. NLP Diagnostics with Degeneracy Hunter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/pyomo.html">More Pyomo Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/semiconductor_manufacturing.html">Semiconductor Production Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/student_diet.html">Optimization of Daily Diet Using Pyomo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/blending.html">Blending Under Uncertainty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/vehicle_routing.html">Vehicle Routing</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/portfolio_optimization_extended.html">Risk Measures and Portfolio Optimization: Expanded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/race_car_extended.html">Extended Race Car Optimization Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/hot_air_balloon.html">Hot Air Balloon Dynamic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/reactor_design.html">Chemical Reactor Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Disaster_Response_Plan.html">Disaster Response Plan Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Sudoku_Solver.html">Sudoku Solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/more_circle_packing.html">Circle Packing Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/modeling.html">Modeling Paradigms</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/multi_objective.html">Multi-Objective Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/advanced_stochastic_programming.html">Advanced Topics in Stochastic Programming</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/algorithms.html">Global Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Deterministic_Global_Optimization.html">Deterministic Global Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/sgd.html">Stochastic Gradient Descent</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/data.html">Machine Learning and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/6/Globalization.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/6/Globalization.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/6/Globalization.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Descent and Globalization</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-test-function-and-derivatives">6.6.1. Define Test Function and Derivatives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#geometric-insights-into-newton-steps">6.6.2. Geometric Insights into Newton Steps</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">6.6.2.1. Motivation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-and-plot-steps">6.6.2.2. Compute and Plot Steps</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#consider-x-0-3">6.6.2.3. Consider <span class="math notranslate nohighlight">\(x_0 = -3\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#consider-x-0-0">6.6.2.4. Consider <span class="math notranslate nohighlight">\(x_0 = 0\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#descent-properties">6.6.2.5. Descent Properties</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#line-search">6.6.3. Line Search</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization-code">6.6.3.1. Visualization Code</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#newton-step-x-k-3">6.6.3.2. Newton Step, <span class="math notranslate nohighlight">\(x^k = -3\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#steepest-descent-step-x-k-3">6.6.3.3. Steepest Descent Step, <span class="math notranslate nohighlight">\(x^k = -3\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#newton-step-x-k-0">6.6.3.4. Newton Step, <span class="math notranslate nohighlight">\(x^k = 0\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#steepest-descent-step-x-k-0">6.6.3.5. Steepest Descent Step, <span class="math notranslate nohighlight">\(x^k = 0\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#trust-regions">6.6.4. Trust Regions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#main-idea-and-general-algorithm">6.6.4.1. Main Idea and General Algorithm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trust-region-variations">6.6.4.2. Trust Region Variations</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#levenburg-marquardt">6.6.4.2.1. Levenburg-Marquardt</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#powell-dogleg">6.6.4.2.2. Powell Dogleg</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="descent-and-globalization">
+<h1><span class="section-number">6.6. </span>Descent and Globalization<a class="headerlink" href="#descent-and-globalization" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="define-test-function-and-derivatives">
+<h2><span class="section-number">6.6.1. </span>Define Test Function and Derivatives<a class="headerlink" href="#define-test-function-and-derivatives" title="Link to this heading">#</a></h2>
+<p>Let’s get started by defining a test function we will use throughout the notebook.</p>
+<p>Consider a scalar function <span class="math notranslate nohighlight">\(f(x): \mathbb{R} \rightarrow \mathbb{R}\)</span> to allow for easier visualization. Let</p>
+<div class="math notranslate nohighlight">
+\[f(x) = 0.5 (x-1)^4 + (x+1)^3 - 10 x^2 + 5 x\]</div>
+<div class="math notranslate nohighlight">
+\[f'(x) = 6 - 8 x - 3 x^2 + 2 x^3\]</div>
+<div class="math notranslate nohighlight">
+\[f''(x) = -8 - 6 x + 6 x^2 \]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Define f(x)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">4</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">10</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">5</span><span class="o">*</span><span class="n">x</span>
+
+<span class="c1">## Define f&#39;(x)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="mi">6</span> <span class="o">-</span> <span class="mi">8</span><span class="o">*</span><span class="n">x</span> <span class="o">-</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">3</span>
+
+<span class="c1">## Define f&#39;&#39;(x)</span>
+<span class="n">ddf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="o">-</span><span class="mi">8</span> <span class="o">-</span> <span class="mi">6</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">6</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">xplt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="n">fplt</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">xplt</span><span class="p">)</span>
+<span class="n">dfplt</span> <span class="o">=</span> <span class="n">df</span><span class="p">(</span><span class="n">xplt</span><span class="p">)</span>
+<span class="n">ddfplt</span> <span class="o">=</span> <span class="n">ddf</span><span class="p">(</span><span class="n">xplt</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xplt</span><span class="p">,</span> <span class="n">fplt</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;f(x)&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xplt</span><span class="p">,</span> <span class="n">dfplt</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;f&#39;(x)&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xplt</span><span class="p">,</span> <span class="n">ddfplt</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;f&#39;&#39;(x)&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/1391adbb9b00ea6bd6a828a151af4f3bd01211a452f0d9f1e9da1a55ee8cb39b.png" src="../../_images/1391adbb9b00ea6bd6a828a151af4f3bd01211a452f0d9f1e9da1a55ee8cb39b.png" />
+</div>
+</div>
+</section>
+<section id="geometric-insights-into-newton-steps">
+<h2><span class="section-number">6.6.2. </span>Geometric Insights into Newton Steps<a class="headerlink" href="#geometric-insights-into-newton-steps" title="Link to this heading">#</a></h2>
+<section id="motivation">
+<h3><span class="section-number">6.6.2.1. </span>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h3>
+<p>We can interpret Newton-type methods for unconstrained optimization as root finding of <span class="math notranslate nohighlight">\(\nabla f(x) = 0\)</span>.</p>
+<p>At iteration <span class="math notranslate nohighlight">\(k\)</span>, we assemble an approximation to <span class="math notranslate nohighlight">\(f(x)\)</span> using a Taylor series expansion:</p>
+<div class="math notranslate nohighlight">
+\[f(x^k + p^k) \approx f(x^k) + \nabla f(x^k)^T p^k + \frac{1}{2} (p^k)^T (B^k) p^k\]</div>
+<p>and solve for <span class="math notranslate nohighlight">\(p^k\)</span> such that <span class="math notranslate nohighlight">\(f(x^k + p^k)=0\)</span>. This gives:</p>
+<div class="math notranslate nohighlight">
+\[p^k = -(B^k)^{-1} \nabla f(x^k)\]</div>
+<p>The choice of <span class="math notranslate nohighlight">\(B^k\)</span> determines the algorithm classification:</p>
+<ul class="simple">
+<li><p>Pure <strong>Newton Method</strong>, <span class="math notranslate nohighlight">\(B^k = \nabla^2 f(x^k)\)</span></p></li>
+<li><p><strong>Steepest Descent</strong>, <span class="math notranslate nohighlight">\(B^k = \frac{1}{\alpha} I\)</span>, where scalar <span class="math notranslate nohighlight">\(\alpha\)</span> is sometimes known as the dampening factor</p></li>
+<li><p><strong>Levenberg-Marquart</strong>, <span class="math notranslate nohighlight">\(B^k = \nabla^2 f(x^k) + \delta I\)</span>, where scalar <span class="math notranslate nohighlight">\(\delta\)</span> is chosen to ensure <span class="math notranslate nohighlight">\(B^k\)</span> is positive definite.</p></li>
+<li><p><strong>Broyden Methods</strong>, <span class="math notranslate nohighlight">\(B^{k}\)</span> is approximated using history of gradient evaluations, i.e., <span class="math notranslate nohighlight">\(\nabla f(x^0), ... \nabla f(x^k)\)</span>. We will study the SR1 and BFGS formulas in this family of methods.</p></li>
+</ul>
+<p>This section <strong>explores how choosing <span class="math notranslate nohighlight">\(B^k\)</span> impacts the shape of the approximation and calculated step.</strong></p>
+</section>
+<section id="compute-and-plot-steps">
+<h3><span class="section-number">6.6.2.2. </span>Compute and Plot Steps<a class="headerlink" href="#compute-and-plot-steps" title="Link to this heading">#</a></h3>
+<p>Define a function that:</p>
+<ul class="simple">
+<li><p>Computes the i. Newton, ii. Levenberg-Marquardt and iii. Steepest Descent Step for a given starting point <span class="math notranslate nohighlight">\(x_0\)</span></p></li>
+<li><p>Plots the step in terms of <span class="math notranslate nohighlight">\(f(x)\)</span> and <span class="math notranslate nohighlight">\(f'(x)\)</span></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calc_step</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">epsLM</span><span class="p">):</span>
+    
+    <span class="c1"># Evaluate f(x0), f&#39;(x0) and f&#39;&#39;(x0)</span>
+    <span class="n">f0</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+    <span class="n">df0</span> <span class="o">=</span> <span class="n">df</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+    <span class="n">ddf0</span> <span class="o">=</span> <span class="n">ddf</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x0 = &quot;</span><span class="p">,</span><span class="n">x0</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f(x0) =&quot;</span><span class="p">,</span><span class="n">f0</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f&#39;(x0) =&quot;</span><span class="p">,</span><span class="n">df0</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f&#39;&#39;(x0) =&quot;</span><span class="p">,</span><span class="n">ddf0</span><span class="p">)</span>
+    
+    
+    <span class="c1">### Calculate steps</span>
+    
+    <span class="c1"># Newtwon Step</span>
+    <span class="n">xN</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">-</span> <span class="n">df0</span> <span class="o">/</span> <span class="n">ddf0</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">### Newton Step ###&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;xN = &quot;</span><span class="p">,</span><span class="n">xN</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pN = xN - x0 = &quot;</span><span class="p">,</span><span class="n">xN</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span>
+    <span class="n">f_xN</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">xN</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f(xN) = &quot;</span><span class="p">,</span><span class="n">f_xN</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f(xN) - f(x0) = &quot;</span><span class="p">,</span><span class="n">f_xN</span> <span class="o">-</span> <span class="n">f0</span><span class="p">)</span>
+    
+    <span class="c1"># Levenberg-Marquardt Step</span>
+    <span class="c1"># Recall the eigenvalue of a 1x1 matrix is just that value</span>
+    <span class="n">dffLM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">([</span><span class="n">ddf0</span><span class="p">,</span> <span class="n">epsLM</span><span class="p">])</span>
+    <span class="n">xLM</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">-</span> <span class="n">df0</span> <span class="o">/</span> <span class="n">dffLM</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">### Levenberg-Marquardt Step ###&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;xLM = &quot;</span><span class="p">,</span><span class="n">xLM</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pLM = xLM - x0 = &quot;</span><span class="p">,</span><span class="n">xN</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span>
+    <span class="n">f_xLM</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">xLM</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f(xLM) = &quot;</span><span class="p">,</span><span class="n">f_xLM</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f(xLM) - f(x0) = &quot;</span><span class="p">,</span><span class="n">f_xLM</span> <span class="o">-</span> <span class="n">f0</span><span class="p">)</span>
+    
+    
+    <span class="c1"># Steepest Descent Step</span>
+    <span class="n">xSD</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">-</span> <span class="n">df0</span> <span class="o">/</span> <span class="mi">1</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">### Steepest Descent Step ###&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;xSD = &quot;</span><span class="p">,</span><span class="n">xSD</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pSD = xSD - x0 = &quot;</span><span class="p">,</span><span class="n">xSD</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span>
+    <span class="n">f_xSD</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">xSD</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f(xSD) = &quot;</span><span class="p">,</span><span class="n">f_xSD</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f(xSD) - f(x0) = &quot;</span><span class="p">,</span><span class="n">f_xSD</span> <span class="o">-</span> <span class="n">f0</span><span class="p">)</span>
+    
+    <span class="c1">### Plot Surrogates on x vs f(x)</span>
+    
+    <span class="c1">### Plot f(x)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">f0</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;$x_0$&quot;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xplt</span><span class="p">,</span> <span class="n">fplt</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;f(x)&quot;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;purple&quot;</span><span class="p">)</span>
+    
+    <span class="c1">### Plot approximation for Newton&#39;s method</span>
+    <span class="n">fN</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">f0</span> <span class="o">+</span> <span class="n">df0</span><span class="o">*</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">ddf0</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">x0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xplt</span><span class="p">,</span> <span class="n">fN</span><span class="p">(</span><span class="n">xplt</span><span class="p">),</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Newton&quot;</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xN</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">xN</span><span class="p">),</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+    
+    
+    <span class="c1">### Plot approximation for LM</span>
+    <span class="n">fLM</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">f0</span> <span class="o">+</span> <span class="n">df0</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">x0</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">dffLM</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">x0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xplt</span><span class="p">,</span> <span class="n">fLM</span><span class="p">(</span><span class="n">xplt</span><span class="p">),</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;LM&quot;</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xLM</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">xLM</span><span class="p">),</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+
+    <span class="c1">### Plot approximation for SD</span>
+    <span class="n">fSD</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">f0</span> <span class="o">+</span> <span class="n">df0</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">x0</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">x0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xplt</span><span class="p">,</span> <span class="n">fSD</span><span class="p">(</span><span class="n">xplt</span><span class="p">),</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Steepest&quot;</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xSD</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">xSD</span><span class="p">),</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+    
+    <span class="c1">#plt.plot([x0, xLM],[f0, f(xLM)],label=&quot;LM&quot;,color=&quot;green&quot;,marker=&quot;o&quot;)</span>
+    <span class="c1">#plt.plot([x0,xSD],[f0,f(xSD)],label=&quot;Steepest&quot;,color=&quot;blue&quot;,marker=&quot;s&quot;)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">((</span><span class="o">-</span><span class="mf">3.5</span><span class="p">,</span><span class="mf">4.5</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">((</span><span class="o">-</span><span class="mf">12.5</span><span class="p">,</span><span class="mf">22.5</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$x$&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$f(x)$&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Function and Surrogates&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+    <span class="c1">### Plot Surrogates on x vs f(x)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">df0</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;$x_0$&quot;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xplt</span><span class="p">,</span> <span class="n">dfplt</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;f&#39;(x)&quot;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;purple&quot;</span><span class="p">)</span>
+    
+    
+    <span class="c1">### Plot approximation for Newton&#39;s method</span>
+    <span class="n">dfN</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">df0</span> <span class="o">+</span> <span class="n">ddf0</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">x0</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xplt</span><span class="p">,</span> <span class="n">dfN</span><span class="p">(</span><span class="n">xplt</span><span class="p">),</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Newton&quot;</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xN</span><span class="p">,</span> <span class="n">df</span><span class="p">(</span><span class="n">xN</span><span class="p">),</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+    
+    
+    <span class="c1">### Plot approximation for LM</span>
+    <span class="n">dfLM</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">df0</span> <span class="o">+</span> <span class="n">dffLM</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">x0</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xplt</span><span class="p">,</span> <span class="n">dfLM</span><span class="p">(</span><span class="n">xplt</span><span class="p">),</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;LM&quot;</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xLM</span><span class="p">,</span> <span class="n">df</span><span class="p">(</span><span class="n">xLM</span><span class="p">),</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+
+    <span class="c1">### Plot approximation for SD</span>
+    <span class="n">dfSD</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">df0</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">x0</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xplt</span><span class="p">,</span> <span class="n">dfSD</span><span class="p">(</span><span class="n">xplt</span><span class="p">),</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Steepest&quot;</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xSD</span><span class="p">,</span> <span class="n">df</span><span class="p">(</span><span class="n">xSD</span><span class="p">),</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+    
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">((</span><span class="o">-</span><span class="mf">3.5</span><span class="p">,</span><span class="mf">4.5</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">((</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span><span class="mi">50</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$x$&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$f&#39;(x)$&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;First Derivative and Surrogates&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="consider-x-0-3">
+<h3><span class="section-number">6.6.2.3. </span>Consider <span class="math notranslate nohighlight">\(x_0 = -3\)</span><a class="headerlink" href="#consider-x-0-3" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">calc_step</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mf">1E-2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>x0 =  -3
+f(x0) = 15.0
+f&#39;(x0) = -51
+f&#39;&#39;(x0) = 64
+
+### Newton Step ###
+xN =  -2.203125
+pN = xN - x0 =  0.796875
+f(xN) =  -8.660857647657394
+f(xN) - f(x0) =  -23.660857647657394
+
+### Levenberg-Marquardt Step ###
+xLM =  -2.203125
+pLM = xLM - x0 =  0.796875
+f(xLM) =  -8.660857647657394
+f(xLM) - f(x0) =  -23.660857647657394
+
+### Steepest Descent Step ###
+xSD =  48.0
+pSD = xSD - x0 =  51.0
+f(xSD) =  2534689.5
+f(xSD) - f(x0) =  2534674.5
+</pre></div>
+</div>
+<img alt="../../_images/2e809baa7dcea7dab2824dccc54c7d66f9d3268760455fcb48c3b637555221ae.png" src="../../_images/2e809baa7dcea7dab2824dccc54c7d66f9d3268760455fcb48c3b637555221ae.png" />
+<img alt="../../_images/2d317d2810e8c8940408010fa1469b77a834cdf44a27c6a04627813227e76601.png" src="../../_images/2d317d2810e8c8940408010fa1469b77a834cdf44a27c6a04627813227e76601.png" />
+</div>
+</div>
+<p><strong>Discussion</strong></p>
+<ul class="simple">
+<li><p>In this case, do we expect the Newton and LM steps to be the same? Explain.</p></li>
+<li><p>Why does <span class="math notranslate nohighlight">\(f(x)\)</span> increase with a steepest descent (<span class="math notranslate nohighlight">\(B^k = I\)</span>) step? I thought the main idea was that because <span class="math notranslate nohighlight">\(B^k\)</span> is <strong>positive definite</strong> the step is in a <strong>descent direction</strong>!</p></li>
+</ul>
+</section>
+<section id="consider-x-0-0">
+<h3><span class="section-number">6.6.2.4. </span>Consider <span class="math notranslate nohighlight">\(x_0 = 0\)</span><a class="headerlink" href="#consider-x-0-0" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">calc_step</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1E-2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>x0 =  0
+f(x0) = 1.5
+f&#39;(x0) = 6
+f&#39;&#39;(x0) = -8
+
+### Newton Step ###
+xN =  0.75
+pN = xN - x0 =  0.75
+f(xN) =  3.486328125
+f(xN) - f(x0) =  1.986328125
+
+### Levenberg-Marquardt Step ###
+xLM =  -600.0
+pLM = xLM - x0 =  0.75
+f(xLM) =  65014556401.5
+f(xLM) - f(x0) =  65014556400.0
+
+### Steepest Descent Step ###
+xSD =  -6.0
+pSD = xSD - x0 =  -6.0
+f(xSD) =  685.5
+f(xSD) - f(x0) =  684.0
+</pre></div>
+</div>
+<img alt="../../_images/a32f95fc5cd1601c4152dcff720f07cda799bc8d9cc1c6cc8a022241730356e0.png" src="../../_images/a32f95fc5cd1601c4152dcff720f07cda799bc8d9cc1c6cc8a022241730356e0.png" />
+<img alt="../../_images/356cd1accf2e6e9f2f0774e9f901d0a9e76af1816b3ceb9186251ffb303fdd4c.png" src="../../_images/356cd1accf2e6e9f2f0774e9f901d0a9e76af1816b3ceb9186251ffb303fdd4c.png" />
+</div>
+</div>
+<p><strong>Discussion</strong></p>
+<ul class="simple">
+<li><p>Why does <span class="math notranslate nohighlight">\(f(x)\)</span> increase for all of the steps?</p></li>
+<li><p>Explain Newton-type method in the context of root finding for <span class="math notranslate nohighlight">\(\nabla f(x) = 0\)</span> using the second plot.</p></li>
+</ul>
+</section>
+<section id="descent-properties">
+<h3><span class="section-number">6.6.2.5. </span>Descent Properties<a class="headerlink" href="#descent-properties" title="Link to this heading">#</a></h3>
+<p><img alt="book" src="https://raw.githubusercontent.com/ndcbe/optimization/main/media/descent_direction.png" /></p>
+</section>
+</section>
+<section id="line-search">
+<h2><span class="section-number">6.6.3. </span>Line Search<a class="headerlink" href="#line-search" title="Link to this heading">#</a></h2>
+<p>Excerpts from <strong>Section 3.4</strong> in Biegler (2010).</p>
+<p>The <strong>Wolfe conditions</strong> require that (3.31) be satisfied as well as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-97ed2aed-c6c4-4191-aefa-2b854bc7820e">
+<span class="eqno">(6.7)<a class="headerlink" href="#equation-97ed2aed-c6c4-4191-aefa-2b854bc7820e" title="Permalink to this equation">#</a></span>\[\begin{align}
+\nabla f(x^k + \alpha^k p^k)^T p^k &amp;\geq \zeta \nabla f(x^k)^T p^k \tag{3.32}
+\end{align}\]</div>
+<p>for <span class="math notranslate nohighlight">\(\zeta \in (\eta, 1)\)</span>. From Figure 3.2, we see that <span class="math notranslate nohighlight">\(\alpha \in [\alpha_w, \alpha_a]\)</span> satisfies these conditions.</p>
+<p>The <strong>strong Wolfe conditions</strong> are more restrictive and require satisfaction of</p>
+<div class="amsmath math notranslate nohighlight" id="equation-392b55f4-ba46-4bde-a313-e4f5f84834f5">
+<span class="eqno">(6.8)<a class="headerlink" href="#equation-392b55f4-ba46-4bde-a313-e4f5f84834f5" title="Permalink to this equation">#</a></span>\[\begin{align}
+|\nabla f(x^k + \alpha^k p^k)^T p^k| &amp;\leq \zeta |\nabla f(x^k)^T p^k| \tag{3.33}
+\end{align}\]</div>
+<p>for <span class="math notranslate nohighlight">\(\zeta \in (\eta, 1)\)</span>. From Figure 3.2, we see that <span class="math notranslate nohighlight">\(\alpha \in [\alpha_w, \alpha_{sw}]\)</span> satisfies these conditions.</p>
+<p>The <strong>Goldstein</strong> or <strong>Goldstein–Armijo conditions</strong> require that (3.31) be satisfied as well as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-bd7c1845-c9f4-47ad-bee3-5b00d6c27102">
+<span class="eqno">(6.9)<a class="headerlink" href="#equation-bd7c1845-c9f4-47ad-bee3-5b00d6c27102" title="Permalink to this equation">#</a></span>\[\begin{align}
+f(x^k + \alpha^k p^k) &amp;\geq f(x^k) + (1 - \eta) \alpha^k \nabla f(x^k)^T p^k \tag{3.34}
+\end{align}\]</div>
+<p><img alt="book" src="https://raw.githubusercontent.com/ndcbe/optimization/main/media/fig-3-2.png" /></p>
+<p><img alt="book" src="https://raw.githubusercontent.com/ndcbe/optimization/main/media/Thm3-3.png" /></p>
+<p><img alt="book" src="https://raw.githubusercontent.com/ndcbe/optimization/main/media/Alg3-2.png" /></p>
+<p><img alt="book" src="https://raw.githubusercontent.com/ndcbe/optimization/main/media/Thm3-4.png" /></p>
+<section id="visualization-code">
+<h3><span class="section-number">6.6.3.1. </span>Visualization Code<a class="headerlink" href="#visualization-code" title="Link to this heading">#</a></h3>
+<p><strong>Goal</strong>: Visualize Amijo and Goldstein conditions for an example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_alpha</span><span class="p">(</span><span class="n">xk</span><span class="p">,</span><span class="n">eta_ls</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span><span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;newton&quot;</span><span class="p">,</span><span class="n">alpha_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate step and visualize line search conditions</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        xk : initial point (required)</span>
+<span class="sd">        eta_ls : eta in Goldstein-Armijo conditions</span>
+<span class="sd">        algorithm : either &quot;newton&quot; or &quot;steepest-descent&quot;</span>
+<span class="sd">        alpha_max : plots alpha between 0 and alpha_max</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Nothing</span>
+<span class="sd">        </span>
+<span class="sd">    Creates:</span>
+<span class="sd">        Plot showing function value and line search conditions as a function of alpha</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">fxk</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">xk</span><span class="p">)</span>
+    <span class="n">dfxk</span> <span class="o">=</span> <span class="n">df</span><span class="p">(</span><span class="n">xk</span><span class="p">)</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s2">&quot;newton&quot;</span><span class="p">):</span>
+        <span class="n">pk</span> <span class="o">=</span> <span class="o">-</span> <span class="n">dfxk</span> <span class="o">/</span> <span class="n">ddf</span><span class="p">(</span><span class="n">xk</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">algorithm</span> <span class="o">==</span> <span class="s2">&quot;steepest-descent&quot;</span><span class="p">:</span>
+        <span class="n">pk</span> <span class="o">=</span> <span class="o">-</span> <span class="n">dfxk</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;algorithm argument must be either &#39;newton&#39; or &#39;steepest-descent&#39;&quot;</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Considering xk =&quot;</span><span class="p">,</span><span class="n">xk</span><span class="p">,</span><span class="s2">&quot;and f(xk) = &quot;</span><span class="p">,</span><span class="n">fxk</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Step with&quot;</span><span class="p">,</span><span class="n">algorithm</span><span class="p">,</span><span class="s2">&quot;algorithm:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pk = &quot;</span><span class="p">,</span><span class="n">pk</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;With full step, xk+1 =&quot;</span><span class="p">,</span><span class="n">pk</span> <span class="o">+</span> <span class="n">xk</span><span class="p">,</span><span class="s2">&quot;and f(xk+1) =&quot;</span><span class="p">,</span><span class="n">f</span><span class="p">(</span><span class="n">xk</span> <span class="o">+</span> <span class="n">pk</span><span class="p">))</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">alpha_max</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">fval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">fval</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">xk</span> <span class="o">+</span> <span class="n">alpha</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">pk</span><span class="p">)</span>
+    
+    <span class="n">fs</span> <span class="o">=</span> <span class="mi">18</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    
+    <span class="c1"># Evaluate f(x^{k+1}) for different alpha values</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span><span class="n">fval</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$f(x^{k+1})$&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Armijo condition</span>
+    <span class="n">arm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">arm</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fxk</span> <span class="o">+</span> <span class="n">eta_ls</span><span class="o">*</span><span class="n">alpha</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">dfxk</span><span class="o">*</span><span class="n">pk</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span><span class="n">arm</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Armijo&quot;</span><span class="p">)</span>
+        
+
+    <span class="c1"># Goldstein condition</span>
+    <span class="n">gold</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">gold</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fxk</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">eta_ls</span><span class="p">)</span><span class="o">*</span><span class="n">alpha</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">dfxk</span><span class="o">*</span><span class="n">pk</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span><span class="n">gold</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Goldstein&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Apply backtracking linestep (starting with alpha = alpha_max)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">failed</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">while</span> <span class="n">flag</span><span class="p">:</span>
+        
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">fval</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">gold</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Line search failed. Goldstein conditions violated. Consider increasing alpha_max.&quot;</span><span class="p">)</span>
+            <span class="n">failed</span> <span class="o">=</span> <span class="kc">True</span>
+        
+        <span class="c1"># Armijo condition</span>
+        <span class="k">if</span> <span class="n">fval</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">arm</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
+        
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Line search failed. Try decreasing alpha_max.&quot;</span><span class="p">)</span>
+            <span class="n">failed</span> <span class="o">=</span> <span class="kc">True</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">failed</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;alphak =&quot;</span><span class="p">,</span><span class="n">alpha</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="s2">&quot;with backtracking line search starting at alpha =&quot;</span><span class="p">,</span><span class="n">alpha_max</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f(xk + alphak*pk) =&quot;</span><span class="p">,</span><span class="n">fval</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">alpha</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">fval</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$a^</span><span class="si">{k}</span><span class="s2">$ for line search&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Labels</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\alpha^k$&quot;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$f(x^k + \alpha^k p^k)$&quot;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="newton-step-x-k-3">
+<h3><span class="section-number">6.6.3.2. </span>Newton Step, <span class="math notranslate nohighlight">\(x^k = -3\)</span><a class="headerlink" href="#newton-step-x-k-3" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_alpha</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="n">eta_ls</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span><span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;newton&quot;</span><span class="p">,</span><span class="n">alpha_max</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Considering xk = -3 and f(xk) =  15.0
+Step with newton algorithm:
+pk =  0.796875
+With full step, xk+1 = -2.203125 and f(xk+1) = -8.660857647657394
+alphak = 1.5 with backtracking line search starting at alpha = 1.5
+f(xk + alphak*pk) = -11.1743426900357
+</pre></div>
+</div>
+<img alt="../../_images/b8de6ebe85c563de1b63b4cbe703aff75b20c4c44e2d0fef413e6c1027e6593f.png" src="../../_images/b8de6ebe85c563de1b63b4cbe703aff75b20c4c44e2d0fef413e6c1027e6593f.png" />
+</div>
+</div>
+<p><strong>Discussion</strong></p>
+<ul class="simple">
+<li><p>Why did the backtracking line search stop at <span class="math notranslate nohighlight">\(\alpha^k = \)</span> <code class="docutils literal notranslate"><span class="pre">alpha_max</span></code>?</p></li>
+<li><p>Is it possible to find a larger improvement in <span class="math notranslate nohighlight">\(f(x)\)</span> with <span class="math notranslate nohighlight">\(\alpha^k &gt; 1\)</span>?</p></li>
+</ul>
+</section>
+<section id="steepest-descent-step-x-k-3">
+<h3><span class="section-number">6.6.3.3. </span>Steepest Descent Step, <span class="math notranslate nohighlight">\(x^k = -3\)</span><a class="headerlink" href="#steepest-descent-step-x-k-3" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_alpha</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="n">eta_ls</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span><span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;steepest-descent&quot;</span><span class="p">,</span><span class="n">alpha_max</span><span class="o">=</span><span class="mf">1E-1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Considering xk = -3 and f(xk) =  15.0
+Step with steepest-descent algorithm:
+pk =  51
+With full step, xk+1 = 48 and f(xk+1) = 2534689.5
+alphak = 0.03535353535353535 with backtracking line search starting at alpha = 0.1
+f(xk + alphak*pk) = -8.67145500733185
+</pre></div>
+</div>
+<img alt="../../_images/e8298778b8d237f2aae163bf1f4a0122fe55fe42becaa91f569c5de0a13adf62.png" src="../../_images/e8298778b8d237f2aae163bf1f4a0122fe55fe42becaa91f569c5de0a13adf62.png" />
+</div>
+</div>
+<p><strong>Discussion</strong></p>
+<ul class="simple">
+<li><p>Why did the line search stop where the Armijo conditions are satisfied?</p></li>
+<li><p>Why not further decrease <span class="math notranslate nohighlight">\(\alpha^k\)</span> to achieve a greater improvement in the objective?</p></li>
+</ul>
+</section>
+<section id="newton-step-x-k-0">
+<h3><span class="section-number">6.6.3.4. </span>Newton Step, <span class="math notranslate nohighlight">\(x^k = 0\)</span><a class="headerlink" href="#newton-step-x-k-0" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_alpha</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">eta_ls</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span><span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;newton&quot;</span><span class="p">,</span><span class="n">alpha_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Considering xk = 0 and f(xk) =  1.5
+Step with newton algorithm:
+pk =  0.75
+With full step, xk+1 = 0.75 and f(xk+1) = 3.486328125
+Line search failed. Goldstein conditions violated. Consider increasing alpha_max.
+</pre></div>
+</div>
+<img alt="../../_images/1d8fd37e170f1f5ed38148417fd21712a0450efa5da99439991c5669781f4c2c.png" src="../../_images/1d8fd37e170f1f5ed38148417fd21712a0450efa5da99439991c5669781f4c2c.png" />
+</div>
+</div>
+<p><strong>Discussion</strong></p>
+<ul class="simple">
+<li><p>Why does the line search fail?</p></li>
+<li><p>How could we modify Newton’s method to improve robustness?</p></li>
+</ul>
+</section>
+<section id="steepest-descent-step-x-k-0">
+<h3><span class="section-number">6.6.3.5. </span>Steepest Descent Step, <span class="math notranslate nohighlight">\(x^k = 0\)</span><a class="headerlink" href="#steepest-descent-step-x-k-0" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_alpha</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">eta_ls</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span><span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;steepest-descent&quot;</span><span class="p">,</span><span class="n">alpha_max</span><span class="o">=</span><span class="mf">5E-1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Considering xk = 0 and f(xk) =  1.5
+Step with steepest-descent algorithm:
+pk =  -6
+With full step, xk+1 = -6 and f(xk+1) = 685.5
+alphak = 0.4191919191919192 with backtracking line search starting at alpha = 0.5
+f(xk + alphak*pk) = -2.9749848430038526
+</pre></div>
+</div>
+<img alt="../../_images/8ebf1a4146c733d6fddace267a586b104949ae35f77c8579db10e17061dbd460.png" src="../../_images/8ebf1a4146c733d6fddace267a586b104949ae35f77c8579db10e17061dbd460.png" />
+</div>
+</div>
+<p><strong>Discussion</strong></p>
+<ul class="simple">
+<li><p>How does the region where the Armijo and Goldstein conditions are satisfied change for different values of <code class="docutils literal notranslate"><span class="pre">eta_ls</span></code>?</p></li>
+</ul>
+</section>
+</section>
+<section id="trust-regions">
+<h2><span class="section-number">6.6.4. </span>Trust Regions<a class="headerlink" href="#trust-regions" title="Link to this heading">#</a></h2>
+<p>Excerpts from <strong>Section 3.5</strong> in Biegler (2010).</p>
+<section id="main-idea-and-general-algorithm">
+<h3><span class="section-number">6.6.4.1. </span>Main Idea and General Algorithm<a class="headerlink" href="#main-idea-and-general-algorithm" title="Link to this heading">#</a></h3>
+<p><img alt="book" src="https://raw.githubusercontent.com/ndcbe/optimization/main/media/trust-region-intro.png" /></p>
+<p><img alt="book" src="https://raw.githubusercontent.com/ndcbe/optimization/main/media/Alg3-3.png" /></p>
+</section>
+<section id="trust-region-variations">
+<h3><span class="section-number">6.6.4.2. </span>Trust Region Variations<a class="headerlink" href="#trust-region-variations" title="Link to this heading">#</a></h3>
+<p><img alt="book" src="https://raw.githubusercontent.com/ndcbe/optimization/main/media/TR-visual.png" /></p>
+<p><span class="math notranslate nohighlight">\(p^C\)</span>: Cauchy step</p>
+<p><span class="math notranslate nohighlight">\(p^N\)</span>: Newton step</p>
+<section id="levenburg-marquardt">
+<h4><span class="section-number">6.6.4.2.1. </span>Levenburg-Marquardt<a class="headerlink" href="#levenburg-marquardt" title="Link to this heading">#</a></h4>
+<p><img alt="book" src="https://raw.githubusercontent.com/ndcbe/optimization/main/media/LM-TR.png" /></p>
+</section>
+<section id="powell-dogleg">
+<h4><span class="section-number">6.6.4.2.2. </span>Powell Dogleg<a class="headerlink" href="#powell-dogleg" title="Link to this heading">#</a></h4>
+<p><img alt="book" src="https://raw.githubusercontent.com/ndcbe/optimization/main/media/PD-TR.png" /></p>
+<p><img alt="book" src="https://raw.githubusercontent.com/ndcbe/optimization/main/media/PD-TR2.png" /></p>
+</section>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/6"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Quasi-Newton-Methods.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">6.5. </span>Quasi-Newton Methods for Unconstrained Optimization</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../7/constrained.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">7. </span>Constrained Nonlinear Optimization</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-test-function-and-derivatives">6.6.1. Define Test Function and Derivatives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#geometric-insights-into-newton-steps">6.6.2. Geometric Insights into Newton Steps</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">6.6.2.1. Motivation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-and-plot-steps">6.6.2.2. Compute and Plot Steps</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#consider-x-0-3">6.6.2.3. Consider <span class="math notranslate nohighlight">\(x_0 = -3\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#consider-x-0-0">6.6.2.4. Consider <span class="math notranslate nohighlight">\(x_0 = 0\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#descent-properties">6.6.2.5. Descent Properties</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#line-search">6.6.3. Line Search</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization-code">6.6.3.1. Visualization Code</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#newton-step-x-k-3">6.6.3.2. Newton Step, <span class="math notranslate nohighlight">\(x^k = -3\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#steepest-descent-step-x-k-3">6.6.3.3. Steepest Descent Step, <span class="math notranslate nohighlight">\(x^k = -3\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#newton-step-x-k-0">6.6.3.4. Newton Step, <span class="math notranslate nohighlight">\(x^k = 0\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#steepest-descent-step-x-k-0">6.6.3.5. Steepest Descent Step, <span class="math notranslate nohighlight">\(x^k = 0\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#trust-regions">6.6.4. Trust Regions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#main-idea-and-general-algorithm">6.6.4.1. Main Idea and General Algorithm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trust-region-variations">6.6.4.2. Trust Region Variations</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#levenburg-marquardt">6.6.4.2.1. Levenburg-Marquardt</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#powell-dogleg">6.6.4.2.2. Powell Dogleg</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Alexander Dowling, et al.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1333 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>3.4. Numeric Integration for DAEs &#8212; Optimization for Decision Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/3/DAE_numeric_integration';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.5. Dynamic Optimization with Collocation and Pyomo.DAE" href="PyomoDAE_theory.html" />
+    <link rel="prev" title="3.3. Differential Algebraic Equations (DAEs)" href="DAE_background.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/cbe_logo.jpg" class="logo__image only-light" alt="Optimization for Decision Science - Home"/>
+    <script>document.write(`<img src="../../_static/cbe_logo.jpg" class="logo__image only-dark" alt="Optimization for Decision Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Optimization for Decision Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Fall 2024 Calendar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/workshop.html">Computational Optimization in Python (São Paulo, Brazil)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project1.html">Project 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms1.html">Algorithms Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms2.html">Algorithms Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project2.html">Project 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project (Spring 2023)</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/LP.html">1.4. Continuous Optimization: Linear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/NLP.html">1.5. Continuous Optimization: Nonlinear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.6. Integer Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.7. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="dynamics.html">3. Dynamic Optimization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="PyomoDAE_car.html">3.1. Pyomo.DAE Example: Race Car</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PyomoDAE_TCLab.html">3.2. Pyomo.DAE Example: Temperature Control Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DAE_background.html">3.3. Differential Algebraic Equations (DAEs)</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.4. Numeric Integration for DAEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PyomoDAE_theory.html">3.5. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PyomoDAE_example.html">3.6. Pyomo.DAE: Racing Example Revisited</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/blocks.html">4.2. Blocks and Other Pyomo Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/AdvancedTopics.html">4.3. Advanced Topics in Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.4. Risk Measures and Portfolio Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Optimizing Experiments with <code class="docutils literal notranslate"><span class="pre">Pyomo.DoE</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-1.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Newton-Methods.html">6.4. Newton-type Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Constraint-Qualifications.html">7.4. Constraint Qualifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Second-Order.html">7.5. Second Order Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/degeneracy_hunter.html">7.6. NLP Diagnostics with Degeneracy Hunter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/pyomo.html">More Pyomo Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/semiconductor_manufacturing.html">Semiconductor Production Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/student_diet.html">Optimization of Daily Diet Using Pyomo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/blending.html">Blending Under Uncertainty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/vehicle_routing.html">Vehicle Routing</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/portfolio_optimization_extended.html">Risk Measures and Portfolio Optimization: Expanded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/race_car_extended.html">Extended Race Car Optimization Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/hot_air_balloon.html">Hot Air Balloon Dynamic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/reactor_design.html">Chemical Reactor Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Disaster_Response_Plan.html">Disaster Response Plan Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Sudoku_Solver.html">Sudoku Solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/more_circle_packing.html">Circle Packing Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/modeling.html">Modeling Paradigms</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/multi_objective.html">Multi-Objective Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/advanced_stochastic_programming.html">Advanced Topics in Stochastic Programming</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/algorithms.html">Global Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Deterministic_Global_Optimization.html">Deterministic Global Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/sgd.html">Stochastic Gradient Descent</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/data.html">Machine Learning and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/3/DAE_numeric_integration.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/3/DAE_numeric_integration.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/3/DAE_numeric_integration.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Numeric Integration for DAEs</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#single-step-runge-kutta-methods">3.4.1. Single-Step Runge-Kutta Methods</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#general-form-index-0-dae">3.4.1.1. General Form: Index 0 DAE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explicit-forward-euler">3.4.1.2. Explicit (Forward) Euler</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implicit-backward-euler">3.4.1.3. Implicit (Backward) Euler</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-differences">3.4.2. Key Differences</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison">3.4.2.1. Comparison</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stability">3.4.2.2. Stability</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-analysis">3.4.2.3. Error Analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extending-numeric-integration-to-index-1-daes">3.4.3. Extending Numeric Integration to Index-1 DAEs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-index-1-daes-using-backwards-euler-method">3.4.3.1. Solving Index-1 DAEs using Backwards Euler Method</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="numeric-integration-for-daes">
+<h1><span class="section-number">3.4. </span>Numeric Integration for DAEs<a class="headerlink" href="#numeric-integration-for-daes" title="Link to this heading">#</a></h1>
+<p><strong>Prepared by:</strong> Prof. Alexander Dowling, Myia Dickens (<a class="reference external" href="mailto:mdicken2&#37;&#52;&#48;nd&#46;edu">mdicken2<span>&#64;</span>nd<span>&#46;</span>edu</a>,2023)</p>
+<p>The purpose of this notebook/class session is to provide the requisite background on numeric integration of DAEs. This helps appreciate the “direct transcription” approach for dynamic optimization used in <code class="docutils literal notranslate"><span class="pre">Pyomo.dae</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="k">if</span> <span class="s2">&quot;google.colab&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+    <span class="o">!</span>wget<span class="w"> </span><span class="s2">&quot;https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/helper.py&quot;</span>
+    <span class="c1"># Do not need casadi for this notebook</span>
+    <span class="c1">#!pip install casadi</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">easy_install</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;../&#39;</span><span class="p">)</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+<span class="n">helper</span><span class="o">.</span><span class="n">set_plotting_style</span><span class="p">()</span>
+
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">opt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="single-step-runge-kutta-methods">
+<h2><span class="section-number">3.4.1. </span>Single-Step Runge-Kutta Methods<a class="headerlink" href="#single-step-runge-kutta-methods" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Chapter 9 in <a class="reference external" href="https://epubs.siam.org/doi/book/10.1137/1.9780898719383">Biegler (2010)</a></p></li>
+<li><p>Chapter 17 in <a class="reference external" href="https://www.sciencedirect.com/book/9780128122532/computational-nuclear-engineering-and-radiological-science-using-python">McClarren (2018)</a></p></li>
+</ul>
+<section id="general-form-index-0-dae">
+<h3><span class="section-number">3.4.1.1. </span>General Form: Index 0 DAE<a class="headerlink" href="#general-form-index-0-dae" title="Link to this heading">#</a></h3>
+<p>Consider the ODE system:</p>
+<p><span class="math notranslate nohighlight">\(\begin{equation}
+\dot{z} = f(t,z), \quad z(t_0) = z_0
+\end{equation}\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(z(t)\)</span> are the differentail variables and <span class="math notranslate nohighlight">\(f(t,z)\)</span> is a (nonlinear) continous function.</p>
+<p>The general Runge-Kutta formula is:
+<span class="math notranslate nohighlight">\(\begin{align}
+z_{i+1} &amp;= z_{i} + h_i \sum_{k=1}^{n_s} b_k f(t_i + c_k h_i, \hat{z}_k) \\
+    \hat{z}_k &amp;= z_i + h_i \sum_{j=1}^{n_{rk}} a_{k,j} f(t_i + c_j h_i, \hat{z}_j), \quad k=1,...,n_s 
+\end{align}\)</span></p>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(z_i\)</span> are the differential variables at the <strong>start</strong> of <strong>step</strong> <span class="math notranslate nohighlight">\(i\)</span> (time <span class="math notranslate nohighlight">\(t_i\)</span>)</p></li>
+<li><p><span class="math notranslate nohighlight">\(z_{i+1}\)</span> are the differential variables at the <strong>end</strong> of <strong>step</strong> <span class="math notranslate nohighlight">\(i\)</span> (time <span class="math notranslate nohighlight">\(t_{i+1}\)</span>)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\hat{z}_k\)</span> are differential variables for <strong>intermediate stage</strong> <span class="math notranslate nohighlight">\(k\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(h_i\)</span> is the size for step <span class="math notranslate nohighlight">\(i\)</span> such that <span class="math notranslate nohighlight">\(t_{i+1} = t_i + h_i\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(n_s\)</span> is the number of stages</p></li>
+<li><p><span class="math notranslate nohighlight">\(n_{rk}\)</span> is the number of <span class="math notranslate nohighlight">\(f(\cdot)\)</span> evaluations to calculate intermediate <span class="math notranslate nohighlight">\(k\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(a_{k,j}\)</span> are coefficients, together known as the <em>Runge-Kutta matrix</em></p></li>
+<li><p><span class="math notranslate nohighlight">\(b_k\)</span> are cofficients, known as the <em>weights</em></p></li>
+<li><p><span class="math notranslate nohighlight">\(c_k\)</span> are coefficients, know as the <em>nodes</em></p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(h_i\)</span> is selected based on error tolerances</p>
+<p>The choice for <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(b\)</span> and <span class="math notranslate nohighlight">\(c\)</span> selects the specific method in the <em>Runge-Kutta family</em>. These coefficients are often specific in a <a class="reference external" href="https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods#Explicit_Runge">Butcher block</a> (or Butcher tableau).</p>
+<p>A Runge-Kutta method is called <a class="reference external" href="https://en.wikiversity.org/wiki/Numerical_Analysis/stability_of_RK_methods"><strong>consistent</strong></a> if:
+<span class="math notranslate nohighlight">\(\begin{equation}
+\sum_{k=1}^{n_s} b_k = 1 \quad \mathrm{and} \quad \sum_{j=1}^{n_s} a_{k,j} = c_k
+\end{equation}\)</span></p>
+</section>
+<section id="explicit-forward-euler">
+<h3><span class="section-number">3.4.1.2. </span>Explicit (Forward) Euler<a class="headerlink" href="#explicit-forward-euler" title="Link to this heading">#</a></h3>
+<p>Consider one of the simplest Runge-Kutta methods:</p>
+<div class="math notranslate nohighlight">
+\[z_{i+1} = z_{i} + h_i~f(t_i, z_i)\]</div>
+<p>What are <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(b\)</span> and <span class="math notranslate nohighlight">\(c\)</span> in the general formula?</p>
+<p><span class="math notranslate nohighlight">\(n_s = 1\)</span>. This is only a single stage. Thus we only need to determine <span class="math notranslate nohighlight">\(c_1\)</span>, <span class="math notranslate nohighlight">\(b_1\)</span>, and <span class="math notranslate nohighlight">\(n_{r1}\)</span></p>
+<p>Moreover, <span class="math notranslate nohighlight">\(\hat{z}_1 = z_i\)</span> because <span class="math notranslate nohighlight">\(f(\cdot)\)</span> is only evaluated at <span class="math notranslate nohighlight">\(t_i\)</span> and <span class="math notranslate nohighlight">\(z_i\)</span>. This implies:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(n_{r1} = 0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(c_1 = 0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(b_1 = 1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(A\)</span> is empty because <span class="math notranslate nohighlight">\(n_{r1} = 0\)</span></p></li>
+</ul>
+<p>The implementation is very straightword (see below). We can calculate <span class="math notranslate nohighlight">\(z_{i+1}\)</span> with a single line!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_steps</span><span class="p">(</span><span class="n">tstart</span><span class="p">,</span><span class="n">tend</span><span class="p">,</span><span class="n">dt</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="n">tend</span><span class="o">-</span><span class="n">tstart</span><span class="p">)</span><span class="o">/</span><span class="n">dt</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">dt</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">explicit_euler</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">z0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        f: function that returns rhs of ODE</span>
+<span class="sd">        h: list of step sizes</span>
+<span class="sd">        z0: initial conditions</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        t: list of time steps. t[0] is 0.0 by default</span>
+<span class="sd">        z: list of differential variable values</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="c1"># Number of timesteps</span>
+    <span class="n">nT</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nT</span><span class="p">)</span>
+    
+    <span class="c1"># Number of states</span>
+    <span class="n">nZ</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">z0</span><span class="p">)</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nT</span><span class="p">,</span><span class="n">nZ</span><span class="p">))</span>
+    
+    <span class="c1"># Copy initial states</span>
+    <span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">z0</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nT</span><span class="p">):</span>
+        
+        <span class="n">i_</span> <span class="o">=</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span>
+        
+        <span class="c1"># Advance time</span>
+        <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">i_</span><span class="p">]</span> <span class="o">+</span> <span class="n">h</span><span class="p">[</span><span class="n">i_</span><span class="p">]</span>
+        
+        <span class="c1"># Implicit Euler formula</span>
+        <span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">Z</span><span class="p">[</span><span class="n">i_</span><span class="p">,:]</span> <span class="o">+</span> <span class="n">h</span><span class="p">[</span><span class="n">i_</span><span class="p">]</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">i_</span><span class="p">],</span><span class="n">Z</span><span class="p">[</span><span class="n">i_</span><span class="p">,:])</span>
+        
+    <span class="k">return</span> <span class="n">t</span><span class="p">,</span> <span class="n">Z</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="implicit-backward-euler">
+<h3><span class="section-number">3.4.1.3. </span>Implicit (Backward) Euler<a class="headerlink" href="#implicit-backward-euler" title="Link to this heading">#</a></h3>
+<p>Consider another simple Runge-Kutta method:</p>
+<div class="math notranslate nohighlight">
+\[z_{i+1} = z_{i} + h_i~f(t_{i+1}, z_{i+1})\]</div>
+<p>What are <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(b\)</span> and <span class="math notranslate nohighlight">\(c\)</span> to express using the general formula?</p>
+<p><span class="math notranslate nohighlight">\(n_s = 1\)</span>. Thus is only a single stage. Moreover, <span class="math notranslate nohighlight">\(\hat{z}_1 = z_{i+1}\)</span> because <span class="math notranslate nohighlight">\(f(\cdot)\)</span> is evaluated at <span class="math notranslate nohighlight">\(t_{i+1}\)</span> and <span class="math notranslate nohighlight">\(z_{i+1}\)</span>. This implies:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(b_1 = 1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(c_1 = 1\)</span></p></li>
+</ul>
+<p>Moreover, <span class="math notranslate nohighlight">\(z_{i+1} = z_{i} + h_i~f(t_{i+1}, z_{i+1})\)</span> implies <span class="math notranslate nohighlight">\(\hat{z}_1 = z_i + h_i f(t_{i+1}, \hat{z}_1)\)</span>. Thus:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(a_{1,1} = 1\)</span></p></li>
+</ul>
+<p>Notice that the formula for <span class="math notranslate nohighlight">\(z_{i+1}\)</span> is implicit. We need to solve a (nonlinear) system of equations to calculate the step.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">implicit_euler</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">z0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        f: function that returns rhs of ODE</span>
+<span class="sd">        h: list of step sizes</span>
+<span class="sd">        z0: initial conditions</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        t: list of time steps. t[0] is 0.0 by default</span>
+<span class="sd">        z: list of differential variable values</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="c1"># Number of timesteps</span>
+    <span class="n">nT</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nT</span><span class="p">)</span>
+    
+    <span class="c1"># Number of states</span>
+    <span class="n">nZ</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">z0</span><span class="p">)</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nT</span><span class="p">,</span><span class="n">nZ</span><span class="p">))</span>
+    
+    <span class="c1"># Copy initial states</span>
+    <span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">z0</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nT</span><span class="p">):</span>
+        
+        <span class="n">i_</span> <span class="o">=</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span>
+        
+        <span class="c1"># Advance time</span>
+        <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">i_</span><span class="p">]</span> <span class="o">+</span> <span class="n">h</span><span class="p">[</span><span class="n">i_</span><span class="p">]</span>
+        
+        <span class="c1">## Implicit Runge-Kutta formula.</span>
+        <span class="c1">## Need to solve nonlinear system of equations.</span>
+        
+        <span class="c1"># Use Explicit Euler to calculate initial guess</span>
+        <span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">Z</span><span class="p">[</span><span class="n">i_</span><span class="p">,:]</span> <span class="o">+</span> <span class="n">h</span><span class="p">[</span><span class="n">i_</span><span class="p">]</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">i_</span><span class="p">],</span><span class="n">Z</span><span class="p">[</span><span class="n">i_</span><span class="p">,:])</span>
+        
+        <span class="c1"># Solve nonlinear equation</span>
+        <span class="n">implicit</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span> <span class="p">:</span> <span class="n">Z</span><span class="p">[</span><span class="n">i_</span><span class="p">,:]</span> <span class="o">+</span> <span class="n">h</span><span class="p">[</span><span class="n">i_</span><span class="p">]</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">i_</span><span class="p">],</span><span class="n">z</span><span class="p">)</span> <span class="o">-</span> <span class="n">z</span>
+        <span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">fsolve</span><span class="p">(</span><span class="n">implicit</span><span class="p">,</span> <span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">,:])</span>
+        
+        
+    <span class="k">return</span> <span class="n">t</span><span class="p">,</span> <span class="n">Z</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="key-differences">
+<h2><span class="section-number">3.4.2. </span>Key Differences<a class="headerlink" href="#key-differences" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Explicit Methods</p></th>
+<th class="head text-center"><p>Implicit Methods</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>+ Easy to Program</p></td>
+<td class="text-center"><p>+ Requires converging system of nonlinear equations</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>- <span class="math notranslate nohighlight">\(h_i\)</span> is limited by Stability</p></td>
+<td class="text-center"><p>+ Stability is independent of <span class="math notranslate nohighlight">\(h_i\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="comparison">
+<h3><span class="section-number">3.4.2.1. </span>Comparison<a class="headerlink" href="#comparison" title="Link to this heading">#</a></h3>
+<p>Let’s test this on a simple problem:</p>
+<p>$\begin{equation}
+\dot{z}(t) = -\lambda z(t), \qquad z_0 = 1.
+\end{equation}</p>
+<p>The solution to this problem is</p>
+<div class="amsmath math notranslate nohighlight" id="equation-63ab6c6d-9e13-42aa-8500-1b813411cd11">
+<span class="eqno">(3.19)<a class="headerlink" href="#equation-63ab6c6d-9e13-42aa-8500-1b813411cd11" title="Permalink to this equation">#</a></span>\[\begin{equation}
+z(t) = e^{-\lambda t}.
+\end{equation}\]</div>
+<p>For simplicity, let’s numerically analyze <span class="math notranslate nohighlight">\(\lambda = 1\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rhs</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="o">-</span><span class="n">z</span>
+<span class="n">sln</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">t</span><span class="p">)</span>
+
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">create_steps</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">5.0</span><span class="p">,</span><span class="n">dt</span><span class="p">)</span>
+
+<span class="n">z0</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">te</span><span class="p">,</span> <span class="n">Ze</span> <span class="o">=</span> <span class="n">explicit_euler</span><span class="p">(</span><span class="n">rhs</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">z0</span><span class="p">)</span>
+<span class="n">ti</span><span class="p">,</span> <span class="n">Zi</span> <span class="o">=</span> <span class="n">implicit_euler</span><span class="p">(</span><span class="n">rhs</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">z0</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+
+<span class="c1"># Use 101 points for exact to make it smooth</span>
+<span class="n">texact</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">h</span><span class="p">),</span><span class="mi">101</span><span class="p">)</span>
+
+<span class="c1"># Plot solutions</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">texact</span><span class="p">,</span> <span class="n">sln</span><span class="p">(</span><span class="n">texact</span><span class="p">),</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Exact Solution&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">te</span><span class="p">,</span><span class="n">Ze</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Forward Euler&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ti</span><span class="p">,</span><span class="n">Zi</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Backward Euler&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Solution with h = &#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">dt</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/1fcf00f5a20f75c2a211201c414053ab9cb2b0a8187286f8b8d0cca6e676f445.png" src="../../_images/1fcf00f5a20f75c2a211201c414053ab9cb2b0a8187286f8b8d0cca6e676f445.png" />
+</div>
+</div>
+</section>
+<section id="stability">
+<h3><span class="section-number">3.4.2.2. </span>Stability<a class="headerlink" href="#stability" title="Link to this heading">#</a></h3>
+<p>Keeping <span class="math notranslate nohighlight">\(\lambda = 1\)</span>, are there any limits on step size?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dt</span> <span class="o">=</span> <span class="mf">2.5</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">create_steps</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">10.0</span><span class="p">,</span><span class="n">dt</span><span class="p">)</span>
+
+<span class="n">z0</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">te</span><span class="p">,</span> <span class="n">Ze</span> <span class="o">=</span> <span class="n">explicit_euler</span><span class="p">(</span><span class="n">rhs</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">z0</span><span class="p">)</span>
+<span class="n">ti</span><span class="p">,</span> <span class="n">Zi</span> <span class="o">=</span> <span class="n">implicit_euler</span><span class="p">(</span><span class="n">rhs</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">z0</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+
+<span class="c1"># Use 101 points for exact to make it smooth</span>
+<span class="n">texact</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">h</span><span class="p">),</span><span class="mi">101</span><span class="p">)</span>
+
+<span class="c1"># Plot solutions</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">texact</span><span class="p">,</span> <span class="n">sln</span><span class="p">(</span><span class="n">texact</span><span class="p">),</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Exact Solution&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">te</span><span class="p">,</span><span class="n">Ze</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Forward Euler&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ti</span><span class="p">,</span><span class="n">Zi</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Backward Euler&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Solution with h = &#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">dt</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/0e79649ec7c4994d1ce5fd5e1b73333a2d4b452269bccfd0c81d10d74d436984.png" src="../../_images/0e79649ec7c4994d1ce5fd5e1b73333a2d4b452269bccfd0c81d10d74d436984.png" />
+</div>
+</div>
+<p><strong>Key observation:</strong> forward (explicit) Euler becomes unstable with large steps whereas backward (implicit) Euler is stable.</p>
+<p>There is a good mathematical reason for this! See <a class="reference external" href="http://www.it.uu.se/edu/course/homepage/bridging/ht13/Stability_Analysis.pdf">http://www.it.uu.se/edu/course/homepage/bridging/ht13/Stability_Analysis.pdf</a> for details.</p>
+<p><strong>Key results</strong> (for this specific test problem):</p>
+<ul class="simple">
+<li><p>Explicit Euler requires step sizes with <span class="math notranslate nohighlight">\(h &lt; 2/\lambda\)</span>.</p></li>
+<li><p>Implicit Euler is <em>unconditionally stable</em> provided <span class="math notranslate nohighlight">\(\lambda &gt; 0\)</span>.</p></li>
+<li><p>Similar analysis and concepts extend to Runge-Kutta methods.</p></li>
+</ul>
+</section>
+<section id="error-analysis">
+<h3><span class="section-number">3.4.2.3. </span>Error Analysis<a class="headerlink" href="#error-analysis" title="Link to this heading">#</a></h3>
+<p>How does our choice in step size <span class="math notranslate nohighlight">\(h\)</span> impact the error of these numerical techniques?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Delta_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">.5</span><span class="p">,</span><span class="mf">.25</span><span class="p">,</span><span class="mf">.125</span><span class="p">,</span><span class="mf">.0625</span><span class="p">,</span><span class="mf">.0625</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">t_final</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">error_forward</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">Delta_t</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<span class="n">error_backward</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">Delta_t</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Delta_t</span><span class="p">)):</span>
+    
+    <span class="c1"># create steps</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">create_steps</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="n">t_final</span><span class="p">,</span><span class="n">Delta_t</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    
+    <span class="c1"># solve</span>
+    <span class="n">t</span><span class="p">,</span><span class="n">ze</span> <span class="o">=</span> <span class="n">explicit_euler</span><span class="p">(</span><span class="n">rhs</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">z0</span><span class="p">)</span>
+    <span class="n">t</span><span class="p">,</span><span class="n">zi</span> <span class="o">=</span> <span class="n">implicit_euler</span><span class="p">(</span><span class="n">rhs</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">z0</span><span class="p">)</span>
+    <span class="n">zsln</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">t</span><span class="p">)</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    
+    <span class="c1"># Calculate error</span>
+    <span class="n">error_forward</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">ze</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">zsln</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">error_backward</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">zi</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">zsln</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    
+
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">Delta_t</span><span class="p">,</span><span class="n">error_forward</span><span class="p">,</span><span class="s1">&#39;s-&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Forward Euler&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">Delta_t</span><span class="p">,</span><span class="n">error_backward</span><span class="p">,</span><span class="s1">&#39;o-&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Backward Euler&quot;</span><span class="p">)</span>
+
+<span class="c1">#slope = (np.log(error[-1]) - np.log(error[-2]))/(np.log(Delta_t[-1])- np.log(Delta_t[-2]))</span>
+<span class="c1">#plt.title(&quot;Slope of Error is &quot; + str(slope))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Step Size (h)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Norm of Error&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Calculate slope</span>
+<span class="n">calc_slope</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">error</span><span class="p">:</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]))</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Delta_t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Delta_t</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Slope for Forward Euler: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">calc_slope</span><span class="p">(</span><span class="n">error_forward</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Slope for Backward Euler: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">calc_slope</span><span class="p">(</span><span class="n">error_backward</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/80a84372ca44bd0440d97137eb316ecb43739f1b234d9e4eb708379122886bf8.png" src="../../_images/80a84372ca44bd0440d97137eb316ecb43739f1b234d9e4eb708379122886bf8.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Slope for Forward Euler: 1.0220608473216777
+Slope for Backward Euler: 0.9874086317220228
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that the error indicates that this is a first-order method in <span class="math notranslate nohighlight">\(\Delta t\)</span>: when I decrease <span class="math notranslate nohighlight">\(\Delta t\)</span> by a factor of 2, the error decreases by a factor of 2.  In this case we measured the error with a slightly different error norm:
+$<span class="math notranslate nohighlight">\(\mathrm{Error} = \frac{1}{\sqrt{N}}\sqrt{\sum_{n=1}^{N} \left(y^n_\mathrm{approx} - y^n_\mathrm{exact}\right)^2},\)</span><span class="math notranslate nohighlight">\(
+where \)</span>N$ is the number of steps the ODE is solved over.</p>
+<p><strong>Key Results</strong>:</p>
+<ul class="simple">
+<li><p>Implicit and Explicit Euler have <span class="math notranslate nohighlight">\(O(h^2)\)</span> local error and <span class="math notranslate nohighlight">\(O(h)\)</span> global error.</p></li>
+</ul>
+</section>
+</section>
+<section id="extending-numeric-integration-to-index-1-daes">
+<h2><span class="section-number">3.4.3. </span>Extending Numeric Integration to Index-1 DAEs<a class="headerlink" href="#extending-numeric-integration-to-index-1-daes" title="Link to this heading">#</a></h2>
+<p>Consider semi-explicit DAEs:
+$<span class="math notranslate nohighlight">\(\begin{equation*}
+\dot{z} = f(t,z,y), \quad g(z,y) = 0, \quad z(t_0) = z_0
+\end{equation*}\)</span>$</p>
+<p>Runge-Kutta methods are easy to extend.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+z_{i+1} &amp;= z_{i} + h_i \sum_{k=1}^{n_s} b_k f(t_i + c_k h_i, \hat{z}_k, \hat{y}_k) \\
+    \hat{z}_k &amp;= z_i + h_i \sum_{j=1}^{n_{rk}} a_{k,j} f(t_i + c_j h_i, \hat{z}_j, \hat{y}_j), \quad k=1,...,n_s \\
+    0 &amp;= g(\hat{z}_k, \hat{y}_k), \quad k=1,...,n_s
+\end{align*}\end{split}\]</div>
+<p>The Backwards Euler is also another method to use to extend.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+  z_{i+1} &amp;= \sum_{j=1}^{n_s} \alpha_j z_{i-j+1} + \beta_0 hf(z_{i+1},y_{i+1})\\
+  0 &amp;= g(z_{i+1},y_{i+1})
+\end{align*}\end{split}\]</div>
+<p>If using the Backwards Euler, the solution can be found using Newton’s method and the Jacobian given by:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+J(z_{i+1},y_{i+1}) &amp;= 
+\begin{bmatrix}
+I - h\beta_0\frac{\partial f}{\partial z}^T
+&amp; h\beta_0\frac{\partial f}{\partial y}^T \\
+\frac{\partial g}{\partial z}^T &amp; \frac{\partial g}{\partial y}^T
+\end{bmatrix}
+\end{align*}\end{split}\]</div>
+<p><strong>Key Results</strong>. If DAE is index 1, then similar stability and order properties as for ODE problems.</p>
+<p><strong>Discussion:</strong> Why are <em>implicit</em> RK methods always used for DAE systems?</p>
+<section id="solving-index-1-daes-using-backwards-euler-method">
+<h3><span class="section-number">3.4.3.1. </span>Solving Index-1 DAEs using Backwards Euler Method<a class="headerlink" href="#solving-index-1-daes-using-backwards-euler-method" title="Link to this heading">#</a></h3>
+<p>Reference: <strong>Pyomo - Optimization Modeling in Python</strong> (Hart, 2010)</p>
+<p>Consider the following optimal control problem</p>
+<p><span class="math notranslate nohighlight">\(\begin{align} \min_{u(t)} \quad &amp; x_3(t_f) \\
+\mathrm{s.t.} \quad &amp; \dot{x}_1 = x_2 \\
+&amp; \dot{x}_2 = -x_2 + u(t)  \\
+&amp; \dot{x}_3 = x_1^2 + x_2^2 + 0.005 \cdot u^2 \\
+&amp; x_2 - 8 \cdot((t-0.5)^2+0.5 \leq 0 \\
+&amp; x_1(0) = 0, x_2(0) = 01, x_3(0) = 0, t_f = 1 
+\end{align}\)</span></p>
+<p><em>Discussion</em>: What variable is the problem attempting to minimize? What variable is being optimized? What are the types of equations are there?</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Click here to expand</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">Manipulated variables: $u(t)</p>
+<p class="sd-card-text">Objective: <span class="math notranslate nohighlight">\(x_3(t_f)\)</span></p>
+<p class="sd-card-text">3 differential equations in the constraints and a path constraint, which is an inequality constraint restricting a varibale.</p>
+<p class="sd-card-text">The path constraint directly impacts <span class="math notranslate nohighlight">\(x_2\)</span>.</p>
+</div>
+</details><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyomo.environ</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyo</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyomo.dae</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dae</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_model_index1</span><span class="p">():</span>
+
+  <span class="c1"># Create model</span>
+  <span class="n">m</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+  <span class="c1"># Declare time set</span>
+  <span class="n">m</span><span class="o">.</span><span class="n">tf</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">#final time</span>
+  <span class="n">m</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">ContinuousSet</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">m</span><span class="o">.</span><span class="n">tf</span><span class="p">))</span>
+
+  <span class="c1"># Declare constraint and input variables</span>
+  <span class="n">m</span><span class="o">.</span><span class="n">u</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">initialize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+  <span class="n">m</span><span class="o">.</span><span class="n">x1</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+  <span class="n">m</span><span class="o">.</span><span class="n">x2</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+  <span class="n">m</span><span class="o">.</span><span class="n">x3</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+  <span class="c1"># Declare differential variables</span>
+  <span class="n">m</span><span class="o">.</span><span class="n">dx1</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+  <span class="n">m</span><span class="o">.</span><span class="n">dx2</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">x2</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+  <span class="n">m</span><span class="o">.</span><span class="n">dx3</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">x3</span><span class="p">)</span>
+
+  <span class="c1"># Declare differential equations</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">_x1dot</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">first</span><span class="p">():</span>
+      <span class="k">return</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="o">.</span><span class="n">Skip</span>
+    <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dx1</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">x2</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+  <span class="n">m</span><span class="o">.</span><span class="n">x1dotcon</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_x1dot</span><span class="p">)</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="nf">_x2dot</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">first</span><span class="p">():</span>
+      <span class="k">return</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="o">.</span><span class="n">Skip</span>
+    <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dx2</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="n">m</span><span class="o">.</span><span class="n">x2</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+  <span class="n">m</span><span class="o">.</span><span class="n">x2dotcon</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_x2dot</span><span class="p">)</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="nf">_x3dot</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">first</span><span class="p">():</span>
+      <span class="k">return</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="o">.</span><span class="n">Skip</span>
+    <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dx3</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">x1</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">m</span><span class="o">.</span><span class="n">x2</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="mf">0.005</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+  <span class="n">m</span><span class="o">.</span><span class="n">x3dotcon</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_x3dot</span><span class="p">)</span>
+
+  <span class="c1"># Declare inequality constraints</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">_con</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">x2</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">-</span><span class="mi">8</span><span class="o">*</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="mf">0.5</span> <span class="o">&lt;=</span> <span class="mi">0</span>
+  <span class="n">m</span><span class="o">.</span><span class="n">con</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">_con</span><span class="p">)</span>
+
+  <span class="c1"># Declare the intial conditions</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">_init</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+    <span class="k">yield</span> <span class="n">m</span><span class="o">.</span><span class="n">x1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">yield</span> <span class="n">m</span><span class="o">.</span><span class="n">x2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">yield</span> <span class="n">m</span><span class="o">.</span><span class="n">x3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+  <span class="n">m</span><span class="o">.</span><span class="n">init_conditions</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConstraintList</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="n">_init</span><span class="p">)</span>
+
+  <span class="c1"># Declare Objective function</span>
+  <span class="n">m</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">x3</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">tf</span><span class="p">])</span>
+
+  <span class="k">return</span> <span class="n">m</span>
+
+<span class="c1"># Solve model using Backwards Euler Method</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">dae_index1_BackEuler</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+<span class="w">  </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Arguments:</span>
+<span class="sd">      m: DAE model of Index 1</span>
+<span class="sd">    New Elements:</span>
+<span class="sd">      nfe = number for finite elements - specifies the number of discretization points to be used</span>
+<span class="sd">    Purpose:</span>
+<span class="sd">      Solves DAE model using Backwards Euler method</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+  <span class="n">discretizer</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">TransformationFactory</span><span class="p">(</span><span class="s1">&#39;dae.finite_difference&#39;</span><span class="p">)</span>
+  <span class="n">discretizer</span><span class="o">.</span><span class="n">apply_to</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">nfe</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">scheme</span> <span class="o">=</span> <span class="s1">&#39;BACKWARD&#39;</span><span class="p">)</span>
+
+  <span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+  <span class="n">results</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">tee</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Plot the results</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plotter</span><span class="p">(</span><span class="n">subplot</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">subplot</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">_y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="p">[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">_y</span><span class="p">[</span><span class="n">t</span><span class="p">])</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">x</span><span class="p">],</span> <span class="s1">&#39;brgcmk&#39;</span> <span class="p">[</span><span class="n">i</span><span class="o">%</span><span class="k">6</span>])
+    <span class="k">if</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;points&#39;</span><span class="p">,</span><span class="kc">False</span><span class="p">):</span>
+      <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="p">[</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">_y</span><span class="p">[</span><span class="n">t</span><span class="p">])</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">x</span><span class="p">],</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">),</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s2">&quot;in&quot;</span><span class="p">,</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">_y</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">_y</span> <span class="ow">in</span> <span class="n">y</span><span class="p">))</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_results</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+  <span class="n">plotter</span><span class="p">(</span><span class="mi">121</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">x2</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Differential Variables&#39;</span><span class="p">)</span>
+  <span class="n">plotter</span><span class="p">(</span><span class="mi">122</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Control Varibale&#39;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Create model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">create_model_index1</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Solve DAEs</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">dae_index1_BackEuler</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: 
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+
+This version of Ipopt was compiled from source code available at
+    https://github.com/IDAES/Ipopt as part of the Institute for the Design of
+    Advanced Energy Systems Process Systems Engineering Framework (IDAES PSE
+    Framework) Copyright (c) 2018-2019. See https://github.com/IDAES/idaes-pse.
+
+This version of Ipopt was compiled using HSL, a collection of Fortran codes
+    for large-scale scientific computation.  All technical papers, sales and
+    publicity material resulting from use of the HSL codes within IPOPT must
+    contain the following acknowledgement:
+        HSL, a collection of Fortran codes for large-scale scientific
+        computation. See http://www.hsl.rl.ac.uk.
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:      363
+Number of nonzeros in inequality constraint Jacobian.:       21
+Number of nonzeros in Lagrangian Hessian.............:       60
+
+Total number of variables............................:      143
+                     variables with only lower bounds:        0
+                variables with lower and upper bounds:        0
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:      123
+Total number of inequality constraints...............:       21
+        inequality constraints with only lower bounds:        0
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:       21
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  0.0000000e+00 1.00e+00 2.82e-01  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1  0.0000000e+00 1.24e+00 6.10e-01  -1.0 1.57e+01    -  6.19e-01 1.00e+00f  1
+   2  3.3913637e-01 2.47e-01 1.00e-06  -1.0 5.83e+00    -  1.00e+00 1.00e+00f  1
+   3  3.3096072e-01 1.37e-02 2.00e-07  -1.7 1.05e+00    -  1.00e+00 1.00e+00h  1
+   4  1.5256107e-01 5.24e-02 1.50e-09  -3.8 9.83e-01    -  1.00e+00 1.00e+00h  1
+   5  1.4973078e-01 9.43e-03 1.50e-09  -3.8 6.08e-01    -  1.00e+00 1.00e+00h  1
+   6  1.4923815e-01 1.41e-03 1.50e-09  -3.8 3.46e-01    -  1.00e+00 1.00e+00h  1
+   7  1.4795692e-01 3.28e-04 4.99e-05  -5.7 1.84e-01    -  1.00e+00 9.88e-01h  1
+   8  1.4798373e-01 1.22e-05 1.84e-11  -5.7 3.85e-02    -  1.00e+00 1.00e+00h  1
+   9  1.4796950e-01 7.16e-08 2.51e-14  -8.6 2.69e-03    -  1.00e+00 1.00e+00h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  10  1.4796952e-01 6.90e-13 2.51e-14  -8.6 1.15e-05    -  1.00e+00 1.00e+00h  1
+
+Number of Iterations....: 10
+
+                                   (scaled)                 (unscaled)
+Objective...............:   1.4796951825372689e-01    1.4796951825372689e-01
+Dual infeasibility......:   2.5063284780912909e-14    2.5063284780912909e-14
+Constraint violation....:   6.9010075431918949e-13    6.9010075431918949e-13
+Complementarity.........:   2.5060342008003853e-09    2.5060342008003853e-09
+Overall NLP error.......:   2.5060342008003853e-09    2.5060342008003853e-09
+
+
+Number of objective function evaluations             = 11
+Number of objective gradient evaluations             = 11
+Number of equality constraint evaluations            = 11
+Number of inequality constraint evaluations          = 11
+Number of equality constraint Jacobian evaluations   = 11
+Number of inequality constraint Jacobian evaluations = 11
+Number of Lagrangian Hessian evaluations             = 10
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.004
+Total CPU secs in NLP function evaluations           =      0.000
+
+EXIT: Optimal Solution Found.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot solution</span>
+<span class="n">plot_results</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/ad21fa6dbf57b19670fe923365a594b352079cfd06cc4b70c39efffa6717a183.png" src="../../_images/ad21fa6dbf57b19670fe923365a594b352079cfd06cc4b70c39efffa6717a183.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/3"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="DAE_background.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">3.3. </span>Differential Algebraic Equations (DAEs)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="PyomoDAE_theory.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3.5. </span>Dynamic Optimization with Collocation and Pyomo.DAE</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#single-step-runge-kutta-methods">3.4.1. Single-Step Runge-Kutta Methods</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#general-form-index-0-dae">3.4.1.1. General Form: Index 0 DAE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explicit-forward-euler">3.4.1.2. Explicit (Forward) Euler</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implicit-backward-euler">3.4.1.3. Implicit (Backward) Euler</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-differences">3.4.2. Key Differences</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison">3.4.2.1. Comparison</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stability">3.4.2.2. Stability</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-analysis">3.4.2.3. Error Analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extending-numeric-integration-to-index-1-daes">3.4.3. Extending Numeric Integration to Index-1 DAEs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-index-1-daes-using-backwards-euler-method">3.4.3.1. Solving Index-1 DAEs using Backwards Euler Method</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Alexander Dowling, et al.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1448 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Semiconductor Production Planning &#8212; Optimization for Decision Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/contrib/semiconductor_manufacturing';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Optimization of Daily Diet Using Pyomo" href="student_diet.html" />
+    <link rel="prev" title="More Pyomo Examples" href="pyomo.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/cbe_logo.jpg" class="logo__image only-light" alt="Optimization for Decision Science - Home"/>
+    <script>document.write(`<img src="../../_static/cbe_logo.jpg" class="logo__image only-dark" alt="Optimization for Decision Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Optimization for Decision Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Fall 2024 Calendar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/workshop.html">Computational Optimization in Python (São Paulo, Brazil)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project1.html">Project 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms1.html">Algorithms Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms2.html">Algorithms Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project2.html">Project 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project (Spring 2023)</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/LP.html">1.4. Continuous Optimization: Linear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/NLP.html">1.5. Continuous Optimization: Nonlinear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.6. Integer Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.7. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_car.html">3.1. Pyomo.DAE Example: Race Car</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_TCLab.html">3.2. Pyomo.DAE Example: Temperature Control Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_background.html">3.3. Differential Algebraic Equations (DAEs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_numeric_integration.html">3.4. Numeric Integration for DAEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_theory.html">3.5. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_example.html">3.6. Pyomo.DAE: Racing Example Revisited</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/blocks.html">4.2. Blocks and Other Pyomo Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/AdvancedTopics.html">4.3. Advanced Topics in Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.4. Risk Measures and Portfolio Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Optimizing Experiments with <code class="docutils literal notranslate"><span class="pre">Pyomo.DoE</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-1.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Newton-Methods.html">6.4. Newton-type Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Constraint-Qualifications.html">7.4. Constraint Qualifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Second-Order.html">7.5. Second Order Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/degeneracy_hunter.html">7.6. NLP Diagnostics with Degeneracy Hunter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="pyomo.html">More Pyomo Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Semiconductor Production Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="student_diet.html">Optimization of Daily Diet Using Pyomo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blending.html">Blending Under Uncertainty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vehicle_routing.html">Vehicle Routing</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="portfolio_optimization_extended.html">Risk Measures and Portfolio Optimization: Expanded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="race_car_extended.html">Extended Race Car Optimization Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hot_air_balloon.html">Hot Air Balloon Dynamic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reactor_design.html">Chemical Reactor Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Disaster_Response_Plan.html">Disaster Response Plan Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Sudoku_Solver.html">Sudoku Solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="more_circle_packing.html">Circle Packing Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="modeling.html">Modeling Paradigms</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="multi_objective.html">Multi-Objective Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_stochastic_programming.html">Advanced Topics in Stochastic Programming</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="algorithms.html">Global Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Deterministic_Global_Optimization.html">Deterministic Global Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="sgd.html">Stochastic Gradient Descent</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="data.html">Machine Learning and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/contrib/semiconductor_manufacturing.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/contrib/semiconductor_manufacturing.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/contrib/semiconductor_manufacturing.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Semiconductor Production Planning</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preamble-install-pyomo-and-highs-solver">Preamble: Install Pyomo and HiGHS Solver</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-microchip-production-problem">The microchip production problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-description">Problem description</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-optimization-problem">Building the optimization problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-reformulation-of-the-bim-problem">Matrix reformulation of the BIM problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vizualization">Vizualization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-case">Base Case</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#insights-via-sensitivity-analysis">Insights via Sensitivity Analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#static-visualization">Static Visualization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-visualization">Interactive Visualization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#environmental-constraint">Environmental Constraint</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#buyer-demand-constraint">Buyer Demand Constraint</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quality-constraint">Quality Constraint</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="semiconductor-production-planning">
+<h1>Semiconductor Production Planning<a class="headerlink" href="#semiconductor-production-planning" title="Link to this heading">#</a></h1>
+<p><strong>Prepared by:</strong> Pauline Wang (<a class="reference external" href="mailto:pwang7&#37;&#52;&#48;nd&#46;edu">pwang7<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2024) and Mariam Jafri (<a class="reference external" href="mailto:mjafri&#37;&#52;&#48;nd&#46;edu">mjafri<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2024)</p>
+<p><strong>Primary Source:</strong> <a class="reference external" href="https://mobook.github.io/MO-book/notebooks/02/01-bim.html">https://mobook.github.io/MO-book/notebooks/02/01-bim.html</a></p>
+<p>By the end of this project, we hope to:</p>
+<ul class="simple">
+<li><p>Gain experience in defining and evaluating optimization problems manually.</p></li>
+<li><p>Build skills in Python programming and using the Pyomo library.</p></li>
+<li><p>Interpret and communicate findings from optimization analyses of chip production</p></li>
+</ul>
+<section id="preamble-install-pyomo-and-highs-solver">
+<h2>Preamble: Install Pyomo and HiGHS Solver<a class="headerlink" href="#preamble-install-pyomo-and-highs-solver" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="k">if</span> <span class="s1">&#39;google.colab&#39;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+    <span class="o">%</span><span class="k">pip</span> install pyomo highspy &gt;/dev/null 2&gt;/dev/null
+    <span class="o">!</span>wget<span class="w"> </span><span class="s2">&quot;https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/helper.py&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">easy_install</span><span class="p">()</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">install_glpk</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;../&#39;</span><span class="p">)</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+<span class="n">helper</span><span class="o">.</span><span class="n">set_plotting_style</span><span class="p">()</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyomo.environ</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyo</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="s1">&#39;appsi_highs&#39;</span>
+<span class="n">SOLVER</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">SOLVER</span><span class="o">.</span><span class="n">available</span><span class="p">(),</span> <span class="sa">f</span><span class="s2">&quot;Solver </span><span class="si">{</span><span class="n">solver</span><span class="si">}</span><span class="s2"> is not available.&quot;</span>
+
+<span class="c1"># Additional imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">highspy</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2024-11-01 22:21:13--  https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/helper.py
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.109.133, 185.199.110.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 6493 (6.3K) [text/plain]
+Saving to: ‘helper.py’
+
+
+helper.py             0%[                    ]       0  --.-KB/s               
+helper.py           100%[===================&gt;]   6.34K  --.-KB/s    in 0s      
+
+2024-11-01 22:21:14 (66.0 MB/s) - ‘helper.py’ saved [6493/6493]
+
+Installing idaes via pip...
+idaes was successfully installed
+idaes, version 2.6.0
+
+
+Running idaes get-extensions to install Ipopt, k_aug, and more...
+Checking solver versions:
+Ipopt 3.13.2 (x86_64-pc-linux-gnu), ASL(20190605)
+
+
+
+[K_AUG] 0.1.0, Part of the IDAES PSE framework
+Please visit https://idaes.org/ (x86_64-pc-linux-gnu), ASL(20190605)
+
+
+
+Couenne 0.5.8 -- an Open-Source solver for Mixed Integer Nonlinear Optimization
+Mailing list: couenne@list.coin-or.org
+Instructions: http://www.coin-or.org/Couenne
+couenne (x86_64-pc-linux-gnu), ASL(20190605)
+
+
+
+Bonmin 1.8.8 using Cbc 2.10.10 and Ipopt 3.13.2
+bonmin (x86_64-pc-linux-gnu), ASL(20190605)
+
+
+
+Ipopt 3.13.3 (x86_64-pc-linux-gnu), ASL(20190605)
+
+
+
+1.0 dot_1&#39; (x86_64-pc-linux-gnu), ASL(20190605)
+
+
+
+Installing glpk via apt-get...
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-microchip-production-problem">
+<h2>The microchip production problem<a class="headerlink" href="#the-microchip-production-problem" title="Link to this heading">#</a></h2>
+<section id="problem-description">
+<h3>Problem description<a class="headerlink" href="#problem-description" title="Link to this heading">#</a></h3>
+<p>The company BIM (Best International Machines) produces two types of microchips, logic chips (1g silicon, 1g plastic, 4g copper) and memory chips (1g germanium, 1g plastic, 2g copper). Each of the logic chips can be sold for a 12€ profit, and each of the memory chips for a 9€ profit. The current stock of raw materials.</p>
+</section>
+</section>
+<section id="building-the-optimization-problem">
+<h2>Building the optimization problem<a class="headerlink" href="#building-the-optimization-problem" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(x \geq 0\)</span> denote the number of logic chips to be produced and <span class="math notranslate nohighlight">\(y \geq 0\)</span> the number of memory chips. In the problem described above, the goal is to maximize the total profit. Since for each logic chip the profit is 12 euro, and for each memory chip it is 9 euro, the total profit to maximize is equal to</p>
+<div class="math notranslate nohighlight">
+\[
+    12x + 9y.
+\]</div>
+<p>In maximizing this quantity, we have to respect some constraints. We know that we cannot use more raw materials than those are available in stock.</p>
+<p>For copper, this means that the joint usage for logic chips, which is equal to <span class="math notranslate nohighlight">\(4x\)</span> g (4g per chip for each of the <span class="math notranslate nohighlight">\(x\)</span> chips), and for memory chips, which is equal to <span class="math notranslate nohighlight">\(2y\)</span> g (2g per chip for each of the <span class="math notranslate nohighlight">\(y\)</span> chips), cannot exceed the maximum availability of 4800g of copper:</p>
+<div class="math notranslate nohighlight">
+\[
+    4x + 2y \leq 4800.
+\]</div>
+<p>Similarly, we can deduce the condition for silicon, which involves only logic chips (note that memory chips do not require this element),</p>
+<div class="math notranslate nohighlight">
+\[
+    x \leq 1000,
+\]</div>
+<p>the condition for germanium, which involves only memory chips (note that logic chips do not require this element),</p>
+<div class="math notranslate nohighlight">
+\[
+    y \leq 1500,
+\]</div>
+<p>and the condition for plastic, which involves both types of chips,</p>
+<div class="math notranslate nohighlight">
+\[
+    x + y \leq 1750.
+\]</div>
+<p>This decision can be reformulated as an optimization problem of the following form:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\max \quad &amp; 12x + 9y \\
+\text{s.t.} \quad &amp; x \leq 1000 \quad \text{(silicon)} \\
+                 &amp; y \leq 1500 \quad \text{(germanium)} \\
+                 &amp; x + y \leq 1750 \quad \text{(plastic)} \\
+                 &amp; 4x + 2y \leq 4800 \quad \text{(copper)} \\
+                 &amp; x, y \geq 0 \\
+\end{align*}
+\end{split}\]</div>
+<p>Leveraging the fact that we have a two-dimensional problem, we can then visualize the entire feasible region.</p>
+<p><img alt="" src="https://raw.githubusercontent.com/ndcbe/optimization/main/media/contrib/semiconductor_constraints.jpeg" /></p>
+<p>The feasible region is displayed in gray, enclosed by the linear constraints (solid lines). The isolines corresponding to the objective function are displayed as parallel dashed blue lines with increasing color intensity when the objective function value is larger. We can intuitively already guess the optimal solution, which is marked with a red dot.</p>
+</section>
+<section id="matrix-reformulation-of-the-bim-problem">
+<h2>Matrix reformulation of the BIM problem<a class="headerlink" href="#matrix-reformulation-of-the-bim-problem" title="Link to this heading">#</a></h2>
+<p>This problem is relatively small, featuring only <span class="math notranslate nohighlight">\(n=2\)</span> decision variables and <span class="math notranslate nohighlight">\(m=4\)</span> constraints. Therefore, we decided to add additional three constraints: environmental cost constraint, buyer demand constraint, and quality control constraint. The environmental cost constraint stipulates that each chip produced incurs an environmental cost. Therefore, the total environmental cost, defined as the product of the number of chips and the cost per chip, must not exceed a predetermined maximum. The buyer demand constraint operates as a binary system: a binary value of 0 indicates market preference for logic chips, whereas a binary value of 1 indicates market preference for memory chips. When the parameter alpha equals 0, the optimization will prioritize the production of logic chips; conversely, when alpha equals 1, the optimization will prioritize memory chip production. The quality constraint in this optimization problem assumes that at least 80% of the total manufactured chips are functional and usable, thereby limiting the proportion of defective units to a maximum of 20%. In this project, we aim to determine the optimal number of microchips of each type that should be produced to maximize profit, while respecting the constraints of raw material availability, enviornmental cost, buyer demand, and quality control.</p>
+<p>The environmental cost constraint is:</p>
+<div class="math notranslate nohighlight">
+\[
+C_{\text{logic}} \cdot x + C_{\text{memory}} \cdot y \leq E_{\text{max}}
+\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(C_{\text{logic}}\)</span>  and <span class="math notranslate nohighlight">\(C_{\text{memory}}\)</span> are the environmental costs per logic and memory chip, respectively.</p></li>
+<li><p><span class="math notranslate nohighlight">\(E_{\text{max}}\)</span> is the maximum allowed total environmental cost.</p></li>
+</ul>
+<p>The buyer demand constraint operates as a binary system:</p>
+<div class="math notranslate nohighlight">
+\[
+\alpha \in \{0, 1\}
+\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha\)</span> = 0 indicates a market preference for logic chips.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\alpha\)</span> = 1 indicates a market preference for memory chips.</p></li>
+</ul>
+<p>The quality control constraint ensures that at least 80% of the produced chips are functional. The constraint can be written as:</p>
+<div class="math notranslate nohighlight">
+\[
+0.8(x + y) \leq \text{Total functional chips}
+\]</div>
+<p>Alternatively, the number of defective chips is restricted to 20% of total production:</p>
+<div class="math notranslate nohighlight">
+\[
+0.2(x + y) \leq \text{Max defective chips}
+\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p>x is the number of logic chips.</p></li>
+<li><p>y is the number of memory chips.</p></li>
+</ul>
+<p>As a first step towards building a vector-matrix formulation of our problem, we rename the decision variables x and y, as x1 and x2, obtaining:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\max \quad &amp; 12x + 9y \\
+\text{s.t.} \quad &amp; x \leq 1000 \quad \text{(silicon)} \\
+                 &amp; y \leq 1500 \quad \text{(germanium)} \\
+                 &amp; x + y \leq 1750 \quad \text{(plastic)} \\
+                 &amp; 4x + 2y \leq 4800 \quad \text{(copper)} \\
+                 &amp; x, y \geq 0 \\
+                 &amp; C_{\text{logic}} \cdot x + C_{\text{memory}} \cdot y \leq E_{\text{max}} \quad \text{(environmental cost)} \\
+                 &amp; 0.2(x + y) \leq \text{Max defective chips} \quad \text{(quality control)} \\
+                 &amp; \alpha \in \{0,1\} \quad \text{(buyer demand)}
+\end{align*}
+\end{split}\]</div>
+<p>Denote the vector of decision variables by <span class="math notranslate nohighlight">\(x = \begin{pmatrix} x_1 \\ x_2 \end{pmatrix}\)</span>, where <span class="math notranslate nohighlight">\(x_1\)</span> and <span class="math notranslate nohighlight">\(x_2\)</span> are just the respective components.</p>
+<p>We now rewrite the objective function using the vector form. For this, we define the vector</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+    c = \begin{pmatrix} 12 \\ 9 \end{pmatrix}
+\end{align*}
+\end{split}\]</div>
+<p>so that the objective</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{align*}
+\max \ c^\top x = \max \ 12x_1 +9x_2.
+\end{align*}
+\]</div>
+<p>For the constraints, we define the problem coefficients as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+    A =
+    \begin{bmatrix}
+    1 &amp; 0\\
+    0 &amp; 1\\
+    1 &amp; 1\\
+    4 &amp; 2\\
+    \end{bmatrix},
+    \quad \text{ and } \quad
+    b = \begin{pmatrix} 1000 \\ 1500 \\ 1750 \\ 4800 \end{pmatrix}.
+\end{align*}
+\end{split}\]</div>
+<p>The system of inequalities <span class="math notranslate nohighlight">\(A x \geq b\)</span>, when read row-by-row, correctly replicates all the constraints:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+A x = \begin{bmatrix}
+x_1 \\
+x_2 \\
+x_1 + x_2 \\
+4x_1 + 2 x_2
+\end{bmatrix} \leq \begin{pmatrix} 1000 \\ 1500 \\ 1750 \\ 4800 \end{pmatrix} = b
+\quad \Longleftrightarrow \quad
+\left\{
+\begin{array}{l}
+x_1 \leq 1000 \\
+x_2 \leq 1500 \\
+x_1 + x_2 \leq 1750 \\
+4x_1 + 2x_2 \leq 4800.
+\end{array}
+\right.
+\end{align*}
+\end{split}\]</div>
+<p>In this way, our optimization problem becomes:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+    \max \quad &amp; c^\top x\\
+    \text{s.t.} \quad &amp; A x \leq b \\
+    &amp; x \in \mathbb{R}_{+}^2.
+\end{align*}
+\end{split}\]</div>
+<p>This model can be implemented and solved using Pyomo as follows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyomo.environ</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyo</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">m_model</span><span class="p">(</span><span class="n">env_x1</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">env_x2</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">defects</span><span class="o">=</span><span class="mf">0.97</span><span class="p">,</span> <span class="n">demand</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build and solve an optimization model for BIM production planning with environmental, quality, and demand constraints.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - env_x1 (float): Environmental cost coefficient for logic chips.</span>
+<span class="sd">    - env_x2 (float): Environmental cost coefficient for memory chips.</span>
+<span class="sd">    - defects (float): Proportion of defective chips allowed in the quality constraint.</span>
+<span class="sd">    - demand (int): Demand flag (0 or 1) indicating buyer preference for chip types.</span>
+<span class="sd">                    If `demand=1`, demand favors logic chips, requiring logic production</span>
+<span class="sd">                    (x1) &gt;= memory production (x2). If `demand=0`, demand favors memory</span>
+<span class="sd">                    chips, requiring memory production (x2) &gt;= logic production (x1).</span>
+
+<span class="sd">    Decision Variables:</span>
+<span class="sd">    - x1: Number of logic chips produced (non-negative).</span>
+<span class="sd">    - x2: Number of memory chips produced (non-negative).</span>
+
+<span class="sd">    Objective:</span>
+<span class="sd">    - Maximize profit, calculated as 12 * x1 + 9 * x2.</span>
+
+<span class="sd">    Constraints:</span>
+<span class="sd">    - Silicon constraint: x1 &lt;= 1000 (maximum availability of silicon for logic chips).</span>
+<span class="sd">    - Germanium constraint: x2 &lt;= 1500 (maximum availability of germanium for memory chips).</span>
+<span class="sd">    - Plastic constraint: x1 + x2 &lt;= 1750 (combined plastic limit for both chips).</span>
+<span class="sd">    - Copper constraint: 4 * x1 + 2 * x2 &lt;= 4800 (maximum copper usage).</span>
+<span class="sd">    - Environmental cost constraint: env_x1 * x1 + env_x2 * x2 &lt;= 10000 (total environmental impact limit).</span>
+<span class="sd">    - Buyer demand constraint: Enforced based on `demand` parameter; requires x1 &gt;= x2 or x1 &lt;= x2.</span>
+<span class="sd">    - Quality control constraint: defects * (x1 + x2) &gt;= 1000, ensuring minimum functionality requirements.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - model: The Pyomo ConcreteModel instance containing the defined objective and constraints.</span>
+
+<span class="sd">    Prints:</span>
+<span class="sd">    - Solution for x1 and x2, optimal profit value, environmental constraint coefficients, demand type, and quality constraint values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">(</span><span class="s2">&quot;BIM production planning&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Decision variables and their domains</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">x1</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">x2</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+
+    <span class="n">model</span><span class="o">.</span><span class="n">env_x1</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="n">env_x1</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">env_x2</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="n">env_x2</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">defects</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="n">defects</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">demand</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="n">demand</span><span class="p">)</span>
+
+    <span class="c1"># Objective function</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">profit</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="mi">12</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">x1</span> <span class="o">+</span> <span class="mi">9</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">x2</span><span class="p">,</span> <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">maximize</span><span class="p">)</span>
+
+    <span class="c1"># Constraints</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">silicon</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">x1</span> <span class="o">&lt;=</span> <span class="mi">1000</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">germanium</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">x2</span> <span class="o">&lt;=</span> <span class="mi">1500</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">plastic</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">x1</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">x2</span> <span class="o">&lt;=</span> <span class="mi">1750</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">copper</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="mi">4</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">x1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">x2</span> <span class="o">&lt;=</span> <span class="mi">4800</span><span class="p">)</span>
+
+    <span class="c1"># Environmental Constraint</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">env_x1</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">x1</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">env_x2</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">x2</span> <span class="o">&lt;=</span> <span class="mi">10000</span><span class="p">)</span>
+
+    <span class="c1"># Buyer demand constraint</span>
+    <span class="k">if</span> <span class="n">demand</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Demand for logic chips</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">buyer</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">x1</span> <span class="o">&gt;=</span> <span class="n">model</span><span class="o">.</span><span class="n">x2</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Demand for memory chips</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">buyer</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">x1</span> <span class="o">&lt;=</span> <span class="n">model</span><span class="o">.</span><span class="n">x2</span><span class="p">)</span>
+
+    <span class="c1"># Quality Constraint</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">quality</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">defects</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">x1</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">defects</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">x2</span> <span class="o">&gt;=</span> <span class="mi">1000</span><span class="p">)</span>
+
+    <span class="c1"># Solve and print solution</span>
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;glpk&#39;</span><span class="p">)</span>  <span class="c1"># Using GLPK as an example; replace with your preferred solver</span>
+    <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;x = (</span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">x1</span><span class="o">.</span><span class="n">value</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">x2</span><span class="o">.</span><span class="n">value</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Optimal value = </span><span class="si">{</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">profit</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Env constraint 1 = </span><span class="si">{</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">env_x1</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Env constraint 2 value = </span><span class="si">{</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">env_x2</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Demand value = </span><span class="si">{</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">demand</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Quality value = </span><span class="si">{</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">defects</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">model</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">m_model</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Demand for memory chips
+
+x = (650.0, 1100.0)
+Optimal value = 17700.0
+Env constraint 1 = 4.0
+Env constraint 2 value = 3.0
+Demand value = 0.0
+Quality value = 1.0
+BIM production planning
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="vizualization">
+<h2>Vizualization<a class="headerlink" href="#vizualization" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyomo.environ</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyo</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">m_visualize</span><span class="p">(</span><span class="n">env_x1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">env_x2</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">defects</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">demand</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visualize the constraints and solution for the semiconductor production planning optimization model.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - env_x1 (float): Environmental cost coefficient for logic chips, used in environmental constraint.</span>
+<span class="sd">    - env_x2 (float): Environmental cost coefficient for memory chips, used in environmental constraint.</span>
+<span class="sd">    - defects (float): Proportion of defective chips allowed in the quality constraint.</span>
+<span class="sd">    - demand (int): Demand flag (0 or 1) indicating buyer preference for chip types.</span>
+<span class="sd">                    If `demand=1`, demand favors logic chips, requiring logic production</span>
+<span class="sd">                    (x1) &gt;= memory production (x2). If `demand=0`, demand favors memory</span>
+<span class="sd">                    chips, requiring memory production (x2) &gt;= logic production (x1).</span>
+
+<span class="sd">    Workflow:</span>
+<span class="sd">    1. Builds the BIM production planning model using `m_model` with the provided parameters.</span>
+<span class="sd">    2. Prepares x and y values for plotting the constraint boundaries in the chip production space.</span>
+<span class="sd">    3. Plots the following constraints:</span>
+<span class="sd">        - Silicon constraint: Vertical line at x = 1000.</span>
+<span class="sd">        - Germanium constraint: Horizontal line at y = 1500.</span>
+<span class="sd">        - Plastic constraint: Line representing x + y &lt;= 1750.</span>
+<span class="sd">        - Copper constraint: Line representing 4 * x + 2 * y &lt;= 4800.</span>
+<span class="sd">        - Environmental constraint: Line dependent on `env_x1` and `env_x2`.</span>
+<span class="sd">        - Demand constraint: Fills area based on buyer demand for either memory or logic chips.</span>
+<span class="sd">        - Quality constraint: Line based on minimum functional chips required, dependent on `defects`.</span>
+<span class="sd">    4. Plots the optimal solution point from the model.</span>
+<span class="sd">    5. Adds visual elements, including axes labels, title, grid, and legend.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - model: The Pyomo ConcreteModel instance with the solution point visualized on the plot.</span>
+
+<span class="sd">    Displays:</span>
+<span class="sd">    - A plot showing constraint boundaries, feasible regions, demand areas, and the solved optimal production point for logic and memory chips.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">m_model</span><span class="p">(</span><span class="n">env_x1</span><span class="p">,</span> <span class="n">env_x2</span><span class="p">,</span> <span class="n">defects</span><span class="p">,</span> <span class="n">demand</span><span class="p">)</span>
+
+    <span class="c1"># Step 2: Prepare your data</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1500</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>  <span class="c1"># x values from 0 to 1500</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1500</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>  <span class="c1"># y values from 0 to 1500</span>
+
+    <span class="c1"># Step 3: Create the plot</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mf">6.4</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>  <span class="c1"># Set the figure size</span>
+
+    <span class="c1"># Plot the lines for y = 0 (x-axis) and x = 0 (y-axis)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1500</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Minimum chips&#39;</span><span class="p">)</span>  <span class="c1"># x-axis</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1500</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Minimum chips&#39;</span><span class="p">)</span>  <span class="c1"># y-axis</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1500</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Silicon&#39;</span><span class="p">)</span>  <span class="c1"># vertical line at x = 1000</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1500</span><span class="p">],</span> <span class="p">[</span><span class="mi">1500</span><span class="p">,</span> <span class="mi">1500</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Germanium&#39;</span><span class="p">)</span>  <span class="c1"># vertical line at y = 1500</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1750</span> <span class="o">-</span> <span class="n">x</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Plastic&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2400</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Copper&#39;</span><span class="p">)</span>
+
+    <span class="c1"># NEW CONSTRAINTS</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;pink&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Demand&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">demand</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># Demand for memory chips; fill up x2 &gt; x1</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;pink&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Memory Chips Demand&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;pink&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Logic Chips Demand&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Environmental constraint</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="mi">10000</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">env_x1</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">model</span><span class="o">.</span><span class="n">env_x2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Environmental&#39;</span><span class="p">)</span>
+    <span class="c1"># Quality constraint</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1000</span> <span class="o">/</span> <span class="n">model</span><span class="o">.</span><span class="n">defects</span> <span class="o">-</span> <span class="n">x</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Quality&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Plot the solution point</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x1</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">x2</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Solved point&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Plot settings</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;in&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;minor&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;in&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">minorticks_on</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">1500</span><span class="p">)</span>                <span class="c1"># Set x-axis limits</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">1500</span><span class="p">)</span>                <span class="c1"># Set y-axis limits</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;BIM Production Planning&#39;</span><span class="p">)</span>  <span class="c1"># Title of the plot</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Logic Chips&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>  <span class="c1"># x-axis label</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Memory Chips&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>  <span class="c1"># y-axis label</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>  <span class="c1"># x-axis line</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>  <span class="c1"># y-axis line</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>  <span class="c1"># Dashed line at x = 1000</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Show grid</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;center left&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+
+    <span class="c1"># Step 4: Display the plot</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">model</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="base-case">
+<h2>Base Case<a class="headerlink" href="#base-case" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m_visualize</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mf">0.97</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Demand for logic chips
+
+x = (800.0, 800.0)
+Optimal value = 16800.0
+Env constraint 1 = 3.0
+Env constraint 2 value = 4.0
+Demand value = 1.0
+Quality value = 1.0
+</pre></div>
+</div>
+<img alt="../../_images/8c7c30b066975b27342f1f06daa8d82ace13e23f630975c1768b67cab31d39aa.png" src="../../_images/8c7c30b066975b27342f1f06daa8d82ace13e23f630975c1768b67cab31d39aa.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pyomo.core.base.PyomoModel.ConcreteModel at 0x7dc097f67510&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the base case, the optimal production plan yields 800 logic chips and 800 memory chips, resulting in a maximum profit of 16,800. This solution satisfies several constraints: environmental costs for logic and memory chips (3 and 4, respectively), demand favoring logic chips, and a quality requirement ensuring all produced chips are functional. The visual representation shows that the solution lies within the feasible region defined by these constraints, with the demand constraint ensuring that logic chip production is at least equal to memory chip production.</p>
+</section>
+<section id="insights-via-sensitivity-analysis">
+<h2>Insights via Sensitivity Analysis<a class="headerlink" href="#insights-via-sensitivity-analysis" title="Link to this heading">#</a></h2>
+<p>Next, we perform sensitivity analysis to develop insights into the problem.</p>
+<section id="static-visualization">
+<h3>Static Visualization<a class="headerlink" href="#static-visualization" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ipywidgets</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">widgets</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
+
+<span class="c1">#Static visualization with specific values</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">static_visualization</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calls m_visualize with specific values for environmental constraints, defects, and demand.</span>
+<span class="sd">    Displays the static plot and provides an interpretation of the result.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Static values for visualization</span>
+    <span class="n">env_x1</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">env_x2</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">defects</span> <span class="o">=</span> <span class="mf">0.97</span>
+    <span class="n">demand</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="c1">#Call the visualization function with static values</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">m_visualize</span><span class="p">(</span><span class="n">env_x1</span><span class="p">,</span> <span class="n">env_x2</span><span class="p">,</span> <span class="n">defects</span><span class="p">,</span> <span class="n">demand</span><span class="p">)</span>
+
+    <span class="c1">#Interpretation of the figure</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Interpretation of the static figure:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The plot shows the feasible production region for logic and memory chips &quot;</span>
+          <span class="s2">&quot;based on constraints like available materials (silicon, germanium, plastic, and copper), &quot;</span>
+          <span class="s2">&quot;environmental costs, and buyer demand. The demand constraint fills different areas &quot;</span>
+          <span class="s2">&quot;based on demand for either logic or memory chips. The quality constraint ensures &quot;</span>
+          <span class="s2">&quot;that the number of defective chips remains below a specified threshold, while &quot;</span>
+          <span class="s2">&quot;the environmental constraint imposes a limit on the overall environmental cost. &quot;</span>
+          <span class="s2">&quot;The red dot indicates the optimal production point, balancing profit with constraints.&quot;</span><span class="p">)</span>
+
+
+<span class="n">static_visualization</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Demand for logic chips
+
+x = (800.0, 800.0)
+Optimal value = 16800.0
+Env constraint 1 = 4.0
+Env constraint 2 value = 3.0
+Demand value = 1.0
+Quality value = 1.0
+</pre></div>
+</div>
+<img alt="../../_images/73ed1e60de399ffd9d7739d62fb3f3e27c9c5d64ffaee5c154e415c69677fdb8.png" src="../../_images/73ed1e60de399ffd9d7739d62fb3f3e27c9c5d64ffaee5c154e415c69677fdb8.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Interpretation of the static figure:
+The plot shows the feasible production region for logic and memory chips based on constraints like available materials (silicon, germanium, plastic, and copper), environmental costs, and buyer demand. The demand constraint fills different areas based on demand for either logic or memory chips. The quality constraint ensures that the number of defective chips remains below a specified threshold, while the environmental constraint imposes a limit on the overall environmental cost. The red dot indicates the optimal production point, balancing profit with constraints.
+</pre></div>
+</div>
+</div>
+</div>
+<p>The static plot shows the feasible region for producing logic and memory chips, given constraints on materials, quality, demand, and environmental impact. With <code class="docutils literal notranslate"><span class="pre">env_x1</span> <span class="pre">=</span> <span class="pre">4</span></code> and <code class="docutils literal notranslate"><span class="pre">env_x2</span> <span class="pre">=</span> <span class="pre">3</span></code>, the environmental constraint is non-binding, meaning it does not limit production within this scenario. The quality constraint, with <code class="docutils literal notranslate"><span class="pre">defects</span> <span class="pre">=</span> <span class="pre">0.97</span></code>, and a demand preference for logic chips (<code class="docutils literal notranslate"><span class="pre">demand</span> <span class="pre">=</span> <span class="pre">1</span></code>) shape the feasible region by enforcing a minimum number of functional chips and favoring logic production over memory. The red dot represents the optimal production point that maximizes profit while adhering to these constraints.</p>
+</section>
+<section id="interactive-visualization">
+<h3>Interactive Visualization<a class="headerlink" href="#interactive-visualization" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Interactive widget setup</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">interactive_visualization</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sets up interactive widgets to dynamically adjust the parameters of the m_visualize function.</span>
+<span class="sd">    Displays the visualization interactively based on user-selected input values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Define widgets for each parameter</span>
+    <span class="n">env_x1_slider</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">FloatSlider</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Env X1&#39;</span><span class="p">)</span>
+    <span class="n">env_x2_slider</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">FloatSlider</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Env X2&#39;</span><span class="p">)</span>
+    <span class="n">defects_slider</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">FloatSlider</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">0.97</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Defects&#39;</span><span class="p">)</span>
+    <span class="n">demand_toggle</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">ToggleButtons</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Demand&#39;</span><span class="p">,</span> <span class="n">button_style</span><span class="o">=</span><span class="s1">&#39;info&#39;</span><span class="p">)</span>
+
+    <span class="c1">#Use interactive output to update visualization based on widget values</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">interactive_output</span><span class="p">(</span>
+        <span class="n">m_visualize</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;env_x1&#39;</span><span class="p">:</span> <span class="n">env_x1_slider</span><span class="p">,</span>
+            <span class="s1">&#39;env_x2&#39;</span><span class="p">:</span> <span class="n">env_x2_slider</span><span class="p">,</span>
+            <span class="s1">&#39;defects&#39;</span><span class="p">:</span> <span class="n">defects_slider</span><span class="p">,</span>
+            <span class="s1">&#39;demand&#39;</span><span class="p">:</span> <span class="n">demand_toggle</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="c1">#Display widgets and interactive output</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">env_x1_slider</span><span class="p">,</span> <span class="n">env_x2_slider</span><span class="p">,</span> <span class="n">defects_slider</span><span class="p">,</span> <span class="n">demand_toggle</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+
+
+
+<span class="n">interactive_visualization</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "0bab152fb61f4546ac45835c9cd8a47a", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "8d7d9786caa542db8f240f09607699c5", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "257c8f44fc0f4c0ab44f11ea4c0d43cc", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "9390385e3afe4e68ab776ef7f4ac6f53", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "11623042da2947c19e8382945f96db63", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+</section>
+<section id="environmental-constraint">
+<h3>Environmental Constraint<a class="headerlink" href="#environmental-constraint" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m_visualize</span><span class="p">(</span><span class="n">env_x1</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">env_x2</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">defects</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">demand</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Demand for memory chips
+
+x = (733.3, 933.3)
+Optimal value = 17200.0
+Env constraint 1 = 6.0
+Env constraint 2 value = 6.0
+Demand value = 0.0
+Quality value = 1.0
+</pre></div>
+</div>
+<img alt="../../_images/7ca9487ee978149920dfe72b59a93bf102830f50a0fa2b3adb783f86a9bf9e5d.png" src="../../_images/7ca9487ee978149920dfe72b59a93bf102830f50a0fa2b3adb783f86a9bf9e5d.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pyomo.core.base.PyomoModel.ConcreteModel at 0x7dc0945e9120&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>The constraint is inactive until both environmental cost values for
+𝑥1 and x2 reach 6. This means that at lower values (less than 6), the environmental constraint is not binding, and the optimal solution is determined purely by other constraints (material limits, quality control, and demand). In terms of sensitivity analysis, before the environmental cost reaches 6, the system does not “feel” the impact of this constraint, as the optimal point remains in a region where this constraint is non-binding.
+At higher environmental cost values, the system starts to restrict the feasible region more significantly, potentially leading to reduced profits or shifts in the balance of logic versus memory chip production to comply with the environmental threshold.</p>
+</section>
+<section id="buyer-demand-constraint">
+<h3>Buyer Demand Constraint<a class="headerlink" href="#buyer-demand-constraint" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m_visualize</span><span class="p">(</span><span class="n">env_x1</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">env_x2</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">defects</span><span class="o">=</span><span class="mf">0.97</span><span class="p">,</span> <span class="n">demand</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Demand for memory chips
+
+x = (650.0, 1100.0)
+Optimal value = 17700.0
+Env constraint 1 = 4.0
+Env constraint 2 value = 3.0
+Demand value = 0.0
+Quality value = 1.0
+</pre></div>
+</div>
+<img alt="../../_images/6a1a6fbc4dc201c03977cd6929d768a8b63540f8c262b1f33e463eb791c72b0d.png" src="../../_images/6a1a6fbc4dc201c03977cd6929d768a8b63540f8c262b1f33e463eb791c72b0d.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pyomo.core.base.PyomoModel.ConcreteModel at 0x7dc0942c6f20&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m_visualize</span><span class="p">(</span><span class="n">env_x1</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">env_x2</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">defects</span><span class="o">=</span><span class="mf">0.97</span><span class="p">,</span> <span class="n">demand</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Demand for logic chips
+
+x = (800.0, 800.0)
+Optimal value = 16800.0
+Env constraint 1 = 4.0
+Env constraint 2 value = 3.0
+Demand value = 1.0
+Quality value = 1.0
+</pre></div>
+</div>
+<img alt="../../_images/73ed1e60de399ffd9d7739d62fb3f3e27c9c5d64ffaee5c154e415c69677fdb8.png" src="../../_images/73ed1e60de399ffd9d7739d62fb3f3e27c9c5d64ffaee5c154e415c69677fdb8.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pyomo.core.base.PyomoModel.ConcreteModel at 0x7dc0942c4f90&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>The demand constraint impacts the amount of total product we can create. It is more advantegeous to create more memory chips as logic chips limits the total amount of supply we can make while still following all the constraints. Further, the demand constraint affects other constraints such as quality.</p>
+</section>
+<section id="quality-constraint">
+<h3>Quality Constraint<a class="headerlink" href="#quality-constraint" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m_visualize</span><span class="p">(</span><span class="n">env_x1</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">env_x2</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">defects</span><span class="o">=</span><span class="mf">0.58</span><span class="p">,</span> <span class="n">demand</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Demand for memory chips
+
+x = (650.0, 1100.0)
+Optimal value = 17700.0
+Env constraint 1 = 3.0
+Env constraint 2 value = 4.0
+Demand value = 0.0
+Quality value = 0.6
+</pre></div>
+</div>
+<img alt="../../_images/de68a2b6c3badeaa8ae51004d3123bbc553d736f12033f647ac73852bc05d9a5.png" src="../../_images/de68a2b6c3badeaa8ae51004d3123bbc553d736f12033f647ac73852bc05d9a5.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pyomo.core.base.PyomoModel.ConcreteModel at 0x7dc0951ddee0&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m_visualize</span><span class="p">(</span><span class="n">env_x1</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">env_x2</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">defects</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">demand</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Demand for memory chips
+
+x = (650.0, 1100.0)
+Optimal value = 17700.0
+Env constraint 1 = 3.0
+Env constraint 2 value = 4.0
+Demand value = 0.0
+Quality value = 0.9
+</pre></div>
+</div>
+<img alt="../../_images/79c97f3c9fc14d7dbf8d1e7c3512330435c9ebdfda9c3435761db47fb49c3026.png" src="../../_images/79c97f3c9fc14d7dbf8d1e7c3512330435c9ebdfda9c3435761db47fb49c3026.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pyomo.core.base.PyomoModel.ConcreteModel at 0x7dc0952f4db0&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>The system is highly sensitive to the quality control constraint, as seen in the change from 0.5 to 0.9. Increasing the quality chip threshold significantly shifts the feasible region, as shown by the movement of the red line in the graphs. This alters the feasible solution space for chip production. From the movements in the quality constraint line, we learned that memory chips allow more defects than logic chips, offering greater flexibility when buyer demand shifts toward them. This offers the insight, combineed with the above buyer demand constraint, that when memory chips are more popular, this company will have higher profits.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/contrib"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="pyomo.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">More Pyomo Examples</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="student_diet.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Optimization of Daily Diet Using Pyomo</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preamble-install-pyomo-and-highs-solver">Preamble: Install Pyomo and HiGHS Solver</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-microchip-production-problem">The microchip production problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-description">Problem description</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-optimization-problem">Building the optimization problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-reformulation-of-the-bim-problem">Matrix reformulation of the BIM problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vizualization">Vizualization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-case">Base Case</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#insights-via-sensitivity-analysis">Insights via Sensitivity Analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#static-visualization">Static Visualization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-visualization">Interactive Visualization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#environmental-constraint">Environmental Constraint</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#buyer-demand-constraint">Buyer Demand Constraint</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quality-constraint">Quality Constraint</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Alexander Dowling, et al.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1943 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>3.3. Differential Algebraic Equations (DAEs) &#8212; Optimization for Decision Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/3/DAE_background';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.4. Numeric Integration for DAEs" href="DAE_numeric_integration.html" />
+    <link rel="prev" title="3.2. Pyomo.DAE Example: Temperature Control Lab" href="PyomoDAE_TCLab.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/cbe_logo.jpg" class="logo__image only-light" alt="Optimization for Decision Science - Home"/>
+    <script>document.write(`<img src="../../_static/cbe_logo.jpg" class="logo__image only-dark" alt="Optimization for Decision Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Optimization for Decision Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Fall 2024 Calendar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/workshop.html">Computational Optimization in Python (São Paulo, Brazil)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project1.html">Project 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms1.html">Algorithms Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms2.html">Algorithms Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project2.html">Project 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project (Spring 2023)</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/LP.html">1.4. Continuous Optimization: Linear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/NLP.html">1.5. Continuous Optimization: Nonlinear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.6. Integer Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.7. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="dynamics.html">3. Dynamic Optimization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="PyomoDAE_car.html">3.1. Pyomo.DAE Example: Race Car</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PyomoDAE_TCLab.html">3.2. Pyomo.DAE Example: Temperature Control Lab</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.3. Differential Algebraic Equations (DAEs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DAE_numeric_integration.html">3.4. Numeric Integration for DAEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PyomoDAE_theory.html">3.5. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PyomoDAE_example.html">3.6. Pyomo.DAE: Racing Example Revisited</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/blocks.html">4.2. Blocks and Other Pyomo Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/AdvancedTopics.html">4.3. Advanced Topics in Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.4. Risk Measures and Portfolio Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Optimizing Experiments with <code class="docutils literal notranslate"><span class="pre">Pyomo.DoE</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-1.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Newton-Methods.html">6.4. Newton-type Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Constraint-Qualifications.html">7.4. Constraint Qualifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Second-Order.html">7.5. Second Order Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/degeneracy_hunter.html">7.6. NLP Diagnostics with Degeneracy Hunter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/pyomo.html">More Pyomo Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/semiconductor_manufacturing.html">Semiconductor Production Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/student_diet.html">Optimization of Daily Diet Using Pyomo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/blending.html">Blending Under Uncertainty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/vehicle_routing.html">Vehicle Routing</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/portfolio_optimization_extended.html">Risk Measures and Portfolio Optimization: Expanded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/race_car_extended.html">Extended Race Car Optimization Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/hot_air_balloon.html">Hot Air Balloon Dynamic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/reactor_design.html">Chemical Reactor Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Disaster_Response_Plan.html">Disaster Response Plan Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Sudoku_Solver.html">Sudoku Solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/more_circle_packing.html">Circle Packing Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/modeling.html">Modeling Paradigms</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/multi_objective.html">Multi-Objective Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/advanced_stochastic_programming.html">Advanced Topics in Stochastic Programming</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/algorithms.html">Global Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Deterministic_Global_Optimization.html">Deterministic Global Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/sgd.html">Stochastic Gradient Descent</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/data.html">Machine Learning and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/3/DAE_background.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/3/DAE_background.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/3/DAE_background.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Differential Algebraic Equations (DAEs)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#external-documentaiton-for-libraries-used">3.3.1. External Documentaiton for libraries used</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-optimization-overview">3.3.2. Dynamic Optimization Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-dynamic-optimization">3.3.2.1. Introduction to Dynamic Optimization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-breakdown-of-daes">3.3.3. General Breakdown of DAEs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#daes-as-boundary-value-problems">3.3.4. DAEs as Boundary Value Problems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dae-optimization">3.3.5. DAE Optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-path-constraints">3.3.6. Handling Path Constraints</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dae-index-and-index-reduction">3.3.6.1. DAE Index and Index Reduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pendulum-model-and-index-reduction">3.3.6.2. Pendulum model and index reduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation-1-index-3-dae">3.3.6.3. Formulation 1: Index-3 DAE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation-2-pure-ode-model-index-0-example">3.3.6.4. Formulation 2: Pure ODE Model/ Index-0 Example</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation-3-index-1-dae-model">3.3.6.5. Formulation 3: Index-1 DAE Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation-4-index-1-dae-model">3.3.6.6. Formulation 4: Index-1 DAE Model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#take-away-messages">3.3.7. 2.4.4 Take Away Messages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#important-topics-from-the-textbook">3.3.8. Important Topics from the Textbook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="differential-algebraic-equations-daes">
+<h1><span class="section-number">3.3. </span>Differential Algebraic Equations (DAEs)<a class="headerlink" href="#differential-algebraic-equations-daes" title="Link to this heading">#</a></h1>
+<p><strong>Prepared by:</strong> Prof. Alexander Dowling, Myia Dickens (<a class="reference external" href="mailto:mdicken2&#37;&#52;&#48;nd&#46;edu">mdicken2<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2023), Molly Dougher (<a class="reference external" href="mailto:mdoughe6&#37;&#52;&#48;nd&#46;edu">mdoughe6<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2023)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="k">if</span> <span class="s2">&quot;google.colab&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+    <span class="o">!</span>wget<span class="w"> </span><span class="s2">&quot;https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/helper.py&quot;</span>
+    <span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>casadi
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">easy_install</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;../&#39;</span><span class="p">)</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+<span class="n">helper</span><span class="o">.</span><span class="n">set_plotting_style</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="external-documentaiton-for-libraries-used">
+<h2><span class="section-number">3.3.1. </span>External Documentaiton for libraries used<a class="headerlink" href="#external-documentaiton-for-libraries-used" title="Link to this heading">#</a></h2>
+<p>Pyomo.dae documentation:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pyomo.readthedocs.io/en/latest/modeling_extensions/dae.html">https://pyomo.readthedocs.io/en/latest/modeling_extensions/dae.html</a></p></li>
+</ul>
+<p>CasADi (need to integrate DAEs):</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://web.casadi.org/get/">https://web.casadi.org/get/</a></p></li>
+<li><p>For local installation: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">casadi</span></code>. Warning: installing <code class="docutils literal notranslate"><span class="pre">CasADi</span></code> with <code class="docutils literal notranslate"><span class="pre">conda</span></code> will install an “okay” version of Ipopt. If you really want to install <code class="docutils literal notranslate"><span class="pre">CasADi</span></code> with <code class="docutils literal notranslate"><span class="pre">conda</span></code>, you’ll likely need to add <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">idaes</span></code> to your notebook to load the “good” version of Ipopt (Linux and Windows users).</p></li>
+</ul>
+</section>
+<section id="dynamic-optimization-overview">
+<h2><span class="section-number">3.3.2. </span>Dynamic Optimization Overview<a class="headerlink" href="#dynamic-optimization-overview" title="Link to this heading">#</a></h2>
+<section id="introduction-to-dynamic-optimization">
+<h3><span class="section-number">3.3.2.1. </span>Introduction to Dynamic Optimization<a class="headerlink" href="#introduction-to-dynamic-optimization" title="Link to this heading">#</a></h3>
+<p>Dynamic systems can be found in a wide range of engineering fields and subfields. This section is meant to be an introduction to solve differentiable-algebraic equations (DAEs) with resepct to optimizing dynamic systems. To allow for uniform understanding, the examples and explanations in this notebook will focus on basic physics examples (i.e. the pendulum example) and explanations.</p>
+<p>DAEs are tpyically specified as initial value problems with initial coniditions at zero. These equations are experessed with resepct to an independent variable, <span class="math notranslate nohighlight">\(t\)</span>, and are typically autnomous, or <span class="math notranslate nohighlight">\(t\)</span> does not explicilty appear in the equation.</p>
+<p>DAEs are tpyically of the form:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-0ab97358-1b3f-4ebd-b624-f6b48eacb454">
+<span class="eqno">(3.1)<a class="headerlink" href="#equation-0ab97358-1b3f-4ebd-b624-f6b48eacb454" title="Permalink to this equation">#</a></span>\[\begin{align}
+F\left(x, \frac{d x}{d t}, u(t), p, t\right)=0, \quad h(x(0))=0
+\end{align}\]</div>
+<p><span class="math notranslate nohighlight">\(x(t)\)</span>: state variables, functions of time</p>
+<p><span class="math notranslate nohighlight">\(u(t)\)</span>: control variables, functions of time</p>
+<p><span class="math notranslate nohighlight">\(p\)</span>: variables, independent of <span class="math notranslate nohighlight">\(t\)</span></p>
+<p>With respect to optimizing DAEs, the equations are structured to the simpler form:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-40fa1be8-871f-4625-a85c-9bc2fb13f04a">
+<span class="eqno">(3.2)<a class="headerlink" href="#equation-40fa1be8-871f-4625-a85c-9bc2fb13f04a" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\frac{d z}{d t}= f(z(t), y(t), u(t), p), \quad z(0)=z_0, \quad
+g(z(t), y(t), u(t), p)=0
+\end{equation}\]</div>
+<p>where the state variables <span class="math notranslate nohighlight">\(x(t)\)</span> is partioned into differenetiable varibales, <span class="math notranslate nohighlight">\(z(t)\)</span>, and algebraic variables <span class="math notranslate nohighlight">\(y(t)\)</span>. It is assumed that <span class="math notranslate nohighlight">\(y(t)\)</span> can be solved independetly from <span class="math notranslate nohighlight">\(z(t)\)</span>, <span class="math notranslate nohighlight">\(u(t)\)</span>, and <span class="math notranslate nohighlight">\(p\)</span>, which allows for the DAE to be treated as an ODE of the form:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-ee874df9-93f0-420f-b44e-9a7f04f10ded">
+<span class="eqno">(3.3)<a class="headerlink" href="#equation-ee874df9-93f0-420f-b44e-9a7f04f10ded" title="Permalink to this equation">#</a></span>\[\begin{align}
+\frac{d z}{d t}=f(z(t), y[z(t),u(t),p], u(t), p)= \bar f(z(t), u(t), p), \quad z(0)=0
+\end{align}\]</div>
+<p>The section, Handling Path Constraints, will explain DAE indexing and how to reduce the index of a DAE to allow it to be treated as an ODE.</p>
+</section>
+</section>
+<section id="general-breakdown-of-daes">
+<h2><span class="section-number">3.3.3. </span>General Breakdown of DAEs<a class="headerlink" href="#general-breakdown-of-daes" title="Link to this heading">#</a></h2>
+<p>With resepct to constructing DAEs:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(z(t)\)</span>: Differential equations are typically dervied from conservation laws.</p></li>
+<li><p><span class="math notranslate nohighlight">\(y(t)\)</span> : Algebraic equations are typiclaly derived from constitutive and equilbrium laws.</p></li>
+<li><p>The decision variables of the system fall under the two following variables:</p></li>
+<li><p><span class="math notranslate nohighlight">\(u(t)\)</span> : the control variables include manipulated variables that change over time.</p></li>
+<li><p><span class="math notranslate nohighlight">\(p\)</span> : time-independent variables that correspond to parameteres, initial conditions, and other steady state conditions.</p></li>
+</ul>
+</section>
+<section id="daes-as-boundary-value-problems">
+<h2><span class="section-number">3.3.4. </span>DAEs as Boundary Value Problems<a class="headerlink" href="#daes-as-boundary-value-problems" title="Link to this heading">#</a></h2>
+<p>Because DAEs are typically initial value problems, they can also be boundary value problems (BVP), where the initial condition is replaced by bondary conditions. With respect to solving DAE optimization problems, BVP DAEs are of the form:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a12d30f5-c7ee-4c34-a115-7e1326d172c7">
+<span class="eqno">(3.4)<a class="headerlink" href="#equation-a12d30f5-c7ee-4c34-a115-7e1326d172c7" title="Permalink to this equation">#</a></span>\[\begin{align}
+\frac{d z}{d t}=\hat f(z(t)), \quad h(z(0),z[t_f;z(0)])=0
+\end{align}\]</div>
+<p>In this form the solutions may be nonunique or not exist over a speficied reason; therefore, a key property is finding a locally unique solution, expressed by the theorem:</p>
+<blockquote>
+<div><p><strong>Theorem 8.2</strong>: Consider the BVP DAE with solution <span class="math notranslate nohighlight">\( \hat z(t)\)</span>. Also let <span class="math notranslate nohighlight">\(\bar f(z(t))\)</span> be Lipschitz continuous for all z(t) <span class="math notranslate nohighlight">\(|| z(t) - \hat z(t) || \leq \epsilon\)</span> for some <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> and <span class="math notranslate nohighlight">\(t \in [0, t_f]\)</span>. Then  the solution <span class="math notranslate nohighlight">\(\hat z(t)\)</span> is locally unique if and only if the matrix:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-1e3b2d61-c44a-47ff-8e8e-12486c939daa">
+<span class="eqno">(3.5)<a class="headerlink" href="#equation-1e3b2d61-c44a-47ff-8e8e-12486c939daa" title="Permalink to this equation">#</a></span>\[\begin{align}
+Q(t) = \frac{\partial h\left(\hat{z}(0), \hat{z}\left(t_f\right)\right)}{\partial z(0)}+Z(t) \frac{\partial h\left(\hat{z}(0), \hat{z}\left(t_f\right)\right)}{\partial z\left(t_f\right)}
+\end{align}\]</div>
+<p>is nonsingular, where the fundamental solution matrix <span class="math notranslate nohighlight">\(Z(t) = \frac{dz(t_f)}{dz(0)}\)</span> is evaluated at the solution <span class="math notranslate nohighlight">\(\hat z(t)\)</span>.</p>
+</div></blockquote>
+<p>Theorem 8.2 is important when designing DAE constrained optimization problems.</p>
+</section>
+<section id="dae-optimization">
+<h2><span class="section-number">3.3.5. </span>DAE Optimization<a class="headerlink" href="#dae-optimization" title="Link to this heading">#</a></h2>
+<p>Typically dynamic systems needed to be optimized over multiple periods, <span class="math notranslate nohighlight">\(l = 1,..., N_T\)</span>, in a time range, <span class="math notranslate nohighlight">\(t\)</span>. The model, states, and decisions can change during each period, <span class="math notranslate nohighlight">\(t \in (t_{l-1}, t_l]\)</span> , or over multiple periods. The multiperiod, dynamic optimization problem is of the form:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-0e626b91-3457-40ef-9e4f-486765707dc3">
+<span class="eqno">(3.6)<a class="headerlink" href="#equation-0e626b91-3457-40ef-9e4f-486765707dc3" title="Permalink to this equation">#</a></span>\[\begin{align}
+\min &amp; \sum_{l=1}^{N_T} \Phi^l\left(z^l\left(t_l\right), y^l\left(t_l\right), u^l\left(t_l\right), p^l\right) \\
+\text { s.t. } &amp; \frac{d z^l}{d t}=f^l\left(z^l(t), y^l(t), u^l(t), p^l\right), \quad z^l\left(t_{l-1}\right)=z_0^l, \\
+&amp; g^l\left(z^l(t), y^l(t), u^l(t), p^l\right)=0, \\
+&amp; u_L^l \leq u^l(t) \leq u_U^l, \\
+&amp; p_L^l \leq p^l \leq p_U^l, \\
+&amp; y_L^l \leq y^l(t) \leq y_U^l, \\
+&amp; z_L^l \leq z^l(t) \leq z_U^l, \quad t \in\left(t_{l-1}, t_l\right], l=1, \ldots, N_T, \\
+&amp; h\left(p, z_0^1, z^1\left(t_1\right), z_0^2, z^2\left(t_2\right), \ldots, z_0^{N_T}, z^{N_T}\left(t_{N_T}\right)\right)=0
+\end{align}\]</div>
+<p>In this form, it is assumed that the state variables are not continuous across periods; therefore, the last line is meant to connect the states of each period. The initial conditions and inequality constraints are represented as simple bounds in this form.</p>
+<p>Key applications of DAEs and Dynamic Optimization are as follows:</p>
+<ul class="simple">
+<li><p>Chemical Reactor Design</p></li>
+<li><p>Parameter Estimation of a Dynamic System</p></li>
+<li><p>Batch Process Estimation</p></li>
+<li><p>Dynamic Real-Time Optimization</p></li>
+</ul>
+<p>A desciption and further explanation of these applications can be found in Chapter 8 of the Biegler (2010) textbook.</p>
+</section>
+<section id="handling-path-constraints">
+<h2><span class="section-number">3.3.6. </span>Handling Path Constraints<a class="headerlink" href="#handling-path-constraints" title="Link to this heading">#</a></h2>
+<p><em>Information taken from Section 8.4 of Biegler (2010).</em></p>
+<p>The motivation for defining the <em>index</em> of a DAE system starts with considering the general algebraic equality constraint <span class="math notranslate nohighlight">\(g_E(z,y,u,p)=0\)</span>. After the algebraic and control variables are established, deriving the Euler-Lagrange equations requires variable and equation nesting. In order to be nested, the algebraic variables must be able to be implicitly emliminated from their paired algebraic equation. If <span class="math notranslate nohighlight">\(y(t)\)</span> cannot be implicitly eliminated from this algebraic equality, reformulation is needed. This reformulation  begins with establishing an index of a DAE system.</p>
+<section id="dae-index-and-index-reduction">
+<h3><span class="section-number">3.3.6.1. </span>DAE Index and Index Reduction<a class="headerlink" href="#dae-index-and-index-reduction" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><strong>Definition 8.6</strong>: Consider the DAE systems of the form:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-5b930edf-0edb-41d2-b106-03665dbf073f">
+<span class="eqno">(3.7)<a class="headerlink" href="#equation-5b930edf-0edb-41d2-b106-03665dbf073f" title="Permalink to this equation">#</a></span>\[\begin{align}
+F\left(x, \frac{d x}{d t}, u(t), p, t\right)=0, \quad h(x(0))=0
+\end{align}\]</div>
+<p>OR</p>
+<div class="amsmath math notranslate nohighlight" id="equation-fe36f853-3edd-4ba2-9c7c-a44f31fc4c6c">
+<span class="eqno">(3.8)<a class="headerlink" href="#equation-fe36f853-3edd-4ba2-9c7c-a44f31fc4c6c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\frac{d z}{d t}= f(z(t), y(t), u(t), p), \quad z(0)=z_0, \quad
+g(z(t), y(t), u(t), p)=0
+\end{equation}\]</div>
+<p>with decisions <span class="math notranslate nohighlight">\(u(t\)</span>) and <span class="math notranslate nohighlight">\(p\)</span> fixed. The index is the integer <span class="math notranslate nohighlight">\(s\)</span> that represents the minimum number of differentiations of the DAE system (with no respect to time) required to determine an ODE for the variables <span class="math notranslate nohighlight">\(z(t)\)</span> and <span class="math notranslate nohighlight">\(y(t)\)</span>.</p>
+</div></blockquote>
+<p>Generally, for semiexplicit systems, the index of a DAE system can be determined by first differentiating the algebraic equations and then substituting resulting differential terms into the respective differential equation. Recall the number of differentiations required to isolate an ODE system corresponds to the index.</p>
+<p>As the goal is usually to isolate a DAE of index 1, the following algorithm describes the typical procedure to reduce the index of a DAE system.</p>
+<blockquote>
+<div><p><strong>Algorithm 8.1</strong>: (Reduction of High Index DAEs)
+Start with a DAE of the form:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-91cb0fc2-aebe-44f2-ae68-58b7feb14999">
+<span class="eqno">(3.9)<a class="headerlink" href="#equation-91cb0fc2-aebe-44f2-ae68-58b7feb14999" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\frac{d z}{d t}= f(z(t), y(t), u(t), p), \quad z(0)=z_0, \quad g(z(t), y(t), u(t), p)=0.
+\end{equation}\]</div>
+<ol class="arabic simple">
+<li><p>Check if the DAE system is index 1. If yes, stop.</p></li>
+<li><p>Identify a subset of algebraic equations that can be solved for a subset of algebraic variables.</p></li>
+<li><p>Consider the remaining algebraic equations that contain differential variables <span class="math notranslate nohighlight">\(z_j\)</span>. Differentiating these remaining algebraic equations with respect to time leads to terms <span class="math notranslate nohighlight">\(\frac{dz_j}{dt}\)</span> in the differentiated equations.</p></li>
+<li><p>For the differential terms <span class="math notranslate nohighlight">\(\frac{dz_j}{dt}\)</span>, substitute the right-hand sides of the corresponding differential equations <span class="math notranslate nohighlight">\(f_j(z,y,u,p)\)</span> into the differentiated algebraic equations, and eliminate (some of) these differential equations. This leads to new algebraic equations that replace the same number of existing differential equations.</p></li>
+<li><p>With this new DAE system, go to step 1.</p></li>
+</ol>
+</div></blockquote>
+<p>An example of this algorithm in use can be found within the following pendulum example.</p>
+</section>
+<section id="pendulum-model-and-index-reduction">
+<h3><span class="section-number">3.3.6.2. </span>Pendulum model and index reduction<a class="headerlink" href="#pendulum-model-and-index-reduction" title="Link to this heading">#</a></h3>
+<p>Pendulum example:</p>
+<ul class="simple">
+<li><p>Python version of example: <a class="reference external" href="http://apmonitor.com/wiki/index.php/Apps/PendulumMotion">http://apmonitor.com/wiki/index.php/Apps/PendulumMotion</a></p></li>
+<li><p>More details on index reduction for example: <a class="reference external" href="https://www.lehigh.edu/~wes1/apci/11may00.pdf">https://www.lehigh.edu/~wes1/apci/11may00.pdf</a></p></li>
+</ul>
+<div class="figure" style="text-align: center"><p><img  src="../../_images/tikz-45a32523c531eb5c0def306387de15f711d5dc2f.png" alt="Figure made with TikZ" /></p>
+</div><p>The following DAE system describes the pendulum system:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-4061ee9d-d314-4028-b971-fe7586d3ff00">
+<span class="eqno">(3.10)<a class="headerlink" href="#equation-4061ee9d-d314-4028-b971-fe7586d3ff00" title="Permalink to this equation">#</a></span>\[\begin{align}
+&amp; x' = u \\
+&amp; y' = v \\
+&amp; u' = -Tx \\
+&amp; v' = g - Ty \\
+&amp; x^2 + y^2 = 1 \\
+\end{align}\]</div>
+<p>To find the index of the DAE system, first take the derivative of the algebraic equation and substitute in for the differential variables:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-e287c3df-1dcc-4616-8615-94ffebd7ff8c">
+<span class="eqno">(3.11)<a class="headerlink" href="#equation-e287c3df-1dcc-4616-8615-94ffebd7ff8c" title="Permalink to this equation">#</a></span>\[\begin{align}
+&amp; x^2 + y^2 = 1 \\
+&amp; 2xx' + 2yy' = 0 \\
+&amp; 2xu + 2yv = 0
+\end{align}\]</div>
+<p>Next, differentiate the obtained equation using the product rule, make similar substitutions, and rearrange:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-cff6fd3b-90a0-4007-addd-5e78c1c94cd4">
+<span class="eqno">(3.12)<a class="headerlink" href="#equation-cff6fd3b-90a0-4007-addd-5e78c1c94cd4" title="Permalink to this equation">#</a></span>\[\begin{align}
+&amp; 2xu + 2yv = 0 \\
+&amp; 2(xu'+ x'u) + 2(yv' + vy') = 0 \\
+&amp; 2(-Tx^2 + u^2) + 2(y(g-Ty) + v^2) = 0 \\
+&amp; 2(u^2 + v^2) + 2(-Tx^2 + gy - Ty^2) = 0 \\
+&amp; 2(u^2 + v^2) - 2T(x^2 + y^2) + 2gy = 0
+\end{align}\]</div>
+<p>Finally, implicitly differentiate the obtained equation, make similar substitutions, and rearrange to isolate the <span class="math notranslate nohighlight">\(T'\)</span> term:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-738a7093-d2cd-46eb-b2f5-b0f18353d084">
+<span class="eqno">(3.13)<a class="headerlink" href="#equation-738a7093-d2cd-46eb-b2f5-b0f18353d084" title="Permalink to this equation">#</a></span>\[\begin{align}
+&amp; 2(u^2 + v^2) - 2T(x^2 + y^2) + 2gy = 0 \\
+&amp; 4(uu' + vv') - 4T(xx' + yy') - 2T'(x^2 + y^2) + 2gy' = 0 \\
+&amp; 4(uu' + vv') - 4T(xx' + yy') + 2gy' = 2T'(x^2 + y^2) \\
+&amp; 4(-Tux + v(g-Ty)) - 4T(xu + yv) + 2gv = 2T' \\
+&amp; 4(-Tux -Tyv + gv) - 4T(xu + yv) + 2gv = 2T' 
+\end{align}\]</div>
+<p>Now the equations are a system of ODEs. Three differentiations were completed, indicating that this is an <strong>Index 3 DAE</strong>.</p>
+<p>To reduce this DAE to index 1, follow Algorithm 8.1. The above analysis shows that this is not an index 1 DAE system. Therefore, the following algebraic equation is identified: <span class="math notranslate nohighlight">\(x^2 + y^2 = 1\)</span>. Differentiate the algebraic equation to yield:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-4a12dedc-46cf-4f77-9224-e1c9f1417ff2">
+<span class="eqno">(3.14)<a class="headerlink" href="#equation-4a12dedc-46cf-4f77-9224-e1c9f1417ff2" title="Permalink to this equation">#</a></span>\[\begin{align}
+&amp; 2xx' + 2yy' = 0\\
+\end{align}\]</div>
+<p>which can be solved for <span class="math notranslate nohighlight">\(x'\)</span>. Substitute for <span class="math notranslate nohighlight">\(x'\)</span> and <span class="math notranslate nohighlight">\(y'\)</span> to yield:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-1af81f74-64aa-44fd-9e01-494c338e721e">
+<span class="eqno">(3.15)<a class="headerlink" href="#equation-1af81f74-64aa-44fd-9e01-494c338e721e" title="Permalink to this equation">#</a></span>\[\begin{align}
+&amp; 2xu + 2yv = 0\\
+\end{align}\]</div>
+<p>The new DAE system is now:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-18e0d7f2-6a76-45e3-8e78-6ba7b1c83259">
+<span class="eqno">(3.16)<a class="headerlink" href="#equation-18e0d7f2-6a76-45e3-8e78-6ba7b1c83259" title="Permalink to this equation">#</a></span>\[\begin{align}
+&amp; y' = v \\
+&amp; u' = -Tx \\
+&amp; v' = g - Ty \\
+&amp; x^2 + y^2 = 1 \\
+&amp; 2xu + 2yv = 0 \\
+\end{align}\]</div>
+<p>where <span class="math notranslate nohighlight">\(x\)</span> is now an algebraic variable and the final equation must be solved for <span class="math notranslate nohighlight">\(T\)</span>. Differentiating the algebraic (last) equation leads to:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-ce117413-3b89-4e1b-956d-ff1ec8080df0">
+<span class="eqno">(3.17)<a class="headerlink" href="#equation-ce117413-3b89-4e1b-956d-ff1ec8080df0" title="Permalink to this equation">#</a></span>\[\begin{align}
+&amp; 2(xu'+ x'u) + 2(yv' + vy') = 0 \\
+&amp; 2(xu' + u^2) + 2(yv' + v^2) = 0 \\
+&amp; 2(u^2 - Tx^2) + 2(v^2 + gy - Ty^2) = 0 \\
+\end{align}\]</div>
+<p>The equations can replace <span class="math notranslate nohighlight">\(u' = -Tx\)</span>, leading to the following DAE system:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-703517e2-48b0-42ed-a43d-20d8a704a01d">
+<span class="eqno">(3.18)<a class="headerlink" href="#equation-703517e2-48b0-42ed-a43d-20d8a704a01d" title="Permalink to this equation">#</a></span>\[\begin{align}
+&amp; y' = v \\
+&amp; v' = g - Ty \\
+&amp; x^2 + y^2 = 1 \\
+&amp; 2xu + 2yv = 0 \\
+&amp; (u^2 + v^2) - T\underbrace{(x^2 + y^2)}_{1} + gy = 0 \\
+\end{align}\]</div>
+<p>which is an <strong>Index 1 DAE</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Load libraries</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyomo.environ</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyo</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyomo.dae</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dae</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyomo.dae.simulator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simulator</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1">## Define function for plotting results</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_results</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">profiles</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    inputs:</span>
+
+<span class="sd">    sim: pyomo.DAE simulator results from a simulation of ODE or DAE</span>
+<span class="sd">    tsim: 1D array of time samples of the DAE/ODE simulatiion</span>
+<span class="sd">    profiles: 2D array of simulated differential and algebraic equations</span>
+
+<span class="sd">    outputs:</span>
+
+<span class="sd">    Plot 1: A plot of the curated profiles</span>
+<span class="sd">    Plot 2: A plot of the simulated results</span>
+
+<span class="sd">    time = list(m.t)</span>
+<span class="sd">    x = [value(m.x[t]) for t in m.t]</span>
+<span class="sd">    y = [value(m.y[t]) for t in m.t]</span>
+
+<span class="sd">    plt.plot(time, x, &#39;-b&#39;, label=&#39;x&#39;)</span>
+<span class="sd">    plt.plot(time, y, &#39;-r&#39;, label=&#39;y&#39;)</span>
+<span class="sd">    plt.xlabel(&#39;Time&#39;)</span>
+<span class="sd">    plt.ylabel(&#39;Position&#39;)</span>
+<span class="sd">    plt.legend(loc=&#39;best&#39;)</span>
+<span class="sd">    plt.show()</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">varorder</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">get_variable_order</span><span class="p">()</span>
+    <span class="n">algorder</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">get_variable_order</span><span class="p">(</span><span class="n">vartype</span><span class="o">=</span><span class="s1">&#39;algebraic&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Create empty dictionary</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="c1"># Collect Different Profiles</span>
+    <span class="k">for</span> <span class="n">idx1</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">varorder</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">idx1</span>
+        <span class="n">v_</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">results</span><span class="p">[</span><span class="n">v_</span><span class="p">]</span> <span class="o">=</span> <span class="n">profiles</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tsim</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="n">v_</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">v</span><span class="p">)</span>
+
+    
+    <span class="c1"># Collect Algebraic Profiles</span>
+    <span class="k">for</span> <span class="n">idx2</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">algorder</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">varorder</span><span class="p">)</span> <span class="o">+</span> <span class="n">idx2</span>
+        <span class="n">v_</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">results</span><span class="p">[</span><span class="n">v_</span><span class="p">]</span> <span class="o">=</span> <span class="n">profiles</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tsim</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="n">v_</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">v</span><span class="p">)</span>
+    
+    <span class="c1"># Plot the simulated algebraic and differential profiles as they change in time</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s2">&quot;in&quot;</span><span class="p">,</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+    <span class="c1"># Plot the results of the simulation</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">x_</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;x[</span><span class="si">{t}</span><span class="s1">]&#39;</span><span class="p">]</span>
+    <span class="n">y_</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;y[</span><span class="si">{t}</span><span class="s1">]&#39;</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tsim</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x_</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y_</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;-b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;length&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s2">&quot;in&quot;</span><span class="p">,</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$\sqrt{x^2 + y^2}$&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+    <span class="c1">#return results</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="formulation-1-index-3-dae">
+<h3><span class="section-number">3.3.6.3. </span>Formulation 1: Index-3 DAE<a class="headerlink" href="#formulation-1-index-3-dae" title="Link to this heading">#</a></h3>
+<p>Consider the following model:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\frac{d x}{dt} &amp;= u \\
+\frac{d y}{dt} &amp;= v \\
+\frac{d u}{dt} &amp;= -T x \\
+\frac{d v}{dt} &amp;= g - Ty \\
+&amp; x^2 + y^2 = 1
+\end{align}\end{split}\]</div>
+<p>This assumes mass and length of unity.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_model_index3</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Creates a model to define the Index 3 DAE system.</span>
+
+<span class="sd">    Output: the model, m</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+    <span class="c1"># Declare time</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">ContinuousSet</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># Declare parameter - acceleration due to gravity</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mf">9.81</span><span class="p">)</span> <span class="c1"># m/s^2</span>
+
+    <span class="c1"># Declare variables indexed over time</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="c1"># horizontal position</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="c1"># vertical position</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">u</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="c1"># horizontal velocity</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="c1"># vertical velocity</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="c1"># tension</span>
+
+    <span class="c1"># Declare derivative variables</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dx</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="c1"># with respect to t is implied</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dy</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">du</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dv</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>
+
+    <span class="c1"># Declare differential equations</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_dx_eqn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dx</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dx_eqn</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_dx_eqn</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_dy_eqn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dy</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dy_eqn</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_dy_eqn</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_du_eqn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">du</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="n">m</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">du_eqn</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_du_eqn</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_dv_eqn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dv</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">g</span> <span class="o">-</span><span class="n">m</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dv_eqn</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_dv_eqn</span><span class="p">)</span>
+
+    <span class="c1"># Declare algebraic equation</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_alg_eqn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">alg_eqn</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_alg_eqn</span><span class="p">)</span>
+
+    <span class="c1"># Specify initial conditions</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">g</span>
+    
+    <span class="k">return</span> <span class="n">m</span>
+
+<span class="n">index3</span> <span class="o">=</span> <span class="n">create_model_index3</span><span class="p">()</span>
+
+<span class="c1"># Specify integrator options</span>
+<span class="n">int_ops</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;print_stats&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s2">&quot;abstol&quot;</span><span class="p">:</span><span class="mf">1E-8</span><span class="p">,</span><span class="s2">&quot;reltol&quot;</span><span class="p">:</span><span class="mf">1E-6</span><span class="p">}</span>
+
+<span class="c1"># Solve DAEs</span>
+<span class="n">sim</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">(</span><span class="n">index3</span><span class="p">,</span> <span class="n">package</span><span class="o">=</span><span class="s1">&#39;casadi&#39;</span><span class="p">)</span>
+<span class="n">tsim</span><span class="p">,</span> <span class="n">profiles</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">numpoints</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">integrator</span><span class="o">=</span><span class="s1">&#39;idas&#39;</span><span class="p">,</span><span class="n">integrator_options</span><span class="o">=</span><span class="n">int_ops</span><span class="p">)</span>
+
+<span class="c1"># Plot solution</span>
+<span class="n">plot_results</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">profiles</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+At t = 0 and h = 1.06624e-14, the corrector convergence failed repeatedly or with |h| = hmin.
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">RuntimeError</span><span class="g g-Whitespace">                              </span>Traceback (most recent call last)
+<span class="nn">/var/folders/8v/lbvy4xb128d687t1pwzl_cfh0000gp/T/ipykernel_66414/739539068.py</span> in <span class="ni">?</span><span class="nt">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">63</span> <span class="n">int_ops</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;print_stats&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s2">&quot;abstol&quot;</span><span class="p">:</span><span class="mf">1E-8</span><span class="p">,</span><span class="s2">&quot;reltol&quot;</span><span class="p">:</span><span class="mf">1E-6</span><span class="p">}</span>
+<span class="g g-Whitespace">     </span><span class="mi">64</span> 
+<span class="g g-Whitespace">     </span><span class="mi">65</span> <span class="c1"># Solve DAEs</span>
+<span class="g g-Whitespace">     </span><span class="mi">66</span> <span class="n">sim</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">(</span><span class="n">index3</span><span class="p">,</span> <span class="n">package</span><span class="o">=</span><span class="s1">&#39;casadi&#39;</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">67</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">profiles</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">numpoints</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">integrator</span><span class="o">=</span><span class="s1">&#39;idas&#39;</span><span class="p">,</span><span class="n">integrator_options</span><span class="o">=</span><span class="n">int_ops</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">68</span> 
+<span class="g g-Whitespace">     </span><span class="mi">69</span> <span class="c1"># Plot solution</span>
+<span class="g g-Whitespace">     </span><span class="mi">70</span> <span class="n">plot_results</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">profiles</span><span class="p">)</span>
+
+<span class="nn">~/anaconda3/envs/controls/lib/python3.10/site-packages/pyomo/dae/simulator.py</span> in <span class="ni">?</span><span class="nt">(self, numpoints, tstep, integrator, varying_inputs, initcon, integrator_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">928</span>                 <span class="n">tsim</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulate_with_casadi_with_inputs</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">929</span>                     <span class="n">initcon</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">varying_inputs</span><span class="p">,</span> <span class="n">integrator</span><span class="p">,</span> <span class="n">integrator_options</span>
+<span class="g g-Whitespace">    </span><span class="mi">930</span>                 <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">931</span>             <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">932</span>                 <span class="n">tsim</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulate_with_casadi_no_inputs</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">933</span>                     <span class="n">initcon</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">integrator</span><span class="p">,</span> <span class="n">integrator_options</span>
+<span class="g g-Whitespace">    </span><span class="mi">934</span>                 <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">935</span> 
+
+<span class="nn">~/anaconda3/envs/controls/lib/python3.10/site-packages/pyomo/dae/simulator.py</span> in <span class="ni">?</span><span class="nt">(self, initcon, tsim, integrator, integrator_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">990</span> 
+<span class="g g-Whitespace">    </span><span class="mi">991</span>         <span class="n">integrator_options</span><span class="p">[</span><span class="s1">&#39;grid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tsim</span>
+<span class="g g-Whitespace">    </span><span class="mi">992</span>         <span class="n">integrator_options</span><span class="p">[</span><span class="s1">&#39;output_t0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="g g-Whitespace">    </span><span class="mi">993</span>         <span class="n">F</span> <span class="o">=</span> <span class="n">casadi</span><span class="o">.</span><span class="n">integrator</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">integrator</span><span class="p">,</span> <span class="n">dae</span><span class="p">,</span> <span class="n">integrator_options</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">994</span>         <span class="n">sol</span> <span class="o">=</span> <span class="n">F</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="n">initcon</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">995</span>         <span class="n">profile</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;xf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">full</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
+<span class="g g-Whitespace">    </span><span class="mi">996</span> 
+<span class="g g-Whitespace">    </span><span class="mi">997</span>         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_algvars</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+
+<span class="nn">~/anaconda3/envs/controls/lib/python3.10/site-packages/casadi/casadi.py</span> in <span class="ni">?</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">7768</span>         <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">7769</span>           <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">7770</span>       <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">7771</span>     <span class="c1"># Named inputs -&gt; return dictionary</span>
+<span class="ne">-&gt; </span><span class="mi">7772</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">~/anaconda3/envs/controls/lib/python3.10/site-packages/casadi/casadi.py</span> in <span class="ni">?</span><span class="nt">(self, *args)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6941</span>         <span class="n">pre</span><span class="o">-</span><span class="n">CasADi</span> <span class="mf">3.2</span>
+<span class="g g-Whitespace">   </span><span class="mi">6942</span> 
+<span class="g g-Whitespace">   </span><span class="mi">6943</span> 
+<span class="g g-Whitespace">   </span><span class="mi">6944</span>         <span class="s2">&quot;&quot;&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">6945</span><span class="s2">         return _casadi.Function_call(self, *args)</span>
+
+<span class="ne">RuntimeError</span>: .../casadi/interfaces/sundials/idas_interface.cpp:591: IDASolve returned &quot;IDA_CONV_FAIL&quot;. Consult IDAS documentation.
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Warning</strong>: If you run this notebook in Colab, you may get the following runtime error and your kernel may crash:</p>
+<p><img alt="casadi-error-1" src="https://raw.githubusercontent.com/ndcbe/optimization/main/media/casadi-error1.png" /></p>
+<p><img alt="casadi-error-2" src="https://raw.githubusercontent.com/ndcbe/optimization/main/media/casadi-error2.png" /></p>
+<p>Why did the <code class="docutils literal notranslate"><span class="pre">IDAS</span></code> integrator in <code class="docutils literal notranslate"><span class="pre">SUNDIALS</span></code> fail? It is <a class="reference external" href="https://groups.google.com/g/casadi-users/c/E02-X6nGVFs">only meant for index 0 or 1 DAEs</a>! Integrating high index DAEs is really hard!</p>
+</section>
+<section id="formulation-2-pure-ode-model-index-0-example">
+<h3><span class="section-number">3.3.6.4. </span>Formulation 2: Pure ODE Model/ Index-0 Example<a class="headerlink" href="#formulation-2-pure-ode-model-index-0-example" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\frac{d x}{dt} &amp;= u \\
+\frac{d y}{dt} &amp;= v \\
+\frac{d u}{dt} &amp;= -T x \\
+\frac{d v}{dt} &amp;= g - Ty \\
+\frac{d T}{dt} &amp;= 4 T (x u + y v) + 3 g v
+\end{align}\end{split}\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_model_ode</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Creates a model to define the Index 0 DAE system.</span>
+
+<span class="sd">    Output: the model, m</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+    <span class="c1"># Declare time</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">ContinuousSet</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">))</span>
+
+    <span class="c1"># Declare parameter - acceleration due to gravit</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mf">9.81</span><span class="p">)</span> <span class="c1"># m/s^2</span>
+
+    <span class="c1"># Declare variables indexed over time</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="c1"># horizontal position</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="c1"># vertical position</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">u</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="c1"># horizontal velocity</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="c1"># vertical velocity</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="c1"># tension</span>
+
+    <span class="c1"># Declare derivative variables</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dx</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="c1"># with respect to t is implied</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dy</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">du</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dv</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dT</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+    <span class="c1"># Declare differential equations</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_dx_eqn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dx</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dx_eqn</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_dx_eqn</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_dy_eqn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dy</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dy_eqn</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_dy_eqn</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_du_eqn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">du</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="n">m</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">du_eqn</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_du_eqn</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_dv_eqn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dv</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">g</span> <span class="o">-</span><span class="n">m</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dv_eqn</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_dv_eqn</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_dT_eqn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dT</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">])</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">g</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dT_eqn</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_dT_eqn</span><span class="p">)</span>
+
+    <span class="c1"># Specify initial conditions</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">g</span>
+    
+    <span class="k">return</span> <span class="n">m</span>
+
+<span class="n">ode</span> <span class="o">=</span> <span class="n">create_model_ode</span><span class="p">()</span>
+
+<span class="c1"># Specify integrator options</span>
+<span class="n">int_ops</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;print_stats&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s2">&quot;abstol&quot;</span><span class="p">:</span><span class="mf">1E-6</span><span class="p">,</span><span class="s2">&quot;reltol&quot;</span><span class="p">:</span><span class="mf">1E-4</span><span class="p">}</span>
+
+<span class="c1"># Solve DAEs</span>
+<span class="n">sim</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">(</span><span class="n">ode</span><span class="p">,</span> <span class="n">package</span><span class="o">=</span><span class="s1">&#39;casadi&#39;</span><span class="p">)</span>
+<span class="n">tsim</span><span class="p">,</span> <span class="n">profiles</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">numpoints</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">integrator</span><span class="o">=</span><span class="s1">&#39;idas&#39;</span><span class="p">,</span><span class="n">integrator_options</span><span class="o">=</span><span class="n">int_ops</span><span class="p">)</span>
+
+<span class="c1"># Plot solution</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">plot_results</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">profiles</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FORWARD INTEGRATION:
+Number of steps taken by SUNDIALS: 167
+Number of calls to the user’s f function: 242
+Number of calls made to the linear solver setup function: 31
+Number of error test failures: 7
+Method order used on the last internal step: 5
+Method order to be used on the next internal step: 5
+Actual value of initial step size: 7.90569e-07
+Step size taken on the last internal step: 0.00246466
+Step size to be attempted on the next internal step: 0.00492933
+Current internal time reached: 0.00492933
+Number of nonlinear iterations performed: 240
+Number of nonlinear convergence failures: 0
+</pre></div>
+</div>
+<img alt="../../_images/9f839cf4f05e631514896e7768e846b198be8192a67fbf1ae38f5f64e612d036.png" src="../../_images/9f839cf4f05e631514896e7768e846b198be8192a67fbf1ae38f5f64e612d036.png" />
+<img alt="../../_images/e5c8ad54593f7664c7d2efe82b4fcff0d80ae5a0329747bd6bec75a459899e86.png" src="../../_images/e5c8ad54593f7664c7d2efe82b4fcff0d80ae5a0329747bd6bec75a459899e86.png" />
+</div>
+</div>
+<p><strong>Discussion</strong></p>
+<ul class="simple">
+<li><p>Are all of the algebraic constraints in the original formulation satisfied?</p></li>
+</ul>
+</section>
+<section id="formulation-3-index-1-dae-model">
+<h3><span class="section-number">3.3.6.5. </span>Formulation 3: Index-1 DAE Model<a class="headerlink" href="#formulation-3-index-1-dae-model" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\frac{d y}{dt} &amp;= v \\
+\frac{d v}{dt} &amp;= g - Ty \\
+ &amp; x^2 + y^2 = 1 \\
+ &amp; 2 x u + 2 y v = 0 \\
+ &amp; (u^2 + v^2) - T \underbrace{(x^2 + y^2)}_{1} + g y = 0
+\end{align}\end{split}\]</div>
+<p>(This reformulation is NOT unique… could have written <span class="math notranslate nohighlight">\(\frac{dx}{dt}\)</span> and <span class="math notranslate nohighlight">\(\frac{du}{dt}\)</span> instead.)</p>
+<p>Consistent initial conditions:</p>
+<ol class="arabic simple">
+<li><p>Specify <span class="math notranslate nohighlight">\(y(0)\)</span> and <span class="math notranslate nohighlight">\(v(0)\)</span>.</p></li>
+<li><p>Solve for <span class="math notranslate nohighlight">\(x(0)\)</span>, <span class="math notranslate nohighlight">\(u(0)\)</span>, and <span class="math notranslate nohighlight">\(T(0)\)</span></p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_model_index1</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Creates a model to define the Index 1 DAE system.</span>
+
+<span class="sd">    Output: the model, m</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+    <span class="c1"># Declare time</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">ContinuousSet</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+    <span class="c1"># Declare parameter - acceleration due to gravity</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mf">9.81</span><span class="p">)</span> <span class="c1"># m/s^2</span>
+
+    <span class="c1"># Declare variables indexed over time</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="c1"># horizontal position</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="c1"># vertical position</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">u</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="c1"># horizontal velocity</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="c1"># vertical velocity</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="c1"># tension</span>
+
+    <span class="c1"># Declare derivative variables</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dy</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dv</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>
+
+    <span class="c1"># Declare differential equations</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_dy_eqn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dy</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dy_eqn</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_dy_eqn</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_dv_eqn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dv</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">g</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dv_eqn</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_dv_eqn</span><span class="p">)</span>
+
+    <span class="c1"># Declare algebraic equations</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_alg_eqn1</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">alg_eqn1</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_alg_eqn1</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_alg_eqn2</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">alg_eqn2</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_alg_eqn2</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_alg_eqn3</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">g</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">alg_eqn3</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_alg_eqn3</span><span class="p">)</span>
+
+    <span class="c1"># Specify initial conditions</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">g</span>
+    
+    <span class="k">return</span> <span class="n">m</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">index1_check_constraints</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Check if the three constraints are feasible.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Constraint 1:&quot;</span><span class="p">)</span>
+    <span class="n">r1</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]()</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]()</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">r1</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Constraint 2:&quot;</span><span class="p">)</span>
+    <span class="n">r2</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]()</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]()</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]()</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">r2</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Constraint 3:&quot;</span><span class="p">)</span>
+    <span class="n">r3</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]()</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]()</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]()</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">g</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">r3</span><span class="p">)</span>
+
+<span class="n">index1</span> <span class="o">=</span> <span class="n">create_model_index1</span><span class="p">()</span>
+
+<span class="c1"># Check initial condition</span>
+<span class="n">index1_check_constraints</span><span class="p">(</span><span class="n">index1</span><span class="p">)</span>
+
+<span class="c1"># Specify integrator options</span>
+<span class="n">int_ops</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;print_stats&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s2">&quot;abstol&quot;</span><span class="p">:</span><span class="mf">1E-6</span><span class="p">,</span><span class="s2">&quot;reltol&quot;</span><span class="p">:</span><span class="mf">1E-4</span><span class="p">}</span>
+
+<span class="c1"># Solve DAEs</span>
+<span class="n">sim</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">(</span><span class="n">index1</span><span class="p">,</span> <span class="n">package</span><span class="o">=</span><span class="s1">&#39;casadi&#39;</span><span class="p">)</span>
+<span class="n">tsim</span><span class="p">,</span> <span class="n">profiles</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">numpoints</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">integrator</span><span class="o">=</span><span class="s1">&#39;idas&#39;</span><span class="p">,</span><span class="n">integrator_options</span><span class="o">=</span><span class="n">int_ops</span><span class="p">)</span>
+<span class="c1"># tsim, profiles = sim.simulate(numpoints=100, integrator=&#39;collocation&#39;)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Constraint 1:
+0
+
+Constraint 2:
+0
+
+Constraint 3:
+0.0
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+The residual routine or the linear setup or solve routine had a recoverable error, but IDACalcIC was unable to recover.
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">RuntimeError</span><span class="g g-Whitespace">                              </span>Traceback (most recent call last)
+<span class="nn">/var/folders/8v/lbvy4xb128d687t1pwzl_cfh0000gp/T/ipykernel_66414/4113190258.py</span> in <span class="ni">?</span><span class="nt">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">80</span> <span class="n">int_ops</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;print_stats&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s2">&quot;abstol&quot;</span><span class="p">:</span><span class="mf">1E-6</span><span class="p">,</span><span class="s2">&quot;reltol&quot;</span><span class="p">:</span><span class="mf">1E-4</span><span class="p">}</span>
+<span class="g g-Whitespace">     </span><span class="mi">81</span> 
+<span class="g g-Whitespace">     </span><span class="mi">82</span> <span class="c1"># Solve DAEs</span>
+<span class="g g-Whitespace">     </span><span class="mi">83</span> <span class="n">sim</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">(</span><span class="n">index1</span><span class="p">,</span> <span class="n">package</span><span class="o">=</span><span class="s1">&#39;casadi&#39;</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">84</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">profiles</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">numpoints</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">integrator</span><span class="o">=</span><span class="s1">&#39;idas&#39;</span><span class="p">,</span><span class="n">integrator_options</span><span class="o">=</span><span class="n">int_ops</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">85</span> <span class="c1"># tsim, profiles = sim.simulate(numpoints=100, integrator=&#39;collocation&#39;)</span>
+
+<span class="nn">~/anaconda3/envs/controls/lib/python3.10/site-packages/pyomo/dae/simulator.py</span> in <span class="ni">?</span><span class="nt">(self, numpoints, tstep, integrator, varying_inputs, initcon, integrator_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">928</span>                 <span class="n">tsim</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulate_with_casadi_with_inputs</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">929</span>                     <span class="n">initcon</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">varying_inputs</span><span class="p">,</span> <span class="n">integrator</span><span class="p">,</span> <span class="n">integrator_options</span>
+<span class="g g-Whitespace">    </span><span class="mi">930</span>                 <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">931</span>             <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">932</span>                 <span class="n">tsim</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulate_with_casadi_no_inputs</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">933</span>                     <span class="n">initcon</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">integrator</span><span class="p">,</span> <span class="n">integrator_options</span>
+<span class="g g-Whitespace">    </span><span class="mi">934</span>                 <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">935</span> 
+
+<span class="nn">~/anaconda3/envs/controls/lib/python3.10/site-packages/pyomo/dae/simulator.py</span> in <span class="ni">?</span><span class="nt">(self, initcon, tsim, integrator, integrator_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">990</span> 
+<span class="g g-Whitespace">    </span><span class="mi">991</span>         <span class="n">integrator_options</span><span class="p">[</span><span class="s1">&#39;grid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tsim</span>
+<span class="g g-Whitespace">    </span><span class="mi">992</span>         <span class="n">integrator_options</span><span class="p">[</span><span class="s1">&#39;output_t0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="g g-Whitespace">    </span><span class="mi">993</span>         <span class="n">F</span> <span class="o">=</span> <span class="n">casadi</span><span class="o">.</span><span class="n">integrator</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">integrator</span><span class="p">,</span> <span class="n">dae</span><span class="p">,</span> <span class="n">integrator_options</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">994</span>         <span class="n">sol</span> <span class="o">=</span> <span class="n">F</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="n">initcon</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">995</span>         <span class="n">profile</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;xf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">full</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
+<span class="g g-Whitespace">    </span><span class="mi">996</span> 
+<span class="g g-Whitespace">    </span><span class="mi">997</span>         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_algvars</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+
+<span class="nn">~/anaconda3/envs/controls/lib/python3.10/site-packages/casadi/casadi.py</span> in <span class="ni">?</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">7768</span>         <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">7769</span>           <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">7770</span>       <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">7771</span>     <span class="c1"># Named inputs -&gt; return dictionary</span>
+<span class="ne">-&gt; </span><span class="mi">7772</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">~/anaconda3/envs/controls/lib/python3.10/site-packages/casadi/casadi.py</span> in <span class="ni">?</span><span class="nt">(self, *args)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6941</span>         <span class="n">pre</span><span class="o">-</span><span class="n">CasADi</span> <span class="mf">3.2</span>
+<span class="g g-Whitespace">   </span><span class="mi">6942</span> 
+<span class="g g-Whitespace">   </span><span class="mi">6943</span> 
+<span class="g g-Whitespace">   </span><span class="mi">6944</span>         <span class="s2">&quot;&quot;&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">6945</span><span class="s2">         return _casadi.Function_call(self, *args)</span>
+
+<span class="ne">RuntimeError</span>: .../casadi/interfaces/sundials/idas_interface.cpp:591: IDACalcIC returned &quot;IDA_NO_RECOVERY&quot;. Consult IDAS documentation.
+</pre></div>
+</div>
+</div>
+</div>
+<p>What happened? <a class="reference external" href="https://sourceforge.net/p/casadi/discussion/1271244/thread/1d895c9e/">Point singularity</a> at <span class="math notranslate nohighlight">\(x=0\)</span>.</p>
+<p>Let’s try <span class="math notranslate nohighlight">\(x=0.1\)</span> as the initial point.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">index1_again</span> <span class="o">=</span> <span class="n">create_model_index1</span><span class="p">()</span>
+
+<span class="c1"># Specify alternative initial conditions</span>
+<span class="n">small_number</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+<span class="n">index1_again</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">small_number</span>
+<span class="n">index1_again</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">index1_again</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">index1_again</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">index1_again</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">index1_again</span><span class="o">.</span><span class="n">g</span>
+
+<span class="c1"># Check initial condition</span>
+<span class="n">index1_check_constraints</span><span class="p">(</span><span class="n">index1_again</span><span class="p">)</span>
+
+<span class="c1"># Solve DAEs</span>
+<span class="n">sim</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">(</span><span class="n">index1_again</span><span class="p">,</span> <span class="n">package</span><span class="o">=</span><span class="s1">&#39;casadi&#39;</span><span class="p">)</span>
+
+<span class="c1"># Simulator</span>
+<span class="n">tsim</span><span class="p">,</span> <span class="n">profiles</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">numpoints</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">integrator</span><span class="o">=</span><span class="s1">&#39;idas&#39;</span><span class="p">,</span><span class="n">integrator_options</span><span class="o">=</span><span class="n">int_ops</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Constraint 1:
+0.010000000000000009
+
+Constraint 2:
+0.1
+
+Constraint 3:
+0.0
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+The residual routine or the linear setup or solve routine had a recoverable error, but IDACalcIC was unable to recover.
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">RuntimeError</span><span class="g g-Whitespace">                              </span>Traceback (most recent call last)
+<span class="nn">/var/folders/8v/lbvy4xb128d687t1pwzl_cfh0000gp/T/ipykernel_66414/575022909.py</span> in <span class="ni">?</span><span class="nt">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="c1"># Solve DAEs</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="n">sim</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">(</span><span class="n">index1_again</span><span class="p">,</span> <span class="n">package</span><span class="o">=</span><span class="s1">&#39;casadi&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span> 
+<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="c1"># Simulator</span>
+<span class="ne">---&gt; </span><span class="mi">19</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">profiles</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">numpoints</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">integrator</span><span class="o">=</span><span class="s1">&#39;idas&#39;</span><span class="p">,</span><span class="n">integrator_options</span><span class="o">=</span><span class="n">int_ops</span><span class="p">)</span>
+
+<span class="nn">~/anaconda3/envs/controls/lib/python3.10/site-packages/pyomo/dae/simulator.py</span> in <span class="ni">?</span><span class="nt">(self, numpoints, tstep, integrator, varying_inputs, initcon, integrator_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">928</span>                 <span class="n">tsim</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulate_with_casadi_with_inputs</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">929</span>                     <span class="n">initcon</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">varying_inputs</span><span class="p">,</span> <span class="n">integrator</span><span class="p">,</span> <span class="n">integrator_options</span>
+<span class="g g-Whitespace">    </span><span class="mi">930</span>                 <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">931</span>             <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">932</span>                 <span class="n">tsim</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulate_with_casadi_no_inputs</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">933</span>                     <span class="n">initcon</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">integrator</span><span class="p">,</span> <span class="n">integrator_options</span>
+<span class="g g-Whitespace">    </span><span class="mi">934</span>                 <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">935</span> 
+
+<span class="nn">~/anaconda3/envs/controls/lib/python3.10/site-packages/pyomo/dae/simulator.py</span> in <span class="ni">?</span><span class="nt">(self, initcon, tsim, integrator, integrator_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">990</span> 
+<span class="g g-Whitespace">    </span><span class="mi">991</span>         <span class="n">integrator_options</span><span class="p">[</span><span class="s1">&#39;grid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tsim</span>
+<span class="g g-Whitespace">    </span><span class="mi">992</span>         <span class="n">integrator_options</span><span class="p">[</span><span class="s1">&#39;output_t0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="g g-Whitespace">    </span><span class="mi">993</span>         <span class="n">F</span> <span class="o">=</span> <span class="n">casadi</span><span class="o">.</span><span class="n">integrator</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">integrator</span><span class="p">,</span> <span class="n">dae</span><span class="p">,</span> <span class="n">integrator_options</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">994</span>         <span class="n">sol</span> <span class="o">=</span> <span class="n">F</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="n">initcon</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">995</span>         <span class="n">profile</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;xf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">full</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
+<span class="g g-Whitespace">    </span><span class="mi">996</span> 
+<span class="g g-Whitespace">    </span><span class="mi">997</span>         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_algvars</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+
+<span class="nn">~/anaconda3/envs/controls/lib/python3.10/site-packages/casadi/casadi.py</span> in <span class="ni">?</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">7768</span>         <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">7769</span>           <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">7770</span>       <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">7771</span>     <span class="c1"># Named inputs -&gt; return dictionary</span>
+<span class="ne">-&gt; </span><span class="mi">7772</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">~/anaconda3/envs/controls/lib/python3.10/site-packages/casadi/casadi.py</span> in <span class="ni">?</span><span class="nt">(self, *args)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6941</span>         <span class="n">pre</span><span class="o">-</span><span class="n">CasADi</span> <span class="mf">3.2</span>
+<span class="g g-Whitespace">   </span><span class="mi">6942</span> 
+<span class="g g-Whitespace">   </span><span class="mi">6943</span> 
+<span class="g g-Whitespace">   </span><span class="mi">6944</span>         <span class="s2">&quot;&quot;&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">6945</span><span class="s2">         return _casadi.Function_call(self, *args)</span>
+
+<span class="ne">RuntimeError</span>: .../casadi/interfaces/sundials/idas_interface.cpp:591: IDACalcIC returned &quot;IDA_NO_RECOVERY&quot;. Consult IDAS documentation.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Our initial point does not satisfy the algebraic constraints! We need a consistent initial point.</p>
+<p>Given <span class="math notranslate nohighlight">\(x = \epsilon\)</span>, solve <span class="math notranslate nohighlight">\(x^2 + y^2 = 1\)</span> for <span class="math notranslate nohighlight">\(y\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ y = \sqrt{1^2 - \epsilon^2}\]</div>
+<p>Then, assume <span class="math notranslate nohighlight">\(u = 1\)</span> and solve <span class="math notranslate nohighlight">\(2 x u + 2 y v = 0\)</span> for <span class="math notranslate nohighlight">\(v\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[v = \frac{-x u}{y}\]</div>
+<p>Finally, we can solve <span class="math notranslate nohighlight">\((u^2 + v^2) - T (x^2 + y^2) + g y = 0\)</span> for <span class="math notranslate nohighlight">\(T\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+T = \frac{(u^2 + v^2) + gy}{x^2 + y^2} = \frac{(u^2 + v^2) + gy}{1}
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">index1_take_two</span> <span class="o">=</span> <span class="n">create_model_index1</span><span class="p">()</span>
+
+<span class="c1"># Specify alternative initial conditions</span>
+<span class="n">small_number</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+<span class="n">index1_take_two</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">small_number</span>
+<span class="n">index1_take_two</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">small_number</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">index1_take_two</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">index1_take_two</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">index1_take_two</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]()</span><span class="o">*</span><span class="n">index1_take_two</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]()</span><span class="o">/</span><span class="n">index1_take_two</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]()</span>
+<span class="n">index1_take_two</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">index1_take_two</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]()</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">index1_take_two</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]()</span><span class="o">**</span><span class="mi">2</span>
+    <span class="o">+</span> <span class="n">index1_take_two</span><span class="o">.</span><span class="n">g</span><span class="o">*</span><span class="n">index1_take_two</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]())</span>
+
+<span class="c1"># Check initial condition</span>
+<span class="n">index1_check_constraints</span><span class="p">(</span><span class="n">index1_take_two</span><span class="p">)</span>
+
+<span class="c1"># Solve DAEs</span>
+<span class="n">sim</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">(</span><span class="n">index1_take_two</span><span class="p">,</span> <span class="n">package</span><span class="o">=</span><span class="s1">&#39;casadi&#39;</span><span class="p">)</span>
+
+<span class="c1"># Specify integrator options</span>
+<span class="n">int_ops2</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;print_stats&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s2">&quot;abstol&quot;</span><span class="p">:</span><span class="mf">1E-6</span><span class="p">,</span><span class="s2">&quot;reltol&quot;</span><span class="p">:</span><span class="mf">1E-4</span><span class="p">,</span>
+            <span class="s2">&quot;verbose&quot;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s2">&quot;calc_ic&quot;</span><span class="p">:</span><span class="kc">True</span><span class="p">}</span>
+
+<span class="c1"># Simulator</span>
+<span class="n">tsim</span><span class="p">,</span> <span class="n">profiles</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">numpoints</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">integrator</span><span class="o">=</span><span class="s1">&#39;idas&#39;</span><span class="p">,</span><span class="n">integrator_options</span><span class="o">=</span><span class="n">int_ops2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Constraint 1:
+0.0
+
+Constraint 2:
+0.0
+
+Constraint 3:
+0.0
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+psetup failed: .../casadi/interfaces/sundials/idas_interface.cpp:852: Linear solve failed
+The residual routine or the linear setup or solve routine had a recoverable error, but IDACalcIC was unable to recover.
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">RuntimeError</span><span class="g g-Whitespace">                              </span>Traceback (most recent call last)
+<span class="nn">/var/folders/8v/lbvy4xb128d687t1pwzl_cfh0000gp/T/ipykernel_66414/2451325184.py</span> in <span class="ni">?</span><span class="nt">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="n">int_ops2</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;print_stats&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s2">&quot;abstol&quot;</span><span class="p">:</span><span class="mf">1E-6</span><span class="p">,</span><span class="s2">&quot;reltol&quot;</span><span class="p">:</span><span class="mf">1E-4</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span>             <span class="s2">&quot;verbose&quot;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s2">&quot;calc_ic&quot;</span><span class="p">:</span><span class="kc">True</span><span class="p">}</span>
+<span class="g g-Whitespace">     </span><span class="mi">22</span> 
+<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="c1"># Simulator</span>
+<span class="ne">---&gt; </span><span class="mi">24</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">profiles</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">numpoints</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">integrator</span><span class="o">=</span><span class="s1">&#39;idas&#39;</span><span class="p">,</span><span class="n">integrator_options</span><span class="o">=</span><span class="n">int_ops2</span><span class="p">)</span>
+
+<span class="nn">~/anaconda3/envs/controls/lib/python3.10/site-packages/pyomo/dae/simulator.py</span> in <span class="ni">?</span><span class="nt">(self, numpoints, tstep, integrator, varying_inputs, initcon, integrator_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">928</span>                 <span class="n">tsim</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulate_with_casadi_with_inputs</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">929</span>                     <span class="n">initcon</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">varying_inputs</span><span class="p">,</span> <span class="n">integrator</span><span class="p">,</span> <span class="n">integrator_options</span>
+<span class="g g-Whitespace">    </span><span class="mi">930</span>                 <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">931</span>             <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">932</span>                 <span class="n">tsim</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulate_with_casadi_no_inputs</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">933</span>                     <span class="n">initcon</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">integrator</span><span class="p">,</span> <span class="n">integrator_options</span>
+<span class="g g-Whitespace">    </span><span class="mi">934</span>                 <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">935</span> 
+
+<span class="nn">~/anaconda3/envs/controls/lib/python3.10/site-packages/pyomo/dae/simulator.py</span> in <span class="ni">?</span><span class="nt">(self, initcon, tsim, integrator, integrator_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">990</span> 
+<span class="g g-Whitespace">    </span><span class="mi">991</span>         <span class="n">integrator_options</span><span class="p">[</span><span class="s1">&#39;grid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tsim</span>
+<span class="g g-Whitespace">    </span><span class="mi">992</span>         <span class="n">integrator_options</span><span class="p">[</span><span class="s1">&#39;output_t0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="g g-Whitespace">    </span><span class="mi">993</span>         <span class="n">F</span> <span class="o">=</span> <span class="n">casadi</span><span class="o">.</span><span class="n">integrator</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">integrator</span><span class="p">,</span> <span class="n">dae</span><span class="p">,</span> <span class="n">integrator_options</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">994</span>         <span class="n">sol</span> <span class="o">=</span> <span class="n">F</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="n">initcon</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">995</span>         <span class="n">profile</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;xf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">full</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
+<span class="g g-Whitespace">    </span><span class="mi">996</span> 
+<span class="g g-Whitespace">    </span><span class="mi">997</span>         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_algvars</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+
+<span class="nn">~/anaconda3/envs/controls/lib/python3.10/site-packages/casadi/casadi.py</span> in <span class="ni">?</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">7768</span>         <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">7769</span>           <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">7770</span>       <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">7771</span>     <span class="c1"># Named inputs -&gt; return dictionary</span>
+<span class="ne">-&gt; </span><span class="mi">7772</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">~/anaconda3/envs/controls/lib/python3.10/site-packages/casadi/casadi.py</span> in <span class="ni">?</span><span class="nt">(self, *args)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6941</span>         <span class="n">pre</span><span class="o">-</span><span class="n">CasADi</span> <span class="mf">3.2</span>
+<span class="g g-Whitespace">   </span><span class="mi">6942</span> 
+<span class="g g-Whitespace">   </span><span class="mi">6943</span> 
+<span class="g g-Whitespace">   </span><span class="mi">6944</span>         <span class="s2">&quot;&quot;&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">6945</span><span class="s2">         return _casadi.Function_call(self, *args)</span>
+
+<span class="ne">RuntimeError</span>: .../casadi/interfaces/sundials/idas_interface.cpp:591: IDACalcIC returned &quot;IDA_NO_RECOVERY&quot;. Consult IDAS documentation.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Hmm, this does not make sense. Perhaps there is something subtle wrong with the model.</p>
+<p>Let’s try solving the model with Ipopt after discretizing with collocation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># discretize the model</span>
+<span class="n">index1_take_two</span><span class="o">.</span><span class="n">Obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># Add a dummy objective</span>
+<span class="n">discretizer</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">TransformationFactory</span><span class="p">(</span><span class="s1">&#39;dae.collocation&#39;</span><span class="p">)</span>
+<span class="n">discretizer</span><span class="o">.</span><span class="n">apply_to</span><span class="p">(</span><span class="n">index1_take_two</span><span class="p">,</span><span class="n">nfe</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span><span class="n">scheme</span><span class="o">=</span><span class="s1">&#39;LAGRANGE-RADAU&#39;</span><span class="p">,</span><span class="n">ncp</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># initialize</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">index1_take_two</span><span class="o">.</span><span class="n">t</span><span class="p">:</span>
+    <span class="n">index1_take_two</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">small_number</span>
+    <span class="n">index1_take_two</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">small_number</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">index1_take_two</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">index1_take_two</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">index1_take_two</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">t</span><span class="p">]()</span><span class="o">*</span><span class="n">index1_take_two</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="n">t</span><span class="p">]()</span><span class="o">/</span><span class="n">index1_take_two</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">]()</span>
+    <span class="n">index1_take_two</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">index1_take_two</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="n">t</span><span class="p">]()</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">index1_take_two</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]()</span><span class="o">**</span><span class="mi">2</span>
+        <span class="o">+</span> <span class="n">index1_take_two</span><span class="o">.</span><span class="n">g</span><span class="o">*</span><span class="n">index1_take_two</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">]())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># solve the discretized model</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;max_iter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">index1_take_two</span><span class="p">,</span><span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: max_iter=300
+
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+
+This version of Ipopt was compiled from source code available at
+    https://github.com/IDAES/Ipopt as part of the Institute for the Design of
+    Advanced Energy Systems Process Systems Engineering Framework (IDAES PSE
+    Framework) Copyright (c) 2018-2019. See https://github.com/IDAES/idaes-pse.
+
+This version of Ipopt was compiled using HSL, a collection of Fortran codes
+    for large-scale scientific computation.  All technical papers, sales and
+    publicity material resulting from use of the HSL codes within IPOPT must
+    contain the following acknowledgement:
+        HSL, a collection of Fortran codes for large-scale scientific
+        computation. See http://www.hsl.rl.ac.uk.
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:     1186
+Number of nonzeros in inequality constraint Jacobian.:        0
+Number of nonzeros in Lagrangian Hessian.............:      368
+
+Total number of variables............................:      322
+                     variables with only lower bounds:        0
+                variables with lower and upper bounds:        0
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:      320
+Total number of inequality constraints...............:        0
+        inequality constraints with only lower bounds:        0
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        0
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  1.0000000e+00 9.07e-01 0.00e+00  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1  1.0000000e+00 3.29e-01 1.89e-04  -1.7 1.14e+00  -4.0 1.00e+00 1.00e+00h  1
+   2  1.0000000e+00 1.72e-01 8.57e-04  -1.7 4.16e-01  -3.6 1.00e+00 1.00e+00h  1
+   3  1.0000000e+00 1.72e-01 8.43e-04  -2.5 2.05e+02  -4.1 1.00e+00 2.44e-04h 13
+   4  1.0000000e+00 8.00e-02 3.19e-04  -2.5 3.03e-01  -3.6 1.00e+00 1.00e+00h  1
+   5  1.0000000e+00 1.50e-01 1.98e-04  -2.5 6.09e-01    -  1.00e+00 1.00e+00h  1
+   6  1.0000000e+00 3.53e-02 4.96e-05  -2.5 1.88e-01    -  1.00e+00 1.00e+00h  1
+   7  1.0000000e+00 8.82e-03 1.24e-05  -2.5 9.41e-02    -  1.00e+00 1.00e+00h  1
+   8  1.0000000e+00 2.20e-03 3.10e-06  -3.8 4.70e-02    -  1.00e+00 1.00e+00h  1
+   9  1.0000000e+00 5.51e-04 7.74e-07  -3.8 2.35e-02    -  1.00e+00 1.00e+00h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  10  1.0000000e+00 1.38e-04 1.94e-07  -5.7 1.18e-02    -  1.00e+00 1.00e+00h  1
+  11  1.0000000e+00 3.45e-05 4.84e-08  -5.7 5.88e-03    -  1.00e+00 1.00e+00h  1
+  12  1.0000000e+00 8.61e-06 1.21e-08  -5.7 2.94e-03    -  1.00e+00 1.00e+00h  1
+  13  1.0000000e+00 2.15e-06 3.02e-09  -8.6 1.47e-03    -  1.00e+00 1.00e+00h  1
+  14  1.0000000e+00 5.38e-07 7.56e-10  -8.6 7.35e-04    -  1.00e+00 1.00e+00h  1
+  15  1.0000000e+00 1.35e-07 1.89e-10  -8.6 3.67e-04    -  1.00e+00 1.00e+00h  1
+  16  1.0000000e+00 3.36e-08 4.73e-11  -8.6 1.84e-04    -  1.00e+00 1.00e+00h  1
+  17  1.0000000e+00 8.41e-09 1.18e-11  -8.6 9.19e-05    -  1.00e+00 1.00e+00h  1
+
+Number of Iterations....: 17
+
+                                   (scaled)                 (unscaled)
+Objective...............:   1.0000000000000000e+00    1.0000000000000000e+00
+Dual infeasibility......:   1.1815139856129635e-11    1.1815139856129635e-11
+Constraint violation....:   8.4114670784174450e-09    8.4114670784174450e-09
+Complementarity.........:   0.0000000000000000e+00    0.0000000000000000e+00
+Overall NLP error.......:   8.4114670784174450e-09    8.4114670784174450e-09
+
+
+Number of objective function evaluations             = 30
+Number of objective gradient evaluations             = 18
+Number of equality constraint evaluations            = 31
+Number of inequality constraint evaluations          = 0
+Number of equality constraint Jacobian evaluations   = 18
+Number of inequality constraint Jacobian evaluations = 0
+Number of Lagrangian Hessian evaluations             = 17
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.009
+Total CPU secs in NLP function evaluations           =      0.001
+
+EXIT: Optimal Solution Found.
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Problem&#39;: [{&#39;Lower bound&#39;: -inf, &#39;Upper bound&#39;: inf, &#39;Number of objectives&#39;: 1, &#39;Number of constraints&#39;: 320, &#39;Number of variables&#39;: 322, &#39;Sense&#39;: &#39;unknown&#39;}], &#39;Solver&#39;: [{&#39;Status&#39;: &#39;ok&#39;, &#39;Message&#39;: &#39;Ipopt 3.13.2\\x3a Optimal Solution Found&#39;, &#39;Termination condition&#39;: &#39;optimal&#39;, &#39;Id&#39;: 0, &#39;Error rc&#39;: 0, &#39;Time&#39;: 0.12675833702087402}], &#39;Solution&#39;: [OrderedDict([(&#39;number of solutions&#39;, 0), (&#39;number of solutions displayed&#39;, 0)])]}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Take away: There is something strange with formulation 3 that is causing the numeric integrator to fail. We can still solve this problem after discretizing.</p>
+</section>
+<section id="formulation-4-index-1-dae-model">
+<h3><span class="section-number">3.3.6.6. </span>Formulation 4: Index-1 DAE Model<a class="headerlink" href="#formulation-4-index-1-dae-model" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\frac{d x}{dt} &amp;= u \\
+\frac{d y}{dt} &amp;= v \\
+\frac{d u}{dt} &amp;= -T x \\
+\frac{d v}{dt} &amp;= g - Ty \\
+0 &amp;= (u^2 + v^2) - T (x^2 + y^2) + g y
+\end{align}\end{split}\]</div>
+<p>Consistent initial conditions:</p>
+<ol class="arabic simple">
+<li><p>Specify <span class="math notranslate nohighlight">\(x(0)\)</span>, <span class="math notranslate nohighlight">\(u(0)\)</span>, <span class="math notranslate nohighlight">\(y(0)\)</span>, and <span class="math notranslate nohighlight">\(v(0)\)</span>.</p></li>
+<li><p>Solve for <span class="math notranslate nohighlight">\(T(0)\)</span></p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_model_index1_b</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Creates a model to define the Index 1 DAE system.</span>
+
+<span class="sd">    Output: the model, m</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+    
+    <span class="c1"># Declare time</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">ContinuousSet</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+    <span class="c1"># Declare parameter - acceleration due to gravity</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mf">9.81</span><span class="p">)</span> <span class="c1"># m/s^2</span>
+
+    <span class="c1"># Declare variables indexed over time</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="c1"># horizontal position</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="c1"># vertical position</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">u</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="c1"># horizontal velocity</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="c1"># vertical velocity</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="c1"># tension</span>
+
+    <span class="c1"># Declare derivative variables</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dx</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="c1"># with respect to t is implied</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dy</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">du</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dv</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>
+
+    <span class="c1"># Declare differential equations</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_dx_eqn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dx</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dx_eqn</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_dx_eqn</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_dy_eqn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dy</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dy_eqn</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_dy_eqn</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_du_eqn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">du</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="n">m</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">du_eqn</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_du_eqn</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_dv_eqn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">dv</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">g</span> <span class="o">-</span><span class="n">m</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dv_eqn</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_dv_eqn</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_alg_eqn3</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">g</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">alg_eqn3</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">_alg_eqn3</span><span class="p">)</span>
+
+    <span class="c1"># Specify initial conditions</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">g</span>
+    
+    <span class="k">return</span> <span class="n">m</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">index1_b</span> <span class="o">=</span> <span class="n">create_model_index1_b</span><span class="p">()</span>
+
+<span class="c1"># Specify integrator options</span>
+<span class="n">int_ops</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;print_stats&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s2">&quot;abstol&quot;</span><span class="p">:</span><span class="mf">1E-8</span><span class="p">,</span><span class="s2">&quot;reltol&quot;</span><span class="p">:</span><span class="mf">1E-6</span><span class="p">}</span>
+
+<span class="c1"># Solve DAEs</span>
+<span class="n">sim</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">(</span><span class="n">index1_b</span><span class="p">,</span> <span class="n">package</span><span class="o">=</span><span class="s1">&#39;casadi&#39;</span><span class="p">)</span>
+<span class="n">tsim</span><span class="p">,</span> <span class="n">profiles</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">numpoints</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">integrator</span><span class="o">=</span><span class="s1">&#39;idas&#39;</span><span class="p">,</span><span class="n">integrator_options</span><span class="o">=</span><span class="n">int_ops</span><span class="p">)</span>
+
+<span class="c1"># Plot solution</span>
+<span class="n">plot_results</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">tsim</span><span class="p">,</span> <span class="n">profiles</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FORWARD INTEGRATION:
+Number of steps taken by SUNDIALS: 379
+Number of calls to the user’s f function: 485
+Number of calls made to the linear solver setup function: 31
+Number of error test failures: 3
+Method order used on the last internal step: 5
+Method order to be used on the next internal step: 5
+Actual value of initial step size: 7.90569e-09
+Step size taken on the last internal step: 0.0120795
+Step size to be attempted on the next internal step: 0.0120795
+Current internal time reached: 0.0120795
+Number of nonlinear iterations performed: 483
+Number of nonlinear convergence failures: 0
+</pre></div>
+</div>
+<img alt="../../_images/f467e639cd575fc7c74c572c53e53d60b967b2e02fb10e8bfbcca5c56f9c41fc.png" src="../../_images/f467e639cd575fc7c74c572c53e53d60b967b2e02fb10e8bfbcca5c56f9c41fc.png" />
+<img alt="../../_images/8387afe48bad046ae967d22919006ffdcb29d549b9ce47089eb203e72f27ff92.png" src="../../_images/8387afe48bad046ae967d22919006ffdcb29d549b9ce47089eb203e72f27ff92.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="take-away-messages">
+<h2><span class="section-number">3.3.7. </span>2.4.4 Take Away Messages<a class="headerlink" href="#take-away-messages" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Differential algebriac equations (DAEs) are really powerful modeling tools.</p></li>
+<li><p>Integrating DAEs requires special care. Make sure your model is index 1.</p></li>
+<li><p>Often there are many ways to reformulate the DAE model. But the numeric integrator only enforces error tolerances on the equations that are explicitly modeled. If an algebriac constraint must be satified to a specific tolerance, include it in the DAE model (as long as it is not high index!).</p></li>
+</ol>
+</section>
+<section id="important-topics-from-the-textbook">
+<h2><span class="section-number">3.3.8. </span>Important Topics from the Textbook<a class="headerlink" href="#important-topics-from-the-textbook" title="Link to this heading">#</a></h2>
+<p><strong>Chapter 8: Dynamic Optimization Introduction</strong> (Biegler, 2010)</p>
+<ul class="simple">
+<li><p>Chemical engineering examples</p></li>
+<li><p>Classical (variational) approaches including Hamiltonian and Euler-Lagrange equations</p></li>
+</ul>
+<p><img alt="" src="https://raw.githubusercontent.com/ndcbe/optimization/main/media/dynamic_optimization_strategies.png" /></p>
+<p><strong>Chapter 9: Sequential Methods</strong> (Biegler, 2010)</p>
+<ul class="simple">
+<li><p>DAE integration</p></li>
+<li><p>Single Shooting</p></li>
+<li><p>Multiple Shooting</p></li>
+</ul>
+<p><img alt="" src="https://raw.githubusercontent.com/ndcbe/optimization/main/media/sequential_dae_optimization.png" /></p>
+<p><strong>Chapter 10: Simultaneous Methods</strong> (Biegler, 2010)</p>
+<ul class="simple">
+<li><p>Gauss quadrature</p></li>
+<li><p>Orthogonal collocation on finite elements</p></li>
+<li><p>Examples, benchmarks, and large-scale extensions</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/3"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="PyomoDAE_TCLab.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">3.2. </span>Pyomo.DAE Example: Temperature Control Lab</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="DAE_numeric_integration.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3.4. </span>Numeric Integration for DAEs</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#external-documentaiton-for-libraries-used">3.3.1. External Documentaiton for libraries used</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-optimization-overview">3.3.2. Dynamic Optimization Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-dynamic-optimization">3.3.2.1. Introduction to Dynamic Optimization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-breakdown-of-daes">3.3.3. General Breakdown of DAEs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#daes-as-boundary-value-problems">3.3.4. DAEs as Boundary Value Problems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dae-optimization">3.3.5. DAE Optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-path-constraints">3.3.6. Handling Path Constraints</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dae-index-and-index-reduction">3.3.6.1. DAE Index and Index Reduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pendulum-model-and-index-reduction">3.3.6.2. Pendulum model and index reduction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation-1-index-3-dae">3.3.6.3. Formulation 1: Index-3 DAE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation-2-pure-ode-model-index-0-example">3.3.6.4. Formulation 2: Pure ODE Model/ Index-0 Example</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation-3-index-1-dae-model">3.3.6.5. Formulation 3: Index-1 DAE Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation-4-index-1-dae-model">3.3.6.6. Formulation 4: Index-1 DAE Model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#take-away-messages">3.3.7. 2.4.4 Take Away Messages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#important-topics-from-the-textbook">3.3.8. Important Topics from the Textbook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Alexander Dowling, et al.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1741 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Optimization of Daily Diet Using Pyomo &#8212; Optimization for Decision Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/contrib/student_diet';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Blending Under Uncertainty" href="blending.html" />
+    <link rel="prev" title="Semiconductor Production Planning" href="semiconductor_manufacturing.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/cbe_logo.jpg" class="logo__image only-light" alt="Optimization for Decision Science - Home"/>
+    <script>document.write(`<img src="../../_static/cbe_logo.jpg" class="logo__image only-dark" alt="Optimization for Decision Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Optimization for Decision Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Fall 2024 Calendar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/workshop.html">Computational Optimization in Python (São Paulo, Brazil)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project1.html">Project 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms1.html">Algorithms Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms2.html">Algorithms Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project2.html">Project 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project (Spring 2023)</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/LP.html">1.4. Continuous Optimization: Linear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/NLP.html">1.5. Continuous Optimization: Nonlinear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.6. Integer Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.7. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_car.html">3.1. Pyomo.DAE Example: Race Car</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_TCLab.html">3.2. Pyomo.DAE Example: Temperature Control Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_background.html">3.3. Differential Algebraic Equations (DAEs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_numeric_integration.html">3.4. Numeric Integration for DAEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_theory.html">3.5. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_example.html">3.6. Pyomo.DAE: Racing Example Revisited</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/blocks.html">4.2. Blocks and Other Pyomo Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/AdvancedTopics.html">4.3. Advanced Topics in Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.4. Risk Measures and Portfolio Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Optimizing Experiments with <code class="docutils literal notranslate"><span class="pre">Pyomo.DoE</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-1.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Newton-Methods.html">6.4. Newton-type Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Constraint-Qualifications.html">7.4. Constraint Qualifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Second-Order.html">7.5. Second Order Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/degeneracy_hunter.html">7.6. NLP Diagnostics with Degeneracy Hunter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="pyomo.html">More Pyomo Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="semiconductor_manufacturing.html">Semiconductor Production Planning</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Optimization of Daily Diet Using Pyomo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blending.html">Blending Under Uncertainty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vehicle_routing.html">Vehicle Routing</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="portfolio_optimization_extended.html">Risk Measures and Portfolio Optimization: Expanded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="race_car_extended.html">Extended Race Car Optimization Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hot_air_balloon.html">Hot Air Balloon Dynamic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reactor_design.html">Chemical Reactor Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Disaster_Response_Plan.html">Disaster Response Plan Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Sudoku_Solver.html">Sudoku Solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="more_circle_packing.html">Circle Packing Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="modeling.html">Modeling Paradigms</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="multi_objective.html">Multi-Objective Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_stochastic_programming.html">Advanced Topics in Stochastic Programming</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="algorithms.html">Global Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Deterministic_Global_Optimization.html">Deterministic Global Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="sgd.html">Stochastic Gradient Descent</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="data.html">Machine Learning and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/contrib/student_diet.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/contrib/student_diet.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/contrib/student_diet.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Optimization of Daily Diet Using Pyomo</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objective">Learning Objective</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#primary-source">Primary Source</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-packages">Install Packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-without-water">Model Without Water</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-description-and-formulation">Model Description and Formulation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#degree-of-freedom-analysis">Degree of Freedom Analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-with-water">Model With Water</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Model Description and Formulation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Degree of Freedom Analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#steak-nutritional-value-modifications">Steak Nutritional Value Modifications</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#protein-modifications">Protein Modifications</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fat-modifications">Fat Modifications</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#turning-point-1-fat-per-3oz-steak-14">Turning Point 1: Fat per 3oz steak = 14</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#turning-point-2-fat-per-3oz-steak-15-5">Turning Point 2: Fat per 3oz steak = 15.5</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#changes-in-amount-of-other-types-of-food">Changes in Amount of Other Types of Food</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="optimization-of-daily-diet-using-pyomo">
+<h1>Optimization of Daily Diet Using Pyomo<a class="headerlink" href="#optimization-of-daily-diet-using-pyomo" title="Link to this heading">#</a></h1>
+<p><strong>Prepared by:</strong> Landi Wang (<a class="reference external" href="mailto:lwang25&#37;&#52;&#48;nd&#46;edu">lwang25<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2024) and Yi Liu (<a class="reference external" href="mailto:yliu66&#37;&#52;&#48;nd&#46;edu">yliu66<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2024) based on prior work by Prof. Alexander Dowling</p>
+<section id="learning-objective">
+<h2>Learning Objective<a class="headerlink" href="#learning-objective" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Review syntax for Pyomo package</p></li>
+<li><p>Demonstrate the power of Pyomo in solving and optimizing complex dynamic process systems</p></li>
+<li><p>Learn how to formulate linear optimization problem</p></li>
+<li><p>Gain more knowledge on how changes in one attribute of the system change the optimization results</p></li>
+</ul>
+</section>
+<section id="primary-source">
+<h2>Primary Source<a class="headerlink" href="#primary-source" title="Link to this heading">#</a></h2>
+<p>This notebook was adapted from an earlier version <a class="reference internal" href="../1/LP.html"><span class="std std-doc">Continuous Optimization: Linear Programming</span></a></p>
+</section>
+<section id="install-packages">
+<h2>Install Packages<a class="headerlink" href="#install-packages" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># This code cell installs packages on Colab</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="k">if</span> <span class="s2">&quot;google.colab&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+    <span class="err">!</span><span class="n">wget</span> <span class="s2">&quot;https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/helper.py&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+    <span class="n">helper</span><span class="o">.</span><span class="n">easy_install</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;../&#39;</span><span class="p">)</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">helper</span>
+<span class="n">helper</span><span class="o">.</span><span class="n">set_plotting_style</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2024-10-07 22:02:11--  https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/helper.py
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.109.133, 185.199.110.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 6493 (6.3K) [text/plain]
+Saving to: ‘helper.py’
+
+
+helper.py             0%[                    ]       0  --.-KB/s               
+helper.py           100%[===================&gt;]   6.34K  --.-KB/s    in 0s      
+
+2024-10-07 22:02:11 (59.7 MB/s) - ‘helper.py’ saved [6493/6493]
+
+Installing idaes via pip...
+idaes was successfully installed
+idaes, version 2.6.0
+
+
+Running idaes get-extensions to install Ipopt, k_aug, and more...
+Checking solver versions:
+Ipopt 3.13.2 (x86_64-pc-linux-gnu), ASL(20190605)
+
+
+
+[K_AUG] 0.1.0, Part of the IDAES PSE framework
+Please visit https://idaes.org/ (x86_64-pc-linux-gnu), ASL(20190605)
+
+
+
+Couenne 0.5.8 -- an Open-Source solver for Mixed Integer Nonlinear Optimization
+Mailing list: couenne@list.coin-or.org
+Instructions: http://www.coin-or.org/Couenne
+couenne (x86_64-pc-linux-gnu), ASL(20190605)
+
+
+
+Bonmin 1.8.8 using Cbc 2.10.10 and Ipopt 3.13.2
+bonmin (x86_64-pc-linux-gnu), ASL(20190605)
+
+
+
+Ipopt 3.13.3 (x86_64-pc-linux-gnu), ASL(20190605)
+
+
+
+1.0 dot_1&#39; (x86_64-pc-linux-gnu), ASL(20190605)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyomo.environ</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyo</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You want to save money eating while remaining healthy. A healthy diet requires at least 70 grams of protein, 250 grams of carbohydrates, 70 grams of fats, 35 grams of fiber per day.
+Now we want to add one more constraint of food volume that one is able to intake, as well as more food options to more accurately simulate real life conditions. We has set the daily intake volume to be around 90 ounces, assuming 30 ounces per meal and 3 meals per day.
+The following table describes food attributes retrived directly from the source.</p>
+</section>
+<section id="model-without-water">
+<h2>Model Without Water<a class="headerlink" href="#model-without-water" title="Link to this heading">#</a></h2>
+<section id="model-description-and-formulation">
+<h3>Model Description and Formulation<a class="headerlink" href="#model-description-and-formulation" title="Link to this heading">#</a></h3>
+<p>We formulated a model without water involved (as it is in the dataframe). There are four types of food: broccoli, bread, steak, and Popeyes (four piece combo). We chose these items because they are the most common, meanwhile each has its unique attributes: broccoli is only high in fiber, bread is only high in carbs, steak is high in protein and fat, and Popeyes is high in protein, fat, and decent in carbs. Among these options, Popeyes is the most well-rounded food item, providing most nutrients in abundance.
+Before we solve the model, we believe that the best combination would be Popeyes with some bread as well as broccoli that is enough to satisfy the fiber needs, whereas steak would be ignored because of Popeyes’ nutritional value (though sounds odd).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+<span class="c1"># Define the food items</span>
+<span class="n">food_items</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;broccoli&#39;</span><span class="p">,</span> <span class="s1">&#39;bread&#39;</span><span class="p">,</span> <span class="s1">&#39;steak&#39;</span><span class="p">,</span> <span class="s1">&#39;Popeyes&#39;</span><span class="p">]</span>
+
+<span class="c1"># Define the nutrition and price data</span>
+<span class="n">nutrition_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Protein&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.6</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">76</span><span class="p">],</span>
+    <span class="s1">&#39;Carbohydrates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mf">19.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">36</span><span class="p">],</span>
+    <span class="s1">&#39;Fat&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">7.6</span><span class="p">,</span> <span class="mi">64</span><span class="p">],</span>
+    <span class="s1">&#39;Fiber&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="s1">&#39;Volume&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.6</span><span class="p">,</span> <span class="mf">1.41</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
+    <span class="s1">&#39;Price&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">25</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="c1"># Define the bounds for each constraint</span>
+<span class="n">bounds</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Protein&#39;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+    <span class="s1">&#39;Carbohydrates&#39;</span><span class="p">:</span> <span class="mi">250</span><span class="p">,</span>
+    <span class="s1">&#39;Fat&#39;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+    <span class="s1">&#39;Fiber&#39;</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span>
+    <span class="s1">&#39;Volume&#39;</span><span class="p">:</span> <span class="mi">90</span>
+<span class="p">}</span>
+
+<span class="c1"># Define the decision variables for the amount of each food item</span>
+<span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">food_items</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+
+<span class="c1"># Define the objective function to minimize the total price</span>
+<span class="n">model</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Price&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                   <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">)),</span> <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">minimize</span><span class="p">)</span>
+
+<span class="c1"># Add constraints for total intake of protein, carbohydrates, fat, fiber, and volume</span>
+<span class="n">model</span><span class="o">.</span><span class="n">protein_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Protein&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                   <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Protein&#39;</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">carbohydrates_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Carbohydrates&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                         <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Carbohydrates&#39;</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fat_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Fat&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                               <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Fat&#39;</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fiber_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Fiber&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                 <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Fiber&#39;</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">volume_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Volume&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                  <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Volume&#39;</span><span class="p">])</span>
+
+<span class="c1"># Solve the problem using IPOPT solver</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Print the results</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Status:&quot;</span><span class="p">,</span> <span class="n">results</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">termination_condition</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Optimal solution:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">food_items</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> units&quot;</span><span class="p">)</span>
+
+<span class="c1"># Print the total price</span>
+<span class="n">total_price</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Price&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                  <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total price: $</span><span class="si">{</span><span class="n">total_price</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: 
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+
+This version of Ipopt was compiled from source code available at
+    https://github.com/IDAES/Ipopt as part of the Institute for the Design of
+    Advanced Energy Systems Process Systems Engineering Framework (IDAES PSE
+    Framework) Copyright (c) 2018-2019. See https://github.com/IDAES/idaes-pse.
+
+This version of Ipopt was compiled using HSL, a collection of Fortran codes
+    for large-scale scientific computation.  All technical papers, sales and
+    publicity material resulting from use of the HSL codes within IPOPT must
+    contain the following acknowledgement:
+        HSL, a collection of Fortran codes for large-scale scientific
+        computation. See http://www.hsl.rl.ac.uk.
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:        0
+Number of nonzeros in inequality constraint Jacobian.:       17
+Number of nonzeros in Lagrangian Hessian.............:        0
+
+Total number of variables............................:        4
+                     variables with only lower bounds:        4
+                variables with lower and upper bounds:        0
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:        0
+Total number of inequality constraints...............:        5
+        inequality constraints with only lower bounds:        4
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        1
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  3.4499966e-01 2.49e+02 1.03e+00  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1  5.1239594e-01 2.49e+02 1.95e+00  -1.0 7.00e+01    -  1.67e-03 4.77e-03h  1
+   2  1.0829719e+00 2.45e+02 4.47e+00  -1.0 3.81e+01    -  7.04e-03 1.54e-02h  1
+   3  1.6283397e+00 2.42e+02 2.80e+00  -1.0 6.28e+01    -  2.19e-02 9.87e-03h  1
+   4  6.0978594e+01 0.00e+00 1.07e+01  -1.0 6.66e+01    -  3.02e-02 1.00e+00h  1
+   5  6.1024713e+01 0.00e+00 8.47e-02  -1.0 1.33e-01    -  9.94e-01 1.00e+00f  1
+   6  6.0925244e+01 0.00e+00 2.00e-07  -1.7 8.10e-01    -  1.00e+00 1.00e+00f  1
+   7  6.0848635e+01 0.00e+00 3.80e-04  -3.8 3.21e+00    -  9.99e-01 9.82e-01f  1
+   8  6.0847087e+01 0.00e+00 1.84e-11  -5.7 4.87e-03    -  1.00e+00 1.00e+00f  1
+   9  6.0847080e+01 0.00e+00 2.93e-14  -8.6 3.61e-04    -  1.00e+00 1.00e+00f  1
+
+Number of Iterations....: 9
+
+                                   (scaled)                 (unscaled)
+Objective...............:   6.0847079778165650e+01    6.0847079778165650e+01
+Dual infeasibility......:   2.9317359951248336e-14    2.9317359951248336e-14
+Constraint violation....:   0.0000000000000000e+00    0.0000000000000000e+00
+Complementarity.........:   2.5118925268508237e-09    2.5118925268508237e-09
+Overall NLP error.......:   2.5118925268508237e-09    2.5118925268508237e-09
+
+
+Number of objective function evaluations             = 10
+Number of objective gradient evaluations             = 10
+Number of equality constraint evaluations            = 0
+Number of inequality constraint evaluations          = 10
+Number of equality constraint Jacobian evaluations   = 0
+Number of inequality constraint Jacobian evaluations = 10
+Number of Lagrangian Hessian evaluations             = 9
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.002
+Total CPU secs in NLP function evaluations           =      0.000
+
+EXIT: Optimal Solution Found.
+Status: optimal
+Optimal solution:
+broccoli: 13.47 units
+bread: 6.94 units
+steak: 0.00 units
+Popeyes: 0.94 units
+Total price: $60.85
+</pre></div>
+</div>
+</div>
+</div>
+<p>From the model output, we can see that the results are pretty similar to what we imagined at first: 0.94 units of Popeyes, 6.94 units of bread, 13.47 units of broccoli, and no steak. These units translated into normal weights dimensions are: almost one serving of the Popeyes four-piece chicken combo, 2 pounds of broccoli, and 0.6 pound of bread. Steak is not selected at all primarily because it is not a economically efficient option for its nutritional values, as the two of its competitive edges (protein and fat) are both covered by Popeyes.</p>
+</section>
+<section id="degree-of-freedom-analysis">
+<h3>Degree of Freedom Analysis<a class="headerlink" href="#degree-of-freedom-analysis" title="Link to this heading">#</a></h3>
+<p>The degree of freedom of this model is determined to be 0: there are 5 variables, one for each type of food, and five constraints, one for each type of nutrient.</p>
+</section>
+</section>
+<section id="model-with-water">
+<h2>Model With Water<a class="headerlink" href="#model-with-water" title="Link to this heading">#</a></h2>
+<section id="id1">
+<h3>Model Description and Formulation<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Now we want to formulate a model with water involved. Water has no nutritional value but volume. We also added a constraint specifying the amount of water to be consumed per day: 3 bottles of 10 oz size, in order to imitate real-life situations more accurately.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+<span class="c1"># Update food_items to include &#39;water&#39;</span>
+<span class="n">food_items</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;broccoli&#39;</span><span class="p">,</span> <span class="s1">&#39;bread&#39;</span><span class="p">,</span> <span class="s1">&#39;steak&#39;</span><span class="p">,</span> <span class="s1">&#39;Popeyes&#39;</span><span class="p">,</span> <span class="s1">&#39;water&#39;</span><span class="p">]</span>
+
+<span class="c1"># Update the nutrition and price data to include &#39;water&#39;</span>
+<span class="n">nutrition_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Protein&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.6</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="s1">&#39;Carbohydrates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mf">19.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="s1">&#39;Fat&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">7.6</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="s1">&#39;Fiber&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="s1">&#39;Volume&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.6</span><span class="p">,</span> <span class="mf">1.41</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+    <span class="s1">&#39;Price&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="c1"># Define the bounds for each constraint</span>
+<span class="n">bounds</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Protein&#39;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+    <span class="s1">&#39;Carbohydrates&#39;</span><span class="p">:</span> <span class="mi">250</span><span class="p">,</span>
+    <span class="s1">&#39;Fat&#39;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+    <span class="s1">&#39;Fiber&#39;</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span>
+    <span class="s1">&#39;Volume&#39;</span><span class="p">:</span> <span class="mi">90</span>
+<span class="p">}</span>
+
+<span class="c1"># Define the decision variables for the amount of each food item</span>
+<span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">food_items</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+
+<span class="c1"># Define the objective function to minimize the total price</span>
+<span class="n">model</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Price&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                   <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">)),</span> <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">minimize</span><span class="p">)</span>
+
+<span class="c1"># Add constraints for total intake of protein, carbohydrates, fat, fiber, and volume</span>
+<span class="n">model</span><span class="o">.</span><span class="n">protein_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Protein&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                   <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Protein&#39;</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">carbohydrates_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Carbohydrates&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                         <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Carbohydrates&#39;</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fat_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Fat&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                               <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Fat&#39;</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fiber_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Fiber&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                 <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Fiber&#39;</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">volume_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Volume&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                  <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Volume&#39;</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">popeyes_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="s1">&#39;water&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Solve the problem using IPOPT solver</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Print the results</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Status:&quot;</span><span class="p">,</span> <span class="n">results</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">termination_condition</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Optimal solution:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">food_items</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> units&quot;</span><span class="p">)</span>
+
+<span class="c1"># Print the total price</span>
+<span class="n">total_price</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Price&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                  <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total price: $</span><span class="si">{</span><span class="n">total_price</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">check_active_constraint</span><span class="p">(</span><span class="n">lhs_value</span><span class="p">,</span> <span class="n">bound</span><span class="p">,</span> <span class="n">operator</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;&gt;=&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">lhs_value</span> <span class="o">-</span> <span class="n">bound</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-5</span>
+    <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;&lt;=&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">lhs_value</span> <span class="o">-</span> <span class="n">bound</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-5</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+<span class="c1"># Calculate the total intake for each nutrient</span>
+<span class="n">protein_intake</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Protein&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span>
+<span class="n">carbohydrates_intake</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Carbohydrates&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span>
+<span class="n">fat_intake</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Fat&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span>
+<span class="n">fiber_intake</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Fiber&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span>
+<span class="n">volume_intake</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Volume&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span>
+
+<span class="c1"># Check the active constraints</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Active Constraints:&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">check_active_constraint</span><span class="p">(</span><span class="n">protein_intake</span><span class="p">,</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Protein&#39;</span><span class="p">],</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Protein constraint is active.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Protein constraint is not active.&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">check_active_constraint</span><span class="p">(</span><span class="n">carbohydrates_intake</span><span class="p">,</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Carbohydrates&#39;</span><span class="p">],</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Carbohydrates constraint is active.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Carbohydrates constraint is not active.&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">check_active_constraint</span><span class="p">(</span><span class="n">fat_intake</span><span class="p">,</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Fat&#39;</span><span class="p">],</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fat constraint is active.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fat constraint is not active.&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">check_active_constraint</span><span class="p">(</span><span class="n">fiber_intake</span><span class="p">,</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Fiber&#39;</span><span class="p">],</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fiber constraint is active.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fiber constraint is not active.&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">check_active_constraint</span><span class="p">(</span><span class="n">volume_intake</span><span class="p">,</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Volume&#39;</span><span class="p">]</span> <span class="p">,</span><span class="s1">&#39;&lt;=&#39;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Volume constraint is active.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Volume constraint is not active.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: 
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+
+This version of Ipopt was compiled from source code available at
+    https://github.com/IDAES/Ipopt as part of the Institute for the Design of
+    Advanced Energy Systems Process Systems Engineering Framework (IDAES PSE
+    Framework) Copyright (c) 2018-2019. See https://github.com/IDAES/idaes-pse.
+
+This version of Ipopt was compiled using HSL, a collection of Fortran codes
+    for large-scale scientific computation.  All technical papers, sales and
+    publicity material resulting from use of the HSL codes within IPOPT must
+    contain the following acknowledgement:
+        HSL, a collection of Fortran codes for large-scale scientific
+        computation. See http://www.hsl.rl.ac.uk.
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:        0
+Number of nonzeros in inequality constraint Jacobian.:       19
+Number of nonzeros in Lagrangian Hessian.............:        0
+
+Total number of variables............................:        5
+                     variables with only lower bounds:        5
+                variables with lower and upper bounds:        0
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:        0
+Total number of inequality constraints...............:        6
+        inequality constraints with only lower bounds:        5
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        1
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  3.6999963e-01 2.49e+02 1.04e+00  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1  5.4691760e-01 2.49e+02 1.79e+00  -1.0 7.00e+01    -  1.67e-03 4.77e-03h  1
+   2  1.0535935e+00 2.45e+02 3.16e+00  -1.0 5.27e+01    -  7.06e-03 1.24e-02h  1
+   3  1.7059280e+00 2.43e+02 2.42e+00  -1.0 9.11e+01    -  1.18e-02 1.06e-02h  1
+   4  8.0202224e+00 2.19e+02 1.96e+01  -1.0 9.52e+01    -  2.45e-02 9.62e-02h  1
+   5  6.2016951e+01 2.16e+01 7.91e+00  -1.0 8.71e+01    -  1.99e-01 8.93e-01h  1
+   6  6.2348101e+01 2.02e+01 5.18e+01  -1.0 6.10e+00    -  8.15e-01 5.93e-02h  1
+   7  6.3479329e+01 5.20e+00 1.01e+01  -1.0 2.52e+02    -  8.47e-03 1.57e-01h  1
+   8  7.0202576e+01 5.12e-02 3.94e+01  -1.0 3.24e+02    -  3.90e-01 9.83e-01h  1
+   9  7.0270853e+01 9.87e-03 8.17e+00  -1.0 7.88e+00    -  1.00e+00 4.01e-01h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  10  7.0271205e+01 9.84e-03 3.71e+01  -1.0 2.75e+00    -  1.00e+00 4.63e-01h  1
+  11  7.0290969e+01 0.00e+00 4.24e+01  -1.0 2.07e+00    -  1.00e+00 6.30e-01h  1
+  12  7.0283057e+01 0.00e+00 1.00e-06  -1.0 2.55e-01    -  1.00e+00 1.00e+00h  1
+  13  7.0224950e+01 0.00e+00 7.39e+00  -2.5 3.26e-01    -  9.73e-01 1.00e+00f  1
+  14  7.0218543e+01 0.00e+00 7.14e+00  -2.5 3.60e-01    -  1.00e+00 4.00e-01f  2
+  15  7.0207487e+01 0.00e+00 2.83e-08  -2.5 6.23e-02    -  1.00e+00 1.00e+00f  1
+  16  7.0202817e+01 0.00e+00 2.13e+00  -3.8 8.98e-02    -  7.48e-01 1.00e+00f  1
+  17  7.0199636e+01 0.00e+00 1.50e-09  -3.8 2.82e-01    -  1.00e+00 1.00e+00f  1
+  18  7.0199069e+01 0.00e+00 1.11e-02  -5.7 3.21e-02    -  9.54e-01 1.00e+00f  1
+  19  7.0199053e+01 0.00e+00 1.84e-11  -5.7 2.02e-03    -  1.00e+00 1.00e+00f  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  20  7.0199043e+01 0.00e+00 2.68e-14  -8.6 6.82e-04    -  1.00e+00 1.00e+00f  1
+
+Number of Iterations....: 20
+
+                                   (scaled)                 (unscaled)
+Objective...............:   7.0199043466935052e+01    7.0199043466935052e+01
+Dual infeasibility......:   2.6815287305497230e-14    2.6815287305497230e-14
+Constraint violation....:   0.0000000000000000e+00    0.0000000000000000e+00
+Complementarity.........:   3.6353123001924004e-09    3.6353123001924004e-09
+Overall NLP error.......:   3.6353123001924004e-09    3.6353123001924004e-09
+
+
+Number of objective function evaluations             = 23
+Number of objective gradient evaluations             = 21
+Number of equality constraint evaluations            = 0
+Number of inequality constraint evaluations          = 23
+Number of equality constraint Jacobian evaluations   = 0
+Number of inequality constraint Jacobian evaluations = 21
+Number of Lagrangian Hessian evaluations             = 20
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.007
+Total CPU secs in NLP function evaluations           =      0.000
+
+EXIT: Optimal Solution Found.
+Status: optimal
+Optimal solution:
+broccoli: 0.02 units
+bread: 30.13 units
+steak: 0.00 units
+Popeyes: 0.70 units
+water: 3.00 units
+Total price: $70.20
+
+Active Constraints:
+Protein constraint is not active.
+Carbohydrates constraint is not active.
+Fat constraint is active.
+Fiber constraint is active.
+Volume constraint is active.
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this model with an extra item, water, and an extra constraint on it that limits the amount of water consumed per day to be at least 3 units (30 oz in total). Now the solution turned into almost no broccoli, 30.13 units of bread, 0.7 unit of Popeyes, and 3 bottles of water. Translating into common units: 3 pieces of Popeyes chicken, 2.655 pounds of bread, and 3 bottles of water. This seems very unrealistic and unhealthy but at the same time satisfies daily needs, if we only look at these included variables.
+In this model, we also found that two of the five constraints are not active (protein and carbs), so we made the following 3-D visualization on the feasible area of this model:</p>
+</section>
+<section id="id2">
+<h3>Degree of Freedom Analysis<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>The degree of freedom of the model is 0 as well: 6 variables, one for each type of food, and 6 constraints, one for each type of nutrient and an extra one on the amount of water consumed.</p>
+</section>
+</section>
+<section id="steak-nutritional-value-modifications">
+<h2>Steak Nutritional Value Modifications<a class="headerlink" href="#steak-nutritional-value-modifications" title="Link to this heading">#</a></h2>
+<section id="protein-modifications">
+<h3>Protein Modifications<a class="headerlink" href="#protein-modifications" title="Link to this heading">#</a></h3>
+<p>In the following section, we want to investigate under what conditions we would choose steak as a part of our diet. We first wanted to loop through values from 26 to 61 for grams of protein in a piece of 3oz steak.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize the range of protein values for steak</span>
+<span class="n">protein_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">selected_steak_quantities</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Define a function to solve the model with a given protein value for steak</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">solve_model</span><span class="p">(</span><span class="n">protein_value</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+    <span class="n">food_items</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;broccoli&#39;</span><span class="p">,</span> <span class="s1">&#39;bread&#39;</span><span class="p">,</span> <span class="s1">&#39;steak&#39;</span><span class="p">,</span> <span class="s1">&#39;Popeyes&#39;</span><span class="p">,</span> <span class="s1">&#39;water&#39;</span><span class="p">]</span>
+    <span class="n">nutrition_data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;Protein&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.6</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="n">protein_value</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>  <span class="c1"># Update protein value for steak</span>
+        <span class="s1">&#39;Carbohydrates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mf">19.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="s1">&#39;Fat&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">7.6</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="s1">&#39;Fiber&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="s1">&#39;Volume&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.6</span><span class="p">,</span> <span class="mf">1.41</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+        <span class="s1">&#39;Price&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">]</span>
+    <span class="p">}</span>
+
+    <span class="n">bounds</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;Protein&#39;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+        <span class="s1">&#39;Carbohydrates&#39;</span><span class="p">:</span> <span class="mi">250</span><span class="p">,</span>
+        <span class="s1">&#39;Fat&#39;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+        <span class="s1">&#39;Fiber&#39;</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span>
+        <span class="s1">&#39;Volume&#39;</span><span class="p">:</span> <span class="mi">90</span>
+    <span class="p">}</span>
+
+    <span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">food_items</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+
+    <span class="n">model</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Price&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                       <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">)),</span> <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">minimize</span><span class="p">)</span>
+
+    <span class="n">model</span><span class="o">.</span><span class="n">protein_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Protein&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                       <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Protein&#39;</span><span class="p">])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">carbohydrates_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Carbohydrates&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                             <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Carbohydrates&#39;</span><span class="p">])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fat_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Fat&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                   <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Fat&#39;</span><span class="p">])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fiber_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Fiber&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                     <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Fiber&#39;</span><span class="p">])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">volume_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Volume&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                      <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Volume&#39;</span><span class="p">])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">water_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="s1">&#39;water&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="c1"># Return the selected quantity of steak</span>
+    <span class="k">return</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="s1">&#39;steak&#39;</span><span class="p">])</span>
+
+<span class="c1"># Loop over the range of protein values and solve the model for each</span>
+<span class="k">for</span> <span class="n">protein_value</span> <span class="ow">in</span> <span class="n">protein_values</span><span class="p">:</span>
+    <span class="n">selected_steak_quantities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">solve_model</span><span class="p">(</span><span class="n">protein_value</span><span class="p">))</span>
+
+<span class="c1"># Plot the results</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">protein_values</span><span class="p">,</span> <span class="n">selected_steak_quantities</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Effect of Protein Value of Steak on Amount Selected&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Protein Value of Steak&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Amount of Steak Selected (units)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/f9d82e6d30b714deef2f74a67c4f93e17d0aef25fe4054f1a94e74b00499b73b.png" src="../../_images/f9d82e6d30b714deef2f74a67c4f93e17d0aef25fe4054f1a94e74b00499b73b.png" />
+</div>
+</div>
+<p>In this graph, we can see that even if the steak contains 61 grams of protein per 3oz, it would still not be selected as a part of the diet. Thus, protein might not be a determining factor.
+Next, we tried to change the amount of fat contained in a piece of 3oz steak, from 5 grams to 20 grams per 3oz.</p>
+</section>
+<section id="fat-modifications">
+<h3>Fat Modifications<a class="headerlink" href="#fat-modifications" title="Link to this heading">#</a></h3>
+<p>In this section, we looped through fat values for a 3oz steak from 5 to 20, and figure out how does the amount of steak chosen changes over the loop.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize the range of fat values for steak</span>
+<span class="n">fat_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">selected_steak_quantities</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Define a function to solve the model with a given fat value for steak</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">solve_model</span><span class="p">(</span><span class="n">fat_value</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+    <span class="n">food_items</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;broccoli&#39;</span><span class="p">,</span> <span class="s1">&#39;bread&#39;</span><span class="p">,</span> <span class="s1">&#39;steak&#39;</span><span class="p">,</span> <span class="s1">&#39;Popeyes&#39;</span><span class="p">,</span> <span class="s1">&#39;water&#39;</span><span class="p">]</span>
+
+    <span class="n">nutrition_data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;Protein&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.6</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="s1">&#39;Carbohydrates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mf">19.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="s1">&#39;Fat&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="n">fat_value</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>  <span class="c1"># Update fat value for steak</span>
+        <span class="s1">&#39;Fiber&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="s1">&#39;Volume&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.6</span><span class="p">,</span> <span class="mf">1.41</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+        <span class="s1">&#39;Price&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">]</span>
+    <span class="p">}</span>
+
+    <span class="n">bounds</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;Protein&#39;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+        <span class="s1">&#39;Carbohydrates&#39;</span><span class="p">:</span> <span class="mi">250</span><span class="p">,</span>
+        <span class="s1">&#39;Fat&#39;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+        <span class="s1">&#39;Fiber&#39;</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span>
+        <span class="s1">&#39;Volume&#39;</span><span class="p">:</span> <span class="mi">90</span>
+    <span class="p">}</span>
+
+    <span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">food_items</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+
+    <span class="n">model</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Price&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                       <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">)),</span> <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">minimize</span><span class="p">)</span>
+
+    <span class="n">model</span><span class="o">.</span><span class="n">protein_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Protein&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                       <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Protein&#39;</span><span class="p">])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">carbohydrates_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Carbohydrates&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                             <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Carbohydrates&#39;</span><span class="p">])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fat_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Fat&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                   <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Fat&#39;</span><span class="p">])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fiber_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Fiber&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                     <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Fiber&#39;</span><span class="p">])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">volume_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Volume&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                      <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Volume&#39;</span><span class="p">])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">water_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="s1">&#39;water&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="c1"># Return the selected quantity of stea</span>
+    <span class="k">return</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="s1">&#39;steak&#39;</span><span class="p">])</span>
+
+<span class="c1"># Loop over the range of fat values and solve the model for each</span>
+<span class="k">for</span> <span class="n">fat_value</span> <span class="ow">in</span> <span class="n">fat_values</span><span class="p">:</span>
+    <span class="n">selected_steak_quantities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">solve_model</span><span class="p">(</span><span class="n">fat_value</span><span class="p">))</span>
+
+<span class="c1"># Plot the results</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fat_values</span><span class="p">,</span> <span class="n">selected_steak_quantities</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Effect of Fat Value of Steak on Amount Selected&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Fat Value of Steak&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Amount of Steak Selected (units)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/5ab11aef64f271e31bf32862a775d7dd9aaf3e716981ed869615013010d21ca4.png" src="../../_images/5ab11aef64f271e31bf32862a775d7dd9aaf3e716981ed869615013010d21ca4.png" />
+</div>
+</div>
+<p>Now, in the above graph, we can see that the amount of steak selected dramatically increased to 3 when the fat value reaches around 13, and then started to decrease as the steak contains more fat but still not enough for the model to exclude Popeyes. As the fat value increases more to around 15.5, the amount of steak selected increased again and reached around 3.7. We speculate that this is because that the steak’s relative nutritional value has exceeded that of Popeyes.</p>
+<section id="turning-point-1-fat-per-3oz-steak-14">
+<h4>Turning Point 1: Fat per 3oz steak = 14<a class="headerlink" href="#turning-point-1-fat-per-3oz-steak-14" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+<span class="n">food_items</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;broccoli&#39;</span><span class="p">,</span> <span class="s1">&#39;bread&#39;</span><span class="p">,</span> <span class="s1">&#39;steak&#39;</span><span class="p">,</span> <span class="s1">&#39;Popeyes&#39;</span><span class="p">,</span> <span class="s1">&#39;water&#39;</span><span class="p">]</span>
+
+<span class="n">nutrition_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Protein&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.6</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="s1">&#39;Carbohydrates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mf">19.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="s1">&#39;Fat&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="s1">&#39;Fiber&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="s1">&#39;Volume&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.6</span><span class="p">,</span> <span class="mf">1.41</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+    <span class="s1">&#39;Price&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">bounds</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Protein&#39;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+    <span class="s1">&#39;Carbohydrates&#39;</span><span class="p">:</span> <span class="mi">250</span><span class="p">,</span>
+    <span class="s1">&#39;Fat&#39;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+    <span class="s1">&#39;Fiber&#39;</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span>
+    <span class="s1">&#39;Volume&#39;</span><span class="p">:</span> <span class="mi">90</span>
+<span class="p">}</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">food_items</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Price&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                   <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">)),</span> <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">minimize</span><span class="p">)</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">protein_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Protein&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                   <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Protein&#39;</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">carbohydrates_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Carbohydrates&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                         <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Carbohydrates&#39;</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fat_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Fat&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                               <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Fat&#39;</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fiber_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Fiber&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                 <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Fiber&#39;</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">volume_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Volume&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                  <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Volume&#39;</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">popeyes_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="s1">&#39;water&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Print the results</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Status:&quot;</span><span class="p">,</span> <span class="n">results</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">termination_condition</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Optimal solution:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">food_items</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> units&quot;</span><span class="p">)</span>
+
+<span class="c1"># Print the total price</span>
+<span class="n">total_price</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Price&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                  <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total price: $</span><span class="si">{</span><span class="n">total_price</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: 
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+
+This version of Ipopt was compiled from source code available at
+    https://github.com/IDAES/Ipopt as part of the Institute for the Design of
+    Advanced Energy Systems Process Systems Engineering Framework (IDAES PSE
+    Framework) Copyright (c) 2018-2019. See https://github.com/IDAES/idaes-pse.
+
+This version of Ipopt was compiled using HSL, a collection of Fortran codes
+    for large-scale scientific computation.  All technical papers, sales and
+    publicity material resulting from use of the HSL codes within IPOPT must
+    contain the following acknowledgement:
+        HSL, a collection of Fortran codes for large-scale scientific
+        computation. See http://www.hsl.rl.ac.uk.
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:        0
+Number of nonzeros in inequality constraint Jacobian.:       19
+Number of nonzeros in Lagrangian Hessian.............:        0
+
+Total number of variables............................:        5
+                     variables with only lower bounds:        5
+                variables with lower and upper bounds:        0
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:        0
+Total number of inequality constraints...............:        6
+        inequality constraints with only lower bounds:        5
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        1
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  3.6999963e-01 2.49e+02 1.04e+00  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1  5.1425900e-01 2.49e+02 1.06e+00  -1.0 6.70e+01    -  1.76e-03 3.66e-03h  1
+   2  1.0303972e+00 2.45e+02 1.91e+00  -1.0 5.05e+01    -  7.23e-03 1.29e-02h  1
+   3  2.0012814e+00 2.42e+02 3.41e+00  -1.0 9.15e+01    -  1.12e-02 1.57e-02h  1
+   4  9.0768387e+00 2.16e+02 1.25e+01  -1.0 9.51e+01    -  2.84e-02 1.08e-01h  1
+   5  6.2047976e+01 2.14e+01 7.64e+00  -1.0 8.55e+01    -  2.21e-01 8.92e-01h  1
+   6  6.2385147e+01 2.00e+01 8.78e+00  -1.0 6.35e+00    -  2.52e-01 5.98e-02h  1
+   7  6.8333553e+01 2.68e+00 1.08e+01  -1.0 3.62e+01    -  7.33e-03 7.64e-01h  1
+   8  7.0254966e+01 0.00e+00 2.22e-01  -1.0 9.42e+00    -  9.90e-01 1.00e+00h  1
+   9  7.0219835e+01 0.00e+00 2.00e-07  -1.7 3.58e+00    -  1.00e+00 1.00e+00f  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  10  7.0181446e+01 0.00e+00 3.99e-02  -3.8 1.32e+01    -  9.70e-01 4.75e-01f  1
+  11  7.0139909e+01 0.00e+00 1.50e-09  -3.8 1.03e+00    -  1.00e+00 1.00e+00f  1
+  12  7.0139128e+01 0.00e+00 1.84e-11  -5.7 1.02e+00    -  1.00e+00 1.00e+00f  1
+  13  7.0139120e+01 0.00e+00 2.57e-14  -8.6 6.71e-03    -  1.00e+00 1.00e+00f  1
+
+Number of Iterations....: 13
+
+                                   (scaled)                 (unscaled)
+Objective...............:   7.0139119670067416e+01    7.0139119670067416e+01
+Dual infeasibility......:   2.5719026771974613e-14    2.5719026771974613e-14
+Constraint violation....:   0.0000000000000000e+00    0.0000000000000000e+00
+Complementarity.........:   2.6389668491914908e-09    2.6389668491914908e-09
+Overall NLP error.......:   2.6389668491914908e-09    2.6389668491914908e-09
+
+
+Number of objective function evaluations             = 14
+Number of objective gradient evaluations             = 14
+Number of equality constraint evaluations            = 0
+Number of inequality constraint evaluations          = 14
+Number of equality constraint Jacobian evaluations   = 0
+Number of inequality constraint Jacobian evaluations = 14
+Number of Lagrangian Hessian evaluations             = 13
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.005
+Total CPU secs in NLP function evaluations           =      0.000
+
+EXIT: Optimal Solution Found.
+Status: optimal
+Optimal solution:
+broccoli: 12.56 units
+bread: 8.52 units
+steak: 3.14 units
+Popeyes: 0.24 units
+water: 3.00 units
+Total price: $70.14
+</pre></div>
+</div>
+</div>
+</div>
+<p>As seen in the above model, the fat value per 3oz of steak is now 14 grams. In the model output, Popeyes is only selected 0.24 units, which is significantly different from the baseline model output. The amount of broccoli and bread also changed significantly, leading to a more balanced diet.</p>
+</section>
+<section id="turning-point-2-fat-per-3oz-steak-15-5">
+<h4>Turning Point 2: Fat per 3oz steak = 15.5<a class="headerlink" href="#turning-point-2-fat-per-3oz-steak-15-5" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+<span class="n">food_items</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;broccoli&#39;</span><span class="p">,</span> <span class="s1">&#39;bread&#39;</span><span class="p">,</span> <span class="s1">&#39;steak&#39;</span><span class="p">,</span> <span class="s1">&#39;Popeyes&#39;</span><span class="p">,</span> <span class="s1">&#39;water&#39;</span><span class="p">]</span>
+
+<span class="n">nutrition_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Protein&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.6</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="s1">&#39;Carbohydrates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mf">19.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="s1">&#39;Fat&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">15.5</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="s1">&#39;Fiber&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="s1">&#39;Volume&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.6</span><span class="p">,</span> <span class="mf">1.41</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+    <span class="s1">&#39;Price&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">bounds</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Protein&#39;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+    <span class="s1">&#39;Carbohydrates&#39;</span><span class="p">:</span> <span class="mi">250</span><span class="p">,</span>
+    <span class="s1">&#39;Fat&#39;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+    <span class="s1">&#39;Fiber&#39;</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span>
+    <span class="s1">&#39;Volume&#39;</span><span class="p">:</span> <span class="mi">90</span>
+<span class="p">}</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">food_items</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Price&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                   <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">)),</span> <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">minimize</span><span class="p">)</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">protein_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Protein&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                   <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Protein&#39;</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">carbohydrates_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Carbohydrates&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                         <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Carbohydrates&#39;</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fat_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Fat&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                               <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Fat&#39;</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fiber_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Fiber&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                 <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Fiber&#39;</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">volume_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Volume&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                  <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Volume&#39;</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">popeyes_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="s1">&#39;water&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Print the results</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Status:&quot;</span><span class="p">,</span> <span class="n">results</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">termination_condition</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Optimal solution:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">food_items</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> units&quot;</span><span class="p">)</span>
+
+<span class="c1"># Print the total price</span>
+<span class="n">total_price</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Price&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                  <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total price: $</span><span class="si">{</span><span class="n">total_price</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ipopt 3.13.2: 
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+
+This version of Ipopt was compiled from source code available at
+    https://github.com/IDAES/Ipopt as part of the Institute for the Design of
+    Advanced Energy Systems Process Systems Engineering Framework (IDAES PSE
+    Framework) Copyright (c) 2018-2019. See https://github.com/IDAES/idaes-pse.
+
+This version of Ipopt was compiled using HSL, a collection of Fortran codes
+    for large-scale scientific computation.  All technical papers, sales and
+    publicity material resulting from use of the HSL codes within IPOPT must
+    contain the following acknowledgement:
+        HSL, a collection of Fortran codes for large-scale scientific
+        computation. See http://www.hsl.rl.ac.uk.
+******************************************************************************
+
+This is Ipopt version 3.13.2, running with linear solver ma27.
+
+Number of nonzeros in equality constraint Jacobian...:        0
+Number of nonzeros in inequality constraint Jacobian.:       19
+Number of nonzeros in Lagrangian Hessian.............:        0
+
+Total number of variables............................:        5
+                     variables with only lower bounds:        5
+                variables with lower and upper bounds:        0
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:        0
+Total number of inequality constraints...............:        6
+        inequality constraints with only lower bounds:        5
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        1
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  3.6999963e-01 2.49e+02 1.12e+00  -1.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1  5.1089735e-01 2.49e+02 1.14e+00  -1.0 6.66e+01    -  1.79e-03 3.51e-03h  1
+   2  1.0291764e+00 2.45e+02 1.58e+00  -1.0 5.03e+01    -  7.24e-03 1.30e-02h  1
+   3  2.2285306e+00 2.41e+02 3.82e+00  -1.0 9.17e+01    -  1.11e-02 1.94e-02h  1
+   4  1.0056887e+01 2.12e+02 1.10e+01  -1.0 9.50e+01    -  3.10e-02 1.19e-01h  1
+   5  6.2071409e+01 2.13e+01 7.36e+00  -1.0 8.41e+01    -  2.46e-01 8.91e-01h  1
+   6  6.2417799e+01 1.98e+01 2.85e+00  -1.0 6.52e+00    -  1.59e-01 6.11e-02h  1
+   7  6.8410733e+01 0.00e+00 8.31e+00  -1.0 2.73e+01    -  2.06e-02 1.00e+00h  1
+   8  6.8450525e+01 0.00e+00 1.02e-01  -1.0 3.69e-01    -  9.94e-01 1.00e+00f  1
+   9  6.8338609e+01 0.00e+00 3.79e-02  -2.5 1.19e+00    -  8.91e-01 1.00e+00f  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  10  6.8323287e+01 0.00e+00 2.11e-02  -2.5 1.57e+01    -  6.66e-01 5.68e-01f  1
+  11  6.8309284e+01 0.00e+00 1.50e-09  -3.8 8.71e-01    -  1.00e+00 1.00e+00f  1
+  12  6.8308476e+01 0.00e+00 1.84e-11  -5.7 6.77e-02    -  1.00e+00 1.00e+00f  1
+  13  6.8308465e+01 0.00e+00 2.55e-14  -8.6 2.97e-03    -  1.00e+00 1.00e+00f  1
+
+Number of Iterations....: 13
+
+                                   (scaled)                 (unscaled)
+Objective...............:   6.8308464554317595e+01    6.8308464554317595e+01
+Dual infeasibility......:   2.5491926439145658e-14    2.5491926439145658e-14
+Constraint violation....:   0.0000000000000000e+00    0.0000000000000000e+00
+Complementarity.........:   2.8716956147740828e-09    2.8716956147740828e-09
+Overall NLP error.......:   2.8716956147740828e-09    2.8716956147740828e-09
+
+
+Number of objective function evaluations             = 14
+Number of objective gradient evaluations             = 14
+Number of equality constraint evaluations            = 0
+Number of inequality constraint evaluations          = 14
+Number of equality constraint Jacobian evaluations   = 0
+Number of inequality constraint Jacobian evaluations = 14
+Number of Lagrangian Hessian evaluations             = 13
+Total CPU secs in IPOPT (w/o function evaluations)   =      0.006
+Total CPU secs in NLP function evaluations           =      0.000
+
+EXIT: Optimal Solution Found.
+Status: optimal
+Optimal solution:
+broccoli: 12.25 units
+bread: 9.05 units
+steak: 3.79 units
+Popeyes: 0.00 units
+water: 3.00 units
+Total price: $68.31
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now as the fat value of a 3oz steak increase to 15.5, the amount chosen has increased to 3.79 units. Popeyes is completely excluded from the final result as well, having 0 units selected.</p>
+</section>
+<section id="changes-in-amount-of-other-types-of-food">
+<h4>Changes in Amount of Other Types of Food<a class="headerlink" href="#changes-in-amount-of-other-types-of-food" title="Link to this heading">#</a></h4>
+<p>The following graph shows how each of the items selected change as we increase steak’s fat nutritional value:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize the range of fat values for steak</span>
+<span class="n">fat_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="n">food_items</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;broccoli&#39;</span><span class="p">,</span> <span class="s1">&#39;bread&#39;</span><span class="p">,</span> <span class="s1">&#39;steak&#39;</span><span class="p">,</span> <span class="s1">&#39;Popeyes&#39;</span><span class="p">,</span> <span class="s1">&#39;water&#39;</span><span class="p">]</span>
+<span class="n">quantities</span> <span class="o">=</span> <span class="p">{</span><span class="n">item</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">food_items</span><span class="p">}</span>  <span class="c1"># To store quantities of all food items</span>
+
+<span class="c1"># Define a function to solve the model with a given fat value for steak</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">solve_model</span><span class="p">(</span><span class="n">fat_value</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+    <span class="n">nutrition_data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;Protein&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.6</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="s1">&#39;Carbohydrates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mf">19.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="s1">&#39;Fat&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="n">fat_value</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>  <span class="c1"># Update fat value for steak</span>
+        <span class="s1">&#39;Fiber&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="s1">&#39;Volume&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.6</span><span class="p">,</span> <span class="mf">1.41</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+        <span class="s1">&#39;Price&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">]</span>
+    <span class="p">}</span>
+
+    <span class="n">bounds</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;Protein&#39;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+        <span class="s1">&#39;Carbohydrates&#39;</span><span class="p">:</span> <span class="mi">250</span><span class="p">,</span>
+        <span class="s1">&#39;Fat&#39;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+        <span class="s1">&#39;Fiber&#39;</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span>
+        <span class="s1">&#39;Volume&#39;</span><span class="p">:</span> <span class="mi">90</span>
+    <span class="p">}</span>
+
+    <span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">food_items</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+
+    <span class="n">model</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Price&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                       <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">)),</span> <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">minimize</span><span class="p">)</span>
+
+    <span class="n">model</span><span class="o">.</span><span class="n">protein_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Protein&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                       <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Protein&#39;</span><span class="p">])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">carbohydrates_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Carbohydrates&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                             <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Carbohydrates&#39;</span><span class="p">])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fat_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Fat&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                   <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Fat&#39;</span><span class="p">])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fiber_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Fiber&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                     <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Fiber&#39;</span><span class="p">])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">volume_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nutrition_data</span><span class="p">[</span><span class="s1">&#39;Volume&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                                      <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">food_items</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="n">bounds</span><span class="p">[</span><span class="s1">&#39;Volume&#39;</span><span class="p">])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">water_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="s1">&#39;water&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="c1"># Return the selected quantity of each food item</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">item</span><span class="p">:</span> <span class="n">pyo</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">item</span><span class="p">])</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">food_items</span><span class="p">}</span>
+
+<span class="c1"># Loop over the range of fat values and solve the model for each</span>
+<span class="k">for</span> <span class="n">fat_value</span> <span class="ow">in</span> <span class="n">fat_values</span><span class="p">:</span>
+    <span class="n">food_quantities</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">fat_value</span><span class="p">)</span>
+
+    <span class="c1"># Store the quantity for each food item at the current fat value</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">food_items</span><span class="p">:</span>
+        <span class="n">quantities</span><span class="p">[</span><span class="n">item</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">food_quantities</span><span class="p">[</span><span class="n">item</span><span class="p">])</span>
+
+<span class="c1"># Plot the results</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">food_items</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fat_values</span><span class="p">,</span> <span class="n">quantities</span><span class="p">[</span><span class="n">item</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">item</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Change in Quantities of Food Items as Fat Value of Steak Changes&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Fat Value of Steak&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Quantity Selected (units)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/109dc8d5141d6e0e256f5fab0ac72f8a86453de5d0cd1ee352c467e801a967c8.png" src="../../_images/109dc8d5141d6e0e256f5fab0ac72f8a86453de5d0cd1ee352c467e801a967c8.png" />
+</div>
+</div>
+<p>In this graph, we can observe the changes in the unit quantity selected of each food type while looping through the fat value of steak from 5 to 20 with 50 even intermediate values. The first turning point occurs when steak’s fat value is increased to around 14, where the quantity of bread selected sharply decreases from 30 to around 8, while the quantity selected for broccoli sharply increases to 12.5, for steak from 0 to 3. Then the composition stays stable, while the quantity selected of steak slowly decreases as the fat value per unit increases. The second turning point occurs when the steak’s fat value is increased to around 15.5, where smaller changes compared the first turning point occurs. Now steak is selected around 4 units, and Popeyes is not selected at all. The quantity of steak selected continues to slowly decrease after the second turning point as the fat value continues to increase. The quantity of water always stay unchanged at 3, primarily due to the set up of the constraint limiting the quantity of water consumed to be 3.</p>
+</section>
+</section>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Pyomo-optimization modeling in python (Vol. 67, p. 277). Berlin: Springer.</p></li>
+<li><p><a class="reference internal" href="../1/LP.html"><span class="std std-doc">Continuous Optimization: Linear Programming</span></a></p></li>
+<li><p><a class="reference external" href="https://plk-use1-prod.sites.rbictg.com/nutrition/PLK_Nutrition.pdf">https://plk-use1-prod.sites.rbictg.com/nutrition/PLK_Nutrition.pdf</a></p></li>
+<li><p><a class="reference external" href="https://www.verywellfit.com/nutrition-4157081">https://www.verywellfit.com/nutrition-4157081</a></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/contrib"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="semiconductor_manufacturing.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Semiconductor Production Planning</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="blending.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Blending Under Uncertainty</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objective">Learning Objective</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#primary-source">Primary Source</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-packages">Install Packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-without-water">Model Without Water</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-description-and-formulation">Model Description and Formulation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#degree-of-freedom-analysis">Degree of Freedom Analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-with-water">Model With Water</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Model Description and Formulation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Degree of Freedom Analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#steak-nutritional-value-modifications">Steak Nutritional Value Modifications</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#protein-modifications">Protein Modifications</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fat-modifications">Fat Modifications</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#turning-point-1-fat-per-3oz-steak-14">Turning Point 1: Fat per 3oz steak = 14</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#turning-point-2-fat-per-3oz-steak-15-5">Turning Point 2: Fat per 3oz steak = 15.5</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#changes-in-amount-of-other-types-of-food">Changes in Amount of Other Types of Food</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Alexander Dowling, et al.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1733 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Bayesian Optimization Tutorial 2 &#8212; Optimization for Decision Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/contrib/Bayesian_Optimization2';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Stochastic Gradient Descent" href="sgd.html" />
+    <link rel="prev" title="Bayesian Optimization Tutorial 1" href="Bayesian_Optimization1.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/cbe_logo.jpg" class="logo__image only-light" alt="Optimization for Decision Science - Home"/>
+    <script>document.write(`<img src="../../_static/cbe_logo.jpg" class="logo__image only-dark" alt="Optimization for Decision Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Optimization for Decision Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Fall 2024 Calendar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/workshop.html">Computational Optimization in Python (São Paulo, Brazil)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project1.html">Project 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms1.html">Algorithms Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms2.html">Algorithms Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project2.html">Project 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project (Spring 2023)</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/LP.html">1.4. Continuous Optimization: Linear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/NLP.html">1.5. Continuous Optimization: Nonlinear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.6. Integer Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.7. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_car.html">3.1. Pyomo.DAE Example: Race Car</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_TCLab.html">3.2. Pyomo.DAE Example: Temperature Control Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_background.html">3.3. Differential Algebraic Equations (DAEs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_numeric_integration.html">3.4. Numeric Integration for DAEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_theory.html">3.5. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_example.html">3.6. Pyomo.DAE: Racing Example Revisited</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/blocks.html">4.2. Blocks and Other Pyomo Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/AdvancedTopics.html">4.3. Advanced Topics in Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.4. Risk Measures and Portfolio Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Optimizing Experiments with <code class="docutils literal notranslate"><span class="pre">Pyomo.DoE</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-1.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Newton-Methods.html">6.4. Newton-type Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../7/constrained.html">7. Constrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../7/Convexity.html">7.1. Convexity Revisited</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Constraint-Qualifications.html">7.4. Constraint Qualifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Second-Order.html">7.5. Second Order Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/degeneracy_hunter.html">7.6. NLP Diagnostics with Degeneracy Hunter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point1.html">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../7/Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyomo.html">More Pyomo Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="semiconductor_manufacturing.html">Semiconductor Production Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="student_diet.html">Optimization of Daily Diet Using Pyomo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blending.html">Blending Under Uncertainty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vehicle_routing.html">Vehicle Routing</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="portfolio_optimization_extended.html">Risk Measures and Portfolio Optimization: Expanded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="race_car_extended.html">Extended Race Car Optimization Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hot_air_balloon.html">Hot Air Balloon Dynamic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reactor_design.html">Chemical Reactor Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Disaster_Response_Plan.html">Disaster Response Plan Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Sudoku_Solver.html">Sudoku Solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="more_circle_packing.html">Circle Packing Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="modeling.html">Modeling Paradigms</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="multi_objective.html">Multi-Objective Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_stochastic_programming.html">Advanced Topics in Stochastic Programming</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="algorithms.html">Global Optimization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Deterministic_Global_Optimization.html">Deterministic Global Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Bayesian Optimization Tutorial 2</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="sgd.html">Stochastic Gradient Descent</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="data.html">Machine Learning and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/contrib/Bayesian_Optimization2.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/contrib/Bayesian_Optimization2.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/contrib/Bayesian_Optimization2.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Bayesian Optimization Tutorial 2</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#history-and-motivation">History and Motivation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayes-rule">Bayes Rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-example">An Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tree-diagram">Tree Diagram</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1">Problem 1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extending-bayes-rule">Extending Bayes Rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#talk-on-baysian-extensions-networks-uses-more-applications">Talk on Baysian extensions (networks, uses, more applications)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#baysian-optimization">Baysian Optimization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-process">Gaussian Process</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#acquisition-function">Acquisition Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works">How it works</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-example-of-baysian-optimization">An example of Baysian Optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-realistic-example">More realistic example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="bayesian-optimization-tutorial-2">
+<h1>Bayesian Optimization Tutorial 2<a class="headerlink" href="#bayesian-optimization-tutorial-2" title="Link to this heading">#</a></h1>
+<p><strong>Prepared by:</strong> <a class="reference external" href="https://github.com/Gregory-Cooper">Greg Cooper</a> (<a class="reference external" href="mailto:gcooper2&#37;&#52;&#48;nd&#46;edu">gcooper2<span>&#64;</span>nd<span>&#46;</span>edu</a>, 2023)</p>
+<section id="history-and-motivation">
+<h2>History and Motivation<a class="headerlink" href="#history-and-motivation" title="Link to this heading">#</a></h2>
+<br>
+Baysian statistics is a subset of statistics that flips the interpretation of probability.  It was developed by Thomas Bayes in 1763, where he ponders the question of conditional probability (if one fact is know, whats are the odds of a future event). Classically probability considers probability to be the frequency that events occur while Baysian probability has come to represent not a frequency, but a degree of belief in an event occuring.  This is a nuanced and important distinction that allows for powerful insights and methods.  Together we will build up our understanding on Baysian statistics and look at one of these exciting methods called Baysian optimization.</section>
+<section id="bayes-rule">
+<h2>Bayes Rule<a class="headerlink" href="#bayes-rule" title="Link to this heading">#</a></h2>
+<br>
+Bayes Rule is the concept of getting the probability of an event given prior knowledge of the events / conditions that inform the outcome. The rule can be mathmatically written as follows : <br>
+<div class="math notranslate nohighlight">
+\[{P(A | B)} = \frac{P(B | A) * P(A)}{P(B)}\]</div>
+<ul class="simple">
+<li><p>A, B	=	events</p></li>
+<li><p>P(A|B)	=	probability of A given B is true</p></li>
+<li><p>P(B|A)	=	probability of B given A is true</p></li>
+<li><p>P(A), P(B)	=	the independent probabilities of A and B</p></li>
+</ul>
+</section>
+<section id="an-example">
+<h2>An Example<a class="headerlink" href="#an-example" title="Link to this heading">#</a></h2>
+<br>
+How can we apply and understand this rule.  Let's look at some practical applications of the rule.  One of the most common examples is in the medical setting regarding testing for illness.  If one supposes that there is a medical test that will correctly report a positive case 80% if you have the illness.  However, if you are not sick, that same test has a 30% chance of still reporting a positive case.  Now consider a population that has 500 sick individuals and 2000 healthy individuals.  Bayes rules lets us generate a number that says given you have a positive from this test, what are the odds (belief) you are sick.  Lets apply the formula below:<br>
+<ul class="simple">
+<li><p>A, B	=	Sick, positive</p></li>
+<li><p>P(A|B)	=	probability you are sick given a positive (undefined)</p></li>
+<li><p>P(B|A)	=	probability you are positive given sick (.8)</p></li>
+<li><p>P(A), P(B)	=	net probabilities you are sick, net probability of a positive (500/2500) , (500*.8+2000*.3)
+<br></p></li>
+</ul>
+<p>applying this rule :
+<br>
+$<span class="math notranslate nohighlight">\({P(A | B)} = \frac{P(B | A) * P(A)}{P(B)}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\({P(A | B) = .4} = \frac{.8 * 500/2500}{500/2500*.8+2000/2500*.3}\)</span>$
+<br>
+So there is a 40% chance that if you recieve a positive test you are actually sick. This seems counter intuitive in that you got a postive result saying you are sick.  However, baye’s rule factors in the idea that the population and the general amount of error in the test actually make it more likely that your are healthy and recieve a false positve because there are far more healthy people than there are sick ones.  Therefore, it is about weighing the proportions of the health and sick against the how well the test preforms.</p>
+</section>
+<section id="tree-diagram">
+<h2>Tree Diagram<a class="headerlink" href="#tree-diagram" title="Link to this heading">#</a></h2>
+<br>
+Another way to visually understand the rule is to look at a tree diagram.  This intuitively helps show how the probability partitions<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="c1"># Define the probabilities</span>
+<span class="n">probabilities</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Sick 1/5&quot;</span><span class="p">,</span> <span class="s2">&quot;Healthy 4/5&quot;</span><span class="p">,</span> <span class="s2">&quot;Positive .8&quot;</span><span class="p">,</span> <span class="s2">&quot;Negative .2&quot;</span><span class="p">,</span> <span class="s2">&quot;Positive .7&quot;</span><span class="p">,</span> <span class="s2">&quot;Negative .3&quot;</span><span class="p">]</span>
+
+<span class="c1"># Create the graph object</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+
+<span class="c1"># Add the nodes and set their attributes</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;You&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;Sick&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;Healthy&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;S-Positive&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;S-Negative&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;H-Positive&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;H-Negative&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+
+<span class="c1"># Add the edges and set their attributes</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;You&quot;</span><span class="p">,</span> <span class="s2">&quot;Sick&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;.2&quot;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;You&quot;</span><span class="p">,</span> <span class="s2">&quot;Healthy&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;.8&quot;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;Sick&quot;</span><span class="p">,</span> <span class="s2">&quot;S-Positive&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;0.8&quot;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;Sick&quot;</span><span class="p">,</span> <span class="s2">&quot;S-Negative&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;0.2&quot;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;Healthy&quot;</span><span class="p">,</span> <span class="s2">&quot;H-Positive&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;0.7&quot;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;Healthy&quot;</span><span class="p">,</span> <span class="s2">&quot;H-Negative&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;0.3&quot;</span><span class="p">)</span>
+
+<span class="c1"># Set the node positions and colors</span>
+<span class="n">pos</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;You&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="s2">&quot;Sick&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="s2">&quot;Healthy&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">),</span>
+    <span class="s2">&quot;S-Positive&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+    <span class="s2">&quot;S-Negative&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="s2">&quot;H-Positive&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">),</span>
+    <span class="s2">&quot;H-Negative&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="p">]</span>
+
+<span class="c1"># Draw the nodes and edges</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_nodes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;-|&gt;&quot;</span><span class="p">,</span> <span class="n">arrowsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">edge_color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+
+<span class="c1"># Draw the node labels</span>
+<span class="c1">#nx.draw_networkx_labels(G, pos, font_size=16, font_family=&quot;sans-serif&quot;, font_weight=&quot;bold&quot;)</span>
+
+<span class="c1"># Draw the edge labels</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">get_edge_attributes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">)</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edge_labels</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">edge_labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">font_family</span><span class="o">=</span><span class="s2">&quot;sans-serif&quot;</span><span class="p">)</span>
+<span class="n">l_pos</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">pos</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_labels</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">l_pos</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">font_family</span><span class="o">=</span><span class="s1">&#39;serif&#39;</span><span class="p">,</span><span class="n">verticalalignment</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+<span class="c1"># Add labels after the detected and non-detected nodes</span>
+<span class="n">bbox_props</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;round,pad=0.3&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="s1">&#39;S-Positive&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="s1">&#39;S-Positive&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="sa">f</span><span class="s1">&#39;.9*.8 = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="mf">.9</span><span class="o">*</span><span class="mf">.8</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span><span class="n">bbox</span><span class="o">=</span><span class="n">bbox_props</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="s1">&#39;S-Negative&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="s1">&#39;S-Negative&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="sa">f</span><span class="s1">&#39;.9*.2 = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="mf">.9</span><span class="o">*</span><span class="mf">.2</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="s1">&#39;H-Positive&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="s1">&#39;H-Positive&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="sa">f</span><span class="s1">&#39;.1*.3 = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="mf">.1</span><span class="o">*</span><span class="mf">.3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="s1">&#39;H-Negative&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="s1">&#39;H-Negative&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="sa">f</span><span class="s1">&#39;.1*.7 = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="mf">.1</span><span class="o">*</span><span class="mf">.7</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span><span class="n">bbox</span><span class="o">=</span><span class="n">bbox_props</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Given that we detected a defect, what are the odds that the bulb is Standard :&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;We now know that we just normalize the 2 situations this occurs or .0675/(.0675+.0188) or </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="mf">.0675</span><span class="o">/</span><span class="p">(</span><span class="mf">.0675</span><span class="o">+</span><span class="mf">.0188</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/612957cd47959251bbbf1cb8f912be62c74a0d6f71d504069edef22aab76297b.png" src="../../_images/612957cd47959251bbbf1cb8f912be62c74a0d6f71d504069edef22aab76297b.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Given that we detected a defect, what are the odds that the bulb is Standard :
+We now know that we just normalize the 2 situations this occurs or .0675/(.0675+.0188) or 78.22%
+</pre></div>
+</div>
+</div>
+</div>
+<p><br>Looking at this figure, it becomes clear the the probability of an “combined” event is the probability of one x other, ie 4/5 * 7/10 is the probability of one and the other occuring.  Because we limit ourself to the idea that the result is positive, you just need to normalize the situations where positive is one of the joint outcomes, here sick positive and healthy positive.  This gives the odds that given positive that you are sick.  Therefore, Bayes rule can be seen as partitioning the probabilities of events given some condition</p>
+</section>
+<section id="problem-1">
+<h2>Problem 1<a class="headerlink" href="#problem-1" title="Link to this heading">#</a></h2>
+<p>On a game show, a contestant can select one of four boxes.</p>
+<ul class="simple">
+<li><p>A red box contains one $100 bill and nine $1 bills.</p></li>
+<li><p>A green box contains two $100 bills and eight $1 bills.</p></li>
+<li><p>A blue box contains three $100 bills and seven $1 bills.</p></li>
+<li><p>A yellow box contains five $100 bills and five $1 bills.</p></li>
+</ul>
+ <br>
+  The contestant selects a box at random and selects a bill from the box at random. If a \$100 bill is selected, find the probability that it came from the yellow box.<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add your solution here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="extending-bayes-rule">
+<h2>Extending Bayes Rule<a class="headerlink" href="#extending-bayes-rule" title="Link to this heading">#</a></h2>
+<p>We can further extend Bayes Rule by adding another condition to the problem.  This will have the effect of extending the conditional to be given via 2 aspects.  This makes the ideas and results more useful in more general cases.  This also helps to partition the</p>
+<p>Suppose a factory produces light bulbs, which are either “Standard” or “Premium”. 90% of the bulbs produced are Standard and the remaining 10% are Premium. Defective bulbs are produced 10% of the time for Standard bulbs and 25% of the time for Premium bulbs.</p>
+<p>Suppose a bulb is selected at random and tested. If the bulb is not defective, there is a 10% chance that it will be incorrectly marked as defective. On the other hand, if a bulb is defective, there is a 75% chance that it will be correctly identified as such.</p>
+<p>Let’s find the odds that the given the bulb is defective and we detect it, what is the chance it is a standard bulb?</p>
+<div class="math notranslate nohighlight">
+\[P(A | B) = \frac{P(B | A) * P(A)}{P(B | A) * P(A) + P(B | \neg A) * P(\neg A)}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P(A | B)\)</span> is the probability that the bulb is Standard given that it is Defective and Detected</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(B | A)\)</span> is the probability that the bulb is Defective and Detected given that it is Standard</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(A)\)</span> is the prior probability that the bulb is Standard</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(B | \neg A)\)</span> is the probability that the bulb is Defective and Detected given that it is not Standard (Premium)</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(\neg A)\)</span> is the prior probability that the bulb is not Standard (Premium)</p></li>
+</ul>
+<p>Note that now B is a 2 stage condition where the independence allows for partitioning</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+
+<span class="c1"># Add nodes and set their attributes</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;Factory&quot;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;Standard&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;Premium&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;S-Defective&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;S-Not-Defective&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;P-Defective&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;P-Not-Defective&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;SD-Detected&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;SD-Not-Detected&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;SND-Detected&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;SND-Not-Detected&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;PD-Detected&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;PD-Not-Detected&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;PND-Detected&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;PND-Not-Detected&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">)</span>
+
+<span class="c1"># Add edges and set their attributes</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s1">&#39;Factory&#39;</span><span class="p">,</span> <span class="s1">&#39;Standard&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s1">&#39;Factory&#39;</span><span class="p">,</span> <span class="s1">&#39;Premium&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s1">&#39;Standard&#39;</span><span class="p">,</span> <span class="s1">&#39;S-Defective&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s1">&#39;Standard&#39;</span><span class="p">,</span> <span class="s1">&#39;S-Not-Defective&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s1">&#39;Premium&#39;</span><span class="p">,</span> <span class="s1">&#39;P-Defective&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s1">&#39;Premium&#39;</span><span class="p">,</span> <span class="s1">&#39;P-Not-Defective&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s1">&#39;S-Defective&#39;</span><span class="p">,</span> <span class="s1">&#39;SD-Detected&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s1">&#39;S-Defective&#39;</span><span class="p">,</span> <span class="s1">&#39;SD-Not-Detected&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s1">&#39;S-Not-Defective&#39;</span><span class="p">,</span> <span class="s1">&#39;SND-Detected&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s1">&#39;S-Not-Defective&#39;</span><span class="p">,</span> <span class="s1">&#39;SND-Not-Detected&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s1">&#39;P-Defective&#39;</span><span class="p">,</span> <span class="s1">&#39;PD-Detected&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s1">&#39;P-Defective&#39;</span><span class="p">,</span> <span class="s1">&#39;PD-Not-Detected&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s1">&#39;P-Not-Defective&#39;</span><span class="p">,</span> <span class="s1">&#39;PND-Detected&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s1">&#39;P-Not-Defective&#39;</span><span class="p">,</span> <span class="s1">&#39;PND-Not-Detected&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+
+<span class="c1"># Set node positions and draw the network</span>
+<span class="n">pos</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Factory&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="s1">&#39;Standard&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="s1">&#39;Premium&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span>
+    <span class="s1">&#39;S-Defective&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+    <span class="s1">&#39;S-Not-Defective&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s1">&#39;P-Defective&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">],</span>
+    <span class="s1">&#39;P-Not-Defective&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>    
+    <span class="s1">&#39;SD-Detected&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+    <span class="s1">&#39;SD-Not-Detected&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+    <span class="s1">&#39;SND-Detected&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="s1">&#39;SND-Not-Detected&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s1">&#39;PD-Detected&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">],</span>
+    <span class="s1">&#39;PD-Not-Detected&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">],</span>
+    <span class="s1">&#39;PND-Detected&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span>
+    <span class="s1">&#39;PND-Not-Detected&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+<span class="p">}</span>
+
+<span class="n">node_colors</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">get_node_attributes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+<span class="n">edge_weights</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">get_edge_attributes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+<span class="n">pos</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">1.1</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">1.1</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">pos</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+<span class="n">l_pos</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.45</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">pos</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_nodes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="n">node_colors</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">edge_weights</span><span class="p">),</span> <span class="n">edge_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_labels</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">l_pos</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">font_family</span><span class="o">=</span><span class="s1">&#39;serif&#39;</span><span class="p">,</span><span class="n">verticalalignment</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">1.4</span><span class="p">)</span>
+<span class="c1"># Define the edge labels</span>
+<span class="n">edge_labels</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">(</span><span class="s1">&#39;Factory&#39;</span><span class="p">,</span> <span class="s1">&#39;Standard&#39;</span><span class="p">):</span> <span class="s1">&#39;0.9&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s1">&#39;Factory&#39;</span><span class="p">,</span> <span class="s1">&#39;Premium&#39;</span><span class="p">):</span> <span class="s1">&#39;0.1&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s1">&#39;Standard&#39;</span><span class="p">,</span> <span class="s1">&#39;S-Defective&#39;</span><span class="p">):</span> <span class="s1">&#39;0.1&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s1">&#39;Standard&#39;</span><span class="p">,</span> <span class="s1">&#39;S-Not-Defective&#39;</span><span class="p">):</span> <span class="s1">&#39;0.9&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s1">&#39;Premium&#39;</span><span class="p">,</span> <span class="s1">&#39;P-Defective&#39;</span><span class="p">):</span> <span class="s1">&#39;0.25&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s1">&#39;Premium&#39;</span><span class="p">,</span> <span class="s1">&#39;P-Not-Defective&#39;</span><span class="p">):</span> <span class="s1">&#39;0.75&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s1">&#39;S-Defective&#39;</span><span class="p">,</span> <span class="s1">&#39;SD-Detected&#39;</span><span class="p">):</span> <span class="s1">&#39;0.75&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s1">&#39;S-Defective&#39;</span><span class="p">,</span> <span class="s1">&#39;SD-Not-Detected&#39;</span><span class="p">):</span> <span class="s1">&#39;0.25&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s1">&#39;S-Not-Defective&#39;</span><span class="p">,</span> <span class="s1">&#39;SND-Detected&#39;</span><span class="p">):</span> <span class="s1">&#39;0.1&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s1">&#39;S-Not-Defective&#39;</span><span class="p">,</span> <span class="s1">&#39;SND-Not-Detected&#39;</span><span class="p">):</span> <span class="s1">&#39;0.9&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s1">&#39;P-Defective&#39;</span><span class="p">,</span> <span class="s1">&#39;PD-Detected&#39;</span><span class="p">):</span> <span class="s1">&#39;0.75&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s1">&#39;P-Defective&#39;</span><span class="p">,</span> <span class="s1">&#39;PD-Not-Detected&#39;</span><span class="p">):</span> <span class="s1">&#39;0.25&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s1">&#39;P-Not-Defective&#39;</span><span class="p">,</span> <span class="s1">&#39;PND-Detected&#39;</span><span class="p">):</span> <span class="s1">&#39;0.1&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s1">&#39;P-Not-Defective&#39;</span><span class="p">,</span> <span class="s1">&#39;PND-Not-Detected&#39;</span><span class="p">):</span> <span class="s1">&#39;0.9&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Draw the edge labels</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edge_labels</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">edge_labels</span><span class="o">=</span><span class="n">edge_labels</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="c1"># Add labels after the detected and non-detected nodes</span>
+<span class="n">bbox_props</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;round,pad=0.3&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="s1">&#39;SD-Detected&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="s1">&#39;SD-Detected&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="sa">f</span><span class="s1">&#39;.9*.1*.75 = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="mf">.9</span><span class="o">*</span><span class="mf">.1</span><span class="o">*</span><span class="mf">.75</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span><span class="n">bbox</span><span class="o">=</span><span class="n">bbox_props</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="s1">&#39;SD-Not-Detected&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="s1">&#39;SD-Not-Detected&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="sa">f</span><span class="s1">&#39;.9*.1*.25 = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="mf">.9</span><span class="o">*</span><span class="mf">.1</span><span class="o">*</span><span class="mf">.25</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="s1">&#39;SND-Detected&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="s1">&#39;SND-Detected&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="sa">f</span><span class="s1">&#39;.9*.9*.1 = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="mf">.9</span><span class="o">*</span><span class="mf">.9</span><span class="o">*</span><span class="mf">.1</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="s1">&#39;SND-Not-Detected&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="s1">&#39;SND-Not-Detected&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="sa">f</span><span class="s1">&#39;.9*.9*.9 = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="mf">.9</span><span class="o">*</span><span class="mf">.9</span><span class="o">*</span><span class="mf">.9</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="s1">&#39;PD-Detected&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="s1">&#39;PD-Detected&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="sa">f</span><span class="s1">&#39;.1*.25*.75 = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="mf">.1</span><span class="o">*</span><span class="mf">.25</span><span class="o">*</span><span class="mf">.75</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span><span class="n">bbox</span><span class="o">=</span><span class="n">bbox_props</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="s1">&#39;PD-Not-Detected&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="s1">&#39;PD-Not-Detected&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="sa">f</span><span class="s1">&#39;.1*.25*.25 = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="mf">.1</span><span class="o">*</span><span class="mf">.25</span><span class="o">*</span><span class="mf">.25</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="s1">&#39;PND-Detected&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="s1">&#39;PND-Detected&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="sa">f</span><span class="s1">&#39;.1*.75*.1 = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="mf">.1</span><span class="o">*</span><span class="mf">.75</span><span class="o">*</span><span class="mf">.1</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="s1">&#39;PND-Not-Detected&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="s1">&#39;PND-Not-Detected&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="sa">f</span><span class="s1">&#39;.1*.75*.9 = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="mf">.1</span><span class="o">*</span><span class="mf">.75</span><span class="o">*</span><span class="mf">.9</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Given that we detected a defect, what are the odds that the bulb is Standard :&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;We now know that we just normalize the 2 situations this occurs or .0675/(.0675+.0188) or </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="mf">.0675</span><span class="o">/</span><span class="p">(</span><span class="mf">.0675</span><span class="o">+</span><span class="mf">.0188</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/f65e4ec28cda23f423be58e63cad8872100a6e82774f0977e18865446d3b1378.png" src="../../_images/f65e4ec28cda23f423be58e63cad8872100a6e82774f0977e18865446d3b1378.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Given that we detected a defect, what are the odds that the bulb is Standard :
+We now know that we just normalize the 2 situations this occurs or .0675/(.0675+.0188) or 78.22%
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="talk-on-baysian-extensions-networks-uses-more-applications">
+<h2>Talk on Baysian extensions (networks, uses, more applications)<a class="headerlink" href="#talk-on-baysian-extensions-networks-uses-more-applications" title="Link to this heading">#</a></h2>
+<p>Now that we have understood the heart of bayes rule in the simpliest cases, we can look at how it has been extended to more complex and powerful tools.  Below are some examples with a brief summary.</p>
+<ul class="simple">
+<li><p>Naïve Bayes is a probabilistic machine learning algorithm that uses Bayes’ theorem to calculate the probability of a class label given a set of input features. It assumes that the input features are independent of each other, which simplifies the calculation of the likelihood. The algorithm is trained on a labeled dataset, where it calculates the prior probability and the likelihood of each feature for each class label. The joint probability of the input features and each class label is then calculated and normalized to assign the input to the class label with the highest probability. Naïve Bayes is widely used in natural language processing, image classification, and other domains where there are a large number of features.</p></li>
+<li><p>A Bayesian network is a probabilistic graphical model that represents a set of variables and their conditional dependencies using a directed acyclic graph. Each node in the graph represents a variable, and the directed edges between nodes represent the dependencies between variables. The conditional dependencies between variables are represented using conditional probability tables, which specify the probability of a variable given the values of its parent variables. Bayesian networks are widely used in machine learning and artificial intelligence for probabilistic reasoning, decision-making, and prediction. They are particularly useful in situations where the data is incomplete or uncertain, and they can be used for a wide range of applications, including medical diagnosis, natural language processing, and image recognition.</p></li>
+<li><p>Bayesian belief networks extend the idea of Bayesian networks by allowing for cycles in the graph, which enables them to model feedback loops and other types of dependencies that cannot be represented using a directed acyclic graph. Bayesian belief networks are widely used in decision-making and risk analysis, and they have applications in fields such as finance, engineering, and environmental science.</p></li>
+</ul>
+<p>This is all to say the rule can be used generally to build up and make some very powerful models.</p>
+</section>
+<section id="baysian-optimization">
+<h2>Baysian Optimization<a class="headerlink" href="#baysian-optimization" title="Link to this heading">#</a></h2>
+<p>Now we come to the heart of the notebook, Baysian Optimization which focuses on extending the rule to optimize algorithms that are hard to evaluate.  It uses a probabilistic model of the objective function to guide the search for the optimal set of input parameters. The algorithm iteratively samples input parameters and updates the probabilistic model to predict the next best set of parameters to evaluate, until the optimal set of input parameters is found. Bayesian optimization is widely used in machine learning and other domains for hyperparameter tuning and experimental design.</p>
+<p>Before we can fully understand Baysian Optimization, we need to understand the idea of a Gaussian Process.  A Gaussian Process is a collection of random variables, any finite number of which have a joint Gaussian distribution.  This means that the joint distribution of any finite number of variables is multivariate normal.  This is a very powerful tool because it allows us to model a function as a collection of random variables.  This is useful because we can then use the Gaussian Process to model the objective function that we are trying to optimize.  This is the heart of Baysian Optimization.</p>
+<section id="gaussian-process">
+<h3>Gaussian Process<a class="headerlink" href="#gaussian-process" title="Link to this heading">#</a></h3>
+<p>A Gaussian process is a stochastic process with a Gaussian distribution. It is a generalization of the multivariate normal distribution to infinite dimensions. A Gaussian process is fully specified by its mean function and covariance function. The mean function is a function that maps each input point to a real number, and the covariance function is a function that maps two input points to a real number. The covariance function specifies the covariance between the outputs of the Gaussian process at the two input points. The covariance function is also known as the kernel function, and it is used to define the smoothness of the Gaussian process. The mean function and covariance function are often chosen to be linear combinations of a set of basis functions, which are also known as kernels. The Gaussian process is then defined as:</p>
+<p><span class="math notranslate nohighlight">\(y \sim \mathcal{GP}(m(x), k(x, x'))\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(y\)</span> is the output of the Gaussian process, <span class="math notranslate nohighlight">\(m(x)\)</span> is the mean function, and <span class="math notranslate nohighlight">\(k(x, x')\)</span> is the covariance function. The Gaussian process is fully specified by the mean function and covariance function, and the Gaussian process is represented by a multivariate normal distribution with mean <span class="math notranslate nohighlight">\(m(x)\)</span> and covariance <span class="math notranslate nohighlight">\(k(x, x')\)</span>.</p>
+<p>The functions that a GP uses to model the objective function are called kernels.  The kernel is a function that takes two inputs and returns a scalar.  The kernel is used to define the smoothness of the GP.  The most common kernel is the squared exponential kernel. The squared exponential kernel is defined as:</p>
+<p><span class="math notranslate nohighlight">\(k(x, x') = \sigma^2 \exp\left(-\frac{\|x - x'\|^2}{2\ell^2}\right)\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(\sigma^2\)</span> is the variance, <span class="math notranslate nohighlight">\(\ell\)</span> is the length scale, and <span class="math notranslate nohighlight">\(\|x - x'\|\)</span> is the Euclidean distance between <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(x'\)</span>. The squared exponential kernel is also known as the radial basis function kernel, and it is a popular choice for the covariance function in Gaussian processes. The squared exponential kernel is a stationary kernel, which means that the covariance between two points is independent of the distance between them.</p>
+<p>In a Gaussian process (GP), the covariance matrix encodes the correlations between function values at different input locations. Specifically, given a set of input locations <span class="math notranslate nohighlight">\(\mathbf{X} = [\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_n]^T\)</span>, the covariance matrix <span class="math notranslate nohighlight">\(\mathbf{K}\)</span> is defined as:</p>
+<p>​
+<span class="math notranslate nohighlight">\(\mathbf{K} = \begin{bmatrix}
+    k(\mathbf{x}_1, \mathbf{x}_1) &amp; k(\mathbf{x}_1, \mathbf{x}_2) &amp; \cdots &amp; k(\mathbf{x}_1, \mathbf{x}_n) \\
+    k(\mathbf{x}_2, \mathbf{x}_1) &amp; k(\mathbf{x}_2, \mathbf{x}_2) &amp; \cdots &amp; k(\mathbf{x}_2, \mathbf{x}_n) \\
+    \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+    k(\mathbf{x}_n, \mathbf{x}_1) &amp; k(\mathbf{x}_n, \mathbf{x}_2) &amp; \cdots &amp; k(\mathbf{x}_n, \mathbf{x}_n)
+\end{bmatrix}\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(k(\mathbf{x}_i, \mathbf{x}_j)\)</span> is the kernel function evaluated at input locations <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x}_j\)</span>. The diagonal elements <span class="math notranslate nohighlight">\(k(\mathbf{x}_i, \mathbf{x}_i)\)</span> represent the variance of the GP at each input location, while the off-diagonal elements represent the covariance between function values at different input locations.</p>
+<p>During prediction, given a set of new input locations <span class="math notranslate nohighlight">\(\mathbf{X}*\)</span>, the GP predicts the corresponding function values <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> as a multivariate Gaussian distribution with mean U and covariance matrix <span class="math notranslate nohighlight">\(\mathbf{K}_*\)</span>, where:</p>
+<p><span class="math notranslate nohighlight">\(
+\begin{aligned}
+    \boldsymbol{\mu}_* &amp;= \mathbf{k}_*^T \mathbf{K}^{-1} \mathbf{y} \\
+    \mathbf{K}_* &amp;= k(\mathbf{X}_*, \mathbf{X}_*) - \mathbf{k}_*^T \mathbf{K}^{-1} \mathbf{k}_*
+\end{aligned}
+\)</span>
+​</p>
+<p>​</p>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> is a vector of observed function values, <span class="math notranslate nohighlight">\(\mathbf{k}* = [k(\mathbf{x}1, \mathbf{x}), k(\mathbf{x}2, \mathbf{x}), \ldots, k(\mathbf{x}n, \mathbf{x}*)]^T\)</span> is a vector of kernel evaluations between the observed input locations <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> and the new input locations <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, and <span class="math notranslate nohighlight">\(k(\mathbf{X}_, \mathbf{X}*)\)</span> is the kernel matrix evaluated at the new input locations. The covariance matrix <span class="math notranslate nohighlight">\(\mathbf{K}*\)</span> represents the uncertainty in the predicted function values at the new input locations.</p>
+</section>
+<section id="acquisition-function">
+<h3>Acquisition Function<a class="headerlink" href="#acquisition-function" title="Link to this heading">#</a></h3>
+<p>The acquisition function is a function that is used to determine the next set of parameters to evalute in the objective function.  The aquisition function measures the added benefit of each point in the space and selects the next best one.  How best is determined depends on what the aquisition function is.  This is often balancing the trade off between exploring the space and also exploiting the current knowledge of the objective function.  The most common aquisition function is the Expected Improvement (EI) function.  The EI function is defined as:</p>
+<p>Intuitively</p>
+<ol class="arabic simple">
+<li><p>Upper Confidence Bound (UCB): The UCB acquisition function balances exploration and exploitation by maximizing the expected improvement of the function, while taking into account the uncertainty of the model predictions. The trade-off parameter <span class="math notranslate nohighlight">\(\beta_n\)</span> controls the balance between exploration and exploitation, with higher values of <span class="math notranslate nohighlight">\(\beta_n\)</span> corresponding to more exploration. The UCB acquisition function tends to perform well when the objective function is smooth and unimodal.</p></li>
+<li><p>Expected Improvement (EI): The EI acquisition function directly measures the expected improvement over the current best value of the objective function, and is more focused on exploration. The EI is calculated by computing the expected improvement over the current best value for each point in the search space. Points with higher expected improvement are then considered for the next evaluation. The EI acquisition function tends to perform well when the objective function is noisy and has multiple optima.</p></li>
+<li><p>Probability of Improvement (PI): The PI acquisition function measures the probability of finding a new best value in the search space, and is more focused on exploitation. The PI is calculated by computing the probability that a point in the search space has a higher objective function value than the current best value. Points with higher probability of improvement are then considered for the next evaluation. The PI acquisition function tends to perform well when the objective function has a narrow, well-defined peak.</p></li>
+</ol>
+<p>Math</p>
+<ol class="arabic simple">
+<li><p>Upper Confidence Bound (UCB): <span class="math notranslate nohighlight">\(x_{n+1} = \text{argmax}_{x\in\mathcal{X}} \left( \mu_n(x) + \beta_n \sigma_n(x) \right)\)</span> Where <span class="math notranslate nohighlight">\(\mu\)</span> is the mean and <span class="math notranslate nohighlight">\(\sigma\)</span> is the standard deviation of the GP at the point <span class="math notranslate nohighlight">\(x\)</span>.</p></li>
+<li><p>Expected Improvement (EI): <span class="math notranslate nohighlight">\(x_{n+1} = \text{argmax}_{x\in\mathcal{X}} \text{EI}_n(x)\)</span>, where <span class="math notranslate nohighlight">\(\text{EI}_n(x) = \mathbb{E}n\left[\max(0, f(x) - f{\text{best}})\right]\)</span></p></li>
+<li><p>Probability of Improvement (PI): <span class="math notranslate nohighlight">\(x_{n+1} = \text{argmax}_{x\in\mathcal{X}} \text{PI}_n(x)\)</span>, where <span class="math notranslate nohighlight">\(\text{PI}_n(x) = P\left(f(x) &gt; f{\text{best}} - \delta\right)\)</span>, and <span class="math notranslate nohighlight">\(\delta\)</span> is a small positive constant that controls the trade-off between exploration and exploitation.</p></li>
+</ol>
+<p>(Note that this math becomes more involved depending on the specifics of your GP kernal and what you are optimizing exactly.  However, these equations are best for the general case.)</p>
+</section>
+<section id="how-it-works">
+<h3>How it works<a class="headerlink" href="#how-it-works" title="Link to this heading">#</a></h3>
+<p>Bayesian optimization is a sequential model-based optimization technique for optimizing expensive-to-evaluate black-box functions. It is particularly useful when the objective function is expensive to evaluate, since it minimizes the number of evaluations needed to find the optimal solution.</p>
+<p>The main idea behind Bayesian optimization is to build a surrogate model of the objective function, which is used to select the next point to evaluate. The surrogate model is typically a Gaussian process, which provides a probabilistic model of the objective function and its uncertainty.</p>
+<p>The Bayesian optimization loop proceeds as follows:</p>
+<ol class="arabic">
+<li><p>Given a surrogate model <span class="math notranslate nohighlight">\(p(y|X)\)</span>, where <span class="math notranslate nohighlight">\(y\)</span> is the function value and <span class="math notranslate nohighlight">\(X\)</span> is the set of evaluated points, select the next point to evaluate <span class="math notranslate nohighlight">\(x_{n+1}\)</span> based on an acquisition function <span class="math notranslate nohighlight">\(a(x)\)</span> that balances exploration and exploitation. The most common acquisition functions are explored above.</p></li>
+<li><p>Evaluate the objective function <span class="math notranslate nohighlight">\(f(x_{n+1})\)</span> at the chosen point <span class="math notranslate nohighlight">\(x_{n+1}\)</span>.</p></li>
+<li><p>Add the new observation <span class="math notranslate nohighlight">\((x_{n+1}, f(x_{n+1}))\)</span> to the set of evaluated points <span class="math notranslate nohighlight">\(X_{n+1} = X_n \cup {(x_{n+1}, f(x_{n+1}))}\)</span>.</p></li>
+<li><p>Update the surrogate model <span class="math notranslate nohighlight">\(p(y|X_{n+1})\)</span> using Bayesian inference to incorporate the new observation. The posterior distribution of <span class="math notranslate nohighlight">\(y\)</span> given <span class="math notranslate nohighlight">\(X_{n+1}\)</span> is given by:</p>
+<p><span class="math notranslate nohighlight">\(p(y\mid X_{n+1}) = \frac{p(f(x_{n+1})\mid x_{n+1}, X_n)}{p(f(x_{n+1})\mid x_{n+1}, y, X_n)}\ p(y\mid X_n)\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(p(f(x_{n+1})|x_{n+1}, y, X_n)\)</span> is the likelihood of the observation, <span class="math notranslate nohighlight">\(p(y|X_n)\)</span> is the prior distribution, and <span class="math notranslate nohighlight">\(p(f(x_{n+1})|x_{n+1}, X_n)\)</span> is the evidence.</p>
+</li>
+</ol>
+<p>Repeat steps 1-4 until a termination criterion is met, such as a maximum number of iterations or a convergence threshold.</p>
+<p>Bayesian optimization is a powerful and flexible optimization technique that can handle a wide variety of objective functions and constraints. However, it can be computationally expensive and requires careful tuning of the surrogate model and acquisition function to achieve good performance.</p>
+</section>
+</section>
+<section id="an-example-of-baysian-optimization">
+<h2>An example of Baysian Optimization<a class="headerlink" href="#an-example-of-baysian-optimization" title="Link to this heading">#</a></h2>
+<p>Lets start by defining a simple objective function to optimize.  This represents a 1-D case of a function or process that we are trying to find the max of.  Generally, we may not be able to know this function, but for the sake of learning we will here.  We will define our (pseudo) black box model as:</p>
+<div class="math notranslate nohighlight">
+\[ y = \sin(5x) + \cos(10x) + 0.5x \]</div>
+<p>However this is not exactly realistic, lets add some noise and see what the space looks like</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">noisy_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A simple noisy objective function that takes a 1D array x as input.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">noise</span> <span class="o">=</span> <span class="n">noise</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="c1"># Add some random noise</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">10</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">x</span>
+    <span class="n">y</span><span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">noise</span>
+    <span class="k">return</span> <span class="n">y</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_function</span><span class="p">(</span><span class="n">real</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot the function f with the points x and y.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;True Function&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">real</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Observations&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Create a noisy dataset</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">noisy_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">noise</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">real</span><span class="o">=</span><span class="n">noisy_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">noise</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+<span class="n">plot_function</span><span class="p">(</span><span class="n">real</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Noisy function&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/cfcc4733e0194f7c2b041ce0a192fbfab94ee30e3ec09805165c77f089641aaf.png" src="../../_images/cfcc4733e0194f7c2b041ce0a192fbfab94ee30e3ec09805165c77f089641aaf.png" />
+</div>
+</div>
+<p>Now we have an example of a space with what a real world obeservations of data could be for a function.  Let’s move to using a GP and trying to see how one would optimize this function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.gaussian_process</span><span class="w"> </span><span class="kn">import</span> <span class="n">GaussianProcessRegressor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">catch_warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">simplefilter</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_function_model</span><span class="p">(</span><span class="n">real</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plots a function and its predicted values.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+<span class="sd">    real : array-like</span>
+<span class="sd">        The actual values of the function being modeled.</span>
+<span class="sd">    x : array-like</span>
+<span class="sd">        The input values used to generate the predictions.</span>
+<span class="sd">    y : array-like</span>
+<span class="sd">        The predicted values of the function generated by the model.</span>
+<span class="sd">    title : str, optional</span>
+<span class="sd">        The title of the plot.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;True Function&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">real</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model Predictions&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+<span class="c1"># Instantiate a Gaussian Process model</span>
+<span class="n">gp</span> <span class="o">=</span> <span class="n">GaussianProcessRegressor</span><span class="p">()</span>
+<span class="n">real</span><span class="o">=</span><span class="n">noisy_function</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">noise</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Fit to data using Maximum Likelihood Estimation of the parameters</span>
+<span class="n">gp</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">real</span><span class="p">)</span>
+
+
+<span class="c1"># surrogate or approximation for the objective function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">surrogate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+ <span class="c1"># catch any warning generated when making a prediction</span>
+    <span class="k">with</span> <span class="n">catch_warnings</span><span class="p">():</span>
+        <span class="k">pass</span>
+    <span class="c1"># ignore generated warnings</span>
+    <span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">return_std</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">model_space</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="n">plot_function_model</span><span class="p">(</span><span class="n">surrogate</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">gp</span><span class="p">,</span><span class="n">X</span><span class="o">=</span><span class="n">model_space</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])[</span><span class="mi">0</span><span class="p">],</span><span class="n">model_space</span><span class="p">,</span><span class="n">noisy_function</span><span class="p">(</span><span class="n">model_space</span><span class="p">,</span><span class="n">noise</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Surrogate Function&#39;</span><span class="p">)</span>
+<span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="n">surrogate</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">gp</span><span class="p">,</span><span class="n">X</span><span class="o">=</span><span class="n">model_space</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">model_space</span><span class="p">,</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">model_space</span><span class="p">,</span><span class="n">a</span><span class="o">-</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x2e7937b26a0&gt;
+</pre></div>
+</div>
+<img alt="../../_images/effa4f6116e95a0844bf82225a9c1a8106be22b00b54b12a12c9766b98a2e6e9.png" src="../../_images/effa4f6116e95a0844bf82225a9c1a8106be22b00b54b12a12c9766b98a2e6e9.png" />
+</div>
+</div>
+<p>As one can see, the noise has thrown off the gp slightly from the true shape of the function.  However, it is still able to capture the general shape of the function.  Now lets try to optimize this function using the GP and BO.  We are going to use a random search of the space for simplicity (usually this would be a more complicated algorithm such as BFGS) (This is opt acquisition below).  However, this is just to show how the GP and BO work together.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># import norm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">arange</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">argmax</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.random</span><span class="w"> </span><span class="kn">import</span> <span class="n">normal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.random</span><span class="w"> </span><span class="kn">import</span> <span class="n">random</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">asarray</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">vstack</span>
+<span class="c1"># probability of improvement acquisition function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">opt_acquisition</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+	<span class="c1"># random search, generate random samples</span>
+	<span class="n">Xsamples</span> <span class="o">=</span> <span class="n">random</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+	<span class="n">Xsamples</span> <span class="o">=</span> <span class="n">Xsamples</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Xsamples</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+	<span class="c1"># calculate the acquisition function for each sample</span>
+	<span class="n">scores</span> <span class="o">=</span> <span class="n">acquisition</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Xsamples</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+	<span class="c1"># locate the index of the largest scores</span>
+	<span class="n">ix</span> <span class="o">=</span> <span class="n">argmax</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">Xsamples</span><span class="p">[</span><span class="n">ix</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we will use the probability of improvement to optimize the function.  Here this entails taking the cumulative distribution of the P = cdf((mean - the best mean) / std + 1E-9)( add to std to avoid divide by 0 errors).  This will then allow use to sample from the space and find the best point to evaluate next.  This is done below for 100 iterations.  Note that we started with 100 evaluated points to give the GP something to predict on.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># probability of improvement acquisition function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">acquisition</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Xsamples</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+ <span class="c1"># calculate the best surrogate score found so far</span>
+ <span class="n">yhat</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">surrogate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+ <span class="n">best</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">yhat</span><span class="p">)</span>
+ <span class="c1"># calculate mean and stdev via surrogate function</span>
+ <span class="n">mu</span><span class="p">,</span> <span class="n">std</span> <span class="o">=</span> <span class="n">surrogate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">Xsamples</span><span class="p">)</span>
+ <span class="c1">#print(mu,std)</span>
+ <span class="n">mu</span> <span class="o">=</span> <span class="n">mu</span><span class="p">[:]</span>
+ <span class="c1"># calculate the probability of improvement</span>
+ <span class="n">probs</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">((</span><span class="n">mu</span> <span class="o">-</span> <span class="n">best</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">std</span><span class="o">+</span><span class="mf">1E-9</span><span class="p">))</span>
+ <span class="k">return</span> <span class="n">probs</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">random</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">noisy_function</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">noise</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="c1"># reshape into rows and cols</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+<span class="c1"># perform the optimization process</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+ <span class="c1"># select the next point to sample</span>
+ <span class="n">x</span> <span class="o">=</span> <span class="n">opt_acquisition</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">gp</span><span class="p">)</span>
+ <span class="c1"># sample the point</span>
+ <span class="n">actual</span> <span class="o">=</span> <span class="n">noisy_function</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">]))</span>
+ <span class="c1"># summarize the finding for our own reporting</span>
+ <span class="n">est</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">surrogate</span><span class="p">(</span><span class="n">gp</span><span class="p">,</span> <span class="p">[[</span><span class="n">x</span><span class="p">]])</span>
+ <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&gt;x=</span><span class="si">%.3f</span><span class="s1">, f()=</span><span class="si">%3f</span><span class="s1">, actual=</span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">est</span><span class="p">,</span> <span class="n">actual</span><span class="p">))</span>
+ <span class="c1"># add the data to the dataset</span>
+ <span class="n">X</span> <span class="o">=</span> <span class="n">vstack</span><span class="p">((</span><span class="n">X</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">]))</span>
+ <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">actual</span><span class="p">)</span>
+ <span class="c1"># update the model</span>
+ <span class="n">gp</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&gt;x=0.042, f()=1.801306, actual=0.416
+&gt;x=0.015, f()=2.476273, actual=2.006
+&gt;x=0.487, f()=1.309288, actual=0.945
+&gt;x=0.010, f()=2.342084, actual=-0.337
+&gt;x=0.565, f()=1.621370, actual=-0.127
+&gt;x=0.578, f()=1.390795, actual=1.797
+&gt;x=0.582, f()=1.441206, actual=1.812
+&gt;x=0.564, f()=1.470376, actual=1.122
+&gt;x=0.562, f()=1.433932, actual=2.054
+&gt;x=0.585, f()=1.502529, actual=2.294
+&gt;x=0.596, f()=1.566031, actual=1.671
+&gt;x=0.578, f()=1.578257, actual=-0.016
+&gt;x=0.584, f()=1.465160, actual=2.537
+&gt;x=0.580, f()=1.537415, actual=2.643
+&gt;x=0.605, f()=1.596102, actual=0.760
+&gt;x=0.608, f()=1.524411, actual=1.871
+&gt;x=0.436, f()=0.900741, actual=2.067
+&gt;x=0.781, f()=-0.403633, actual=0.579
+&gt;x=0.185, f()=-0.143196, actual=0.172
+&gt;x=0.918, f()=-3.333128, actual=-1.545
+&gt;x=0.616, f()=1.563201, actual=2.393
+&gt;x=0.578, f()=1.652354, actual=0.895
+&gt;x=0.595, f()=1.617279, actual=2.900
+&gt;x=0.590, f()=1.683062, actual=2.616
+&gt;x=0.498, f()=1.396433, actual=0.909
+&gt;x=0.601, f()=1.721334, actual=2.161
+&gt;x=0.591, f()=1.738075, actual=-0.881
+&gt;x=0.244, f()=-0.040310, actual=-0.014
+&gt;x=0.513, f()=1.385502, actual=2.104
+&gt;x=0.329, f()=0.282343, actual=0.502
+&gt;x=0.589, f()=1.639555, actual=2.236
+&gt;x=0.856, f()=-1.582478, actual=-1.665
+&gt;x=0.575, f()=1.654261, actual=2.170
+&gt;x=0.034, f()=0.902007, actual=1.293
+&gt;x=0.625, f()=1.623857, actual=1.120
+&gt;x=0.607, f()=1.642143, actual=0.676
+&gt;x=0.578, f()=1.629230, actual=0.737
+&gt;x=0.562, f()=1.587978, actual=1.580
+&gt;x=0.622, f()=1.528130, actual=0.087
+&gt;x=0.609, f()=1.502405, actual=0.617
+&gt;x=0.518, f()=1.473734, actual=0.684
+&gt;x=0.046, f()=0.895650, actual=-0.767
+&gt;x=0.596, f()=1.496920, actual=3.056
+&gt;x=0.368, f()=0.596626, actual=1.660
+&gt;x=0.599, f()=1.533100, actual=2.195
+&gt;x=0.521, f()=1.480342, actual=0.239
+&gt;x=0.006, f()=1.151182, actual=2.775
+&gt;x=0.001, f()=1.923752, actual=-0.213
+&gt;x=0.963, f()=-0.842636, actual=-2.384
+&gt;x=0.037, f()=0.741678, actual=-1.441
+&gt;x=0.347, f()=0.587048, actual=1.301
+&gt;x=0.460, f()=1.220681, actual=2.104
+&gt;x=0.147, f()=-0.249641, actual=0.375
+&gt;x=0.342, f()=0.671184, actual=-0.219
+&gt;x=0.560, f()=1.539564, actual=1.961
+&gt;x=0.587, f()=1.553710, actual=0.858
+&gt;x=0.851, f()=-1.429294, actual=-0.462
+&gt;x=0.577, f()=1.536347, actual=2.025
+&gt;x=0.975, f()=-2.093946, actual=-1.083
+&gt;x=0.583, f()=1.549475, actual=2.128
+&gt;x=0.559, f()=1.550247, actual=0.958
+&gt;x=0.576, f()=1.548951, actual=1.499
+&gt;x=0.586, f()=1.548869, actual=1.575
+&gt;x=0.576, f()=1.548412, actual=2.315
+&gt;x=0.586, f()=1.566180, actual=2.389
+&gt;x=0.585, f()=1.584499, actual=2.510
+&gt;x=0.594, f()=1.601137, actual=1.795
+&gt;x=0.593, f()=1.606296, actual=-0.320
+&gt;x=0.582, f()=1.568829, actual=3.044
+&gt;x=0.985, f()=-1.161224, actual=0.775
+&gt;x=0.795, f()=-0.343666, actual=-0.633
+&gt;x=0.601, f()=1.597804, actual=2.003
+&gt;x=0.555, f()=1.570868, actual=3.027
+&gt;x=0.921, f()=-2.059334, actual=0.484
+&gt;x=0.532, f()=1.599400, actual=1.729
+&gt;x=0.559, f()=1.640176, actual=2.807
+&gt;x=0.564, f()=1.665329, actual=1.333
+&gt;x=0.566, f()=1.658871, actual=1.729
+&gt;x=0.564, f()=1.660207, actual=1.363
+&gt;x=0.542, f()=1.636434, actual=0.971
+&gt;x=0.575, f()=1.640100, actual=2.230
+&gt;x=0.564, f()=1.651549, actual=-0.994
+&gt;x=0.570, f()=1.606445, actual=1.003
+&gt;x=0.592, f()=1.581714, actual=1.126
+&gt;x=0.608, f()=1.540938, actual=0.663
+&gt;x=0.594, f()=1.554141, actual=0.442
+&gt;x=0.552, f()=1.558168, actual=1.133
+&gt;x=0.831, f()=-0.931437, actual=-0.134
+&gt;x=0.836, f()=-0.913484, actual=-1.871
+&gt;x=0.566, f()=1.555032, actual=0.797
+&gt;x=0.142, f()=-0.134212, actual=2.624
+&gt;x=0.583, f()=1.540722, actual=1.488
+&gt;x=0.567, f()=1.544106, actual=2.573
+&gt;x=0.350, f()=0.616592, actual=-0.103
+&gt;x=0.349, f()=0.552102, actual=1.554
+&gt;x=0.576, f()=1.558859, actual=0.721
+&gt;x=0.605, f()=1.503665, actual=-1.168
+&gt;x=0.625, f()=1.369827, actual=0.837
+&gt;x=0.519, f()=1.469887, actual=2.719
+&gt;x=0.595, f()=1.472925, actual=1.210
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;With noise Function&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">surrogate</span><span class="p">(</span><span class="n">gp</span><span class="p">,</span><span class="n">X</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model Predictions&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span><span class="n">noisy_function</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span><span class="n">noise</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span><span class="n">c</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;True Function&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Bayesian Optimization&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">ix</span> <span class="o">=</span> <span class="n">argmax</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Best Result: x=</span><span class="si">%.3f</span><span class="s1">, y=</span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">ix</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">ix</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Real optimal value is </span><span class="si">{</span><span class="mf">.6</span><span class="si">}</span><span class="s2">, y=</span><span class="si">{</span><span class="n">noisy_function</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">.6</span><span class="p">]),</span><span class="n">noise</span><span class="o">=</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/37e379ab5d2da0031ba081c007c4fcb4f769fa0f23fcca13d743164addbfc72f.png" src="../../_images/37e379ab5d2da0031ba081c007c4fcb4f769fa0f23fcca13d743164addbfc72f.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best Result: x=0.656, y=4.252
+Real optimal value is 0.6, y=1.4012902947102333
+</pre></div>
+</div>
+</div>
+</div>
+<p>As we can see the noise has once again confounded our y value, but we were able to almost exactly get the optimal.  If we go a step further and average around this point we can get a better estimate of the true optimal.  This is done below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Averaged value :&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">X</span><span class="o">&gt;</span><span class="mf">.57</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">X</span><span class="o">&lt;</span><span class="mf">.63</span><span class="p">))])]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Averaged value : 0.894659832209317
+</pre></div>
+</div>
+</div>
+</div>
+<p>A lot closer to the 1.4, but this is due the stocastic nature of the process.  If more smapling is done, the closer to the true optimal we will get.  Note that above will only sample in the region of interest generally.  This allows us to cut the cost down of evaluating the function.  This is the main benefit of BO.  The combination of the surrogate model and the acquisition function allows us to do this.  The surrogate model allows us to predict the function in the space, and the acquisition function allows us to sample the space in a more intelligent way.  This allows us to find the optimal faster and with less samples.</p>
+</section>
+<section id="more-realistic-example">
+<h2>More realistic example<a class="headerlink" href="#more-realistic-example" title="Link to this heading">#</a></h2>
+<p>Now that we have covered the basic process of baysian optimization, lets try to apply it to a more realistic example and learn about the types of acquisition functions on the way.  We will use the same process as above, but we will now use a 2D function to represent the land with different diamond diposits.  The function is defined as :</p>
+<div class="math notranslate nohighlight">
+\[y=e^{-\frac{(x-0.2)^2 + (y-0.5)^2}{0.02}} + e^{-\frac{(x-0.5)^2 + (y-0.5)^2}{0.02}} + e^{-\frac{(x-0.8)^2 + (y-0.5)^2}{0.02}}\]</div>
+<p>This function is shown below, but generally it can be seen to have multiple peaks and valleys.  This is a more realistic representation of a function that we would want to optimize.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.mplot3d</span><span class="w"> </span><span class="kn">import</span> <span class="n">Axes3D</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">noisy_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a 2D noisy function based on given input values x and y.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : array-like</span>
+<span class="sd">        The input values along the x-axis.</span>
+<span class="sd">    y : array-like</span>
+<span class="sd">        The input values along the y-axis.</span>
+<span class="sd">    noise : float, optional</span>
+<span class="sd">        The level of noise to add to the function. Default is 1.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    y : array-like</span>
+<span class="sd">        The output values of the function with added noise.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; x = np.linspace(0, 1, 100)</span>
+<span class="sd">    &gt;&gt;&gt; y = np.linspace(0, 1, 100)</span>
+<span class="sd">    &gt;&gt;&gt; noisy = noisy_function(x, y, noise=0.5)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">noise</span> <span class="o">=</span> <span class="n">noise</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="c1"># Add some random noise</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="n">x</span><span class="o">-</span><span class="mf">0.2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="mf">0.8</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mf">0.01</span><span class="p">)</span> <span class="o">+</span> 
+             <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="n">x</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mf">0.01</span><span class="p">)</span> <span class="o">+</span>
+             <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="n">x</span><span class="o">-</span><span class="mf">0.1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="mf">0.2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mf">0.09</span><span class="p">)</span> <span class="o">+</span> 
+             <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="n">x</span><span class="o">-</span><span class="mf">0.9</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="mf">0.6</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mf">0.6</span><span class="p">))</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">value</span> <span class="o">+</span> <span class="n">noise</span>
+    <span class="k">return</span> <span class="n">y</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Evaluate the function at each combination of x and y values</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">noisy_function</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span><span class="n">noise</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Create a 3D plot of the function</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="s1">&#39;Real Function&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">noisy_function</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span><span class="n">noise</span><span class="o">=</span><span class="mf">.05</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="s1">&#39;Noisy Function&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Real optimal value is (x,y) = </span><span class="si">{</span><span class="mf">.2</span><span class="p">,</span><span class="mf">.8</span><span class="si">}</span><span class="s2">, value=</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/8d96447a04815418fea98fcd198624fb277a8eb8bc34e8b2860a4056d21f1f51.png" src="../../_images/8d96447a04815418fea98fcd198624fb277a8eb8bc34e8b2860a4056d21f1f51.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Real optimal value is (x,y) = (0.2, 0.8), value=2.464866295587308
+</pre></div>
+</div>
+<img alt="../../_images/794b2f996262251c52a538cbdcbd25f255ab2ce893158d62b9e1af83b2133901.png" src="../../_images/794b2f996262251c52a538cbdcbd25f255ab2ce893158d62b9e1af83b2133901.png" />
+</div>
+</div>
+<p>All we have to do is code up the aquisition functions than follow the general process outlined.  For the purposes of simplicity, the function will use discrete point optimization on the range of 10000 points for our model to choose from.  This is done below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.gaussian_process</span><span class="w"> </span><span class="kn">import</span> <span class="n">GaussianProcessRegressor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.gaussian_process.kernels</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConstantKernel</span><span class="p">,</span> <span class="n">Matern</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">minimize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">expected_improvement</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">X_sample</span><span class="p">,</span> <span class="n">Y_sample</span><span class="p">,</span> <span class="n">gp</span><span class="p">,</span> <span class="n">xi</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>\
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the expected improvement (EI) at point x, given past samples X_sample</span>
+<span class="sd">    and Y_sample, and a Gaussian process model gp.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : array-like</span>
+<span class="sd">        The point(s) at which to evaluate the expected improvement.</span>
+<span class="sd">    X_sample : array-like</span>
+<span class="sd">        The input values of the previous samples.</span>
+<span class="sd">    Y_sample : array-like</span>
+<span class="sd">        The output values of the previous samples.</span>
+<span class="sd">    gp : GaussianProcessRegressor object</span>
+<span class="sd">        The Gaussian process regression model fitted to the data.</span>
+<span class="sd">    xi : float, optional</span>
+<span class="sd">        The exploration-exploitation trade-off parameter. Default is 0.01.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    ei : float or array-like</span>
+<span class="sd">        The expected improvement at the point(s) x.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">return_std</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">mu_sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">Y_sample</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s1">&#39;warn&#39;</span><span class="p">):</span>
+        <span class="n">imp</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">-</span> <span class="n">mu_sample</span> <span class="o">-</span> <span class="n">xi</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">imp</span> <span class="o">/</span> <span class="n">sigma</span>
+        <span class="n">ei</span> <span class="o">=</span> <span class="n">imp</span> <span class="o">*</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">ei</span><span class="p">[</span><span class="n">sigma</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">ei</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">upper_confidence_bound</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">X_sample</span><span class="p">,</span> <span class="n">Y_sample</span><span class="p">,</span> <span class="n">gp</span><span class="p">,</span> <span class="n">kappa</span><span class="o">=</span><span class="mf">2.576</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the upper confidence bound (UCB) at point x, given past samples X_sample</span>
+<span class="sd">    and Y_sample, and a Gaussian process model gp.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : array-like</span>
+<span class="sd">        The point(s) at which to evaluate the upper confidence bound.</span>
+<span class="sd">    X_sample : array-like</span>
+<span class="sd">        The input values of the previous samples.</span>
+<span class="sd">    Y_sample : array-like</span>
+<span class="sd">        The output values of the previous samples.</span>
+<span class="sd">    gp : GaussianProcessRegressor object</span>
+<span class="sd">        The Gaussian process regression model fitted to the data.</span>
+<span class="sd">    kappa : float, optional</span>
+<span class="sd">        The trade-off parameter between exploration and exploitation.</span>
+<span class="sd">        Default is 2.576, which corresponds to 99% confidence interval.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    ucb : float or array-like</span>
+<span class="sd">        The upper confidence bound at the point(s) x.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">return_std</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">-</span><span class="p">(</span><span class="n">mu</span> <span class="o">+</span> <span class="n">kappa</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">probability_of_improvement</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">X_sample</span><span class="p">,</span> <span class="n">Y_sample</span><span class="p">,</span> <span class="n">gp</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the probability of improvement (POI) at point x, given past samples X_sample</span>
+<span class="sd">    and Y_sample, and a Gaussian process model gp.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : array-like</span>
+<span class="sd">        The point(s) at which to evaluate the probability of improvement.</span>
+<span class="sd">    X_sample : array-like</span>
+<span class="sd">        The input values of the previous samples.</span>
+<span class="sd">    Y_sample : array-like</span>
+<span class="sd">        The output values of the previous samples.</span>
+<span class="sd">    gp : GaussianProcessRegressor object</span>
+<span class="sd">        The Gaussian process regression model fitted to the data.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    poi : float or array-like</span>
+<span class="sd">        The probability of improvement at the point(s) x.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">return_std</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">mu_sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">Y_sample</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s1">&#39;warn&#39;</span><span class="p">):</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="n">mu</span> <span class="o">-</span> <span class="n">mu_sample</span><span class="p">)</span> <span class="o">/</span> <span class="n">sigma</span>
+        <span class="n">poi</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">poi</span><span class="p">[</span><span class="n">sigma</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">poi</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">bayesian_optimization</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">n_iterations</span><span class="p">,</span> <span class="n">acquisition</span><span class="p">,</span> <span class="n">acquisition_params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function performs Bayesian optimization on an objective function with given bounds, for a specified number of iterations. It uses a Gaussian Process Regressor to model the objective function and selects the next point to sample based on the specified acquisition function (expected improvement, upper confidence bound, or probability of improvement).</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    objective: the objective function to optimize</span>
+<span class="sd">    bounds: an array of shape (n_dims, 2) defining the bounds of the search space</span>
+<span class="sd">    n_iterations: the number of iterations of Bayesian optimization to perform</span>
+<span class="sd">    acquisition: the acquisition function to use for selecting the next point to sample (either &#39;ei&#39;, &#39;ucb&#39;, or &#39;poi&#39;)</span>
+<span class="sd">    acquisition_params: a dictionary containing additional parameters for the acquisition function (e.g. xi for expected improvement)</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    </span>
+<span class="sd">    best_x: the best configuration found by Bayesian optimization</span>
+<span class="sd">    best_y: the value of the objective function at the best configuration</span>
+<span class="sd">    X: a list of all sampled configurations</span>
+<span class="sd">    Y: a list of the corresponding values of the objective function for each sampled configuration</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Initialize samples</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+    <span class="n">x_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">bounds</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">bounds</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">bounds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">y_init</span> <span class="o">=</span> <span class="p">[</span><span class="n">noisy_function</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span><span class="n">noise</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">x_init</span><span class="p">]</span>
+
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x_init</span><span class="p">)</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">y_init</span>
+
+    <span class="c1"># Define the kernel and the GP regressor</span>
+    <span class="n">gp</span> <span class="o">=</span> <span class="n">GaussianProcessRegressor</span><span class="p">()</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">250</span><span class="p">)):</span>
+        <span class="c1"># Update GP model</span>
+        <span class="n">gp</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+        <span class="c1">#print(X)</span>
+        <span class="c1"># Select the next point to sample</span>
+        <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">:</span><span class="mi">100</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">:</span><span class="mi">100</span><span class="n">j</span><span class="p">]</span>
+        <span class="n">xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">a</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">b</span><span class="o">.</span><span class="n">flatten</span><span class="p">()))</span>
+        <span class="n">xy</span><span class="o">=</span><span class="n">xy</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">x_next</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">acquisition</span> <span class="o">==</span> <span class="s1">&#39;ei&#39;</span><span class="p">:</span>
+            <span class="n">z</span><span class="o">=</span><span class="n">expected_improvement</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">gp</span><span class="p">)</span>
+            <span class="n">x_next</span><span class="o">=</span><span class="n">xy</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">z</span><span class="p">)]</span>
+        <span class="k">elif</span> <span class="n">acquisition</span> <span class="o">==</span> <span class="s1">&#39;ucb&#39;</span><span class="p">:</span>
+            <span class="n">z</span><span class="o">=</span><span class="n">upper_confidence_bound</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">gp</span><span class="p">)</span>
+            <span class="n">x_next</span><span class="o">=</span><span class="n">xy</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">z</span><span class="p">)]</span>
+        <span class="k">elif</span> <span class="n">acquisition</span> <span class="o">==</span> <span class="s1">&#39;poi&#39;</span><span class="p">:</span>
+            <span class="n">z</span><span class="o">=</span><span class="n">probability_of_improvement</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">gp</span><span class="p">)</span>
+            <span class="n">x_next</span><span class="o">=</span><span class="n">xy</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">z</span><span class="p">)]</span>
+        <span class="c1">#print(x_next)</span>
+        <span class="c1"># Sample the next point and update samples</span>
+        <span class="n">y_next</span> <span class="o">=</span> <span class="n">objective</span><span class="p">([</span><span class="n">x_next</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">x_next</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span><span class="n">noise</span><span class="o">=</span><span class="mf">.1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_next</span><span class="p">)</span>
+        <span class="n">X</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">Y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y_next</span><span class="p">)</span>
+        
+
+    <span class="c1"># Obtain the best configuration and its performance</span>
+    <span class="n">best_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">best_x</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">best_idx</span><span class="p">]</span>
+    <span class="n">best_y</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[</span><span class="n">best_idx</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">best_x</span><span class="p">,</span> <span class="n">best_y</span><span class="p">,</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span>
+<span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="o">=</span><span class="n">bayesian_optimization</span><span class="p">(</span><span class="n">noisy_function</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]),</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;ucb&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;For UCB&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Best x is </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">, best y is </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Error from optimal&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Error from optimal vs Iteration&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">250</span><span class="p">),</span><span class="mf">2.46</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="mi">100</span><span class="p">:</span><span class="mi">101</span><span class="o">+</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">250</span><span class="p">)]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 250/250 [00:12&lt;00:00, 20.03it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>For UCB
+Best x is [0.19191919 0.78787879], best y is 2.694285679714442
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x2e79d3821f0&gt;]
+</pre></div>
+</div>
+<img alt="../../_images/4057ea6679c484c312bb2c111f25f946c8b7ae42d1d3f7ee86bf15289c92d88c.png" src="../../_images/4057ea6679c484c312bb2c111f25f946c8b7ae42d1d3f7ee86bf15289c92d88c.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="o">=</span><span class="n">bayesian_optimization</span><span class="p">(</span><span class="n">noisy_function</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]),</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;poi&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;For POI&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Best x is </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">, best y is </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Error from optimal&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Error from optimal vs Iteration&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">250</span><span class="p">),</span><span class="mf">2.46</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="mi">100</span><span class="p">:</span><span class="mi">101</span><span class="o">+</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">250</span><span class="p">)]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 250/250 [00:12&lt;00:00, 19.80it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>For POI
+Best x is [0.21212121 0.81818182], best y is 2.646888973951309
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x2e7980dccd0&gt;]
+</pre></div>
+</div>
+<img alt="../../_images/1c2aba64c925b406c6fe237f60111b1302d7cb69a43bcd179a99230cc1151077.png" src="../../_images/1c2aba64c925b406c6fe237f60111b1302d7cb69a43bcd179a99230cc1151077.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="o">=</span><span class="n">bayesian_optimization</span><span class="p">(</span><span class="n">noisy_function</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]),</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;ei&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;For EI&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Best x is </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">, best y is </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Error from optimal&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Error from optimal vs Iteration&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">250</span><span class="p">),</span><span class="mf">2.46</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="mi">100</span><span class="p">:</span><span class="mi">101</span><span class="o">+</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">250</span><span class="p">)]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 250/250 [00:12&lt;00:00, 19.48it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>For EI
+Best x is [0.19191919 0.7979798 ], best y is 2.717369476477992
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x2e79a9dd760&gt;]
+</pre></div>
+</div>
+<img alt="../../_images/2664c537f2ca655f6177123116eb683866397e503678eacc31a0c91a25989fbf.png" src="../../_images/2664c537f2ca655f6177123116eb683866397e503678eacc31a0c91a25989fbf.png" />
+</div>
+</div>
+<p>So it appaers that all the functions are able to find the optimal of the diamond distribtion.  However, it took significantly less time of upper confidence bound as it found it in the almost first iteration.  The other two required 100 iterations to find the optimal.  It also appears that they had the same learning curve, such that they chose the same points during the iterations.  Going back to our orginal description, this may mean that the function was smooth enough for the UCB to preform the best.</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<p>Agnihotri, Apoorv, and Nipun Batra. “Exploring Bayesian Optimization.” Distill, 23 Sept. 2021, <a class="reference external" href="https://distill.pub/2020/bayesian-optimization/">https://distill.pub/2020/bayesian-optimization/</a>.</p>
+<p>Brownlee, Jason. “How to Implement Bayesian Optimization from Scratch in Python.” <a class="reference external" href="http://MachineLearningMastery.com">MachineLearningMastery.com</a>, 21 Aug. 2020, <a class="reference external" href="https://machinelearningmastery.com/what-is-bayesian-optimization/">https://machinelearningmastery.com/what-is-bayesian-optimization/</a>.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/contrib"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Bayesian_Optimization1.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Bayesian Optimization Tutorial 1</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="sgd.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Stochastic Gradient Descent</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#history-and-motivation">History and Motivation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayes-rule">Bayes Rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-example">An Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tree-diagram">Tree Diagram</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1">Problem 1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extending-bayes-rule">Extending Bayes Rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#talk-on-baysian-extensions-networks-uses-more-applications">Talk on Baysian extensions (networks, uses, more applications)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#baysian-optimization">Baysian Optimization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-process">Gaussian Process</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#acquisition-function">Acquisition Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works">How it works</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-example-of-baysian-optimization">An example of Baysian Optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-realistic-example">More realistic example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Alexander Dowling, et al.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

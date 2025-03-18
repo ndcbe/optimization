@@ -1,0 +1,1510 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>7.7. Simple Netwon Method for Equality Constrained NLPs &#8212; Optimization for Decision Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/7/Interior-Point1';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs" href="Interior-Point2.html" />
+    <link rel="prev" title="7.6. NLP Diagnostics with Degeneracy Hunter" href="degeneracy_hunter.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/cbe_logo.jpg" class="logo__image only-light" alt="Optimization for Decision Science - Home"/>
+    <script>document.write(`<img src="../../_static/cbe_logo.jpg" class="logo__image only-dark" alt="Optimization for Decision Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Optimization for Decision Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Organization</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/intro.html">Welcome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../org/syllabus.html">Syllabus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/calendar.html">Fall 2024 Calendar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/contribute.html">Contribution Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/workshop.html">Computational Optimization in Python (São Paulo, Brazil)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/assignments.html">Assignments</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo1.html">Pyomo Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo2.html">Pyomo Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo3.html">Pyomo Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project1.html">Project 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms1.html">Algorithms Homework 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms2.html">Algorithms Homework 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/project2.html">Project 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms3.html">Algorithms Homework 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Algorithms4.html">Algorithms Homework 4</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../org/archive.html">Archive</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../assignments/Pyomo-Mini-Project.html">Pyomo Mini-Project: Receding Horizon Stochastic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../org/semester_project.html">Semester Project (Spring 2023)</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modeling in Pyomo</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1/getting-started.html">1. Getting Started with Pyomo</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1/Local-Install.html">1.1. Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Optimization-Modeling.html">1.2. Optimization Modeling with Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Introduction.html">1.3. Your First Optimization Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/LP.html">1.4. Continuous Optimization: Linear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/NLP.html">1.5. Continuous Optimization: Nonlinear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/IP.html">1.6. Integer Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1/Pyomo-Nuts-and-Bolts.html">1.7. 60 Minutes to Pyomo: An Energy Storage Model Predictive Control Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../2/logic.html">2. Logical Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../2/Logical_Modeling_GDP.html">2.1. Logical Modeling and Generalized Disjunctive Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2/Modeling_Disjunctions_Strip_Packing.html">2.2. Modeling Disjunctions through the Strip Packing Problem</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3/dynamics.html">3. Dynamic Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_car.html">3.1. Pyomo.DAE Example: Race Car</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_TCLab.html">3.2. Pyomo.DAE Example: Temperature Control Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_background.html">3.3. Differential Algebraic Equations (DAEs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/DAE_numeric_integration.html">3.4. Numeric Integration for DAEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_theory.html">3.5. Dynamic Optimization with Collocation and Pyomo.DAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3/PyomoDAE_example.html">3.6. Pyomo.DAE: Racing Example Revisited</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4/uncertainty.html">4. Optimization Under Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4/SP.html">4.1. Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/blocks.html">4.2. Blocks and Other Pyomo Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/AdvancedTopics.html">4.3. Advanced Topics in Stochastic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4/RiskMeasures.html">4.4. Risk Measures and Portfolio Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../5/data.html">5. Data Science and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-tutorial.html">5.1. Parameter estimation with <code class="docutils literal notranslate"><span class="pre">parmest</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Parmest-generate-data.html">5.2. Supplementary material: data for parmest tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5/Pyomo_DoE_Tutorial.html">5.3. Optimizing Experiments with <code class="docutils literal notranslate"><span class="pre">Pyomo.DoE</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms and Theory</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../6/unconstrained.html">6. Unconstrained Nonlinear Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-1.html">6.1. Linear Algebra Review and SciPy Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Math-Primer-2.html">6.2. Mathematics Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Optimality.html">6.3. Unconstrained Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Newton-Methods.html">6.4. Newton-type Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Quasi-Newton-Methods.html">6.5. Quasi-Newton Methods for Unconstrained Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6/Globalization.html">6.6. Descent and Globalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="constrained.html">7. Constrained Nonlinear Optimization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Convexity.html">7.1. Convexity Revisited</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Local-Optimality.html">7.2. Local Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="KKT-Multipliers.html">7.3. Analysis of KKT Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Constraint-Qualifications.html">7.4. Constraint Qualifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Second-Order.html">7.5. Second Order Optimality Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="degeneracy_hunter.html">7.6. NLP Diagnostics with Degeneracy Hunter</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">7.7. Simple Netwon Method for Equality Constrained NLPs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Interior-Point2.html">7.8. Inertia-Corrected Netwon Method for Equality Constrained NLPs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../8/special-topics.html">8. Special Topics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../8/MILP.html">8.1. Integer Programming with Simple Branch and Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/MINLP-Algorithms.html">8.2. MINLP Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8/Global-Opt.html">8.3. Deterministic Global Optimization</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Contributions</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/pyomo.html">More Pyomo Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/semiconductor_manufacturing.html">Semiconductor Production Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/student_diet.html">Optimization of Daily Diet Using Pyomo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/blending.html">Blending Under Uncertainty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/vehicle_routing.html">Vehicle Routing</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/portfolio_optimization_extended.html">Risk Measures and Portfolio Optimization: Expanded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/race_car_extended.html">Extended Race Car Optimization Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/hot_air_balloon.html">Hot Air Balloon Dynamic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/reactor_design.html">Chemical Reactor Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Disaster_Response_Plan.html">Disaster Response Plan Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Sudoku_Solver.html">Sudoku Solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/more_circle_packing.html">Circle Packing Optimization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/modeling.html">Modeling Paradigms</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/multi_objective.html">Multi-Objective Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/advanced_stochastic_programming.html">Advanced Topics in Stochastic Programming</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/algorithms.html">Global Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Deterministic_Global_Optimization.html">Deterministic Global Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization1.html">Bayesian Optimization Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Bayesian_Optimization2.html">Bayesian Optimization Tutorial 2</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/sgd.html">Stochastic Gradient Descent</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-1.html">Stochastic Gradient Descent Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-2.html">Stochastic Gradient Descent Tutorial 2</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../contrib/Stochastic-Gradient-Descent-3.html">Stochastic Gradient Descent Tutorial 3</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contrib/data.html">Machine Learning and Applied Statistics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/EM-MAP.html">Expectation Maximization Algorithm and MAP Estimation</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/ndcbe/optimization/blob/master/notebooks/7/Interior-Point1.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ndcbe/optimization/issues/new?title=Issue%20on%20page%20%2Fnotebooks/7/Interior-Point1.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/7/Interior-Point1.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Simple Netwon Method for Equality Constrained NLPs</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#helper-functions">7.7.1. Helper Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm-5-1">7.7.2. Algorithm 5.1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-problem-1">7.7.3. Example Problem 1</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-functions">7.7.3.1. Define Functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-finite-difference-approximations">7.7.3.2. Test Finite Difference Approximations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-algorithm-5-1">7.7.3.3. Test Algorithm 5.1</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-problem-2">7.7.4. Example Problem 2</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-algorithm-5-1-with-the-redundant-constraint">7.7.4.1. Test Algorithm 5.1 with the redundant constraint</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trying-algorithm-5-1-again-without-the-redundant-constraint">7.7.4.2. Trying Algorithm 5.1 again without the redundant constraint</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-problem-3">7.7.5. Example Problem 3</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize">7.7.5.1. Visualize</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#starting-point-near-global-min-theta-0-1-0">7.7.5.2. Starting Point Near Global Min (<span class="math notranslate nohighlight">\(\theta_0 = 1.0\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#starting-point-near-local-min-theta-0-pi">7.7.5.3. Starting Point Near Local Min (<span class="math notranslate nohighlight">\(\theta_0 = \pi\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#starting-point-near-global-max-theta-0-5-5">7.7.5.4. Starting Point Near Global Max (<span class="math notranslate nohighlight">\(\theta_0 = 5.5\)</span>)</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="simple-netwon-method-for-equality-constrained-nlps">
+<h1><span class="section-number">7.7. </span>Simple Netwon Method for Equality Constrained NLPs<a class="headerlink" href="#simple-netwon-method-for-equality-constrained-nlps" title="Link to this heading">#</a></h1>
+<p><strong>Reference</strong>: Section 5.2 in Biegler (2010)</p>
+<p><img alt="Alg51" src="https://raw.githubusercontent.com/ndcbe/optimization/main/media/alg5-1.png" /></p>
+<section id="helper-functions">
+<h2><span class="section-number">7.7.1. </span>Helper Functions<a class="headerlink" href="#helper-functions" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load required Python libraries.</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">linalg</span>
+
+<span class="c1">## Check is element of array is NaN</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_nan</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+
+<span class="c1">## Calculate gradient with central finite difference</span>
+<span class="c1">## Calculate gradient with central finite difference</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">my_grad_approx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">eps1</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate gradient of function f using central difference formula</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">        x - point for which to evaluate gradient</span>
+<span class="sd">        f - function to consider</span>
+<span class="sd">        eps1 - perturbation size</span>
+<span class="sd">        </span>
+<span class="sd">    Outputs:</span>
+<span class="sd">        grad - gradient (vector)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;***** my_grad_approx at x = &quot;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="s2">&quot;*****&quot;</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+        
+        <span class="c1"># Create vector of zeros except eps in position i</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">eps1</span>
+        
+        <span class="c1"># Finite difference formula</span>
+        <span class="n">my_f_plus</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
+        <span class="n">my_f_minus</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">e</span><span class="p">)</span>
+        
+        <span class="c1"># Diagnostics</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;e[&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;] = &quot;</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f(x + e[&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;]) = &quot;</span><span class="p">,</span><span class="n">my_f_plus</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f(x - e[&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;]) = &quot;</span><span class="p">,</span><span class="n">my_f_minus</span><span class="p">)</span>
+        
+        
+        <span class="n">grad</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">my_f_plus</span> <span class="o">-</span> <span class="n">my_f_minus</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">eps1</span><span class="p">)</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;***** Done. ***** </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">grad</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">my_jac_approx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">eps1</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate Jacobian of function h(x) using central difference formula</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">        x - point for which to evaluate gradient</span>
+<span class="sd">        h - vector-valued function to consider. h(x): R^n --&gt; R^m</span>
+<span class="sd">        eps1 - perturbation size</span>
+<span class="sd">        </span>
+<span class="sd">    Outputs:</span>
+<span class="sd">        A - Jacobian (n x m matrix)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="c1"># Check h(x) at x</span>
+    <span class="n">h_x0</span> <span class="o">=</span> <span class="n">h</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    
+    <span class="c1"># Extract dimensions</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">h_x0</span><span class="p">)</span>
+    
+    <span class="c1"># Initialize Jacobian matrix</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">))</span>
+    
+    <span class="c1"># Calculate Jacobian by row</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+        
+        <span class="c1"># Create vector of zeros except eps in position i</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">eps1</span>
+        
+        <span class="c1"># Finite difference formula</span>
+        <span class="n">my_h_plus</span> <span class="o">=</span> <span class="n">h</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
+        <span class="n">my_h_minus</span> <span class="o">=</span> <span class="n">h</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">e</span><span class="p">)</span>
+        
+        <span class="c1"># Diagnostics</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;e[&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;] = &quot;</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;h(x + e[&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;]) = &quot;</span><span class="p">,</span><span class="n">my_h_plus</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;h(x - e[&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;]) = &quot;</span><span class="p">,</span><span class="n">my_h_minus</span><span class="p">)</span>
+        
+        
+        <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="p">(</span><span class="n">my_h_plus</span> <span class="o">-</span> <span class="n">my_h_minus</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">eps1</span><span class="p">)</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;***** Done. ***** </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">A</span>
+    
+<span class="c1">## Calculate gradient using central finite difference and my_hes_approx</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">my_hes_approx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">grad</span><span class="p">,</span><span class="n">eps2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate gradient of function my_f using central difference formula and my_grad</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">        x - point for which to evaluate gradient</span>
+<span class="sd">        grad - function to calculate the gradient</span>
+<span class="sd">        eps2 - perturbation size (for Hessian NOT gradient approximation)</span>
+<span class="sd">        </span>
+<span class="sd">    Outputs:</span>
+<span class="sd">        H - Hessian (matrix)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">])</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+        <span class="c1"># Create vector of zeros except eps in position i</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">eps2</span>
+        
+        <span class="c1"># Evaluate gradient twice</span>
+        <span class="n">grad_plus</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
+        <span class="n">grad_minus</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">e</span><span class="p">)</span>
+        
+        <span class="c1"># Notice we are building the Hessian by column (or row)</span>
+        <span class="n">H</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">grad_plus</span> <span class="o">-</span> <span class="n">grad_minus</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">eps2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">H</span>
+
+<span class="c1">## Linear algebra calculation</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">xxT</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculates u*u.T to circumvent limitation with SciPy</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">    u - numpy 1D array</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    u*u.T</span>
+<span class="sd">    </span>
+<span class="sd">    Assume u is a nx1 vector.</span>
+<span class="sd">    Recall: NumPy does not distinguish between row or column vectors</span>
+<span class="sd">    </span>
+<span class="sd">    u.dot(u) returns a scalar. This functon returns an nxn matrix.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">A</span>
+
+<span class="c1">## Analyze Hessian</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">analyze_hes</span><span class="p">(</span><span class="n">B</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="n">l</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Eigenvalues: &quot;</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="algorithm-5-1">
+<h2><span class="section-number">7.7.2. </span>Algorithm 5.1<a class="headerlink" href="#algorithm-5-1" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">alg51</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">calc_f</span><span class="p">,</span><span class="n">calc_h</span><span class="p">,</span><span class="n">eps1</span><span class="o">=</span><span class="mf">1E-6</span><span class="p">,</span><span class="n">eps2</span><span class="o">=</span><span class="mf">1E-6</span><span class="p">,</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Basic Full Space Newton Method for Equality Constrained NLP</span>
+<span class="sd">    </span>
+<span class="sd">    Input:</span>
+<span class="sd">        x0 - starting point (vector)</span>
+<span class="sd">        calc_f - function to calculate objective (returns scalar)</span>
+<span class="sd">        calc_h - function to calculate constraints (returns vector)</span>
+<span class="sd">        eps1 - tolerance for primal and dual steps</span>
+<span class="sd">        eps2 - tolerance for gradient of L1</span>
+<span class="sd">        </span>
+<span class="sd">    Outputs:</span>
+<span class="sd">        x - history of steps (primal variables)</span>
+<span class="sd">        v - history of steps (dual variables)</span>
+<span class="sd">        f - history of objective evaluations</span>
+<span class="sd">        h - history of constraint evaluations</span>
+<span class="sd">        df - history of objective gradients</span>
+<span class="sd">        dL - history of Lagrange function gradients</span>
+<span class="sd">        A - history of constraint Jacobians</span>
+<span class="sd">        W - history of Lagrange Hessians</span>
+<span class="sd">    </span>
+<span class="sd">    Notes:</span>
+<span class="sd">        1. For simplicity, central finite difference is used </span>
+<span class="sd">           for all gradient calculations.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="c1"># Declare iteration histories as empty lists</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">dL</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># Flag for iterations</span>
+    <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+    
+    <span class="c1"># Iteration counter</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="c1"># Copy initial point to primal variable history</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+    <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+    
+    <span class="c1"># Evaluate objective and constraints at initial point</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calc_f</span><span class="p">(</span><span class="n">x0</span><span class="p">))</span>
+    <span class="n">h</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calc_h</span><span class="p">(</span><span class="n">x0</span><span class="p">))</span>
+    
+    <span class="c1"># Determine number of equality constraints</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    
+    <span class="c1"># Initial dual variables with vector of ones</span>
+    <span class="n">v</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
+    
+    <span class="c1"># Print header for iteration information</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Iter. </span><span class="se">\t</span><span class="s2">f(x) </span><span class="se">\t\t</span><span class="s2">||h(x)|| </span><span class="se">\t</span><span class="s2">||grad_L(x)|| </span><span class="se">\t</span><span class="s2">||dx|| </span><span class="se">\t\t</span><span class="s2">||dv||&quot;</span><span class="p">)</span>
+    
+    <span class="k">while</span><span class="p">(</span><span class="n">flag</span> <span class="ow">and</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">):</span>
+        
+        <span class="c1"># STEP 1. Construct KKT matrix</span>
+        
+        <span class="k">if</span><span class="p">(</span><span class="n">k</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="c1"># Evaluate objective function</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calc_f</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+            
+            <span class="c1"># Evaluate constraint function</span>
+            <span class="n">h</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calc_h</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+        
+        <span class="c1"># Evaluate objective gradient</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">my_grad_approx</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">calc_f</span><span class="p">,</span><span class="mf">1E-6</span><span class="p">))</span>
+        
+        <span class="c1"># Evaluate constraint Jacobian</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">my_jac_approx</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">calc_h</span><span class="p">,</span><span class="mf">1E-6</span><span class="p">))</span>
+        
+        <span class="c1"># Evaluate gradient of Lagrange function</span>
+        <span class="n">L_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x_</span> <span class="p">:</span> <span class="n">calc_f</span><span class="p">(</span><span class="n">x_</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">calc_h</span><span class="p">(</span><span class="n">x_</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="n">L_grad</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x_</span> <span class="p">:</span> <span class="n">my_grad_approx</span><span class="p">(</span><span class="n">x_</span><span class="p">,</span><span class="n">L_func</span><span class="p">,</span><span class="mf">1E-6</span><span class="p">)</span>
+        <span class="n">dL</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">L_grad</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+        <span class="n">norm_dL</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">dL</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        
+        <span class="c1"># Evaluate Hessian of Lagrange function</span>
+        <span class="n">W</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">my_hes_approx</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">L_grad</span><span class="p">,</span><span class="mf">1E-6</span><span class="p">))</span>
+        
+        <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*** k =&quot;</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="s2">&quot; ***&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x_k =&quot;</span><span class="p">,</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;v_k =&quot;</span><span class="p">,</span><span class="n">v</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f_k =&quot;</span><span class="p">,</span><span class="n">f</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;df_k =&quot;</span><span class="p">,</span><span class="n">df</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;h_k =&quot;</span><span class="p">,</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;A_k =</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">A</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;W_k =</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">W</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Assemble KKT matrix</span>
+        <span class="n">KKT_top</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">W</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">A</span><span class="p">[</span><span class="n">k</span><span class="p">]),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">KKT_bot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">A</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span><span class="n">m</span><span class="p">))),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">KKT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">KKT_top</span><span class="p">,</span><span class="n">KKT_bot</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        
+        <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;KKT matrix =</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">KKT</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Check if KKT matrix is singular</span>
+        <span class="n">l</span><span class="p">,</span> <span class="n">eigvec</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">KKT</span><span class="p">)</span>
+        
+        <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;KKT matrix eigenvalues:&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+        
+        <span class="n">zero_eigenvalues</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">1E-8</span><span class="p">)</span>
+        
+        <span class="k">if</span><span class="p">(</span><span class="n">zero_eigenvalues</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;KKT matrix is singular. Eigenvalues:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="c1">## STEP 2. Solve linear system.</span>
+        
+        <span class="k">if</span><span class="p">(</span><span class="n">flag</span><span class="p">):</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">dL</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">]),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">KKT</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="p">[]</span>
+            
+        <span class="c1">## STEP 3. Take step</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">flag</span><span class="p">):</span>
+            <span class="n">dx</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="p">]</span>
+            <span class="n">dv</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="n">n</span><span class="p">:(</span><span class="n">n</span><span class="o">+</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+            
+            <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">dx</span><span class="p">)</span>
+            <span class="n">v</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">dv</span><span class="p">)</span>
+            
+            <span class="n">norm_dx</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">dx</span><span class="p">)</span>
+            <span class="n">norm_dv</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
+        
+        <span class="c1">## Print iteration information</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="s1">&#39;  </span><span class="se">\t</span><span class="si">{0: 1.4e}</span><span class="s1"> </span><span class="se">\t</span><span class="si">{1:1.4e}</span><span class="s1"> </span><span class="se">\t</span><span class="si">{2:1.4e}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">]),</span><span class="n">norm_dL</span><span class="p">),</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">flag</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\t</span><span class="si">{0: 1.4e}</span><span class="s1"> </span><span class="se">\t</span><span class="si">{1: 1.4e}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">norm_dx</span><span class="p">,</span><span class="n">norm_dv</span><span class="p">),</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\t</span><span class="s1"> -------  </span><span class="se">\t</span><span class="s1"> -------&#39;</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+         
+        <span class="c1"># Increment counter</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span>
+        
+        <span class="c1">## Check convergence criteria</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">flag</span><span class="p">):</span>
+            <span class="n">flag</span> <span class="o">=</span> <span class="n">norm_dx</span> <span class="o">&gt;</span> <span class="n">eps1</span> <span class="ow">and</span> <span class="n">norm_dv</span> <span class="o">&gt;</span> <span class="n">eps1</span> <span class="ow">and</span> <span class="n">norm_dL</span> <span class="o">&gt;</span> <span class="n">eps2</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">flag</span><span class="p">)</span> <span class="ow">and</span> <span class="n">k</span> <span class="o">&gt;=</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reached maximum number of iterations.&quot;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">df</span><span class="p">,</span><span class="n">dL</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">W</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-problem-1">
+<h2><span class="section-number">7.7.3. </span>Example Problem 1<a class="headerlink" href="#example-problem-1" title="Link to this heading">#</a></h2>
+<p>Consider:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*} \min_{x} \quad &amp; x_1^2 + 2 x_2^2 - x_3 \\
+\mathrm{s.t.} \quad &amp; x_1 + x_2 = 1 \\
+&amp; x_1 + x_2 - x_3 = 5
+\end{align*} \end{split}\]</div>
+<section id="define-functions">
+<h3><span class="section-number">7.7.3.1. </span>Define Functions<a class="headerlink" href="#define-functions" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">my_f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">my_h</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    
+    <span class="n">h</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">h</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mi">5</span>
+    
+    <span class="k">return</span> <span class="n">h</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="test-finite-difference-approximations">
+<h3><span class="section-number">7.7.3.2. </span>Test Finite Difference Approximations<a class="headerlink" href="#test-finite-difference-approximations" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Define initial point</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="c1">## Calculate objective</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f(x0) =&quot;</span><span class="p">,</span><span class="n">my_f</span><span class="p">(</span><span class="n">x0</span><span class="p">),</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1">## Calculate constraints</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;h(x0) =&quot;</span><span class="p">,</span><span class="n">my_h</span><span class="p">(</span><span class="n">x0</span><span class="p">),</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1">## Calculate objective gradient</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;df(x0) =&quot;</span><span class="p">,</span><span class="n">my_grad_approx</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">my_f</span><span class="p">,</span><span class="mf">1E-6</span><span class="p">),</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1">## Calculate constraint Jacobian</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;dh(x0) =</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">my_jac_approx</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">my_h</span><span class="p">,</span><span class="mf">1E-6</span><span class="p">),</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>f(x0) = 2 
+
+h(x0) = [ 1. -4.] 
+
+df(x0) = [ 2.  4. -1.] 
+
+dh(x0) =
+ [[ 1.  1.]
+ [ 1.  1.]
+ [ 0. -1.]] 
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="test-algorithm-5-1">
+<h3><span class="section-number">7.7.3.3. </span>Test Algorithm 5.1<a class="headerlink" href="#test-algorithm-5-1" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Run Algorithm 5.1 on test problem</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">alg51</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">my_f</span><span class="p">,</span><span class="n">my_h</span><span class="p">)</span>
+
+<span class="c1">## Display results</span>
+<span class="n">xstar</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">x* =&quot;</span><span class="p">,</span><span class="n">xstar</span><span class="p">)</span>
+
+<span class="c1">## Display results</span>
+<span class="n">vstar</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">v* =&quot;</span><span class="p">,</span><span class="n">vstar</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iter. 	f(x) 		||h(x)|| 	||grad_L(x)|| 	||dx|| 		||dv||
+0   	 2.0000e+00 	4.1231e+00 	7.4833e+00 	 5.0553e+00 	 2.4040e+00
+1   	 4.6667e+00 	5.7632e-10 	8.2956e-04 	 1.5000e-04 	 6.2903e-04
+2   	 4.6667e+00 	0.0000e+00 	1.4762e-08 	 1.9888e-09 	 8.1407e-09
+
+x* = [ 0.66666667  0.33333333 -4.        ]
+
+v* = [-0.33333333 -1.        ]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="example-problem-2">
+<h2><span class="section-number">7.7.4. </span>Example Problem 2<a class="headerlink" href="#example-problem-2" title="Link to this heading">#</a></h2>
+<p><strong>Can we break Algorithm 5.1?</strong></p>
+<p>Probably. Let us try a model where <span class="math notranslate nohighlight">\(\nabla h(x^k)^T\)</span> is always rank-deficient.</p>
+<p>Consider:
+$<span class="math notranslate nohighlight">\(\begin{align}\min_x \quad &amp; x_1^2 + 2 x_2^2 \\
+\mathrm{s.t.} \quad &amp; x_1 + x_2 = 1 \\
+ &amp; x_1 + x_2 = 1 \end{align}\)</span>$</p>
+<section id="test-algorithm-5-1-with-the-redundant-constraint">
+<h3><span class="section-number">7.7.4.1. </span>Test Algorithm 5.1 with the redundant constraint<a class="headerlink" href="#test-algorithm-5-1-with-the-redundant-constraint" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">my_f2</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">my_h2</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">h</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">h</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">h</span>
+
+<span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="c1">## Run Algorithm 5.1 on test problem</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">alg51</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">my_f2</span><span class="p">,</span><span class="n">my_h2</span><span class="p">)</span>
+
+<span class="c1">## Display results</span>
+<span class="n">xstar</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">x* =&quot;</span><span class="p">,</span><span class="n">xstar</span><span class="p">)</span>
+
+<span class="c1">## Display results</span>
+<span class="n">vstar</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">v* =&quot;</span><span class="p">,</span><span class="n">vstar</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iter. 	f(x) 		||h(x)|| 	||grad_L(x)|| 	||dx|| 		||dv||
+KKT matrix is singular. Eigenvalues:
+
+[-1.05145076+0.j  2.51704031+0.j  4.53361158+0.j  0.        +0.j] 
+
+0   	 3.0000e+00 	1.4142e+00 	7.2111e+00 	 -------  	 -------
+
+x* = [1 1]
+
+v* = [1. 1.]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="trying-algorithm-5-1-again-without-the-redundant-constraint">
+<h3><span class="section-number">7.7.4.2. </span>Trying Algorithm 5.1 again without the redundant constraint<a class="headerlink" href="#trying-algorithm-5-1-again-without-the-redundant-constraint" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">my_h2b</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="c1">## Run Algorithm 5.1 on test problem</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">alg51</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">my_f2</span><span class="p">,</span><span class="n">my_h2b</span><span class="p">)</span>
+
+<span class="c1">## Display results</span>
+<span class="n">xstar</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">x* =&quot;</span><span class="p">,</span><span class="n">xstar</span><span class="p">)</span>
+
+<span class="c1">## Display results</span>
+<span class="n">vstar</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">v* =&quot;</span><span class="p">,</span><span class="n">vstar</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iter. 	f(x) 		||h(x)|| 	||grad_L(x)|| 	||dx|| 		||dv||
+0   	 3.0000e+00 	1.0000e+00 	5.8310e+00 	 7.4537e-01 	 2.3335e+00
+1   	 6.6667e-01 	1.3978e-10 	2.9473e-04 	 4.5326e-05 	 1.5285e-04
+2   	 6.6667e-01 	0.0000e+00 	4.5431e-09 	 1.4393e-09 	 2.0170e-09
+
+x* = [0.66666667 0.33333333]
+
+v* = [-1.33333333]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="example-problem-3">
+<h2><span class="section-number">7.7.5. </span>Example Problem 3<a class="headerlink" href="#example-problem-3" title="Link to this heading">#</a></h2>
+<p><strong>Can we break Algorithm 5.1 in another way?</strong></p>
+<p>Let us try a model where <span class="math notranslate nohighlight">\(\nabla h(x^k)^T\)</span> is full rank but there are multiple local optima.</p>
+<p>Consider:
+$<span class="math notranslate nohighlight">\(\begin{align}\min_x \quad &amp; x_1^3 - x_2 -x_1 x_2 - x_2^2 \\
+\mathrm{s.t.} \quad &amp; x_1^2 + x_2^2 = 1
+\end{align}\)</span>$</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">my_f3</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">my_h3</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="visualize">
+<h3><span class="section-number">7.7.5.1. </span>Visualize<a class="headerlink" href="#visualize" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">visualize</span><span class="p">(</span><span class="n">xk</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="n">n1</span> <span class="o">=</span> <span class="mi">101</span>
+    <span class="n">n2</span> <span class="o">=</span> <span class="mi">101</span>
+    <span class="n">x1eval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">n1</span><span class="p">)</span>
+    <span class="n">x2eval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">n2</span><span class="p">)</span>
+    
+    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x1eval</span><span class="p">,</span> <span class="n">x2eval</span><span class="p">)</span>
+    
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n2</span><span class="p">,</span><span class="n">n1</span><span class="p">])</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n2</span><span class="p">):</span>
+            <span class="n">Z</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">my_f3</span><span class="p">((</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">],</span> <span class="n">Y</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">]))</span>
+            
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">CS</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">CS</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+    <span class="c1"># Add grid</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+    
+    <span class="c1"># Add unit circle</span>
+    <span class="n">circ</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">circ</span><span class="p">)</span>
+    
+    <span class="c1"># Plot iteration history</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xk</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">xk</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">xk</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">((</span><span class="n">xk</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]),(</span><span class="n">xk</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+    
+<span class="n">visualize</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/2301140fc766bc439398e86102fd3a0c5ff8876a8abac4391b101eddc9015bbe.png" src="../../_images/2301140fc766bc439398e86102fd3a0c5ff8876a8abac4391b101eddc9015bbe.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nt</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="n">nt</span><span class="p">)</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nt</span><span class="p">)</span>
+
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nt</span><span class="p">):</span>
+    <span class="n">x_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">y_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    
+    <span class="n">obj</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">my_f3</span><span class="p">((</span><span class="n">x_</span><span class="p">,</span><span class="n">y_</span><span class="p">))</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span><span class="n">obj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">theta$ [radians]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Objective&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d29a370fff8ad2900fbed46c839e37102fa6ea1d0015f104e1d43e676039576b.png" src="../../_images/d29a370fff8ad2900fbed46c839e37102fa6ea1d0015f104e1d43e676039576b.png" />
+</div>
+</div>
+</section>
+<section id="starting-point-near-global-min-theta-0-1-0">
+<h3><span class="section-number">7.7.5.2. </span>Starting Point Near Global Min (<span class="math notranslate nohighlight">\(\theta_0 = 1.0\)</span>)<a class="headerlink" href="#starting-point-near-global-min-theta-0-1-0" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">theta0</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta0</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta0</span><span class="p">)))</span>
+
+<span class="c1">## Run Algorithm 5.1 on test problem</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">alg51</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">my_f3</span><span class="p">,</span><span class="n">my_h3</span><span class="p">)</span>
+
+<span class="c1">## Display results</span>
+<span class="n">xstar</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">x* =&quot;</span><span class="p">,</span><span class="n">xstar</span><span class="p">)</span>
+
+<span class="c1">## Display results</span>
+<span class="n">vstar</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">v* =&quot;</span><span class="p">,</span><span class="n">vstar</span><span class="p">)</span>
+
+<span class="c1">## Convert into theta</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">theta* =&quot;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">xstar</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="s2">&quot;=&quot;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(</span><span class="n">xstar</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+<span class="c1">## Visualize</span>
+<span class="n">visualize</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iter. 	f(x) 		||h(x)|| 	||grad_L(x)|| 	||dx|| 		||dv||
+0   	-6.9105e-01 	0.0000e+00 	3.7501e+00 	 1.1171e+00 	 1.1455e+00
+1   	-4.0104e+00 	1.2480e+00 	2.1729e+00 	 4.2318e-01 	 3.9672e-01
+2   	-2.4216e+00 	1.7908e-01 	3.3575e-01 	 8.3649e-02 	 1.0205e-01
+3   	-2.1438e+00 	6.9971e-03 	1.7074e-02 	 3.5294e-03 	 6.5710e-03
+4   	-2.1324e+00 	1.2457e-05 	4.6327e-05 	 6.3597e-06 	 1.9707e-05
+5   	-2.1323e+00 	4.0446e-11 	1.4043e-09 	 2.8044e-10 	 3.3891e-11
+
+x* = [0.24215301 0.97023807]
+
+v* = [1.64012795]
+
+theta* = 1.326212035697004 = 1.3262120356970035
+</pre></div>
+</div>
+<img alt="../../_images/6c5c2a29b7b732d3f5a3fdb75664afe3402a1f9294774ecfd9c6f911843ed068.png" src="../../_images/6c5c2a29b7b732d3f5a3fdb75664afe3402a1f9294774ecfd9c6f911843ed068.png" />
+</div>
+</div>
+</section>
+<section id="starting-point-near-local-min-theta-0-pi">
+<h3><span class="section-number">7.7.5.3. </span>Starting Point Near Local Min (<span class="math notranslate nohighlight">\(\theta_0 = \pi\)</span>)<a class="headerlink" href="#starting-point-near-local-min-theta-0-pi" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">theta0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta0</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta0</span><span class="p">)))</span>
+
+<span class="c1">## Run Algorithm 5.1 on test problem</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">alg51</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">my_f3</span><span class="p">,</span><span class="n">my_h3</span><span class="p">)</span>
+
+<span class="c1">## Display results</span>
+<span class="n">xstar</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">x* =&quot;</span><span class="p">,</span><span class="n">xstar</span><span class="p">)</span>
+
+<span class="c1">## Display results</span>
+<span class="n">vstar</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">v* =&quot;</span><span class="p">,</span><span class="n">vstar</span><span class="p">)</span>
+
+<span class="c1">## Convert into theta</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">theta* =&quot;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">xstar</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="s2">&quot;(using arccos)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">theta* =&quot;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(</span><span class="n">xstar</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span><span class="s2">&quot;(using arcsin)&quot;</span><span class="p">)</span>
+
+<span class="c1">## Visualize</span>
+<span class="n">visualize</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iter. 	f(x) 		||h(x)|| 	||grad_L(x)|| 	||dx|| 		||dv||
+0   	 2.2204e-16 	0.0000e+00 	1.4142e+00 	 5.0002e-01 	 2.4998e-01
+1   	-6.2504e-01 	2.5002e-01 	1.0000e+00 	 1.5691e+00 	 5.7493e-01
+2   	 1.4168e+00 	2.4621e+00 	4.6902e+00 	 8.7011e-01 	 3.2838e-01
+3   	-2.5316e-01 	7.5709e-01 	1.5056e+00 	 7.9530e-01 	 2.7969e-01
+4   	-1.0868e+00 	6.3250e-01 	1.3374e+00 	 8.5429e-01 	 2.8370e-01
+5   	-1.3530e-01 	7.2981e-01 	1.6069e+00 	 7.2946e-01 	 2.4685e-01
+6   	-8.5883e-01 	5.3212e-01 	1.1571e+00 	 1.2138e+00 	 4.1547e-01
+7   	 6.1712e-01 	1.4732e+00 	3.1780e+00 	 7.4184e-01 	 2.5345e-01
+8   	-3.7711e-01 	5.5033e-01 	1.1886e+00 	 1.1024e+00 	 3.7605e-01
+9   	-2.5016e+00 	1.2153e+00 	2.6283e+00 	 7.1193e-01 	 2.4266e-01
+10   	-7.5418e-01 	5.0685e-01 	1.0966e+00 	 1.7975e+00 	 6.1304e-01
+11   	 3.3538e+00 	3.2310e+00 	6.9879e+00 	 9.7525e-01 	 3.3253e-01
+12   	 5.8930e-02 	9.5111e-01 	2.0572e+00 	 6.9821e-01 	 2.3817e-01
+13   	-6.1495e-01 	4.8750e-01 	1.0543e+00 	 1.4259e+01 	 4.8624e+00
+14   	 2.5068e+03 	2.0332e+02 	4.3978e+02 	 7.1129e+00 	 1.9921e+00
+15   	 3.1998e+02 	5.0594e+01 	1.0966e+02 	 3.5283e+00 	 1.0103e+00
+16   	 4.2333e+01 	1.2449e+01 	2.7524e+01 	 1.7008e+00 	 4.4931e-02
+17   	 7.8208e+00 	2.8927e+00 	6.7410e+00 	 7.3461e-01 	 8.5778e-02
+18   	 2.3007e+00 	5.3965e-01 	1.6085e+00 	 2.1789e-01 	 2.8153e-01
+19   	 1.4550e+00 	4.7477e-02 	2.3141e-01 	 2.3326e-02 	 8.3222e-02
+20   	 1.3796e+00 	5.4409e-04 	5.3572e-03 	 2.8876e-04 	 2.4477e-03
+21   	 1.3787e+00 	8.3383e-08 	1.4706e-06 	 1.0427e-07 	 5.7736e-07
+
+x* = [ 0.92828695 -0.37186469]
+
+v* = [-1.59272661]
+
+theta* = 0.3810169551495443 (using arccos)
+
+theta* = -0.3810169551495601 (using arcsin)
+</pre></div>
+</div>
+<img alt="../../_images/8b88945060e39d8c4eed94fb5b723124d3d582f34ccb9c71cd917361c5c4b79a.png" src="../../_images/8b88945060e39d8c4eed94fb5b723124d3d582f34ccb9c71cd917361c5c4b79a.png" />
+</div>
+</div>
+</section>
+<section id="starting-point-near-global-max-theta-0-5-5">
+<h3><span class="section-number">7.7.5.4. </span>Starting Point Near Global Max (<span class="math notranslate nohighlight">\(\theta_0 = 5.5\)</span>)<a class="headerlink" href="#starting-point-near-global-max-theta-0-5-5" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">theta0</span> <span class="o">=</span> <span class="mf">5.5</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta0</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta0</span><span class="p">)))</span>
+
+<span class="c1">## Run Algorithm 5.1 on test problem</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">alg51</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">my_f3</span><span class="p">,</span><span class="n">my_h3</span><span class="p">)</span>
+
+<span class="c1">## Display results</span>
+<span class="n">xstar</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">x* =&quot;</span><span class="p">,</span><span class="n">xstar</span><span class="p">)</span>
+
+<span class="c1">## Display results</span>
+<span class="n">vstar</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">v* =&quot;</span><span class="p">,</span><span class="n">vstar</span><span class="p">)</span>
+
+<span class="c1">## Convert into theta</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">theta* =&quot;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">xstar</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="s2">&quot;(using arccos)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">theta* =&quot;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(</span><span class="n">xstar</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span><span class="s2">&quot;(using arcsin)&quot;</span><span class="p">)</span>
+
+<span class="c1">## Visualize</span>
+<span class="n">visualize</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iter. 	f(x) 		||h(x)|| 	||grad_L(x)|| 	||dx|| 		||dv||
+0   	-1.0621e+00 	0.0000e+00 	6.9215e-01 	 3.0715e-01 	 5.4165e-02
+1   	-1.0667e+00 	9.4343e-02 	1.2087e-01 	 5.8624e-02 	 5.2391e-02
+2   	-9.6641e-01 	3.4368e-03 	6.8422e-03 	 5.8274e-03 	 6.8831e-03
+3   	-9.6261e-01 	3.3959e-05 	8.0237e-05 	 9.3484e-05 	 8.7639e-05
+4   	-9.6258e-01 	8.7393e-09 	2.1977e-08 	 2.1636e-08 	 2.4039e-08
+
+x* = [-0.90194813  0.43184437]
+
+v* = [1.11352685]
+
+theta* = 2.6950559970723194 (using arccos)
+
+theta* = 0.4465366565174743 (using arcsin)
+</pre></div>
+</div>
+<img alt="../../_images/a1a301c079df459b2b1fb16e209326836f856d7f19b86780cb30bb9d15bfe571.png" src="../../_images/a1a301c079df459b2b1fb16e209326836f856d7f19b86780cb30bb9d15bfe571.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/7"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="degeneracy_hunter.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">7.6. </span>NLP Diagnostics with Degeneracy Hunter</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Interior-Point2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">7.8. </span>Inertia-Corrected Netwon Method for Equality Constrained NLPs</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#helper-functions">7.7.1. Helper Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm-5-1">7.7.2. Algorithm 5.1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-problem-1">7.7.3. Example Problem 1</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-functions">7.7.3.1. Define Functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-finite-difference-approximations">7.7.3.2. Test Finite Difference Approximations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-algorithm-5-1">7.7.3.3. Test Algorithm 5.1</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-problem-2">7.7.4. Example Problem 2</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-algorithm-5-1-with-the-redundant-constraint">7.7.4.1. Test Algorithm 5.1 with the redundant constraint</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trying-algorithm-5-1-again-without-the-redundant-constraint">7.7.4.2. Trying Algorithm 5.1 again without the redundant constraint</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-problem-3">7.7.5. Example Problem 3</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize">7.7.5.1. Visualize</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#starting-point-near-global-min-theta-0-1-0">7.7.5.2. Starting Point Near Global Min (<span class="math notranslate nohighlight">\(\theta_0 = 1.0\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#starting-point-near-local-min-theta-0-pi">7.7.5.3. Starting Point Near Local Min (<span class="math notranslate nohighlight">\(\theta_0 = \pi\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#starting-point-near-global-max-theta-0-5-5">7.7.5.4. Starting Point Near Global Max (<span class="math notranslate nohighlight">\(\theta_0 = 5.5\)</span>)</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Alexander Dowling, et al.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

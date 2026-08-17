@@ -52,6 +52,12 @@ jobs:
       - name: Build site
         run: myst build --html
 
+      # Writes stubs at the old JupyterBook 1 URLs so external links, Canvas
+      # pages and bookmarks keep working. Must run after the build, since it
+      # writes into _build/html.
+      - name: Generate legacy URL redirects
+        run: python ./scripts/make_redirects.py
+
       - name: Deploy to GitHub Pages
         env:
           GITHUB_TOKEN: ${{ secrets.PUBLISH_WEBSITE_ACCESS_TOKEN }}

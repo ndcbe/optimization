@@ -1,0 +1,58 @@
+# Environment for CBE/ACMS 40499 & 60499 — Nonlinear and Stochastic Optimization
+#
+# One environment for both jobs:
+#   1. running the course notebooks locally
+#   2. building and contributing to the course website
+#
+#   conda env create -f environment.yml
+#   conda activate optimization_fall2026
+#   idaes get-extensions        # installs Ipopt, k_aug, dot_sens into ~/.idaes/bin
+#   npm install -g mystmd       # provides the `myst` CLI
+#
+# Python 3.13 verified against idaes-pse 2.12.0 on osx-arm64 (2026-08-17).
+
+name: optimization_fall2026
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.13
+
+  # Optimization stack. idaes-pse pulls in Pyomo (>=6.10.1) and provides both
+  # the diagnostics toolbox (degeneracy hunter) and the solver binaries.
+  - idaes-pse
+
+  # Scientific Python used across the notebooks
+  - numpy
+  - scipy
+  - pandas
+  - matplotlib
+  - scikit-learn
+  - networkx
+  - sympy
+  - openpyxl        # reads knapsack_data.xlsx
+  - tabulate
+  - tqdm
+  - seaborn
+
+  # Notebooks
+  - jupyterlab
+  - ipykernel
+  - ipywidgets
+  - nbformat        # required by scripts/process_notebooks.py
+
+  # Website toolchain (JupyterBook 2 / MyST). The `myst` CLI itself comes from
+  # npm; nodejs is here so `npm install -g mystmd` works inside the environment.
+  - nodejs
+
+  # Development
+  - pytest
+  - pip
+  - pip:
+      - jupyter-book
+      - black[jupyter]
+
+# Not included — needed only by a few student-contributed notebooks, several of
+# which are unmaintained upstream. Install ad hoc if you are working on those:
+#   GPy, GPyOpt, scikit-optimize, xgboost, nltk, Tasmanian, highspy, okabeito

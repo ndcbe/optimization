@@ -1,5 +1,20 @@
 name: Build and Publish JupyterBook
 
+# Builds the MyST / JupyterBook 2 site and publishes it to the gh-pages branch.
+#
+# IMPORTANT: this workflow builds the notebooks EXACTLY as committed. It does
+# not run scripts/process_notebooks.py, because that script reads assignment
+# notebooks from ../optimization-private, a separate private repository that CI
+# cannot see. Run it locally and commit the result before pushing:
+#
+#     conda activate optimization_fall2026
+#     python ./scripts/process_notebooks.py
+#
+# BASE_URL must match the repository name: the site is served from
+# https://ndcbe.github.io/optimization, not from a domain root. Without it,
+# every asset and internal link resolves one level too high and the published
+# site renders unstyled.
+
 on:
   push:
     branches:
@@ -9,33 +24,38 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      BASE_URL: /${{ github.event.repository.name }}
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.10'
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install jupyter-book ghp-import
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
 
-    - name: Install LaTeX
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y texlive-full  # Install full TeX Live distribution
+      - name: Install MyST Markdown
+        run: npm install -g mystmd
 
-    - name: Build JupyterBook
-      run: jupyter-book build .
+      - name: Install publishing tool
+        run: |
+          python -m pip install --upgrade pip
+          pip install ghp-import
 
-    - name: Deploy to GitHub Pages
-      env:
-        GITHUB_TOKEN: ${{ secrets.PUBLISH_WEBSITE_ACCESS_TOKEN }}
-      run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        ghp-import -n -p -f _build/html -b gh-pages
+      - name: Build site
+        run: myst build --html
+
+      - name: Deploy to GitHub Pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.PUBLISH_WEBSITE_ACCESS_TOKEN }}
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          ghp-import -n -p -f _build/html -b gh-pages

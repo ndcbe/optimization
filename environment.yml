@@ -15,7 +15,15 @@
 # Node toolchain. `nodejs` is kept below for building the custom site theme.
 #
 # Verified 2026-08-17 on osx-arm64: Python 3.13.15, Pyomo 6.10.1,
-# jupyter-book 2.1.6, Ipopt 3.13.2.
+# jupyter-book 2.1.6, Ipopt 3.13.2. Re-verified 2026-08-18 with glpk 5.0 and
+# casadi 3.7.2 added.
+#
+# NOTE ON PATH. Pyomo locates solvers as executables on PATH, so running the
+# notebooks needs BOTH directories visible:
+#     export PATH="$CONDA_PREFIX/bin:$HOME/.idaes/bin:$PATH"
+# Activating the environment covers the first; the second is never automatic.
+# Calling the interpreter by absolute path covers NEITHER -- SolverFactory
+# ('glpk').available() returns False even though glpsol is installed.
 
 name: optimization_fall2026
 
@@ -26,8 +34,21 @@ dependencies:
   - python=3.13
 
   # Optimization stack. idaes-pse pulls in Pyomo (>=6.10.1) and provides both
-  # the diagnostics toolbox (degeneracy hunter) and the solver binaries.
+  # the diagnostics toolbox (degeneracy hunter) and the solver binaries
+  # (ipopt, k_aug, dot_sens, cbc, bonmin, couenne) into ~/.idaes/bin.
   - idaes-pse
+
+  # glpk supplies the `glpsol` MILP solver. Added 2026-08-18: it was never in
+  # this file, and the notebooks only ever installed it on Colab via
+  # helper.install_glpk() -- so a LOCAL run had never had it. That single
+  # omission accounted for four of the W1 audit's failures (Pyomo1, Pyomo2,
+  # Pyomo-Mini-Project, Sudoku_Solver).
+  - glpk
+
+  # casadi is imported by notebooks/3-dev/DAE_background.ipynb, a core chapter.
+  # Added 2026-08-18: it was neither a dependency nor in the "install ad hoc"
+  # list below -- a genuine oversight, not a deliberate exclusion.
+  - casadi
 
   # Scientific Python used across the notebooks
   - numpy

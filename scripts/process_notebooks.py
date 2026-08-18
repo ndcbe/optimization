@@ -51,7 +51,18 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
     replace_code(SOLUTION_CODE, "# Add your solution here")
     replace_code(HIDDEN_TESTS, "# Removed autograder test. You may delete this cell.")
     
-    OLD_DATA_PATH = ".\./data/"
+    # Match "./data/" or "../data/" only -- NOT the character in front of them.
+    #
+    # This was ".\./data/", where the leading "." is a regex wildcard matching
+    # ANY character. For "../data/" it happened to match the first dot and the
+    # result was correct, which is why the bug survived. For "./data/" it
+    # matched the OPENING QUOTE and consumed it, so
+    #     data_dir = "./data/parmest_tutorial"
+    # published as
+    #     data_dir = https://.../parmest_tutorial"
+    # -- an unterminated string, i.e. a syntax error on the live site. It is
+    # currently live in notebooks/5/Parmest-generate-data.ipynb.
+    OLD_DATA_PATH = r"\.\.?/data/"
     NEW_DATA_PATH = "https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/data/"    
     replace_code(OLD_DATA_PATH, NEW_DATA_PATH)
     

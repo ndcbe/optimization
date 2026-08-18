@@ -2,6 +2,7 @@
 #
 #   make          rebuild any figure whose source changed
 #   make all      same
+#   make check    verify the matplotlib house style survives greyscale printing
 #   make clean    remove intermediates (keeps committed output)
 #   make list     show the figures this Makefile knows about
 #
@@ -30,8 +31,13 @@ SVGS    := $(addprefix $(OUT_DIR)/,$(addsuffix .svg,$(NAMES)))
 # 300 dpi keeps small text legible when a diagram is scaled up in a notebook.
 PNG_DPI := 300
 
-.PHONY: all clean list
+.PHONY: all clean list check
 all: $(PNGS) $(SVGS)
+
+# Gate on the greyscale floor. Exits non-zero on failure, so this is CI-safe.
+# See README.md; the style file itself is dowling.mplstyle in this directory.
+check:
+	cd .. && python scripts/check_greyscale.py --style figures/dowling.mplstyle -n 4
 
 list:
 	@echo "Figures:"; for n in $(NAMES); do echo "  $$n"; done

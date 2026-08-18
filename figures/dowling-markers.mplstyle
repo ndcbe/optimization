@@ -1,0 +1,19 @@
+# dowling-markers.mplstyle — optional overlay on dowling.mplstyle
+#
+#   plt.style.use(["../../figures/dowling.mplstyle",
+#                  "../../figures/dowling-markers.mplstyle"])
+#
+# Adds a MARKER to the colour+linestyle cycle, giving a third redundant
+# encoding. Use it for sparse data (experimental points, iterate sequences,
+# convergence histories) where a marker per data point is wanted.
+#
+# Do NOT use it for densely sampled curves: matplotlib has no `lines.markevery`
+# rcParam, so every one of a thousand points gets a glyph. For a dense curve,
+# keep the base style and pass markevery= at the call site instead:
+#
+#     ax.plot(x, y, markevery=25, marker="o")
+#
+# Marker shapes are chosen to stay distinct at small size and in outline:
+# circle, square, triangle-up, diamond, triangle-down, pentagon, X.
+
+axes.prop_cycle: (cycler('color', ['000000', '0072B2', 'E69F00', '009E73', 'CC79A7', '56B4E9', 'D55E00']) + cycler('linestyle', ['-', '--', '-.', ':', (0, (5, 1)), (0, (3, 1, 1, 1)), (0, (1, 1, 3, 1))]) + cycler('marker', ['o', 's', '^', 'D', 'v', 'p', 'X']))

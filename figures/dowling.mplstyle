@@ -1,0 +1,137 @@
+# dowling.mplstyle — house matplotlib style for CBE/ACMS 40499 & 60499
+#
+#   import matplotlib.pyplot as plt
+#   plt.style.use("../../figures/dowling.mplstyle")   # path relative to the notebook
+#
+# ONE source of figure style, shared by two consumers, exactly as preamble.tex
+# in this directory is shared by the TikZ diagrams and the LaTeX handouts:
+#
+#   1. the course notebooks (notebooks/*-dev/) on the website
+#   2. the matplotlib figures rendered for the lecture handouts
+#      (../../optimization-private/lecture-notes)
+#
+# Numbers come from Prof. Dowling's own guide, "Preparing Publication Quality
+# Figures in Python" (CBE 60258 / data-and-computing, notebook 01), which in
+# turn derives them from
+#   P. Kamat, G. V. Hartland, G. C. Schatz (2014), "Graphical Excellence",
+#   J. Phys. Chem. Lett. 5(12), 2118-2120.
+#
+# See README.md in this directory for the rules the style file cannot encode
+# (direct labelling, greyscale verification, markevery).
+#
+# ---------------------------------------------------------------------------
+# COLOUR POLICY — colour first, greyscale guaranteed
+# ---------------------------------------------------------------------------
+# The colour cycle is Okabe-Ito, the standard colour-vision-deficiency-safe
+# palette recommended by the guide's linked reference. It is chosen because it
+# is a genuinely good palette in colour; it is NOT compromised to maximise
+# greyscale separation.
+#
+# Okabe-Ito does not survive greyscale on its own. Measured CIE L* values:
+#
+#     black          #000000   L* =  0.0
+#     blue           #0072B2   L* = 46.0
+#     vermillion     #D55E00   L* = 54.2
+#     bluish green   #009E73   L* = 57.7
+#     reddish purple #CC79A7   L* = 61.1
+#     sky blue       #56B4E9   L* = 69.8
+#     orange         #E69F00   L* = 70.6
+#     yellow         #F0E442   L* = 89.1   (omitted below: unreadable on white)
+#
+# Sky blue and orange differ by dL* = 0.8. On a photocopier they are the same
+# grey. Vermillion and bluish green differ by 3.6. So:
+#
+#   * The cycle is ORDERED so the first four entries have the widest possible
+#     luminance spread (dL* >= 11.8, verified by brute force over the palette).
+#     Four series is the greyscale-safe limit by colour alone; five cannot
+#     exceed dL* = 6.9 with any ordering of this palette.
+#   * LINESTYLE is cycled in lockstep with colour, so every series carries a
+#     redundant, colour-free identity. This is load-bearing, not decoration.
+#   * Beyond four series, add markers or direct labelling by hand.
+#
+# Verify with:  python scripts/check_greyscale.py --style figures/dowling.mplstyle
+#
+# ---------------------------------------------------------------------------
+
+# --- Colour + linestyle cycle (paired element-wise) -------------------------
+# Marker is deliberately NOT cycled here: matplotlib has no `lines.markevery`
+# rcParam, so a cycled marker puts a glyph on every data point and ruins dense
+# curves. Layer dowling-markers.mplstyle when you want markers cycled too.
+axes.prop_cycle: (cycler('color', ['000000', '0072B2', 'E69F00', '009E73', 'CC79A7', '56B4E9', 'D55E00']) + cycler('linestyle', ['-', '--', '-.', ':', (0, (5, 1)), (0, (3, 1, 1, 1)), (0, (1, 1, 3, 1))]))
+
+# --- Figure -----------------------------------------------------------------
+figure.figsize:     4, 4
+figure.dpi:         100
+figure.facecolor:   white
+figure.autolayout:  False
+
+# --- Saving -----------------------------------------------------------------
+# 300 dpi is the guide's number. `bbox: tight` reproduces the guide's
+# bbox_inches='tight' without every call site repeating it.
+savefig.dpi:         300
+savefig.bbox:        tight
+savefig.pad_inches:  0.05
+savefig.facecolor:   white
+savefig.transparent: False
+savefig.format:      png
+
+# --- Lines and markers ------------------------------------------------------
+lines.linewidth:      3
+lines.markersize:     8
+lines.markeredgewidth: 1.0
+lines.solid_capstyle: round
+lines.dash_capstyle:  round
+
+# --- Axis labels ------------------------------------------------------------
+axes.labelsize:   16
+axes.labelweight: bold
+axes.titlesize:   16
+axes.titleweight: bold
+axes.linewidth:   1.2
+axes.edgecolor:   black
+axes.facecolor:   white
+axes.grid:        False
+axes.axisbelow:   True
+
+# --- Ticks: inward, on all four sides ---------------------------------------
+xtick.labelsize:      15
+ytick.labelsize:      15
+xtick.direction:      in
+ytick.direction:      in
+xtick.minor.visible:  False
+ytick.minor.visible:  False
+xtick.top:            True
+ytick.right:          True
+xtick.major.size:     6
+ytick.major.size:     6
+xtick.minor.size:     3
+ytick.minor.size:     3
+xtick.major.width:    1.2
+ytick.major.width:    1.2
+
+# --- Legend -----------------------------------------------------------------
+# Prefer direct labelling (ax.annotate) where it fits: a legend keyed only by
+# colour is the single most common way a figure dies in black and white. When a
+# legend is unavoidable the linestyle cycle above keys it redundantly.
+legend.fontsize:     12
+legend.frameon:      False
+legend.handlelength: 3.0
+legend.borderaxespad: 0.5
+
+# --- Text -------------------------------------------------------------------
+font.size:          14
+font.family:        sans-serif
+font.sans-serif:    DejaVu Sans, Arial, Helvetica
+mathtext.fontset:   dejavusans
+
+# --- Grid (off by default; these apply if a notebook turns it on) -----------
+grid.color:     b0b0b0
+grid.linestyle: -
+grid.linewidth: 0.6
+grid.alpha:     0.5
+
+# --- Images / contours ------------------------------------------------------
+# viridis is perceptually uniform AND monotone in luminance, so it is the one
+# colormap that survives greyscale unchanged. Do not substitute jet or coolwarm
+# on a figure that must print in black and white.
+image.cmap: viridis

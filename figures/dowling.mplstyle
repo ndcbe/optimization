@@ -130,6 +130,24 @@ grid.linestyle: -
 grid.linewidth: 0.6
 grid.alpha:     0.5
 
+# --- Hatching (shaded regions) ----------------------------------------------
+# A shaded feasible region, acceptance band or confidence envelope drawn with
+# `alpha` alone is the one greyscale failure the colour cycle above cannot fix:
+# two pale tints of different hue land on the same grey, and where two regions
+# overlap the result is a third tint that means nothing in black and white.
+# Hatching is the standard answer, so these two rcParams set the house texture
+# once. There is NO rcParam for a hatch *sequence* -- matplotlib's prop_cycle
+# has no hatch entry -- so the cycle itself lives in plots/_house.py as
+# HATCH_CYCLE and is passed by hand:
+#
+#     ax.axvspan(a, b, facecolor="0.55", alpha=SHADE_ALPHA,
+#                hatch=HATCH_CYCLE[0], edgecolor=plt.rcParams["hatch.color"])
+#
+# Added 2026-08-18 for W6; figure_inventory.md recorded shading as the one
+# pattern this style did not cover.
+hatch.color:     black
+hatch.linewidth: 0.8
+
 # --- Images / contours ------------------------------------------------------
 # viridis is perceptually uniform AND monotone in luminance, so it is the one
 # colormap that survives greyscale unchanged. Do not substitute jet or coolwarm

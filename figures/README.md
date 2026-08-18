@@ -7,7 +7,10 @@ website and in the printed course pack. There is **one** figure pipeline, not tw
 | --- | --- |
 | `preamble.tex` | shared TikZ setup — loaded by `Makefile` *and* `\input` by the handouts |
 | `tikz/<name>.tex` | a bare `tikzpicture`; the single source for one diagram |
-| `Makefile` | renders `tikz/*.tex` → `../media/figures/<name>.{png,svg}` at 300 dpi |
+| `plots/<name>.py` | a `make_figure() -> Figure`; the single source for one plot |
+| `plots/_house.py` | conventions a style file cannot encode — hatch cycle, direct labelling |
+| `render.py` | runs one `plots/<name>.py` and writes its PNG **and** PDF |
+| `Makefile` | renders both source languages → `../media/figures/` at 300 dpi |
 | `dowling.mplstyle` | shared matplotlib style — the exact analogue of `preamble.tex`, for plots |
 | `dowling-markers.mplstyle` | optional overlay adding a cycled marker (sparse data only) |
 | `../scripts/check_greyscale.py` | the enforcement tool: does this figure survive black-and-white printing? |
@@ -154,10 +157,50 @@ Exit status is 0 on pass, 1 on fail, so it gates in CI. `--strict` promotes warn
 
 **Diagram** → `tikz/<name>.tex`, then `make`. The handout `\input`s the same file.
 
-**Plot** → (planned, W6) a committed script under `figures/plots/<name>.py` that imports
-`dowling.mplstyle` and writes `../../media/figures/<name>.png` and `.pdf`. The notebook and the
-handout both *display* the rendered output rather than each generating their own copy — that is
-what makes drift impossible. Where a notebook needs a live, executed plot for teaching, that is a
-*different* figure and should look different.
+**Plot** → a committed script under `plots/<name>.py`, then `make`. Write **one** function:
+
+```python
+def make_figure():
+    fig, ax = plt.subplots()
+    ...
+    return fig          # do NOT savefig, do NOT plt.style.use
+```
+
+`render.py` applies `dowling.mplstyle` and writes `../media/figures/<name>.png` (300 dpi, what the
+notebooks display) and `<name>.pdf` (vector, what the handouts `\includegraphics`). Style, DPI and
+bounding box are therefore set in exactly one place, and a script cannot quietly opt out of the
+house style. Files named `plots/_*.py` are shared helpers, not figures; `make` skips them.
+
+The notebook and the handout both *display* the rendered output rather than each generating their
+own copy — that is what makes drift impossible. Where a notebook needs a live, executed plot for
+teaching, that is a *different* figure and should look different. In practice the pattern that
+works is: show the rendered figure in a markdown cell as the canonical picture, then keep the live
+cells below it for exploration.
+
+⚠ **One output directory, two source languages.** `tikz/foo.tex` and `plots/foo.py` would both write
+`../media/figures/foo.png`. `make` refuses to run if any name appears in both.
+
+⚠ **Do not make a plot script depend on a solver.** Two of the three migrated plots re-derive their
+data with `numpy`/`scipy` rather than Pyomo + Ipopt, so `make` needs no solver binary and finishes
+in seconds. If a figure genuinely needs a long solve, commit the solved trajectory as data and read
+it.
+
+### Shaded regions need hatching
+
+`hatch.color` and `hatch.linewidth` are in `dowling.mplstyle`; the hatch *sequence* is
+`HATCH_CYCLE` in `plots/_house.py`, because matplotlib's `prop_cycle` has no hatch entry. An `alpha`
+fill on its own greys to mush, and two overlapping tints produce a third tint that means nothing in
+black and white:
+
+```python
+from _house import HATCH_CYCLE, SHADE_ALPHA
+ax.axvspan(a, b, facecolor="0.55", alpha=SHADE_ALPHA, hatch=HATCH_CYCLE[0],
+           edgecolor=plt.rcParams["hatch.color"], linewidth=0.0)
+```
+
+### Arrows are not series
+
+An arrow gets no linestyle from the colour cycle, so colour is *all* it has. Label each arrow in
+place with the symbol it carries (`$\nabla f$`, `$\nabla g$`) — see `plots/kkt-geometry.py`.
 
 **Math or text** → never a screenshot. Native LaTeX in the handout, MathJax in the notebook.

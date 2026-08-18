@@ -17,7 +17,7 @@ published path back to its ``notebooks/<N>-dev/`` source, and maps
 
 Solver binaries
 ---------------
-``~/.idaes/bin`` is prepended to ``PATH`` so ``ipopt``, ``k_aug`` and
+``~/.idaes/bin`` and ``<sys.prefix>/bin`` are prepended to ``PATH`` so ``ipopt``, ``k_aug``, ``glpsol`` and
 ``dot_sens`` resolve, exactly as in the pyomo-doe harness.
 
 Each notebook runs in its own subprocess so that a kernel crash or a hang is
@@ -93,16 +93,39 @@ def to_source_path(published: Path) -> Path:
     return published
 
 
-def prepend_idaes_bin_to_path() -> None:
-    if not IDAES_BIN_DIR.exists():
-        return
-    current_path = os.environ.get("PATH", "")
-    idaes_bin = str(IDAES_BIN_DIR)
-    if idaes_bin in (current_path.split(os.pathsep) if current_path else []):
+def _prepend_to_path(directory: str) -> None:
+    current = os.environ.get("PATH", "")
+    if directory in (current.split(os.pathsep) if current else []):
         return
     os.environ["PATH"] = (
-        f"{idaes_bin}{os.pathsep}{current_path}" if current_path else idaes_bin
+        f"{directory}{os.pathsep}{current}" if current else directory
     )
+
+
+def prepend_solver_dirs_to_path() -> None:
+    """Make every solver binary visible to Pyomo.
+
+    Pyomo locates solvers as EXECUTABLES ON PATH, not by importing anything, so
+    both directories have to be visible:
+
+    * ``~/.idaes/bin`` -- ipopt, k_aug, dot_sens, cbc, bonmin, couenne
+    * ``<sys.prefix>/bin`` -- conda-installed solvers, notably ``glpsol``
+
+    The second is easy to miss. Activating the environment supplies it, but
+    invoking the interpreter by absolute path (``.../envs/NAME/bin/python``,
+    which is what you do when ``conda activate`` is unavailable) does NOT --
+    and then ``SolverFactory("glpk").available()`` returns False on a perfectly
+    good install. That failure mode is indistinguishable from a genuinely
+    missing solver in the notebook output: a model simply never gets values,
+    and the notebook dies later with "No value for uninitialized Var", which
+    reads like an infeasible model rather than a PATH problem.
+    """
+    if IDAES_BIN_DIR.exists():
+        _prepend_to_path(str(IDAES_BIN_DIR))
+
+    env_bin = Path(sys.prefix) / "bin"
+    if env_bin.exists():
+        _prepend_to_path(str(env_bin))
 
 
 # --------------------------------------------------------------------------
@@ -224,7 +247,7 @@ def main() -> int:
     parser.add_argument("--_exec", default=None, help=argparse.SUPPRESS)
     args = parser.parse_args()
 
-    prepend_idaes_bin_to_path()
+    prepend_solver_dirs_to_path()
 
     # child mode
     if args._exec:

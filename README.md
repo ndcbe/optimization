@@ -1,4 +1,4 @@
-# Nonlinear and Stochastic Optimization
+# Optimization for Decision Science
 
 CBE/ACMS 40499 and 60499 at the University of Notre Dame
 

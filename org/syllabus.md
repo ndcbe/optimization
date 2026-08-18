@@ -1,6 +1,6 @@
 # Syllabus
 
-CBE 60499, ACMS 60499, CBE 40499, CBE 60499: Nonlinear and Stochastic Optimization
+CBE 40499, CBE 60499, ACMS 40499, ACMS 60499: Optimization for Decision Science
 
 University of Notre Dame, Fall 2024
 

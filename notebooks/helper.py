@@ -45,7 +45,7 @@ helper.set_plotting_style()
 ```
 """
 
-__version__ = "2024.08.24"
+__version__ = "2026.08.18"
 
 import shutil
 import sys
@@ -84,7 +84,7 @@ def package_available(package_name):
     """
 
     if package_name == "glpk":
-        return _check_available("gpsol")
+        return _check_available("glpsol")
     else:
         return _check_available(package_name)
 
@@ -164,15 +164,53 @@ def install_ipopt(verbose=False, try_conda_as_backup=False):
         _print_single_solver_version("ipopt")
 
 def install_glpk():
+    """Install GLPK via apt-get on Colab
+
+    Deprecated: HiGHS (see install_highs) is the course default LP/MILP solver.
+    This function is kept for the handful of older contributed notebooks that
+    still call glpsol.
+    """
     if not package_available("glpk") and on_colab():
         print("Installing glpk via apt-get...")
         os.system('apt-get install -y -qq glpk-utils')
+
+
+def install_highs(verbose=False):
+    """Installs HiGHS via pip
+
+    HiGHS is the default LP/MILP solver for this course. It is distributed as
+    the Python package `highspy` and is used from Pyomo via
+    `pyo.SolverFactory('appsi_highs')`.
+
+    Argument:
+        verbose: bool, if True, display console output from pip install
+
+    """
+
+    try:
+        import highspy
+
+        print("highspy was found! No need to install.")
+    except ImportError:
+        print("Installing highspy via pip...")
+        v = subprocess.run(
+            [sys.executable, "-m", "pip", "install", "-q", "highspy"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        if verbose:
+            print(v.stdout)
+            print(v.stderr)
+        print("highspy was successfully installed")
+
 
 def easy_install(verbose=False):
     """Install IDAES and solvers in one step"""
 
     install_idaes(verbose=verbose)
     install_ipopt(verbose=verbose, try_conda_as_backup=True)
+    install_highs(verbose=verbose)
 
 def _update_path():
     """Add idaes executables to PATH"""

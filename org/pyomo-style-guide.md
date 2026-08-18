@@ -295,6 +295,50 @@ output is a figure.
 
 ---
 
+## 7a. Which solver to call
+
+| Problem class | Solver | `SolverFactory` name |
+| --- | --- | --- |
+| LP, MILP | [HiGHS](https://highs.dev/) | `"appsi_highs"` |
+| NLP | Ipopt | `"ipopt"` |
+| MINLP | Bonmin / Couenne | `"bonmin"`, `"couenne"` |
+
+**HiGHS is the course default for anything linear.** GLPK was the default through Fall 2024 and has
+been retired: HiGHS is faster, is actively developed, and installs everywhere with
+`pip install highspy` — no `apt-get`, so it works on Colab, macOS and Windows identically. If you
+are reading an older notebook that calls `pyo.SolverFactory("glpk")`, replace it with
+`pyo.SolverFactory("appsi_highs")`.
+
+```python
+# YES
+solver = pyo.SolverFactory("appsi_highs")
+results = solver.solve(m, tee=True)
+assert pyo.check_optimal_termination(results)
+```
+
+Two details that bite:
+
+- **`tee` is a keyword of `solve()`, not of `SolverFactory()`.** The shell-based solvers (`glpk`,
+  `cbc`, `ipopt`) silently swallow `SolverFactory("glpk", tee=True)` and print nothing;
+  `SolverFactory("appsi_highs", tee=True)` raises instead. Put `tee=` on the `solve()` call, where it
+  has always belonged.
+- **The results object is the ordinary Pyomo one.** In Pyomo 6.10, `SolverFactory("appsi_highs")`
+  returns a legacy-compatible wrapper, so `pyo.check_optimal_termination(results)` and
+  `results.solver.termination_condition` work exactly as in §7. You only need the APPSI-native
+  `results.termination_condition` form if you construct the solver directly from
+  `pyomo.contrib.appsi`, which this course does not do.
+
+HiGHS may report a binary variable as `-0.0` rather than `0.0`. Compare with a tolerance
+(`if pyo.value(m.x[i]) >= 0.5:`), never with `== 0`.
+
+**Alternate optima are real.** Several course models have ties — the knapsack has two distinct
+selections worth 25, and the integer-cut exercise in `assignments/Pyomo2.ipynb` has two worth 14.
+Different solvers (and different versions of the same solver) may return different members of a tied
+set. The *objective value* is what you check and what you grade on; do not write a test that asserts
+one particular argmin.
+
+---
+
 ## 8. Reproducibility: seed every random number generator
 
 If a notebook uses randomness anywhere — sampled scenarios, random restarts, a train/test split,
@@ -355,9 +399,11 @@ Details that matter:
   execution audit.
 - **It must be the first code cell**, so every install finishes before anything needs it.
 - **`helper.easy_install()`** installs IDAES plus Ipopt, `k_aug`, `cbc`, `bonmin`, `couenne` and
-  `dot_sens`. Use it unless you have a reason not to.
-- **`glpk` is not part of `easy_install()`.** If your notebook uses `glpsol`, add
-  `helper.install_glpk()` after it.
+  `dot_sens`, and pip-installs **HiGHS** (`highspy`). Use it unless you have a reason not to. You do
+  not need to add anything extra to use HiGHS.
+- **`helper.install_glpk()` is deprecated.** GLPK has been retired in favour of HiGHS (see §7a). The
+  function is still in `helper.py` for a handful of older contributed notebooks that have not been
+  converted yet. Do not call it in new work.
 - **Extra packages go inside the `if` branch**, as `!pip install ...`, so a local run is untouched:
 
   ```python
@@ -550,6 +596,7 @@ Run through this before you submit an assignment or open a pull request.
 - [ ] Index sets are `pyo.Set` / `pyo.RangeSet`, named in UPPER CASE
 - [ ] `domain=` not `within=`; known bounds in `bounds=`
 - [ ] Constraints use the `@m.Constraint` decorator and are named for what they mean
+- [ ] LP and MILP models call `pyo.SolverFactory("appsi_highs")`, not `"glpk"`; `tee=` is on `solve()`
 - [ ] **Every `solve()` is followed by a termination-condition check before any `pyo.value()`**
 - [ ] `### BEGIN SOLUTION` / `### END SOLUTION` markers are bare, paired, and inside code cells
 - [ ] Data in `notebooks/data/`, images in `media/`, both committed, case matched exactly

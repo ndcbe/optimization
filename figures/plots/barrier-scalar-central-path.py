@@ -20,8 +20,11 @@ Everything here is closed form, so the figure is exact rather than solved:
     phi_mu'(x) = 1 - mu/x = 0   =>   x(mu) = mu
     phi_mu(x(mu)) = mu - mu ln(mu) = mu (1 - ln mu)
 
-which is conclusion (v) of Biegler's Theorem 6.7, pp. 152-153, in its sharpest
-possible form: for this problem ||x(mu) - x*|| = mu exactly, not merely O(mu).
+which is the last conclusion of Biegler's Theorem 6.7, pp. 152-153 -- the
+conclusions are printed as an unnumbered bulleted list, the final bullet being
+||x(mu_l) - x*|| = O(mu_l) -- in its sharpest possible form: for this problem
+||x(mu) - x*|| = mu exactly, not merely O(mu). The book's own caption for
+Figure 6.1 names the same four values of mu and states x(mu) = mu.
 
 Deliberate departures from the book figure
 ------------------------------------------
@@ -45,9 +48,19 @@ MUS = (0.1, 0.05, 0.01, 0.001)
 XLO, XHI = 1e-4, 0.32
 YLO, YHI = 0.0, 0.52
 
-# Label offsets, hand-tuned against the rendered PNG so no label sits on a
-# curve or on its neighbour. Order matches MUS.
-LABEL_OFFSETS = ((0.012, 0.028), (0.012, 0.028), (0.014, 0.030), (0.016, 0.026))
+# Where each mu label goes, hand-tuned against the RENDERED figure. The two
+# large mu sit next to their own minimum; the two small ones cannot, because
+# their minima are at x = 0.01 and x = 0.001 and on a linear axis running to
+# 0.32 those are on top of each other and on top of x*. Those two get a leader
+# into the empty wedge below every curve instead. Order matches MUS.
+#   (mode, x, y)  with mode "at" = offset from the minimum, "lead" = text at
+#   (x, y) with an arrow drawn back to the minimum.
+LABEL_PLACEMENT = (
+    ("at", 0.012, 0.028),
+    ("at", 0.012, 0.028),
+    ("lead", 0.058, 0.070),
+    ("lead", 0.058, 0.018),
+)
 
 
 def phi(x, mu):
@@ -86,12 +99,22 @@ def make_figure():
             [xm], [ym], marker="o", markersize=8, color="black",
             linestyle="none", zorder=6,
         )
-        dx, dy = LABEL_OFFSETS[i]
-        label_curve(
-            ax, xm, ym, rf"$\mu = {mu:g}$", dx=dx, dy=dy,
-            fontsize=12.5, zorder=7,
-            bbox=dict(facecolor="white", edgecolor="none", pad=1.0),
-        )
+        mode, lx, ly = LABEL_PLACEMENT[i]
+        if mode == "at":
+            label_curve(
+                ax, xm, ym, rf"$\mu = {mu:g}$", dx=lx, dy=ly,
+                fontsize=12.5, zorder=7,
+                bbox=dict(facecolor="white", edgecolor="none", pad=1.0),
+            )
+        else:
+            ax.annotate(
+                rf"$\mu = {mu:g}$",
+                xy=(xm, ym), xytext=(lx, ly),
+                fontsize=12.5, ha="left", va="center", zorder=7,
+                arrowprops=dict(arrowstyle="->", color="black", lw=1.2,
+                                shrinkA=2, shrinkB=5),
+                bbox=dict(facecolor="white", edgecolor="none", pad=1.0),
+            )
 
     # The central path: the minimizers, joined, running down to the bound.
     ax.plot(
@@ -102,22 +125,20 @@ def make_figure():
             linestyle="none", zorder=7, clip_on=False)
     ax.annotate(
         r"$x^{*} = 0$",
-        xy=(0.008, 0.045),
-        fontsize=12.5,
-        zorder=7,
+        xy=(0.001, 0.004), xytext=(0.020, 0.118),
+        fontsize=12.5, ha="left", va="center", zorder=7,
+        arrowprops=dict(arrowstyle="-|>", color="black", linewidth=1.5,
+                        shrinkA=2, shrinkB=4),
         bbox=dict(facecolor="white", edgecolor="none", pad=1.0),
     )
+    # No leader: the text sits immediately to the LEFT of the dotted path in
+    # the empty band between the mu = 0.05 and mu = 0.1 curves, which reads as
+    # labelling it. A leader here would land its head next to the x* leader's.
     ax.annotate(
         r"$x(\mu) = \mu$",
-        xy=(0.083, 0.108),
-        fontsize=13,
-        zorder=7,
+        xy=(0.012, 0.298),
+        fontsize=13, ha="left", va="center", zorder=7,
         bbox=dict(facecolor="white", edgecolor="none", pad=1.0),
-    )
-    ax.annotate(
-        "", xy=(0.004, 0.012), xytext=(0.030, 0.088),
-        arrowprops=dict(arrowstyle="-|>", color="black", linewidth=1.6),
-        zorder=6,
     )
 
     ax.set_xlim(YLO, XHI)
@@ -135,7 +156,9 @@ if __name__ == "__main__":
         #    dense numerical argmin, and against the first-order condition.
         grid = np.linspace(mu / 20, mu * 20, 400001)
         num = grid[np.argmin(phi(grid, mu))]
-        assert abs(num - mu) < 1e-6, (mu, num)
+        # The grid cannot resolve the minimizer better than its own spacing,
+        # so compare against that, not against a fixed absolute tolerance.
+        assert abs(num - mu) <= grid[1] - grid[0], (mu, num)
         assert abs(1.0 - mu / x_star(mu)) < 1e-12          # phi' = 1 - mu/x = 0
         assert phi(mu, mu) == mu * (1.0 - np.log(mu))      # value at the min
         print(f"mu={mu:<7g} x(mu)={x_star(mu):<8g} "

@@ -24,9 +24,14 @@ side of the kink.
     D+ = d phi_1 / dc |_{c -> 1+} = -2 + 4 rho
     D- = d phi_1 / dc |_{c -> 1-} = -2 - 4 rho     (negative for every rho > 0)
 
-so c = 1 is a strict local minimiser exactly when rho > 1/2 = |v*|. That is
-Biegler's threshold rho* = ||v*||_q with 1/p + 1/q = 1, printed p. 111: for
-p = 1 the dual index is q = infinity and rho* = max_i |v*_i|. Nocedal & Wright
+so c = 1 is a strict local minimiser once rho > 1/2 = |v*|. That is Biegler's
+threshold, verified against the book: the bullet on printed p. 111 reads "for
+rho > rho* = ||v*||_q and 1/p + 1/q = 1, x* is a strict local minimizer for
+phi_p(x, rho)". For p = 1 the dual index is q = infinity and rho* = max_i
+|v*_i|. The condition is STRICT and the figure does not claim more: at
+rho = rho* exactly, D+ = 0 and the minimum is degenerate rather than
+first-order strict -- 400,000 sampled 2-D neighbours at rho = 0.5 put the
+smallest excess at +5e-14, i.e. flat to within round-off. Nocedal & Wright
 state the same threshold as mu* = max{|lambda*_i|} on p. 435 -- with absolute
 values, which is why their opposite sign convention (L = f - lambda^T c) does
 not matter here.
@@ -102,7 +107,6 @@ def make_figure():
     axL.plot([1.0], [-2.0], marker="o", markersize=9, color="black", linestyle="none",
              zorder=6)
     axL.annotate(
-        r"kink at $\opt{x}$".replace(r"\opt{x}", r"$x^*$")[1:-1] if False else
         r"kink at $x^*$" "\n" r"($\|h\|_1$ not differentiable)",
         xy=(1.0, -2.0),
         xytext=(0.655, -1.62),

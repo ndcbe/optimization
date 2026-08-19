@@ -4,8 +4,12 @@
 
 Supports `lecture-notes/lectures/second-order-conditions.tex`, the nesting
 display C_3 subset C_2 subset C_4. Biegler (2010) defines all four sets
-symbolically -- C_1 and C_2 on printed p. 79, C_3 and C_4 on p. 82, the nesting
-in the bullets on pp. 82-83 -- and never draws them. The nesting is the hardest
+symbolically -- C_1 and C_2 on printed p. 79, C_3 and C_4 on p. 82 -- and never
+draws them. The chain is his, but it is split across two pages and never
+displayed as a chain: the first bullet on p. 82 prints "C_3(x*) subset
+C_4(x*,u*) and C_2(x*,u*) subset C_4(x*,u*)", and the first bullet on p. 83
+prints "d in C_3(x*) subset C_2(x*,u*)". Both read and confirmed against the
+book; the handout's eq:nesting collects them. The nesting is the hardest
 thing in that lecture to hold in the head from symbols alone, because the
 inclusion runs the OPPOSITE way to the number of equations imposed.
 
@@ -112,7 +116,7 @@ def _gradients(ax):
             width=0.022,
             length_includes_head=True,
             color="0.45",
-            zorder=3,
+            zorder=5,
         )
         tip = ARROW_SCALE * vec
         ax.annotate(
@@ -141,8 +145,10 @@ def make_figure():
         linewidth=0.0,
         zorder=1,
     )
-    ax.plot([-LIM, 0], [0, 0], color="black", linewidth=3.0, zorder=4)
-    ax.plot([0, 0], [-LIM, 0], color="black", linewidth=3.0, zorder=4)
+    ax.plot([-LIM, 0], [0, 0], color="black", linestyle="-", linewidth=3.0,
+            zorder=4)
+    ax.plot([0, 0], [-LIM, 0], color="black", linestyle="-", linewidth=3.0,
+            zorder=4)
     ax.plot(0, 0, marker="o", markersize=7, markerfacecolor="white",
             markeredgecolor="black", markeredgewidth=1.8, zorder=7, linestyle="none")
     ax.set_ylabel("$d_2$", fontsize=13)
@@ -153,7 +159,8 @@ def make_figure():
     # --- C_2: the ray -----------------------------------------------------
     ax = axes[1]
     _frame(ax, r"$\mathcal{C}_2(x^*,u^*)$")
-    ax.plot([0, 0], [-LIM, 0], color="black", linewidth=4.5, zorder=4)
+    ax.plot([0, 0], [-LIM, 0], color="black", linestyle="-", linewidth=4.5,
+            zorder=4)
     ax.plot(0, 0, marker="o", markersize=7, markerfacecolor="white",
             markeredgecolor="black", markeredgewidth=1.8, zorder=7, linestyle="none")
     ax.annotate("ray\n(a cone)", xy=(0.16, -1.22), fontsize=11.5, ha="left",
@@ -172,7 +179,8 @@ def make_figure():
     # --- C_4: the line ----------------------------------------------------
     ax = axes[3]
     _frame(ax, r"$\mathcal{C}_4(x^*,u^*)$")
-    ax.plot([0, 0], [-LIM, LIM], color="black", linewidth=4.5, zorder=4)
+    ax.plot([0, 0], [-LIM, LIM], color="black", linestyle="-", linewidth=4.5,
+            zorder=4)
     ax.plot(0, 0, marker="o", markersize=7, markerfacecolor="white",
             markeredgecolor="black", markeredgewidth=1.8, zorder=7, linestyle="none")
     ax.annotate("line\n(a subspace)", xy=(0.16, -1.22), fontsize=11.5, ha="left",

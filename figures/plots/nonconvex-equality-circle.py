@@ -67,10 +67,17 @@ import matplotlib.pyplot as plt
 THETA_A = np.deg2rad(150.0)
 THETA_B = np.deg2rad(30.0)
 
-# Matching endpoints on the line x1 + x2 = 1, chosen to span a comparable
-# width so the two panels read as the same construction.
-LINE_A = np.array([-0.85, 1.85])
-LINE_B = np.array([0.85, 0.15])
+# Matching endpoints on the line x1 + x2 = 1. The chord is centred on the
+# visible part of the line and given the SAME length as the circle's chord
+# (2 cos 30 deg = sqrt(3)), so the two panels really are the same construction
+# at the same scale.
+#
+# The earlier values (-0.85, 1.85) and (0.85, 0.15) were not: x2 = 1.85 is
+# outside the axes, so the first endpoint, its label and half the chord were
+# drawn off-screen and the panel showed a chord with one end.
+_HALF = np.sqrt(3.0) / 2.0 / np.sqrt(2.0)      # half-length along (1,-1)/sqrt2
+LINE_A = np.array([0.5 - _HALF, 0.5 + _HALF])
+LINE_B = np.array([0.5 + _HALF, 0.5 - _HALF])
 
 LIM = 1.55
 
@@ -97,6 +104,27 @@ def _frame(ax, title):
     ax.set_title(title, fontsize=14)
     ax.axhline(0.0, color="0.85", linewidth=0.8, zorder=0)
     ax.axvline(0.0, color="0.85", linewidth=0.8, zorder=0)
+
+
+def _name_constraint(ax, on_curve, text_at):
+    """Label the feasible set, with a leader back to it.
+
+    Both panels previously carried a bare "h(x) = 0" parked in a corner with
+    nothing near it; on the right it sat a full unit away from the line. A
+    label with no referent is worse than no label, so it now points.
+    """
+    ax.annotate(
+        "$h(x) = 0$",
+        xy=on_curve,
+        xytext=text_at,
+        fontsize=13,
+        ha="left",
+        va="center",
+        zorder=6,
+        arrowprops=dict(arrowstyle="->", color="0.35", lw=1.3,
+                        shrinkA=2, shrinkB=5),
+        bbox=dict(facecolor="white", edgecolor="none", pad=1.0),
+    )
 
 
 def _chord(ax, a, b, mid, *, feasible):
@@ -156,13 +184,7 @@ def make_figure():
         color="0.35",
         zorder=4,
     )
-    ax.annotate(
-        "$h(x) = 0$",
-        xy=(-1.42, -1.02),
-        fontsize=13,
-        zorder=6,
-        bbox=dict(facecolor="white", edgecolor="none", pad=1.0),
-    )
+    _name_constraint(ax, (-0.755, -0.656), (-1.45, -1.22))
     ax.annotate(
         "midpoint:\n$h = %.2f \\neq 0$" % (r_mid**2 - 1.0),
         xy=(mid_c[0], mid_c[1] - 0.30),
@@ -179,18 +201,12 @@ def make_figure():
     xs = np.array([-LIM, LIM])
     ax.plot(xs, 1.0 - xs, linestyle="-", linewidth=3.0, color="#0072B2", zorder=2)
     _chord(ax, a_l, b_l, mid_l, feasible=True)
-    ax.annotate(
-        "$h(x) = 0$",
-        xy=(0.30, -1.02),
-        fontsize=13,
-        zorder=6,
-        bbox=dict(facecolor="white", edgecolor="none", pad=1.0),
-    )
+    _name_constraint(ax, (1.25, -0.25), (0.30, -1.22))
     ax.annotate(
         "midpoint:\n$h = 0$  ✓",
-        xy=(mid_l[0] + 0.18, mid_l[1] - 0.28),
+        xy=(mid_l[0] - 0.18, mid_l[1] - 0.30),
         fontsize=12.5,
-        ha="left",
+        ha="right",
         va="top",
         zorder=6,
         bbox=dict(facecolor="white", edgecolor="0.6", pad=2.5),

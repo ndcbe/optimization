@@ -35,12 +35,24 @@ a single integer point; together they cut the fractional vertex away and the LP
 over the reduced region returns (2, 1) directly.
 
 The pedagogy is the pair. Panel 1 says why the hull would solve the problem;
-panel 2 says that cuts buy you a piece of the hull near the optimum without
-ever constructing the whole thing -- which is the handout's three-strategy
+panel 2 says you get the same answer by adding inequalities on demand rather
+than by constructing the hull up front -- which is the handout's three-strategy
 list, drawn. Note that ONE cut is not enough: adding only x1 <= 2 moves the LP
 optimum to (2, 0.5), still fractional. That is why the second cut is drawn, and
 it is worth saying out loud, because a figure with a single cut quietly teaches
 that one round always suffices.
+
+AN HONESTY NOTE, and it belongs in the caption. On THIS instance the two cuts
+do not merely approximate the hull near the optimum -- they reproduce it
+exactly. P intersected with {x1 <= 2, x1 - x2 <= 1} has vertices (0,0), (1,0),
+(2,1), (2,3), (0,3), which is precisely the vertex set of conv(S); the shaded
+region in panel 2 IS the hatched region in panel 1. That is an artefact of an
+instance small enough to draw: conv(S) here has only two facets that P does not
+already have, so two cuts finish it. The general claim -- that cutting planes
+buy a useful piece of the hull without ever writing down all of it -- is true
+and is the reason the method exists, but this figure cannot be the evidence for
+it, and the caption must not pretend otherwise. Checked in the self-check
+below rather than asserted.
 
 PROVENANCE. This is the standard textbook instance for the picture and is not
 Prof. Dowling's; it is essentially Wolsey, *Integer Programming* (Wiley, 1998),
@@ -193,12 +205,13 @@ def make_figure():
 
     ax.annotate("LP relaxation $P$", xy=(3.02, 3.30), fontsize=12.5,
                 ha="center", color="black")
-    ax.annotate(r"$\bar{z}$ here: $x=(\frac{20}{7},3)$",
+    ax.annotate(r"$\bar{z}$ here: $x=(20/7,\,3)$",
                 xy=(x_lp[0] - 0.14, x_lp[1] - 0.02), xytext=(1.32, 2.42),
                 fontsize=12.5, ha="left", va="center",
                 arrowprops=dict(arrowstyle="->", color="0.35", lw=1.3))
-    ax.annotate(r"$\mathrm{conv}(S)$", xy=(0.42, 0.92), fontsize=13,
-                color="#0072B2")
+    ax.annotate(r"$\mathrm{conv}(S)$", xy=(0.22, 1.52), fontsize=13,
+                color="#0072B2",
+                bbox=dict(facecolor="white", edgecolor="none", pad=1.0))
     ax.annotate("every vertex\nis integral", xy=(2.0, 1.0),
                 xytext=(2.28, 0.10), fontsize=12, ha="left", va="bottom",
                 color="#0072B2",
@@ -206,7 +219,7 @@ def make_figure():
 
     # ---------------- Panel 2: two cuts ---------------------------------
     ax = axes[1]
-    ax.set_title("2. two cuts, bought locally", fontsize=14)
+    ax.set_title("2. two cuts, added on demand", fontsize=14)
     ax.plot(np.append(P[:, 0], P[0, 0]), np.append(P[:, 1], P[0, 1]),
             color="0.62", linestyle="-", linewidth=1.6, zorder=2)
     ax.fill(P_cut[:, 0], P_cut[:, 1], facecolor="0.55", alpha=SHADE_ALPHA,
@@ -230,14 +243,16 @@ def make_figure():
 
     ax.annotate(CUTS[0][2], xy=(2.06, 3.42), fontsize=12.5, color="#E69F00",
                 ha="left", va="center")
-    ax.annotate(CUTS[1][2], xy=(3.14, 1.72), fontsize=12.5, color="#E69F00",
-                ha="right", va="center")
+    ax.annotate(CUTS[1][2], xy=(3.50, 1.12), fontsize=12.5, color="#E69F00",
+                ha="right", va="center",
+                bbox=dict(facecolor="white", edgecolor="none", pad=1.0))
     ax.annotate("cut off", xy=(x_lp[0], x_lp[1]), xytext=(2.32, 2.62),
                 fontsize=12, ha="right", va="center", color="0.35",
                 arrowprops=dict(arrowstyle="->", color="0.55", lw=1.2))
-    ax.annotate(r"now integral: $x=(2,1)$", xy=(2.0, 1.0), xytext=(0.28, 0.16),
-                fontsize=12.5, ha="left", va="bottom",
-                arrowprops=dict(arrowstyle="->", color="0.35", lw=1.3))
+    ax.annotate(r"now integral: $x=(2,1)$", xy=(2.0, 1.0), xytext=(0.18, -0.28),
+                fontsize=12.5, ha="left", va="center",
+                arrowprops=dict(arrowstyle="->", color="0.35", lw=1.3),
+                bbox=dict(facecolor="white", edgecolor="none", pad=1.0))
 
     fig.tight_layout()
     return fig
@@ -287,4 +302,14 @@ if __name__ == "__main__":
     print(f"LP after the first cut only: x = {x_one}, z = {z_one:.6f}"
           f"  (still fractional)")
     assert np.allclose(x_one, [2.0, 0.5]), x_one
+    # The honesty note in the docstring: on this instance the two cuts give
+    # back the WHOLE hull, not a local piece of it. Checked, not assumed.
+    P_cut = polygon(A_cut, b_cut)
+    got = sorted(tuple(np.round(v, 9)) for v in P_cut)
+    want = sorted(tuple(np.round(v, 9)) for v in hull_v)
+    assert np.allclose(np.array(got), np.array(want)), (got, want)
+    print("P + both cuts has exactly the vertices of conv(S): "
+          f"{[tuple(int(round(t)) for t in v) for v in sorted(got)]}")
+    print("  -> on THIS instance the cuts reproduce the hull exactly; the "
+          "caption says so.")
     print("all self-checks passed")

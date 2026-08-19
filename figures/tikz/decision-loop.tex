@@ -1,0 +1,51 @@
+% The solver-first chain vs. the decision-support loop.
+%
+% Single source for the diagram in
+%   optimization-private/lecture-notes/lectures/optimization-for-decision-support.tex
+% which \input's this file via \figsrc. Rendered to ../media/figures/decision-loop.{png,svg}
+% by `make` so the website can show the same picture.
+%
+% Greyscale: the encoding is REDUNDANT by construction. The naive chain is
+% dashed AND grey AND labelled "the solver-first picture"; the loop is solid
+% AND blue AND labelled. Either the line style or the text carries the
+% contrast on its own, so nothing is lost on a mono laser printer.
+%
+% NavyBlue is a dvipsnames colour. The lecture handout has already defined it
+% (preamble.tex loads xcolor with [dvipsnames]); the standalone figure build
+% has not, so \providecolor supplies exactly the dvipsnam.def value there and
+% is a no-op in the handout. The two consumers therefore render the SAME hue.
+\providecolor{NavyBlue}{cmyk}{0.94,0.54,0,0}
+
+\begin{tikzpicture}[>=stealth,
+    stage/.style={draw=NavyBlue!70, fill=NavyBlue!8, rounded corners,
+                  minimum height=8mm, inner xsep=5pt, font=\small, align=center},
+    naive/.style={draw=gray!75, fill=gray!10, dashed, rounded corners,
+                  minimum height=8mm, inner xsep=5pt, font=\small, align=center},
+    flow/.style={->, thick, draw=NavyBlue!75},
+    nflow/.style={->, thick, dashed, draw=gray!75}]
+
+  % ---- the naive chain: DASHED and GREY (redundant with the label below)
+  \node[naive] (nA) at (0.0,1.9) {Problem};
+  \node[naive] (nB) at (3.6,1.9) {Optimization};
+  \node[naive] (nC) at (7.4,1.9) {Answer};
+  \draw[nflow] (nA) -- (nB);
+  \draw[nflow] (nB) -- (nC);
+  \node[gray!85, font=\small\itshape, anchor=west] at (8.6,1.9)
+    {the solver-first picture};
+
+  % ---- the loop: SOLID (redundant with the label)
+  \node[stage] (A) at (0.0,0.0)  {Problem};
+  \node[stage] (B) at (2.7,0.0)  {Model};
+  \node[stage] (C) at (5.6,0.0)  {Optimization};
+  \node[stage] (D) at (8.8,0.0)  {Interpretation};
+  \node[stage] (E) at (11.7,0.0) {Decision};
+  \draw[flow] (A) -- (B);
+  \draw[flow] (B) -- (C);
+  \draw[flow] (C) -- (D);
+  \draw[flow] (D) -- (E);
+
+  % ---- the return path: this is what makes it a loop rather than a chain
+  \draw[flow] (E.south) -- ++(0,-0.95) -| (B.south);
+  \node[NavyBlue!85, font=\small\itshape] at (7.1,-1.72)
+    {act, observe, update the model --- the loop closes};
+\end{tikzpicture}

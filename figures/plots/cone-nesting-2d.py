@@ -2,7 +2,7 @@
 
     figures/plots/cone-nesting-2d.py  ->  media/figures/cone-nesting-2d.{png,pdf}
 
-Supports `lecture-notes/lectures/second-order-conditions.tex`, the nesting
+Supports `lecture-notes/lectures/newton-equality-nlp.tex`, the nesting
 display C_3 subset C_2 subset C_4. Biegler (2010) defines all four sets
 symbolically -- C_1 and C_2 on printed p. 79, C_3 and C_4 on p. 82 -- and never
 draws them. The chain is his, but it is split across two pages and never

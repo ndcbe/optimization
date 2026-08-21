@@ -13,7 +13,10 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
     ## Setup
 
     # read notebook file
-    input_notebook = os.path.join(folder_original, file)
+    # `filename`, not the module-level loop variable `file`. Identical for every
+    # call the driver below makes (it passes filename=file), but this function
+    # NameErrors if called from anywhere else.
+    input_notebook = os.path.join(folder_original, filename)
     with open(input_notebook, "r") as fp:
         if verbose >= 1:
             print("\nOpening ",input_notebook)
@@ -25,32 +28,49 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
         display(nb.metadata)
         
     ## Remove code elements with specific tag
-    def replace_code(pattern, replacement):
+    def replace_code(pattern, replacement, clear_outputs=False):
         ''' Replace content in code by applying regular expression
-    
+
+        clear_outputs: also discard the cell's stored outputs and execution
+            count. Required whenever the removed content is a solution --
+            see the comment above SOLUTION_CODE.
         '''
-    
+
         if verbose >= 1:
             print("Removing following expression: ", pattern)
-    
+
         count = 0
-    
+
         regex = re.compile(pattern, re.DOTALL)
         for cell in nb.cells:
             if cell.cell_type == "code" and regex.findall(cell.source):
                 cell.source = regex.sub(replacement, cell.source)
+                if clear_outputs:
+                    cell.outputs = []
+                    cell.execution_count = None
                 count += 1
                 if verbose >= 2:
                     print(f" - {pattern} removed")
-                
+
         if verbose >= 1:
             print("\t",count," cells processed")
-    
+
+    # IMPORTANT: stripping a solution from `cell.source` is NOT enough. A cell's
+    # stored `outputs` are published verbatim, so an instructor notebook that was
+    # executed before publishing hands the students the answer anyway -- as text,
+    # as a printed number, or as a figure. This was live on the site on
+    # 2026-08-21: every graded discussion answer in assignments/Algorithms6-MINLP
+    # (answer_1a ... answer_5c) was printed in full under a
+    # "# Add your solution here" cell, and assignments/Algorithms1 published the
+    # inverse, the solution vector, the eigenvalues and the condition numbers the
+    # same way. `grep -r "BEGIN SOLUTION" notebooks/` does not see any of it.
+    # Hence clear_outputs=True on both solution patterns below.
     SOLUTION_CODE = "### BEGIN SOLUTION(.*?)### END SOLUTION"
     HIDDEN_TESTS = "### BEGIN HIDDEN TESTS(.*?)### END HIDDEN TESTS"
-    replace_code(SOLUTION_CODE, "# Add your solution here")
-    replace_code(HIDDEN_TESTS, "# Removed autograder test. You may delete this cell.")
-    
+    replace_code(SOLUTION_CODE, "# Add your solution here", clear_outputs=True)
+    replace_code(HIDDEN_TESTS, "# Removed autograder test. You may delete this cell.",
+                 clear_outputs=True)
+
     # Match "./data/" or "../data/" only -- NOT the character in front of them.
     #
     # This was ".\./data/", where the leading "." is a regex wildcard matching

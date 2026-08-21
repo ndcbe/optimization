@@ -1,74 +1,75 @@
-# Fall 2024 Calendar
+# Fall 2026 Calendar
+
+```{note}
+This page is generated from the instructor's master calendar. If it disagrees with Canvas, Canvas wins.
+```
 
 ## Assignments
 
-| Deadline   | Description |
+| Deadline | Description |
 | ----------- | ----------- |
-| Friday, September 6, 2024 | [](../notebooks/assignments/Pyomo1.ipynb) |
-| Friday, September  13, 2024 | [](../notebooks/assignments/Pyomo2.ipynb) |
-| Friday, September 27, 2024 | [](../notebooks/assignments/Pyomo3.ipynb) | 
-| Tuesday, October 8, 2024 | Project 1: Presentations and Reports | 
-| Friday, October 18, 2024 | [](../notebooks/assignments/Algorithms1.ipynb) |
-| Friday, November 1, 2024 | [](../notebooks/assignments/Algorithms2.ipynb) |
-| Tuesday, November 12, 2024 | Project 2: Proposals |
-| Tuesday, November 26, 2024 | [](../notebooks/assignments/Algorithms3.ipynb) |
-| Tuesday, December 10, 2024 | [](../notebooks/assignments/Algorithms4.ipynb) (optional) |
-| Thursday, December 12, 2024 | Project 2: Notebooks or Reports |
-| Thursday, December 19, 2024, 4:15 PM - 6:15 PM | Project 2: Presentations (Final Exam Timeslot) |
+| Friday, September 4, 2026 | [](../notebooks/assignments/Pyomo1.ipynb) |
+| Friday, September 11, 2026 | [](../notebooks/assignments/Pyomo2.ipynb) |
+| Friday, September 18, 2026 | [](../notebooks/assignments/Pyomo3.ipynb) |
+| Friday, September 25, 2026 | Pyomo 4 |
+| Friday, October 16, 2026 | [](../org/project1.md) |
+| Friday, October 23, 2026 | [](../notebooks/assignments/Algorithms1.ipynb) |
+| Friday, October 30, 2026 | [](../notebooks/assignments/Algorithms2.ipynb) |
+| Friday, November 13, 2026 | [](../notebooks/assignments/Algorithms3.ipynb) |
+| Friday, November 20, 2026 | [](../notebooks/assignments/Algorithms4.ipynb) |
+| Wednesday, December 2, 2026 | [](../notebooks/assignments/Algorithms5-SQP.ipynb) |
+| Wednesday, December 9, 2026 | Algorithms 6 |
 
 All assignments are due at 5pm unless otherwise noted.
 
+**Your lowest homework score is dropped** --- ten are set and the best nine count. See the
+[syllabus](./syllabus.md).
+
+## Exams
+
+| Exam | When |
+| --- | --- |
+| Midterm 1 | Wednesday, September 30, 2026, in class |
+| Midterm 2 | Wednesday, November 4, 2026, in class |
+| Final | December 11--17, 2026; the registrar assigns the slot |
+
+All three are in person, individual, and open course pack. No computer or internet access.
+
 ## Class Meetings
 
-| Day     | Topic(s) |
+Mondays and Wednesdays, 12:30 -- 1:45 pm, 303 Cushing Hall. *(A room change request is pending --- check
+Canvas.)*
+
+| Day | Topic(s) |
 | ----------- | ----------- |
-| Tuesday, August 27, 2024 | [](../notebooks/1/Pyomo-Introduction.ipynb) |
-| | [](../notebooks/1/Optimization-Modeling.ipynb) |
-| | [](../notebooks/1/LP.ipynb) |
-| | [](../notebooks/1/NLP.ipynb) |
-| Thursday, August 29, 2024 | [](../notebooks/1/Pyomo-Nuts-and-Bolts.ipynb) |
-| | [](../notebooks/1/IP.ipynb) |
-| | [](../notebooks/assignments/Pyomo1.ipynb) |
-| Tuesday, September 3, 2024 | [](../notebooks/2/Logical_Modeling_GDP.ipynb) |
-| | [](../notebooks/2/Modeling_Disjunctions_Strip_Packing.ipynb) |
-| Thursday, September 5, 2024 | [](../notebooks/3/PyomoDAE_car.ipynb) |
-| | [](../notebooks/3/PyomoDAE_TCLab.ipynb) |
-| | [Transient Heat Conduction in Various Geometries](https://jckantor.github.io/ND-Pyomo-Cookbook/notebooks/05.03-Heat_Conduction_in_Various_Geometries.html) |
-| | [Path Planning for a Simple Car](https://jckantor.github.io/ND-Pyomo-Cookbook/notebooks/06.03-Path-Planning-for-a-Simple-Car.html) |
-| | [Soft Landing Apollo 11 on the Moon](https://jckantor.github.io/ND-Pyomo-Cookbook/notebooks/06.04-Soft-Landing-Apollo-11-on-the-Moon.html) |
-| | [Diffusion with Adsorption in Polymers](https://jckantor.github.io/ND-Pyomo-Cookbook/notebooks/05.04-Diffusion_Adsorption_in_Polymers.html) |
-| Tuesday, September 10, 2024 | [](../notebooks/4/SP.ipynb) |
-| | [](../notebooks/4/RiskMeasures.ipynb) |
-| Thursday, September 12, 2024 | [](../notebooks/4/blocks.ipynb) |
-| Tuesday, September 17, 2024 | Work on Project 1 |
-| Thursday, September 19, 2024 | Work on Project 1 |
-| Tuesday, September 24, 2024 | [](../notebooks/3/DAE_background.ipynb) |
-| | [](../notebooks/3/DAE_numeric_integration.ipynb) |
-| | [](../notebooks/3/PyomoDAE_theory.ipynb) |
-| | [](../notebooks/3/PyomoDAE_example.ipynb) |
-| Thursday, September 26, 2024 | [](../notebooks/6/Math-Primer-1.md) |
-| Tuesday, October 1, 2024 | [](../notebooks/6/Math-Primer-2.ipynb) |
-| Thursday, October 3, 2024 | [](../notebooks/6/Optimality.ipynb) |
-| Tuesday, October 8, 2024 | **Project 1: Presentations** |
-| Thursday, October 10: Guest Lecture: Parameter Estimation and Design of Experiments |
-| Tuesday, October 15, 2024 | [](../notebooks/6/Newton-Methods.ipynb) |
-| Thursday, October 17, 2024 | [](../notebooks/6/Quasi-Newton-Methods.ipynb) |
-| Tuesday, October 22, 2024 | Fall Break |
-| Thursday, October 24, 2024 | Fall Break |
-| Tuesday, October 29, 2024 | **Exam 1** |
-| Thursday, October 31, 2024 | Catch-up |
-| Tuesday, November 5, 2024 | [](../notebooks/6/Globalization.ipynb) |
-| Thursday, November 7, 2024 | [](../notebooks/7/Convexity.ipynb) |
-| Tuesday, November 12, 2024 | [](../notebooks/7/Local-Optimality.ipynb) |
-| Thursday, November 14, 2024 | [](../notebooks/7/KKT-Multipliers.ipynb) |
-| Tuesday, November 19, 2024 | [](../notebooks/7/Constraint-Qualifications.ipynb) |
-| | [](../notebooks/7/NLP-Diagnostics.ipynb) |
-| Thursday, November 21, 2024 | [](../notebooks/7/Second-Order.ipynb) |
-| Tuesday, November 26, 2024 | [](../notebooks/7/Interior-Point1.ipynb) |
-| Thursday, November 28, 2024 | Thanksgiving Holiday |
-| Tuesday, December 3, 2024 | [](../notebooks/7/Interior-Point2.ipynb) |
-| Thursday, December 5, 2024 | [](../notebooks/8/MILP.ipynb) |
-| | [](../notebooks/8/MINLP-Algorithms.ipynb) |
-| Tuesday, December 10, 2024 | [](../notebooks/8/Global-Opt.ipynb) |
-| Thursday, December 12, 2024 | **Exam 2** |
-| Thursday, December 19, 2024 | **Project 2: Presentations** |
+| Monday, August 24, 2026 | 1. Introduction: Why and How We Optimize |
+| Wednesday, August 26, 2026 | 2. Continuous Optimization |
+| Monday, August 31, 2026 | 3. Integer Programming: Modeling and Applications |
+| Wednesday, September 2, 2026 | 4. Modeling Logical Expressions — Travel, but will do record a video lecture |
+| Monday, September 7, 2026 | 5. Differential Algebraic Equations — Labor day, but classes are in session |
+| Wednesday, September 9, 2026 | 6. Numeric Integration |
+| Monday, September 14, 2026 | 7. Collocation for Dynamic Optimization |
+| Wednesday, September 16, 2026 | 8. Parameter Estimation and Optimal Experimental Design |
+| Monday, September 21, 2026 | 9. Stochastic Programming: Introduction — Travel, but will do record a video lecture |
+| Wednesday, September 23, 2026 | 10. Stochastic Programming: Information and Risk — Travel, but will do record a video lecture |
+| Monday, September 28, 2026 | 11. Optimization for Decision Support |
+| Monday, October 5, 2026 | 12. Linear Algebra Review |
+| Wednesday, October 7, 2026 | 13. Real Analysis Review |
+| Monday, October 12, 2026 | 14. Unconstrained Optimality Conditions |
+| Wednesday, October 14, 2026 | 15. Newton Methods for Unconstrained Optimization |
+| Monday, October 19, 2026 | **Fall Break, no class** |
+| Wednesday, October 21, 2026 | **Fall Break, no class** |
+| Monday, October 26, 2026 | 16. Quasi-Newton Methods |
+| Wednesday, October 28, 2026 | 17. Line Search and Trust Regions |
+| Monday, November 2, 2026 | 18. Introduction to Constrained Optimization |
+| Monday, November 9, 2026 | 19. KKT Conditions, Multipliers, and Sensitivity — Travel for AIChE conference, video lecture? |
+| Wednesday, November 11, 2026 | 20. Constraint Qualifications — Travel for AIChE conference, video lecture? |
+| Monday, November 16, 2026 | 21. Second Order Conditions and Equality Constrained NLPs |
+| Wednesday, November 18, 2026 | 22. Globalization for Constrained Optimization |
+| Monday, November 23, 2026 | 23. Sequential Quadratic Programming |
+| Wednesday, November 25, 2026 | **No class, Thanksgiving holiday** |
+| Monday, November 30, 2026 | 24. Barrier and Interior Point Methods |
+| Wednesday, December 2, 2026 | 25. Integer Programming Algorithms |
+| Monday, December 7, 2026 | 26. Deterministic Global Optimization |
+| Wednesday, December 9, 2026 | 27. Optimization in Context |
+| Final exam period: Fri 11 Dec, or Mon 14-17 Dec | **FINAL EXAM (in person)** |

@@ -15,8 +15,7 @@ A room change request is pending. Check Canvas for the current location before t
 **Dates:** August 24 -- December 9, 2026
 
 **Exams:** Midterm 1 on Wednesday, September 30 and Midterm 2 on Wednesday, November 4, both in class. The
-final exam is in person during the University final exam period (December 11--17); the registrar assigns the
-slot.
+final exam is in person on Tuesday, December 15, 7:30--9:30 pm.
 
 ## Prerequisites 
 
@@ -144,7 +143,7 @@ exam period. Dates are on the [semester calendar](./calendar.md).
 | --- | --- | --- |
 | Midterm 1 | Wednesday, September 30, in class | open course pack / open binder |
 | Midterm 2 | Wednesday, November 4, in class | open course pack / open binder |
-| Final | December 11--17, slot assigned by the registrar | open course pack / open binder |
+| Final | Tuesday, December 15, 7:30--9:30 pm | open course pack / open binder |
 
 All exams are **individual** and **without a computer or internet access**. You may not use a tablet, watch,
 phone, or other device to reach a Python environment, an AI tool, or the internet during an exam.

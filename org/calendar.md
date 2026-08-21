@@ -31,7 +31,7 @@ All assignments are due at 5pm unless otherwise noted.
 | --- | --- |
 | Midterm 1 | Wednesday, September 30, 2026, in class |
 | Midterm 2 | Wednesday, November 4, 2026, in class |
-| Final | December 11--17, 2026; the registrar assigns the slot |
+| Final | Tuesday, December 15, 2026, 7:30--9:30 pm |
 
 All three are in person, individual, and open course pack. No computer or internet access.
 
@@ -72,4 +72,4 @@ Canvas.)*
 | Wednesday, December 2, 2026 | 25. Integer Programming Algorithms |
 | Monday, December 7, 2026 | 26. Deterministic Global Optimization |
 | Wednesday, December 9, 2026 | 27. Optimization in Context |
-| Final exam period: Fri 11 Dec, or Mon 14-17 Dec | **FINAL EXAM (in person)** |
+| Tuesday, December 15, 2026 | **FINAL EXAM (in person), 7:30--9:30 pm** |

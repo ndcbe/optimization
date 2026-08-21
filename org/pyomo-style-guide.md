@@ -103,8 +103,38 @@ files) that this course does not use.
 UPPER CASE set names are a deliberate deviation from PEP 8. They make index sets visually distinct
 from the data indexed over them, which is worth the inconsistency. Everything else follows PEP 8.
 
-Single-letter variable names are acceptable **only** where they match the mathematics printed
-immediately above them in the notebook. If the handout calls it $x_i$, call it `m.x`.
+### Names are verbose. The mathematical symbol goes in a comment, not in the name.
+
+It is tempting to name a component after the symbol in the notes — `milp.abar` for $\bar{a}_r$ — so
+that the code and the formulation line up character for character. **Don't.** Research code, which is
+what you will be reading and writing after this course, uses names you can say out loud, and a reader
+who does not have the handout open beside them has nothing else to go on.
+
+Put the correspondence in a comment instead, on **one line**, giving the **meaning**, the **symbol
+from the notes**, and the **units**:
+
+```python
+# YES
+# Marginal (linear) cost of reactor r, abar_r [$/kmol]
+milp.reactor_cost_linear = pyo.Param(milp.REACTORS, initialize=cost_coefficient1)
+```
+
+```python
+# NO — the name is the symbol, so the reader has to go and find the notes
+milp.abar = pyo.Param(milp.REACTORS, initialize=cost_coefficient1)
+```
+
+:::{warning}
+**That comment has to carry the units, and it has to fit on one line.**
+`scripts/extract_pyomo_code.py`, which lifts a tagged cell into the LaTeX course pack, strips every
+comment *except* the ones with a unit annotation in them. A gloss with no `[...]` is deleted on the
+way into the handout, and the symbol correspondence is lost exactly where a student reading the pack
+without the notebook needs it most. A unit comment split over two lines loses its second line the
+same way.
+:::
+
+Long names are not an excuse for long lines: `black` wraps them, and the handout listings are set at
+`\footnotesize`, which fits about 94 characters. Decorators (§6) shorten the lines that matter.
 
 ---
 
@@ -148,13 +178,13 @@ m.servings = pyo.Var(m.FOODS, within=pyo.Reals)
 
 
 @m.Constraint(m.FOODS)
-def lower(m, f):
-    return m.servings[f] >= 0
+def lower(b, f):
+    return b.servings[f] >= 0
 
 
 @m.Constraint(m.FOODS)
-def upper(m, f):
-    return m.servings[f] <= 10
+def upper(b, f):
+    return b.servings[f] <= 10
 ```
 
 Bounds that depend on a decision, or that you want a dual variable for, are genuine constraints —
@@ -162,28 +192,29 @@ write them as constraints.
 
 ---
 
-## 6. Constraints: decorators are the house style
+## 6. Constraints: decorators are the default
 
-Pyomo offers two equivalent ways to attach a constraint rule. **Prefer the decorator.** The rule
-function is the form you will meet in older code, in the Pyomo book, and in about half the notebooks
-on this site — you need to be able to read it, but write the decorator in new work.
+Pyomo offers two equivalent ways to attach a constraint rule. **Write the decorator.** It is the
+default for every model in this course; the `rule=` form is the older one, and you will meet it in the
+Pyomo book and in most existing research code, so you need to be able to *read* it. The two build
+identical models. [](../notebooks/1/LP.ipynb) writes the same constraint both ways, once, side by side.
 
 ```python
 # YES — house style
 @m.Constraint(m.HORIZON)
-def energy_balance(m, t):
-    if t == m.HORIZON.first():
-        return m.E[t] == m.E0 + m.charge[t] * m.sqrt_eta - m.discharge[t] / m.sqrt_eta
-    return m.E[t] == m.E[t - 1] + m.charge[t] * m.sqrt_eta - m.discharge[t] / m.sqrt_eta
+def energy_balance(b, t):
+    if t == b.HORIZON.first():
+        return b.E[t] == b.E0 + b.charge[t] * b.sqrt_eta - b.discharge[t] / b.sqrt_eta
+    return b.E[t] == b.E[t - 1] + b.charge[t] * b.sqrt_eta - b.discharge[t] / b.sqrt_eta
 
 
 @m.Objective(sense=pyo.minimize)
-def total_cost(m):
-    return sum(m.price[t] * (m.charge[t] - m.discharge[t]) for t in m.HORIZON)
+def total_cost(b):
+    return sum(b.price[t] * (b.charge[t] - b.discharge[t]) for t in b.HORIZON)
 ```
 
 ```python
-# ALSO CORRECT — rule-function form; you will see this in older notebooks
+# OLDER FORM — read it, don't write it
 def energy_balance_rule(m, t):
     if t == m.HORIZON.first():
         return m.E[t] == m.E0 + m.charge[t] * m.sqrt_eta - m.discharge[t] / m.sqrt_eta
@@ -194,9 +225,33 @@ m.energy_balance = pyo.Constraint(m.HORIZON, rule=energy_balance_rule)
 ```
 
 The decorator wins because the name is written once instead of three times (function name, `_rule`
-suffix, component name), and the component name cannot drift out of sync with the function that
-defines it. The same decorators exist for `@m.Objective`, `@m.Expression`, `@m.Param` and
-`@m.Integral`.
+suffix, component name), the component name cannot drift out of sync with the function that defines
+it, and the lines are shorter — which matters once a model has to fit in a handout. The same
+decorators exist for `@m.Objective`, `@m.Expression`, `@m.Disjunction`, `@m.Param` and `@m.Integral`.
+
+### Name the first argument `b`, not `m`
+
+A decorated rule is handed the **block** Pyomo is currently building, not the variable you happen to
+have called `m`. Call it `b` and use it for every component you reference inside the rule.
+
+```python
+# YES — `b` is the block, and every reference goes through it
+@model.Constraint(model.CIRCLES)
+def right_x_con(b, c):
+    return b.x[c] <= b.box_width - b.R[c]
+```
+
+```python
+# NO — the parameter is `m`, but the body reaches for the enclosing `model`
+@model.Constraint(model.CIRCLES)
+def right_x_con(m, c):
+    return m.x[c] <= model.box_width - model.R[c]
+```
+
+The wrong version usually *runs*, because the enclosing name is in scope — and then breaks the day the
+rule is reused on a sub-block, or silently builds the wrong model when two models are in flight. This
+is not hypothetical: exactly that mismatch was found and fixed in a notebook on this site in August
+2026. Naming the argument `b` makes the mistake visible while you are typing it.
 
 :::{warning}
 **The decorator form is not in the course textbook.** *Pyomo — Optimization Modeling in Python*
@@ -212,10 +267,20 @@ meant; an indexed `Constraint` gives you `m.energy_balance[t]`. `ConstraintList`
 genuinely heterogeneous handful of one-off constraints, and for cutting-plane loops where
 constraints are added as the algorithm runs.
 
-For a single, non-indexed constraint, `expr=` is clearer than a one-line rule:
+For a single, non-indexed constraint whose expression fits on one line, `expr=` is clearer than any
+rule:
 
 ```python
 m.periodic_boundary = pyo.Constraint(expr=m.E0 == m.E[m.HORIZON.last()])
+```
+
+Once the expression is a `sum(...)` that has to wrap, go back to the decorator — `@m.Constraint()`
+with no index set is the scalar form:
+
+```python
+@m.Constraint()
+def pool_balance(b):
+    return sum(b.x[r] for r in b.REMOTE) == sum(b.y[k] for k in b.CUSTOMERS)
 ```
 
 ---
@@ -595,7 +660,9 @@ Run through this before you submit an assignment or open a pull request.
 - [ ] The model is built by a function that returns a `ConcreteModel`
 - [ ] Index sets are `pyo.Set` / `pyo.RangeSet`, named in UPPER CASE
 - [ ] `domain=` not `within=`; known bounds in `bounds=`
-- [ ] Constraints use the `@m.Constraint` decorator and are named for what they mean
+- [ ] Constraints and objectives use the `@m.Constraint` / `@m.Objective` decorator, not `rule=`
+- [ ] Every decorated rule names its first argument `b` (the block), and its body goes through `b`
+- [ ] Component names are verbose; the symbol from the notes and the **units** are in a one-line comment
 - [ ] LP and MILP models call `pyo.SolverFactory("appsi_highs")`, not `"glpk"`; `tee=` is on `solve()`
 - [ ] **Every `solve()` is followed by a termination-condition check before any `pyo.value()`**
 - [ ] `### BEGIN SOLUTION` / `### END SOLUTION` markers are bare, paired, and inside code cells

@@ -63,9 +63,26 @@ so EVPI is 7,015.67 printed as 7,016).
 
 GREYSCALE
 ---------
-Two bar series, distinguished by HATCH texture (HATCH_CYCLE[0] vs [1]) and by a
-white vs grey face, not by hue; the legend is keyed by the hatch.  Panel (a) is
-entirely black, grey and #0072B2 (dL* = 46.0).  No hue carries meaning alone.
+Two bar series, distinguished by HATCH texture and by a white vs grey face, not
+by hue; the legend is keyed by the hatch.  Panel (a) is entirely black, grey and
+#0072B2 (dL* = 46.0).  No hue carries meaning alone.
+
+⚠ DEFECT FIXED 2026-08-21.  The two bar series used HATCH_CYCLE[0] ("///") and
+HATCH_CYCLE[1] ("\\\"), and in matplotlib 3.5.1 those two render with the SAME
+SLOPE -- the backslash hatch comes out leaning the same way as the forward
+slash, differing only slightly in density.  The hatch channel this docstring
+named as the primary distinction was therefore not a distinction at all, and
+the two series were separated only by the white-vs-0.82 face tint.  The second
+series now uses HATCH_CYCLE[4] ("|||"), vertical rules, which cannot be confused
+with slashes at any size.  Same defect and same fix as
+plots/packing-local-solutions.py; see the note at the top of that file.
+
+Panel (a)'s three rungs are all black solid lines, which `check_greyscale.py
+--source` reports as "3 series, no colour, 1 distinct encoding".  That is a
+false positive and is deliberately left alone: the rungs are three values on ONE
+axis, each carrying its own name and dollar figure as a direct label at its left
+end, so they are told apart by POSITION and by TEXT rather than by any per-series
+encoding.  Giving them three hues would imply they are three kinds of thing.
 """
 
 import numpy as np
@@ -180,8 +197,9 @@ def _panel_b(ax):
     ax.bar(idx - w / 2, WS_SCEN / 1000.0, width=w, facecolor="white",
            edgecolor=BLACK, linewidth=1.6, hatch=HATCH_CYCLE[0],
            label="wait-and-see (WS)", zorder=3)
+    # ⚠ HATCH_CYCLE[4], not [1]: see the DEFECT note in the module docstring.
     ax.bar(idx + w / 2, RP_SCEN / 1000.0, width=w, facecolor="0.82",
-           edgecolor=BLACK, linewidth=1.6, hatch=HATCH_CYCLE[1],
+           edgecolor=BLACK, linewidth=1.6, hatch=HATCH_CYCLE[4],
            label="recourse plan (RP)", zorder=3)
 
     for i, gap in enumerate(WS_SCEN - RP_SCEN):

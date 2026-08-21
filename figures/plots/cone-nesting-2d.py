@@ -55,6 +55,24 @@ Deliberate departures
    panels draw the sets as defined and the caption carries the exclusion. Note
    the consequence, which the handout states: C_3 = {0} here means the weaker
    necessary condition is vacuous in this configuration.
+
+Colour (added 2026-08-21)
+------------------------
+Three colours, and each one names a role rather than decorating a curve:
+
+    SET   #0072B2 blue   (L* = 46.0)  the set being defined, in every panel
+    G1    black           (L* =  0.0)  grad g_1, STRONGLY active (u_1* > 0)
+    G2    #E69F00 orange  (L* = 70.6)  grad g_2, WEAKLY active   (u_2* = 0)
+
+Pairwise dL*: blue-black 46.0, blue-orange 24.6, black-orange 70.6 -- every
+pair clears 20, so nothing collapses on a mono laser printer. Colour is never
+the only channel: the set is one uniform blue across all four panels precisely
+because its SHAPE (wedge / ray / point / line) is what changes, each panel
+carries an in-place "(a cone)" or "(a subspace)" label, and the two gradients
+run along different axes and are named in place with their own symbols. Strong
+vs weak activity maps onto heavy-black vs light-orange, which is the one place
+the hue is doing real work: it is the distinction the whole figure turns on and
+was previously carried by the arrow labels alone.
 """
 
 import numpy as np
@@ -64,6 +82,11 @@ from _house import HATCH_CYCLE, SHADE_ALPHA
 
 LIM = 1.35
 ARROW_SCALE = 0.62
+
+# See "Colour" in the docstring above for the L* budget.
+SET = "#0072B2"        # the set C_i drawn in each panel
+G1 = "black"           # grad g_1, strongly active
+G2 = "#E69F00"         # grad g_2, weakly active
 
 # The two active constraint gradients. Index 0 is strongly active.
 GRAD_G1 = np.array([1.0, 0.0])
@@ -103,19 +126,26 @@ def _frame(ax, title):
 
 
 def _gradients(ax):
-    """Both active gradients, drawn AND named -- an arrow has no linestyle."""
-    for vec, name, off in (
-        (GRAD_G1, r"$\nabla g_1$", (0.04, 0.10)),
-        (GRAD_G2, r"$\nabla g_2$", (0.06, 0.02)),
+    """Both active gradients, drawn AND named -- an arrow has no linestyle.
+
+    grad g_1 is strongly active and grad g_2 weakly active, which is the fact
+    the whole nesting depends on; it used to be carried by the two labels alone
+    and is now carried by weight and hue as well (black vs orange, dL* = 70.6).
+    """
+    for vec, name, off, col, width in (
+        (GRAD_G1, r"$\nabla g_1$", (0.04, 0.10), G1, 0.024),
+        (GRAD_G2, r"$\nabla g_2$", (0.06, 0.02), G2, 0.024),
     ):
         ax.arrow(
             0.0,
             0.0,
             ARROW_SCALE * vec[0],
             ARROW_SCALE * vec[1],
-            width=0.022,
+            width=width,
             length_includes_head=True,
-            color="0.45",
+            facecolor=col,
+            edgecolor="0.25",     # a thin dark outline, so the light-orange
+            linewidth=0.5,        # arrow keeps a shape in black and white
             zorder=5,
         )
         tip = ARROW_SCALE * vec
@@ -123,7 +153,7 @@ def _gradients(ax):
             name,
             xy=(tip[0] + off[0], tip[1] + off[1]),
             fontsize=11.5,
-            color="0.35",
+            color="0.15",
             zorder=6,
             bbox=dict(facecolor="white", edgecolor="none", pad=0.8),
         )
@@ -138,19 +168,19 @@ def make_figure():
     ax.fill(
         [-LIM, 0, 0, -LIM],
         [-LIM, -LIM, 0, 0],
-        facecolor="0.55",
+        facecolor=SET,
         alpha=SHADE_ALPHA,
         hatch=HATCH_CYCLE[0],
         edgecolor=plt.rcParams["hatch.color"],
         linewidth=0.0,
         zorder=1,
     )
-    ax.plot([-LIM, 0], [0, 0], color="black", linestyle="-", linewidth=3.0,
+    ax.plot([-LIM, 0], [0, 0], color=SET, linestyle="-", linewidth=3.0,
             zorder=4)
-    ax.plot([0, 0], [-LIM, 0], color="black", linestyle="-", linewidth=3.0,
+    ax.plot([0, 0], [-LIM, 0], color=SET, linestyle="-", linewidth=3.0,
             zorder=4)
     ax.plot(0, 0, marker="o", markersize=7, markerfacecolor="white",
-            markeredgecolor="black", markeredgewidth=1.8, zorder=7, linestyle="none")
+            markeredgecolor=SET, markeredgewidth=1.8, zorder=7, linestyle="none")
     ax.set_ylabel("$d_2$", fontsize=13)
     ax.annotate("wedge\n(a cone)", xy=(-1.22, -1.22), fontsize=11.5, ha="left",
                 va="bottom", color="0.25")
@@ -159,10 +189,10 @@ def make_figure():
     # --- C_2: the ray -----------------------------------------------------
     ax = axes[1]
     _frame(ax, r"$\mathcal{C}_2(x^*,u^*)$")
-    ax.plot([0, 0], [-LIM, 0], color="black", linestyle="-", linewidth=4.5,
+    ax.plot([0, 0], [-LIM, 0], color=SET, linestyle="-", linewidth=4.5,
             zorder=4)
     ax.plot(0, 0, marker="o", markersize=7, markerfacecolor="white",
-            markeredgecolor="black", markeredgewidth=1.8, zorder=7, linestyle="none")
+            markeredgecolor=SET, markeredgewidth=1.8, zorder=7, linestyle="none")
     ax.annotate("ray\n(a cone)", xy=(0.16, -1.22), fontsize=11.5, ha="left",
                 va="bottom", color="0.25")
     _gradients(ax)
@@ -170,8 +200,8 @@ def make_figure():
     # --- C_3: the origin --------------------------------------------------
     ax = axes[2]
     _frame(ax, r"$\mathcal{C}_3(x^*)$")
-    ax.plot(0, 0, marker="o", markersize=11, color="black", zorder=7,
-            linestyle="none")
+    ax.plot(0, 0, marker="o", markersize=11, color=SET, markeredgecolor=SET,
+            zorder=7, linestyle="none")
     ax.annotate(r"$\{0\}$" + "\n(a subspace)", xy=(0.16, -1.22), fontsize=11.5,
                 ha="left", va="bottom", color="0.25")
     _gradients(ax)
@@ -179,10 +209,10 @@ def make_figure():
     # --- C_4: the line ----------------------------------------------------
     ax = axes[3]
     _frame(ax, r"$\mathcal{C}_4(x^*,u^*)$")
-    ax.plot([0, 0], [-LIM, LIM], color="black", linestyle="-", linewidth=4.5,
+    ax.plot([0, 0], [-LIM, LIM], color=SET, linestyle="-", linewidth=4.5,
             zorder=4)
     ax.plot(0, 0, marker="o", markersize=7, markerfacecolor="white",
-            markeredgecolor="black", markeredgewidth=1.8, zorder=7, linestyle="none")
+            markeredgecolor=SET, markeredgewidth=1.8, zorder=7, linestyle="none")
     ax.annotate("line\n(a subspace)", xy=(0.16, -1.22), fontsize=11.5, ha="left",
                 va="bottom", color="0.25")
     _gradients(ax)

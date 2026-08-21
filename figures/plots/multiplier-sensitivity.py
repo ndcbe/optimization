@@ -59,16 +59,32 @@ The handout's own arithmetic check, lim (eps + eps^2)/eps = 1, is the left
 panel's slope; it is reproduced here as a finite-difference derivative of the
 brute-force curve, not assumed.
 
-Greyscale
----------
-Two series per panel. The value function is heavy black solid; the tangent of
-slope u* is a thin dashed line; the point (0, V(0)) is a marker. Nothing is
-keyed by colour, and the two panels share axes limits so the difference in
-slope between them is a real visual comparison and not a scale artefact.
+Colour and greyscale (recoloured 2026-08-21)
+-------------------------------------------
+Two series per panel, and they are the two the whole figure compares: the TRUTH
+and the LINEARIZATION the multiplier predicts. So they get the two hues.
+
+    V(eps), the value function   #0072B2 blue   (L* = 46.0)  solid,  lw 3.2
+    tangent, slope u*            #E69F00 orange (L* = 70.6)  dashed, lw 2.2
+    (0, V(0))                    open circle, blue edge
+    the kink at eps = -1/2       filled black square
+
+dL* = 24.6 between the two, and each additionally keeps its linestyle (solid vs
+dashed) and its own weight (3.2 vs 2.2 pt), so the pair survives a photocopier
+three separate ways. The tangent is the lighter hue and therefore got 0.6 pt
+heavier than it was, so it does not read fainter in print than the grey axis
+guides it crosses. The kink marker stays black: it is the one point where the
+multiplier's prediction stops meaning anything, and black is the strongest ink
+available for it. Both panels share axes limits, so the difference in slope
+between them is a real visual comparison and not a scale artefact.
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
+
+# See "Colour and greyscale" in the docstring above for the L* budget.
+VALUE = "#0072B2"     # V(eps), the truth
+TANGENT = "#E69F00"   # V(0) + u* eps, the linearization
 
 EPS_LO, EPS_HI = -0.75, 0.42
 NX = 400001  # brute-force grid over x
@@ -118,9 +134,9 @@ def _panel(ax, lower0, mult, title, kink=None):
     ax.axvline(0.0, color="0.7", lw=0.9, zorder=0)
 
     # The tangent the multiplier predicts: V(0) + u* eps.
-    ax.plot(eps, v0 + mult * eps, color="black", lw=1.6, ls="--", zorder=3)
-    ax.plot(eps, v, color="black", lw=3.2, ls="-", zorder=4)
-    ax.plot([0.0], [v0], "o", ms=11, color="black", mfc="white", mew=2.2, zorder=6)
+    ax.plot(eps, v0 + mult * eps, color=TANGENT, lw=2.2, ls="--", zorder=3)
+    ax.plot(eps, v, color=VALUE, lw=3.2, ls="-", zorder=4)
+    ax.plot([0.0], [v0], "o", ms=11, color=VALUE, mfc="white", mew=2.2, zorder=6)
 
     if kink is not None:
         ax.plot([kink], [value(kink, lower0)], "s", ms=9, color="black",

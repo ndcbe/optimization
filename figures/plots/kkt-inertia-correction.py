@@ -69,19 +69,39 @@ eigenvalue nearest zero is 0.0 to machine precision for every delta_W in
 a flat line; it is stated in the caption rather than plotted, because a second
 panel showing a horizontal line at zero would earn no space.
 
-Greyscale
----------
-Four eigenvalue curves = the four-series limit in figures/README.md, and each
-carries the style cycle's linestyle. But colour is not doing the work: the one
-curve that matters is drawn heavy and black and labelled in place, the other
-three are thin and grey, and the correct-inertia region is identified by
-HATCHING (via _house.shade), not by tint.
+Colour and greyscale (recoloured 2026-08-21)
+-------------------------------------------
+The figure has one hero and three supporting curves, and colour now says which
+is which instead of leaving that to linewidth alone.
+
+    lambda_2, the crossing one   #0072B2 blue   (L* = 46.0)  solid, lw 3.0
+    lambda_1, lambda_3, lambda_4 grey 0.68      (L* = 70.7)  solid, lw 1.8
+    "inertia (2,2,0) WRONG"      #D55E00 verm.  (L* = 54.2)  text
+    correct-inertia region       #009E73 tint at SHADE_ALPHA, plus HATCH_CYCLE[0]
+
+The context curves were lightened from 0.55 to 0.68 for a measured reason: at
+0.55 they were L* ~ 56, only dL* = 10 from the blue hero, and they run right
+alongside it on the left of the plot. At 0.68 the gap is dL* = 24.7. They are
+still identified independently of hue -- by being 1.2 pt thinner and by their
+own in-place lambda_i labels -- so the lightening buys margin without spending
+a channel.
+
+The shaded region keeps HATCH_CYCLE[0] and gains a pale green tint. Note the
+region is the ONLY shaded area here, so there is no second hatch to collide
+with; a figure shading two regions must not use HATCH_CYCLE[0] and [1] together,
+because in matplotlib 3.5.1 "///" and "\\\" render with the same slope.
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
 
 from _house import HATCH_CYCLE, SHADE_ALPHA
+
+# See "Colour and greyscale" in the docstring above for the L* budget.
+HERO = "#0072B2"      # lambda_2 -- the eigenvalue that changes sign
+CONTEXT = "0.68"      # lambda_1, lambda_3, lambda_4
+WRONG = "#D55E00"     # the label on the wrong-inertia region
+RIGHT = "#009E73"     # the tint on the correct-inertia region
 
 W = np.array([[2.0, 1.0, 0.0], [1.0, -1.0, 1.0], [0.0, 1.0, 1.0]])
 JH = np.array([[1.0, 1.0, 1.0]])
@@ -132,7 +152,7 @@ def make_figure():
     fig, ax = plt.subplots(figsize=(6.4, 4.4))
 
     # The region where the inertia is (n, m, 0). Hatched, not tinted.
-    ax.axvspan(dstar, DW_MAX, facecolor="0.55", alpha=SHADE_ALPHA,
+    ax.axvspan(dstar, DW_MAX, facecolor=RIGHT, alpha=SHADE_ALPHA,
                hatch=HATCH_CYCLE[0], edgecolor=plt.rcParams["hatch.color"],
                linewidth=0.0, zorder=0)
 
@@ -140,8 +160,8 @@ def make_figure():
 
     # Columns 0, 2, 3 never change sign; column 1 is the one that crosses.
     for j in (0, 2, 3):
-        ax.plot(dw, eig[:, j], color="0.55", lw=1.6, ls="-", zorder=2)
-    ax.plot(dw, eig[:, 1], color="black", lw=3.0, ls="-", zorder=4)
+        ax.plot(dw, eig[:, j], color=CONTEXT, lw=1.8, ls="-", zorder=2)
+    ax.plot(dw, eig[:, 1], color=HERO, lw=3.0, ls="-", zorder=4)
 
     ax.plot([dstar], [0.0], "o", ms=11, color="black", mfc="white", mew=2.2, zorder=6)
     ax.axvline(dstar, color="black", lw=1.2, ls="--", ymin=0.0, ymax=0.52, zorder=3)
@@ -158,7 +178,7 @@ def make_figure():
     ax.annotate("inertia $(3,1,0)$", xy=(2.28, 5.45), fontsize=14, ha="center",
                 va="center", zorder=8, bbox=box)
     ax.annotate("inertia $(2,2,0)$\nWRONG", xy=(0.62, 5.30), fontsize=13, ha="center",
-                va="center", zorder=8, bbox=box)
+                va="center", zorder=8, bbox=box, color=WRONG)
     ax.annotate(r"$\delta_W^{\,*} = -\lambda_{\min}(Z^{T} W^k Z) = %.4f$" % dstar,
                 xy=(dstar, 0.0), xytext=(0.13, 1.05), fontsize=11.5,
                 ha="left", va="center", zorder=8,

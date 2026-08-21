@@ -43,11 +43,36 @@ Deliberate departures from the notebook
    their eigenvalues, so the class can see the 9.8:1 anisotropy that the
    condition number reports.
 4. scipy/numpy only -- no solver, per figures/README.md.
+
+Colour (added 2026-08-21)
+-------------------------
+The surface stays `viridis` -- that is required, not a preference. What changed
+is everything drawn ON it, which used to be black and was therefore invisible
+in the one place it matters most: the marked x* sits at the bottom of the basin,
+where viridis is dark purple (L* ~ 15), so a black star on a black drop-line was
+a black mark on a near-black background.
+
+    x* and its drop-line   #D55E00 vermillion (L* = 54.2), black-edged marker
+    v_1, lambda_1 = 43.4   #0072B2 blue       (L* = 46.0)  solid,  lw 2.4
+    v_2, lambda_2 = 426.4  #E69F00 orange     (L* = 70.6)  dashed, lw 3.0
+    f-contours             grey 0.55                       solid,  lw 0.8
+
+Vermillion against the dark end of viridis is dL* ~ 39 and against the yellow
+plateau (L* ~ 89) is dL* ~ 35, so the drop-line reads over the whole surface.
+The two eigenvectors are dL* = 24.6 apart AND differ in linestyle AND carry
+their eigenvalue as an in-place label -- three channels, which is what lets the
+lighter hue take the stiff direction. The lighter one gets the heavier stroke so
+it cannot read fainter than the thin grey contours behind it.
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import minimize
+
+# See "Colour" in the docstring above for the L* budget.
+STAR = "#D55E00"      # x*, in both panels
+EVEC1 = "#0072B2"     # the soft direction, lambda_1
+EVEC2 = "#E69F00"     # the stiff direction, lambda_2
 
 A = np.array([0.3, 0.6, 0.2])
 B = np.array([5.0, 26.0, 3.0])
@@ -109,14 +134,15 @@ def _surface_panel(ax, xstar, fstar):
         [xstar[0], xstar[0]],
         [xstar[1], xstar[1]],
         [F.min(), F.max()],
-        color="black",
+        color=STAR,
         linestyle="-",
-        linewidth=1.8,
+        linewidth=2.2,
         zorder=10,
     )
     ax.scatter(
         [xstar[0]], [xstar[1]], [fstar],
-        s=70, color="black", marker="*", depthshade=False, zorder=11,
+        s=150, facecolor=STAR, edgecolor="black", linewidth=0.8,
+        marker="*", depthshade=False, zorder=11,
     )
 
     ax.set_xlabel("$x_1$", labelpad=-4)
@@ -139,22 +165,26 @@ def _contour_panel(ax, xstar, H, eigvals, eigvecs):
         linestyles="solid",
         linewidths=0.8,
     )
-    ax.plot(*xstar, marker="*", markersize=18, color="black", linestyle="none")
+    ax.plot(*xstar, marker="*", markersize=20, markerfacecolor=STAR,
+            markeredgecolor="black", markeredgewidth=0.9, linestyle="none",
+            zorder=8)
 
     # Eigenvectors of grad^2 f(x*), drawn to ONE scale. Each is labelled in
-    # place: an arrow gets no linestyle from the cycle, so the label is its
-    # only greyscale-safe identity.
+    # place AND carries its own linestyle, so the hue is the third channel
+    # rather than the only one.
     scale = 0.085
-    # (linestyle, which end carries the label, label offset)
-    decor = (("-", +1, (0.008, 0.008)), ("--", -1, (0.010, -0.020)))
-    for k, (lam, (style, end, off)) in enumerate(zip(eigvals, decor)):
+    # (colour, linestyle, linewidth, which end carries the label, label offset)
+    decor = ((EVEC1, "-", 2.4, +1, (0.008, 0.008)),
+             (EVEC2, "--", 3.0, -1, (0.010, -0.020)))
+    for k, (lam, (col, style, width, end, off)) in enumerate(zip(eigvals, decor)):
         d = eigvecs[:, k] * scale
         ax.plot(
             [xstar[0] - d[0], xstar[0] + d[0]],
             [xstar[1] - d[1], xstar[1] + d[1]],
-            color="black",
+            color=col,
             linestyle=style,
-            linewidth=2.0,
+            linewidth=width,
+            zorder=6,
         )
         ax.annotate(
             rf"$\lambda_{{{k + 1}}} = {lam:.1f}$",

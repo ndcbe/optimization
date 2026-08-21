@@ -62,18 +62,33 @@ tangential step then slides ALONG that line (J_h Z = 0), so x^k + d_x is on the
 linearization and NOT on h(x) = 0 -- visible in the figure, and the reason a
 Newton step has to be repeated.
 
-Greyscale
----------
-No colour is load-bearing. The constraint and its linearization are black,
-distinguished by linestyle; the three step arrows are distinguished by
-POSITION and by an in-place label carrying the symbol they represent, per
-figures/README.md ("an arrow gets no linestyle from the colour cycle"). The
-f-contours are thin grey, and are context only -- nothing is claimed about
-which contour is which.
+Colour and greyscale (recoloured 2026-08-21)
+-------------------------------------------
+Colour is spent on exactly one thing: the COMPARISON the figure exists to make,
+Biegler's "the steps Y^c p_Yc are longer than Y p_Y". Those two arrows are the
+only coloured marks in the picture.
+
+    Y p_Y      orthogonal normal step    #0072B2 blue   (L* = 46.0)
+    Y^c p_Yc   coordinate normal step    #E69F00 orange (L* = 70.6)
+    Z p_Z, d_x, h(x) = 0, linearization  black
+    f-contours                           grey 0.80, context only
+
+dL* = 24.6 between the pair, which is the only pair a reader is asked to
+compare, and each arrow keeps everything it had before: a different STARTING
+POINT, a different DIRECTION, a different marker shape at its tip (square vs
+diamond, now filled in the arrow's own hue) and an in-place label carrying its
+symbol -- per figures/README.md, "an arrow gets no linestyle from the colour
+cycle". Nothing else is coloured, so nothing else can collide: the constraint
+and its linearization stay black and keep being told apart by linestyle, and
+the contours stay thin grey with nothing claimed about which is which.
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
+
+# See "Colour and greyscale" in the docstring above for the L* budget.
+NORMAL = "#0072B2"    # Y p_Y, the orthogonal normal step
+NORMAL_C = "#E69F00"  # Y^c p_Yc, the coordinate normal step -- 1.83x longer
 
 # --- the example ----------------------------------------------------------
 XK = np.array([0.70, 1.07])
@@ -134,20 +149,21 @@ def _report(s):
 BOX = dict(boxstyle="round,pad=0.12", fc="white", ec="none", alpha=0.9)
 
 
-def _arrow(ax, base, vec, *, lw=2.2):
+def _arrow(ax, base, vec, *, lw=2.2, color="black"):
     ax.annotate(
         "",
         xy=tuple(np.asarray(base) + np.asarray(vec)),
         xytext=tuple(base),
         arrowprops=dict(arrowstyle="-|>,head_width=0.20,head_length=0.42",
-                        lw=lw, color="black", shrinkA=0, shrinkB=0),
+                        lw=lw, color=color, shrinkA=0, shrinkB=0),
         zorder=6,
     )
 
 
-def _text(ax, xy, label, *, ha="left", va="bottom", size=14, rot=0.0, box=True):
+def _text(ax, xy, label, *, ha="left", va="bottom", size=14, rot=0.0, box=True,
+          color="black"):
     ax.annotate(label, xy=xy, ha=ha, va=va, fontsize=size, rotation=rot,
-                zorder=9, bbox=BOX if box else None)
+                color=color, zorder=9, bbox=BOX if box else None)
 
 
 def make_figure():
@@ -174,18 +190,27 @@ def make_figure():
     line = n_end[None, :] + t[:, None] * Z[None, :]
     ax.plot(line[:, 0], line[:, 1], color="black", lw=1.8, ls="--", zorder=3)
 
-    for p, m in ((xk, "o"), (n_end, "s"), (c_end, "D"), (d_end, "*")):
-        ax.plot(*p, m, color="black", ms=9 if m != "*" else 15, zorder=8,
-                mfc="white" if m in "sD" else "black", mew=1.6)
+    # Each marker keeps its SHAPE and picks up the hue of the arrow that ends
+    # there, so the endpoint and its step read as one object in either mode.
+    # Written out rather than looped on purpose: check_greyscale.py --source
+    # reads the AST and cannot see a colour chosen through a loop variable, so a
+    # loop here made the file report as monochrome when it is not.
+    ax.plot(*xk, "o", color="black", mfc="black", ms=9, mew=1.6, zorder=8)
+    ax.plot(*n_end, "s", color="black", mfc=NORMAL, ms=9, mew=1.6, zorder=8)
+    ax.plot(*c_end, "D", color="black", mfc=NORMAL_C, ms=9, mew=1.6, zorder=8)
+    ax.plot(*d_end, "*", color="black", mfc="black", ms=15, mew=1.6, zorder=8)
 
-    _arrow(ax, xk, s["normal"])
-    _arrow(ax, xk, s["normal_c"])
+    _arrow(ax, xk, s["normal"], lw=2.6, color=NORMAL)
+    _arrow(ax, xk, s["normal_c"], lw=3.0, color=NORMAL_C)
     _arrow(ax, n_end, s["tangential"])
     _arrow(ax, xk, s["dx"], lw=1.3)
 
     # Every label is placed in absolute data coordinates, checked against the
     # rendered PNG. The two curves are named ALONG themselves at the angle they
     # run, so no leader line has to cross the picture.
+    # Both labels stay BLACK. The comparison is symmetric, and orange text at
+    # L* = 70.6 is not readable at 15 pt on white -- colouring only one of the
+    # pair would make the figure look like it was claiming something about it.
     _text(ax, (0.648, 0.985), r"$Y p_Y$", size=15)
     _text(ax, (0.470, 1.093), r"$Y^{c} p_{Y^c}$", ha="center", size=15)
     _text(ax, (0.775, 0.780), r"$Z p_Z$", size=15)

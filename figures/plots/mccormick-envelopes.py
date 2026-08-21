@@ -24,23 +24,39 @@ straddling the origin and one with y^U < 0 -- the /2, not /4, is right.
 Left panel  -- the gap, upper minus lower, over the box, as LABELLED CONTOUR
 LINES rather than the notebook's filled `viridis` ramp with a colorbar.
 
-That is a deliberate departure and it was forced by measurement, not taste.
-`scripts/check_greyscale.py` FAILS the filled version: adjacent bands of a
-continuous colormap land on the same grey once printed (7 levels gives min
-dL* = 11.9, 6 gives 14.5, and antialiased blends against the white contour
-lines and the colorbar land below both). A sequential ramp is the right tool on
-a screen, where the website shows it; on a mono laser printer, which is what
-the student handout has to survive, contour LINES carry the same information in
-pure black and read better at handout size besides. The contours are the
-diamonds you would predict: the gap is 0 on the whole boundary and rises to a
-single peak at the box centre.
+That is a deliberate departure and it survives the 2026-08-21 relaxation of the
+greyscale rule, but for a narrower reason than the one first recorded here. A
+sequential colormap is the ONE place figures/README.md still caps the number of
+bands, because a filled ramp has no linestyle to fall back on: adjacent bands
+of a continuous map land on the same grey once printed (7 levels gives min
+dL* = 11.9, 6 gives 14.5, and antialiased blends against the contour lines and
+the colorbar land below both). Contour LINES carry the same information, are
+each labelled with their own numeric value, and read better at handout size.
+The contours are the diamonds you would predict: the gap is 0 on the whole
+boundary and rises to a single peak at the box centre.
 
 Right panel -- the same thing along the diagonal x = y = t, where the gap is
-widest. All three curves are BLACK and are told apart by linestyle and a direct
-label. That is deliberate twice over: the two envelopes are two halves of one
-object rather than two independent series, and a coloured curve here would
-collide in greyscale with the viridis ramp in the left panel -- which it did,
-and `scripts/check_greyscale.py` caught it.
+widest.
+
+Colour (added 2026-08-21; supersedes the "all three curves are BLACK" note)
+--------------------------------------------------------------------------
+⚠ This file used to argue that a coloured curve here would collide in greyscale
+and that the whole figure therefore had to be monochrome. That argument was a
+consequence of the OLD `check_greyscale.py`, which failed any two colours
+within dL* = 10 whether or not anything else told them apart. Prof. Dowling
+called that rule "way too strict" and it was rewritten; the constraint is gone.
+There is also no viridis left anywhere in this figure to collide with.
+
+    w = xy            black    (L* =  0.0)  solid,    lw 2.4  -- the truth
+    upper envelope    #0072B2  (L* = 46.0)  dash-dot, lw 2.2
+    lower envelope    #E69F00  (L* = 70.6)  dashed,   lw 2.6
+    centre peak       #0072B2  (L* = 46.0)  marker, black-edged (left panel)
+
+Pairwise dL*: black-blue 46.0, blue-orange 24.6, black-orange 70.6 -- all clear
+20. Every curve additionally keeps its own linestyle AND its direct label, so
+the two envelopes are told apart three independent ways. The lower envelope is
+the lighter hue and so gets the heavier stroke, which is what keeps it from
+reading fainter than the grey relaxation band underneath it in print.
 
 No solver: every quantity here is a closed-form max or min of affine functions.
 """
@@ -48,7 +64,14 @@ No solver: every quantity here is a closed-form max or min of affine functions.
 import numpy as np
 import matplotlib.pyplot as plt
 
+from _house import HATCH_CYCLE, SHADE_ALPHA
+
 XL, XU, YL, YU = 0.0, 1.0, 0.0, 1.0
+
+# See "Colour" in the docstring above for the L* budget.
+TRUE = "black"       # w = xy
+UPPER = "#0072B2"    # upper (concave) envelope
+LOWER = "#E69F00"    # lower (convex) envelope
 
 
 def mccormick_envelopes(X, Y, xl=XL, xu=XU, yl=YL, yu=YU):
@@ -72,13 +95,15 @@ def make_figure():
     ax0.clabel(cs, inline=True, fontsize=10, fmt="%.2f")
     ax0.plot([XL, XU, XU, XL, XL], [YL, YL, YU, YU, YL],
              color="black", lw=1.8, ls="-")
-    ax0.plot(0.5, 0.5, marker="o", color="black", ms=9, ls="none")
+    ax0.plot(0.5, 0.5, marker="o", mfc=UPPER, mec="black", mew=1.2, ms=10,
+             ls="none")
     # Both notes sit OUTSIDE the unit box: inside, they landed on the inline
     # contour labels, which is the one thing clabel cannot route around.
     ax0.annotate("gap $=0$ on the whole boundary", xy=(0.5, 1.16),
                  fontsize=11, ha="center", va="bottom")
     ax0.annotate("widest at the centre: $(x^U-x^L)(y^U-y^L)/2 = 0.5$",
-                 xy=(0.5, -0.16), fontsize=11, ha="center", va="top")
+                 xy=(0.5, -0.16), fontsize=11, ha="center", va="top",
+                 color=UPPER)
     ax0.set_xlabel("$x$")
     ax0.set_ylabel("$y$")
     ax0.set_title("envelope gap, upper $-$ lower", fontsize=13)
@@ -90,13 +115,19 @@ def make_figure():
     t = np.linspace(XL, XU, 401)
     lo_t, hi_t = mccormick_envelopes(t, t)
 
-    ax1.plot(t, t * t, color="black", ls="-", lw=2.4)
-    ax1.plot(t, hi_t, color="black", ls="-.", lw=2.2)
-    ax1.plot(t, lo_t, color="black", ls="--", lw=2.2)
-    ax1.fill_between(t, lo_t, hi_t, facecolor="0.6", alpha=0.15, linewidth=0.0)
+    # The relaxation gap. Hatched as well as tinted, per figures/README.md:
+    # HATCH_CYCLE[2] ("...") and NOT [0] or [1], which render with the same
+    # slope in matplotlib 3.5.1 and so are one texture, not two.
+    ax1.fill_between(t, lo_t, hi_t, facecolor="0.6", alpha=SHADE_ALPHA,
+                     hatch=HATCH_CYCLE[2], edgecolor=plt.rcParams["hatch.color"],
+                     linewidth=0.0, zorder=0)
 
-    ax1.annotate("$w = xy$", xy=(0.80, 0.50), fontsize=13)
-    ax1.annotate("upper envelope", xy=(0.05, 0.44), fontsize=12)
+    ax1.plot(t, t * t, color=TRUE, ls="-", lw=2.4, zorder=4)
+    ax1.plot(t, hi_t, color=UPPER, ls="-.", lw=2.2, zorder=3)
+    ax1.plot(t, lo_t, color=LOWER, ls="--", lw=2.6, zorder=3)
+
+    ax1.annotate("$w = xy$", xy=(0.80, 0.50), fontsize=13, color=TRUE)
+    ax1.annotate("upper envelope", xy=(0.05, 0.44), fontsize=12, color=UPPER)
     ax1.annotate("lower envelope", xy=(0.50, 0.03), fontsize=12)
     ax1.set_xlabel("$x = y = t$")
     ax1.set_ylabel("$w$")

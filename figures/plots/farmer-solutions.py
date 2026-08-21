@@ -19,10 +19,29 @@ Reproduced exactly (see lecture-notes/verification/stochastic-programming-
 intro.md): 183.33/66.67/250 -> $167,667; 120/80/300 -> $118,600;
 100/25/375 -> $59,950; recourse 170/80/250 -> $108,390.
 
-Greyscale: four series, which is the house cap, and NOTHING here is encoded by
-hue at all -- see the note on FILLS below. Each bar carries a hatch from
-HATCH_CYCLE and a step on a luminance ramp, and the profit panel is direct-
-labelled on top of that. `scripts/check_greyscale.py` reports PASS.
+Greyscale: four series, and NOTHING here is encoded by hue at all -- see the
+note on FILLS below. Each bar carries a hatch and a step on a luminance ramp,
+and the profit panel is direct-labelled on top of that.
+
+(The "four is the house cap" clause that used to sit in this sentence is gone:
+figures/README.md WITHDREW the four-series cap on 2026-08-21. Four is still the
+right number here, but because four is what the data has, not because a rule
+says so.)
+
+⚠ DEFECT FIXED 2026-08-21. The four bars indexed HATCH_CYCLE directly, 0 to 3,
+and in matplotlib 3.5.1 HATCH_CYCLE[0] ("///") and HATCH_CYCLE[1] ("\\\")
+render with the SAME SLOPE -- the backslash hatch leans the same way as the
+forward slash, differing only in density. So the first two bars, the +20% and
+average perfect-information solutions, carried ONE texture between them and were
+separated only by the 0.94-vs-0.80 face tint, and the legend showed two
+identical swatches. HATCHES below now names the four textures explicitly and
+skips index 1, exactly as plots/packing-local-solutions.py does.
+
+`scripts/check_greyscale.py --source` reports this file as
+"2 series, no colour, 0 distinct non-colour encodings". That is a false
+positive: the fill and the hatch are both chosen by subscript rather than by a
+literal, so the AST reader cannot see either (the script says as much under
+HONEST LIMITATIONS). Both channels are present and measured.
 """
 
 import numpy as np
@@ -44,6 +63,12 @@ from _house import HATCH_CYCLE
 # identity independently. Greyscale is a pass/fail FLOOR (figures/README.md),
 # and for a four-category bar chart this is simply the correct encoding.
 FILLS = ("0.94", "0.80", "0.62", "0.42")
+
+# ⚠ NOT a straight walk down HATCH_CYCLE. Indices 0 and 1 render with the same
+# slope in matplotlib 3.5.1, so "///" and "\\\" are one texture at handout
+# size and the first two bars were told apart by their face tint alone. Index 1
+# is skipped and "|||" takes its place: vertical rules cannot be read as slashes.
+HATCHES = (HATCH_CYCLE[0], HATCH_CYCLE[4], HATCH_CYCLE[2], HATCH_CYCLE[3])
 
 CROPS = ("wheat", "corn", "sugar beets")
 PLANT = np.array([150.0, 230.0, 260.0])          # $/acre
@@ -126,7 +151,7 @@ def make_figure():
     width = 0.8 / n
     for i, (label, acres, _) in enumerate(data):
         ax_a.bar(idx + (i - (n - 1) / 2) * width, acres, width,
-                 facecolor=FILLS[i], hatch=HATCH_CYCLE[i], edgecolor="black",
+                 facecolor=FILLS[i], hatch=HATCHES[i], edgecolor="black",
                  linewidth=0.7, label=label.replace("\n", " "))
     ax_a.set_xticks(idx)
     ax_a.set_xticklabels(CROPS)
@@ -147,7 +172,7 @@ def make_figure():
     # ---- right: the resulting profit, direct-labelled
     for i, (_, _, profit) in enumerate(data):
         ax_p.bar(i, profit / 1000.0, 0.68, facecolor=FILLS[i],
-                 hatch=HATCH_CYCLE[i], edgecolor="black", linewidth=0.7)
+                 hatch=HATCHES[i], edgecolor="black", linewidth=0.7)
         ax_p.annotate(f"{profit/1000.0:,.1f}", xy=(i, profit / 1000.0 + 4),
                       ha="center", va="bottom", fontsize=10.5)
     ax_p.set_xticks(range(n))

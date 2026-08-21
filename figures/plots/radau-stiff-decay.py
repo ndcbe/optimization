@@ -76,16 +76,50 @@ Caveat kept honest: Biegler's blanket "collocation methods are A-stable"
 Euler -- and the handout's \rewrite{} block already flags it. Nothing here
 depends on the general claim; both families drawn are A-stable, checked.
 
-Greyscale
----------
-Two series per panel, plus a reference. Linestyle carries the identity (the
-house cycle pairs it with colour), each curve is DIRECTLY LABELLED in place
-rather than by legend, and the markers differ. The exact solution is thin grey.
+Colour and greyscale (recoloured 2026-08-21)
+-------------------------------------------
+    Radau IIA        #0072B2 blue   (L* = 46.0)  solid,  lw 2.6, filled circles
+    Gauss-Legendre   #E69F00 orange (L* = 70.6)  dashed, lw 2.6, open squares
+    exact solution   black          (L* =  0.0)  dotted, lw 1.3, no marker
+    |R| = 1 guide    grey 0.75                   dotted, lw 1.0
+
+Pairwise dL*: blue-orange 24.6, black-blue 46.0, black-orange 70.6 -- all clear
+20. Colour is the third channel, never the first: all three linestyles differ
+(solid / dashed / dotted), all three markers differ (filled circle / open square
+/ none), and every curve is DIRECTLY LABELLED in place rather than by legend.
+
+TWO OVERPLOTTING DEFECTS were fixed here at the same time, and both were hidden
+by the old all-black palette rather than caused by it.
+
+1. The exact solution was a thin grey SOLID line drawn UNDERNEATH Radau, which
+   agrees with it to 1.3e-4 from the second step onward. It was therefore
+   completely invisible, and the "exact:" leader line pointed at the Radau
+   curve. It is now black, DOTTED and drawn ON TOP, so the reader sees a dotted
+   reference running along the Radau curve -- which is the panel's whole claim
+   made visible -- and sees the two separate at the first step, where they do.
+2. In the left panel both stability functions match exp(z) for small |z| and so
+   coincide below -h*lambda ~ 3. Gauss was drawn under Radau and vanished there.
+   The DASHED curve is now on top, so the solid one shows through its gaps and
+   the coincidence reads as coincidence instead of as a missing curve.
+
+The |R| = 1 guide was lightened from 0.6 to 0.75 so it stays subordinate to the
+curve that asymptotes onto it. Note honestly that this does NOT buy luminance
+separation from the orange Gauss curve -- 0.75 is L* ~ 75.6 against orange's
+70.6, and 0.6 was L* ~ 62 -- and `check_greyscale.py media/figures` reports that
+5-point gap as a warning. It is the right call anyway, because the guide is not
+a series: it is 1.0 pt, DOTTED and exactly horizontal, against a 2.8 pt DASHED
+curve, so the reader can never mistake one for the other. Image mode cannot see
+a linestyle and says so; source mode, which can, passes the figure.
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
 from numpy.polynomial import polynomial as P
+
+# See "Colour and greyscale" in the docstring above for the L* budget.
+RADAU = "#0072B2"
+GAUSS = "#E69F00"
+EXACT = "black"
 
 TAU_GL = np.array([0.5 - np.sqrt(15) / 10, 0.5, 0.5 + np.sqrt(15) / 10])
 TAU_RA = np.array([0.15505102572168219, 0.64494897427831781, 1.0])
@@ -176,9 +210,11 @@ def make_figure():
 
     # ---- left: the stability function on the negative real axis ------------
     z = -np.logspace(-1, 4, 700)
-    axL.semilogx(-z, np.abs(stability(TAU_GL, z)), color="black", lw=2.8, ls="--", zorder=4)
-    axL.semilogx(-z, np.abs(stability(TAU_RA, z)), color="black", lw=2.8, ls="-", zorder=4)
-    axL.axhline(1.0, color="0.6", lw=1.0, ls=(0, (1, 2)), zorder=1)
+    # The DASHED curve goes on top: the two coincide for small |z|, and only a
+    # dashed line over a solid one lets both be seen where they do.
+    axL.semilogx(-z, np.abs(stability(TAU_RA, z)), color=RADAU, lw=2.8, ls="-", zorder=4)
+    axL.semilogx(-z, np.abs(stability(TAU_GL, z)), color=GAUSS, lw=2.8, ls="--", zorder=5)
+    axL.axhline(1.0, color="0.75", lw=1.0, ls=(0, (1, 2)), zorder=1)
 
     axL.annotate("Gauss-Legendre", xy=(430.0, 0.865), fontsize=13, ha="center",
                  va="center", zorder=8, bbox=BOX)
@@ -200,11 +236,13 @@ def make_figure():
     tg, yg = integrate(TAU_GL)
     tr, yr = integrate(TAU_RA)
     tf = np.linspace(0.0, NSTEP * H, 2000)
-    axR.plot(tf, np.cos(tf) + np.exp(-LAM * tf), color="0.62", lw=1.6, ls="-", zorder=2)
-    axR.plot(tg, yg, color="black", lw=2.2, ls="--", marker="s", ms=6,
-             mfc="white", mew=1.4, zorder=4)
-    axR.plot(tr, yr, color="black", lw=2.4, ls="-", marker="o", ms=6,
-             mfc="black", zorder=5)
+    axR.plot(tg, yg, color=GAUSS, lw=2.6, ls="--", marker="s", ms=6,
+             mfc="white", mec=GAUSS, mew=1.6, zorder=4)
+    axR.plot(tr, yr, color=RADAU, lw=2.6, ls="-", marker="o", ms=6,
+             mfc=RADAU, mec=RADAU, zorder=5)
+    # ON TOP of Radau, and dotted: see defect 1 in the docstring.
+    axR.plot(tf, np.cos(tf) + np.exp(-LAM * tf), color=EXACT, lw=1.3,
+             ls=(0, (1, 4.0)), zorder=6)
 
     axR.annotate("Gauss-Legendre", xy=(0.55, 1.80), fontsize=13, ha="left",
                  va="center", zorder=8, bbox=BOX)
@@ -214,7 +252,7 @@ def make_figure():
     axR.annotate("exact:  $\\cos t + e^{-\\lambda t}$", xy=(2.55, float(np.cos(2.55))),
                  xytext=(1.30, -1.42), fontsize=12, ha="left", va="center",
                  zorder=8, bbox=BOX,
-                 arrowprops=dict(arrowstyle="-", lw=0.9, color="0.4"))
+                 arrowprops=dict(arrowstyle="-", lw=0.9, color="black"))
     axR.annotate(r"$\lambda = 1000$,  $h = 0.25$,  $h\lambda = 250$",
                  xy=(0.10, -1.82), fontsize=12, ha="left", va="center", zorder=8,
                  bbox=dict(boxstyle="round,pad=0.16", fc="white", ec="0.55", lw=0.8))

@@ -36,6 +36,23 @@ Contours are grey, the reference level is a heavy black line, and each arrow
 carries its symbol AND its eigenvalue as an in-place label, because an arrow
 gets no linestyle from the colour cycle (figures/README.md, "Arrows are not
 series"). No shaded regions, no colourmap, two series per axes.
+
+REVIEWED 2026-08-21 and deliberately left monochrome. `check_greyscale.py
+--source` reports "2 series, no colour, 0 distinct non-colour encodings", which
+reads as if the two contour sets might not be distinguishable at all. They are.
+The checker inspects colour, linestyle, marker and hatch; it does NOT inspect
+LINEWIDTH, and linewidth is what separates these two: the companion levels are
+grey 0.62 at 1.0 pt and the reference level c* = 2 is black at 2.6 pt -- a
+factor of 2.6 in weight on top of dL* = 66 in lightness. So the finding is a
+false positive on a channel the tool cannot see.
+
+The design is also not an artefact of the old strict rule, which is what makes
+it worth keeping rather than recolouring. A quadratic form's level sets are ONE
+sequential family; the only thing singled out is the single reference level the
+arrow tips land on. Giving the companion contours a hue would assert that the
+levels differ in kind, and giving the reference level a hue would put the
+figure's one load-bearing mark in a lighter ink than the context behind it.
+Grey context plus black subject is the correct encoding here.
 """
 
 import numpy as np

@@ -1,6 +1,26 @@
-# Project 2
+# Project 2 (Retired)
 
-Summary: With a partner, further explore an optimization problem, modeling technique, or algorithm.
+```{warning}
+**Project 2 has been retired and is not assigned in Fall 2026.** Nothing on this page is a deliverable.
+It is kept for the record, and because the list of topic ideas below is still useful.
+
+In previous years a second, larger project ran through the second half of the semester. It is replaced by
+the two in-class midterms and the in-person final --- see the
+[syllabus](./syllabus.md#pyomo-mini-project). With capable AI coding tools widely available, an
+invigilated exam is a more honest measure of what you personally understand.
+
+The one project this semester is the [](./project1.md).
+```
+
+```{note}
+**If you are looking for something to work on anyway:** the ideas below are still good ideas, and several
+have become instructor-authored course content rather than student projects --- notably MILP algorithms
+and deterministic global optimization, which are now lectures. If you want to contribute one of the
+remaining ideas to the class website on your own initiative, read [](contribute.md) and
+[](pyomo-style-guide.md) and open a pull request. That is welcome; it is not for credit.
+```
+
+Summary (historical): With a partner, further explore an optimization problem, modeling technique, or algorithm.
 
 ## Learning Goals
 

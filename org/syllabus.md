@@ -164,13 +164,7 @@ semester. It is replaced by the two in-class midterms and the in-person final. W
 widely available, an invigilated exam is a more honest measure of what you personally understand.
 ```
 
-See [](../org/project1.md) for the current project description.
-
-```{warning}
-This description is being revised for Fall 2026 to be **AI-forward**: expect more weight on formulation,
-interpretation, and defending your modelling choices, and less on producing code. Check Canvas for the
-current version.
-```
+See [](../org/project1.md) for the project description, the deliverables, and the grading breakdown.
 
 ## Grading Standards
 

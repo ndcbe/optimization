@@ -97,7 +97,25 @@ Senior graduate students may audit this course with the permission of the instru
 
 ## Homework
 
-Problem set homework assignments are a collection of 2 to 5 problems designed to reinforce specific concepts and skills from class. Most problems include *pencil and paper analysis* (i.e., derive a model, determine degrees of freedom, write pseudocode, complete a proof), computer programming aspects, and interpretation of calculated results. These problems, especially the analysis and interpretation parts, are good practice for the exams. Many students receive near full credit on the problem sets.
+There are **ten short homework assignments**. They are deliberately small: each reinforces one or two
+specific skills from the preceding lectures, and most should take an hour or two.
+
+**Grading is completion based.** Full credit is awarded for a genuine, complete attempt at every part --
+not for getting every answer right. The point of the homework is practice, and practice you are afraid to
+get wrong is not practice.
+
+**Your lowest homework score is dropped.** Ten assignments are set and the best nine count. For many
+students this makes the final assignment effectively optional, which is deliberate: it falls on the last day
+of class, and studying for the final is a reasonable thing to do with that week instead.
+
+**You may use AI tools on the homework** --- see the [Artificial Intelligence Policy](#artificial-intelligence-policy)
+below. What does not change is that **you are responsible for understanding everything you submit.** The
+exams are individual, in person, and without a computer, so anything you hand in without understanding is a
+debt that comes due in September, November, and December.
+
+Most problems include *pencil and paper analysis* (derive a model, count degrees of freedom, write
+pseudocode, complete a proof), a computational part, and interpretation of the results. The analysis and
+interpretation parts are the best available practice for the exams.
 
 ## Collaboration Policy and Honor Code
 
@@ -135,9 +153,24 @@ Students who take notes on a tablet during class should sit in the front rows du
 used **only** to read notes you prepared yourself, with connectivity disabled --- the same access a student
 who printed their notes into a binder would have.
 
-## Projects
+## Pyomo Mini Project
 
-[](../org/project1.md)
+The Pyomo Mini Project asks you to formulate, implement, and interpret an optimization model of your own
+choosing. It is worth 10% of the course grade --- see the [semester calendar](./calendar.md) for the due date.
+
+```{note}
+**Project 2 has been retired.** In previous years a second, larger project ran through the second half of the
+semester. It is replaced by the two in-class midterms and the in-person final. With capable AI coding tools
+widely available, an invigilated exam is a more honest measure of what you personally understand.
+```
+
+See [](../org/project1.md) for the current project description.
+
+```{warning}
+This description is being revised for Fall 2026 to be **AI-forward**: expect more weight on formulation,
+interpretation, and defending your modelling choices, and less on producing code. Check Canvas for the
+current version.
+```
 
 ## Grading Standards
 
@@ -169,14 +202,13 @@ All regrade requests will result in a reevaluation of the entire assignment. For
 
 ## Late Policy
 
-The following policy will apply to all assignments (homework, projects, etc.):
-* Up to 1 hour late: grace period with no penalty
-* 1 hour to 24 hours late: 10% penalty of total available points
-* 24 to 48 hours late: 20% penalty of total available points
-* 48 to 72 hours: 30% penalty of total available points
-* Beyond 72 hours: assignment not accepted
+**Students are expected to submit work on time.** Late work is accepted at the discretion of the instructor.
 
-If there is an extenuating circumstance, please **email the instructor with 60499 in the subject**. Please send your requests for extensions at least 24 hours in advance of the deadline (unless your specific circumstance prevents this). When requesting an extension, please briefly explain the extenuating circumstance and propose an alternate deadline.
+If there is an extenuating circumstance, please **email the instructor with 60499 in the subject**, ideally
+at least 24 hours before the deadline. Briefly explain the circumstance and propose an alternate deadline.
+
+Note that the lowest homework score is dropped, which is intended to absorb the ordinary bad week without
+anyone needing to ask.
 
 ## Software
 
@@ -184,6 +216,16 @@ We will use Python 3 in this class. You have three options to use Python:
 1. (Recommended for Most People.) Use Google Colab. This allows you to complete all assignments from any internet accessible computer.
 2. (Recommended for Advanced Users.) Install [anaconda3](https://www.anaconda.com/download/) on your own computer. This is a free distribution of Python that includes common packages for data analysis and scientific computing. You will need to install popular packages such as `numpy`, `scipy`, `pandas`, `matplotlib`, and `pyomo`.
 3. Use anaconda3 installed on any ESC-maintained computer.
+
+## Artificial Intelligence Policy
+
+Please review the university-wide [Generative AI Policy for Students](https://honorcode.nd.edu/generative-ai-policy-for-students-august-2023/) distributed via email in August 2023. We will adopt the following additional policies for CBE/ACMS 60499:
+* Anyone who uses Generative AI tools (e.g., Copilot, ChatCPT) must add a discloser statement at the end of their assignment submissions. In this disclosure statement, you must describe which Generative AI tool you used and how you used it. For example, many professional scientists and engineers find these technologies especially helpful for refining the quality of plots generated in Python.
+* Many practicing scientists and engineers find [Copilot](https://copilot.microsoft.com/), which is available in [Visual Studio Code](https://visualstudio.microsoft.com/github-copilot/, more helpful and reliable than [ChatGPT](https://chat.openai.com). However, ChatGPT and Copilot occasionally generate code with incorrect logic or calculations. You should critically examine any code from Generative AI tools, collaborators, and class examples.
+* As described above, you must comment all code in your assignments. Furthermore, students must write comments in their own words. This ensures that anyone who uses Generative AI for help still practices interpreting the code. In other words, everyone who passes CBE/ACMS 60499 should be able to perform calculations and explain the underlying logic in code.
+* Students are expected to use descriptive variable names; sometimes, Generative AI tools suggest generic variable names.
+* Students are responsible for understanding all code they submit, especially if they collaborate with another student or use Generative AI. The exams will be individual and without access to Generative AI tools.
+* Answers to discussion questions, which often critically interpret results or connect calculations with concepts from class, must be written in your own words. You should use tools like [Grammarly](https://www.grammarly.com) to improve spelling, grammar, sentence structure, and conciseness. But you must perform the critical analysis on your own.
 
 ## Inclusiveness, Mental Health, and Disabilities
 

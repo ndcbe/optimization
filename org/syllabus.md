@@ -1,31 +1,45 @@
 # Syllabus
 
-CBE 40499, CBE 60499, ACMS 40499, ACMS 60499: Optimization for Decision Science
+CBE 60499, ACMS 60499: Optimization for Decision Science
 
-University of Notre Dame, Fall 2024
+University of Notre Dame, Fall 2026
+
+## Course Information
+
+**Class:** Mondays and Wednesdays, 12:30 -- 1:45 pm, 303 Cushing Hall
+
+```{note}
+A room change request is pending. Check Canvas for the current location before the first class.
+```
+
+**Dates:** August 24 -- December 9, 2026
+
+**Exams:** Midterm 1 on Wednesday, September 30 and Midterm 2 on Wednesday, November 4, both in class. The
+final exam is in person during the University final exam period (December 11--17); the registrar assigns the
+slot.
 
 ## Prerequisites 
 
-Graduate students (60499): A background in linear algebra and numericalmethods is strongly recommended but not required. Students must be comfortable programming in Python (preferred), MATLAB, Julia, C, or a similar language. Topics in EE 60551 and ACMS 60880 are complementary to CBE/ACMS 60499. These courses are not prerequisites for CBE/ACMS 60499.
+A background in linear algebra and numericalmethods is strongly recommended but not required. Students must be comfortable programming in Python (preferred), MATLAB, Julia, C, or a similar language. Topics in EE 60551 and ACMS 60880 are complementary to CBE/ACMS 60499. These courses are not prerequisites for CBE/ACMS 60499.
 
-Undergraduate students (40499): Students must be comfortable with linear algebra and programming in Python (preferred), MATLAB, Julia, C, or a similar language. A course on these topics, such as CBE 20258, AME 30251 (concurrent is okay), CE 30125 (concurrent is okay), PHYS 20451, or ACMS 20220, and the standard undergraduate curriculum in computer science or electrical engineering should satisfy this prerequisite. Please contact the instructor for any preparation questions.
+## Instructor
 
-## Instructor and Teaching Assistants
+**Prof. Alexander (Alex) Dowling** --- office hours by appointment in 369 Nieuwland Science Hall.
 
-| | Prof. Alexander (Alex) Dowling | Ashiat Bakare | Steven Yeo |
-| ----------- | ----------- | ----------- | ----------- |
-| | ![](../media/dowling_alex.jpg) | ![](../media/ashiat_bakare.jpg) | ![](../media/steven_yeo.jpg)  |
-| Office Hours | By appointment in 369 Nieuwland Science Hall | Wednesdays, 4 - 5 pm in 366 Nieuwland Science Hall | Thursdays, 4 - 5 pm in 366 Nieuwland Science Hall  |
+```{note}
+**There are no teaching assistants this semester.** Please post questions to the Canvas discussion board;
+that is the fastest way to get an answer and everyone benefits from it.
+```
 
-Prof. Dowling will also try to stop by the TA office hours. To schedule a meeting with Prof. Dowling:
+To schedule a meeting with Prof. Dowling:
 * Check his availability on [Google calendar](https://calendar.google.com/calendar/u/0?cid=YWRvd2xpbmdAbmQuZWR1)
 * Send him an email with ~3 proposed times (that work for both you and his Google calendar)
-* Include 40499 or 60499 in the subject of your email
+* Include 60499 in the subject of your email
 * Once Prof. Dowling agrees to the time, please send him a Google calendar invite
 
 ## Discussuion Board (Canvas) and Email Correspondance
 * Post your questions to the **discussion board in Canvas**
-* Instructor only: adowling@nd.edu, **'60499' or '40499' in the subject**, private official matters (e.g., excused absence, testing accommodations, schedule a meeting per guidelines above)
+* Instructor only: adowling@nd.edu, **'60499' in the subject**, private official matters (e.g., excused absence, testing accommodations, schedule a meeting per guidelines above)
 
 We encourage you to post all your questions including your mathematical models, pseudocode, and code screenshots to the public **discussion board in Canvas**. We are doing this for a few reasons:
 1. As professionals, you'll need to be comfortable asking questions in front of a team. We would like to cultivate a positive and friendly learning environment where everyone can practice this skill during the semester.
@@ -63,11 +77,11 @@ Final grades will be determined as follows:
 
 | Category    | Weight |
 | ------ | ----- |
-| Homework | 10% |
-| Project 1 | 20% |
-| Exam 1 | 25% |
-| Project 2 | 25% |
-| Exam 2 | 20% |
+| Homework (best 9 of 10, completion based) | 15% |
+| Pyomo Mini Project | 10% |
+| Midterm 1 | 22.5% |
+| Midterm 2 | 22.5% |
+| Final exam | 30% |
 
 Grade scale for 60499 (graduate):
 - A : demonstrated mastery of main concepts
@@ -76,14 +90,6 @@ Grade scale for 60499 (graduate):
 - B or below : struggled with main concepts or missing assignments or both
 
 The median grade in 60499 will likely be an A- or B+.
-
-Grading scale for 40499 (undergraduate):
-- A : demonstrated mastery of main concepts
-- A- / B+ : comfort with most concepts
-- B : comfort with many concepts but struggled in a few areas
-- B- or below: struggled with main concepts or missing assignments or both
-
-The median grade in 40499 will likely be an A- or B+.
 
 Senior graduate students may audit this course with the permission of the instructor. The expectations for auditing are:
 1. Attend and participate in at least 75% of the class sessions. 
@@ -97,23 +103,37 @@ Problem set homework assignments are a collection of 2 to 5 problems designed to
 
 You are permitted (and encouraged) to discuss solution approaches to the weekly homework assignments with classmates, however there is to be no wholesale copying or paraphrasing of code, solutions, or written discussions. You are encouraged to ask questions, including posting pseudocode or code screenshots, on the disccsion board on Canvas. Likewise, you may use any material posted by the instructors or your classmates in the discussion board on Canvas that you understand. Copying of code from classmates or the discussion board that you do not understand is not permitted. This policy is meant to facilitate collaboration while ensuring everyone in the class has the same access. Students MAY NOT use old HW files and solutions for the homework assignments: if you cannot do the problems for homework, you will not be able to do them on the exams either.
 
-*As a guiding principle, if you are not comfortable explaining your solution strategy to an instructor or TA, you should not turn in the work as your own.*
+*As a guiding principle, if you are not comfortable explaining your solution strategy to the instructor, you should not turn in the work as your own.*
 
 Your work may be electronically tested for plagiarized content. For example, Vocareum and Gradescope have sophisticated capabilities to detect highly similar code (i.e., plagiarism for computer code) while distinguishing from provided templates. Plagiarism is a serious offense and will result in severe consequences per University, College, and Department procedures.
 
 To remove ambiguity, the following is a non-exhaustive list of collaborative scenarios that are PERMITTED under the above policies:
 * You work with a group of classmate to write pseudocode together. Each person in the group participates at least once (e.g., asks a question). One person in the group takes a picture and emails it to everyone. Then each person rewrites the pseudocode on their own for the homework submission. You rewrite the comments in your own words (to be more clear). You also decide to replace a `while` loop with a `for` loop. This is permitted by the collaboration policy because the work is your own. You made a clear intellectual contribution.
 * You are working on a homework assignment and get stuck on an error message. After consulting the class notes and Google for 5 minutes, you post a screenshot of your code and the error message to Canvas. A classmate posts some alternate code that fixes your error. You reply by thanking the student and asking for clarification on why the alternate code works and your approach was wrong. This leads to a good discussion, with the instructor explaining a concept and clearing up your confusion. The solution you turn in includes the changes suggested by your classmates. This is permitted by the collaboration policy because you are comfortable explaining your solution strategy, including why the proposed modification was necessary to fix the error.
-* You are working on the homework assignment a little closer to the deadline than you would like to admit. You get stuck on an error message, but quickly find a discussion thread on Canvas. You read through the suggestions from your classmates and the instructor. The post answers your major questions and the proposed fix works! You adopt it into your code and add a comment acknowledging your classmates on Canvas for help. You still have a minor question about if there is an alternate way to solve the problem, so you post on Canvas and continue with the assignment. This is permitted by the collaboration policy because you made a good faith effort to understand the proposed solution. Even though you have an outstanding minor doubt, you sought out help from the TAs, instructor, and classmates. You also acknowledged the source (Canvas discussion) for the code you used, and thus are not presenting it as your own.  
+* You are working on the homework assignment a little closer to the deadline than you would like to admit. You get stuck on an error message, but quickly find a discussion thread on Canvas. You read through the suggestions from your classmates and the instructor. The post answers your major questions and the proposed fix works! You adopt it into your code and add a comment acknowledging your classmates on Canvas for help. You still have a minor question about if there is an alternate way to solve the problem, so you post on Canvas and continue with the assignment. This is permitted by the collaboration policy because you made a good faith effort to understand the proposed solution. Even though you have an outstanding minor doubt, you sought out help from the instructor and your classmates. You also acknowledged the source (Canvas discussion) for the code you used, and thus are not presenting it as your own.  
 
 The following is a non-exhaustive list of collaborative scenarios that are PROHIBITED under the above policies:
-* You are working on your homework alone in the library but two tables away there is a group of your classmates. They work through the pseudocode on a white board and do not erase it after leaving. You take a picture “just in case”. You later get stuck and frustrated. You end up copying a majority of their pseudocode, line by line, and turn this in. You have some doubts about the approach, but ran out of time. This is prohibited by the collaboration policy because the work is not your own. Moreover, you would be unable to explain your solution approach with confidence to the TA or instructor.
-* It is late at night, you are frustrated with syntax errors, and you just cannot get one of the homework problems to work. You find a screenshot on Canvas of code from a classmate and an associated discussion. Desperate to finish the assignment, you start adapting your code to follow the screenshot. To keep it simple, you copy line-by-line, do not change variable names, and copy some comments but skip others. You end up submitted code that looks almost identical to your classmate. You remember the instructor keeps emphasizing the comments should be in our own words to show that you understand the solution. You decide to go to bed and add those comments in the morning. You oversleep and submit code without any comments or acknowledgments of your classmates. This is prohibited by the collaboration policy because you submitted work that is not your own. You did not acknowledge sources, and you can not explain with confidence the solution procedure to the instructor or TA.
-* You have no prior programming experience and feel like you are falling behind. You feel like the homework takes you three times as long as your classmates. You conclude the only way you can keep up is to do the homework with a partner. They do half the assignment and you do the other half. You then exchange solutions. The person who completed each problem then explains the solution to the partner. Each person changes the comments, adds some extra white spaces, and changes a few variable names to ensure the solutions are not identical. This is prohibited by the collaboration policy because each person did not make an honest effort to solve every problem on their own. Although each person either explained or had the solutions explained to them, they likely cannot defend all of their solutions on their own to the TA or instructor. 
+* You are working on your homework alone in the library but two tables away there is a group of your classmates. They work through the pseudocode on a white board and do not erase it after leaving. You take a picture “just in case”. You later get stuck and frustrated. You end up copying a majority of their pseudocode, line by line, and turn this in. You have some doubts about the approach, but ran out of time. This is prohibited by the collaboration policy because the work is not your own. Moreover, you would be unable to explain your solution approach with confidence to the instructor.
+* It is late at night, you are frustrated with syntax errors, and you just cannot get one of the homework problems to work. You find a screenshot on Canvas of code from a classmate and an associated discussion. Desperate to finish the assignment, you start adapting your code to follow the screenshot. To keep it simple, you copy line-by-line, do not change variable names, and copy some comments but skip others. You end up submitted code that looks almost identical to your classmate. You remember the instructor keeps emphasizing the comments should be in our own words to show that you understand the solution. You decide to go to bed and add those comments in the morning. You oversleep and submit code without any comments or acknowledgments of your classmates. This is prohibited by the collaboration policy because you submitted work that is not your own. You did not acknowledge sources, and you can not explain with confidence the solution procedure to the instructor.
+* You have no prior programming experience and feel like you are falling behind. You feel like the homework takes you three times as long as your classmates. You conclude the only way you can keep up is to do the homework with a partner. They do half the assignment and you do the other half. You then exchange solutions. The person who completed each problem then explains the solution to the partner. Each person changes the comments, adds some extra white spaces, and changes a few variable names to ensure the solutions are not identical. This is prohibited by the collaboration policy because each person did not make an honest effort to solve every problem on their own. Although each person either explained or had the solutions explained to them, they likely cannot defend all of their solutions on their own to the instructor. 
 
 ## Exams
 
-The two exam will take place during class as indicated on the [semester calendar](./calendar.md). The exam will be closed book with no access to a computer. Students will be permitted to bring 2 sheets (exam 1) and 4 sheets (exam 2) of letter size paper filled with handwritten notes.
+There are **three in-person exams**: two midterms during class and a final exam during the University final
+exam period. Dates are on the [semester calendar](./calendar.md).
+
+| Exam | When | Notes permitted |
+| --- | --- | --- |
+| Midterm 1 | Wednesday, September 30, in class | open course pack / open binder |
+| Midterm 2 | Wednesday, November 4, in class | open course pack / open binder |
+| Final | December 11--17, slot assigned by the registrar | open course pack / open binder |
+
+All exams are **individual** and **without a computer or internet access**. You may not use a tablet, watch,
+phone, or other device to reach a Python environment, an AI tool, or the internet during an exam.
+
+Students who take notes on a tablet during class should sit in the front rows during exams. Tablets may be
+used **only** to read notes you prepared yourself, with connectivity disabled --- the same access a student
+who printed their notes into a binder would have.
 
 ## Projects
 
@@ -156,7 +176,7 @@ The following policy will apply to all assignments (homework, projects, etc.):
 * 48 to 72 hours: 30% penalty of total available points
 * Beyond 72 hours: assignment not accepted
 
-If there is an extenuating circumstance, please **email the instructor with 60499 or 40499 in the subject**. Please send your requests for extensions at least 24 hours in advance of the deadline (unless your specific circumstance prevents this). When requesting an extension, please briefly explain the extenuating circumstance and propose an alternate deadline.
+If there is an extenuating circumstance, please **email the instructor with 60499 in the subject**. Please send your requests for extensions at least 24 hours in advance of the deadline (unless your specific circumstance prevents this). When requesting an extension, please briefly explain the extenuating circumstance and propose an alternate deadline.
 
 ## Software
 

@@ -25,9 +25,23 @@ To publish:
   1. conda activate optimization_fall2026
   2. python ./scripts/process_notebooks.py     # CI cannot do this: it reads
                                                # ../optimization-private
-  3. Confirm no solutions leaked:
+  3. Confirm no solutions leaked. BOTH checks, not just the first -- a solution
+     leaks through a cell's stored OUTPUTS as readily as through its source, and
+     the grep sees only the source:
+
        grep -rl "BEGIN SOLUTION" notebooks/ | grep -v -- "-dev/"
-     That must print nothing.
+
+       python - <<'PY'
+       import json, glob
+       bad = [(f, i) for f in glob.glob("notebooks/assignments/*.ipynb")
+              for i, c in enumerate(json.load(open(f))["cells"])
+              if c["cell_type"] == "code"
+              and "Add your solution here" in "".join(c["source"])
+              and c.get("outputs")]
+       print(bad or "clean")
+       PY
+
+     Both must print nothing / "clean".
   4. Commit the regenerated notebooks/N/ output.
   5. git push origin main
 

@@ -155,8 +155,14 @@ who printed their notes into a binder would have.
 
 ## Pyomo Mini Project
 
-The Pyomo Mini Project asks you to formulate, implement, and interpret an optimization model of your own
-choosing. It is worth 10% of the course grade --- see the [semester calendar](./calendar.md) for the due date.
+In the Pyomo Mini Project you choose a paper from the optimization literature, extract its model with the
+help of an AI tool, and then **check that extraction against the paper by hand, on paper, in pencil**. You
+then implement the corrected model --- or audit the authors' own code, if the paper ships any --- and try to
+reproduce one of their results. It is worth 10% of the course grade; see the
+[semester calendar](./calendar.md) for the due date.
+
+Half the grade is the checking and the correcting. Finding a discrepancy between a paper's printed model and
+its own code is a **success**, not a problem with your choice of paper.
 
 ```{note}
 **Project 2 has been retired.** In previous years a second, larger project ran through the second half of the

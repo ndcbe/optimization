@@ -35,10 +35,17 @@ data puts the maximum at x2 = 11.07, and C(14.925) = 94.88, not 95.3. The
 labels here carry the recomputed values; the discrepancy is recorded in
 optimization-private/lecture-notes/verification/integer-programming.md.
 
-Greyscale: ONE curve, so colour carries nothing. Every feature -- the two
-endpoint minima, the interior maximum, the two reactor regimes -- is identified
-by a marker and a direct text label, and the infeasible region beyond the
-endpoint is hatched rather than tinted.
+Colour and greyscale (relaid out 2026-08-21). Prof. Dowling, on the previous
+version: "text overlaps / move it" -- both endpoint labels sat on top of the
+curve -- and "let's use some color". Both labels now sit in the empty band
+BELOW the curve, and the three points of interest are colour-coded.
+
+The colour is REDUNDANT, never load-bearing: each point carries a distinct
+marker shape as well (filled circle = global min, open square = local min,
+filled triangle = interior max), each label is placed next to the point it
+names, and the label text repeats the classification in words. Only two
+saturated hues appear -- see the palette note below -- and the infeasible region
+is hatched rather than tinted.
 """
 
 import numpy as np
@@ -53,6 +60,17 @@ FEED = 5.0  # $/kmol, p. 510
 
 X2_MAX = TARGET / K2  # 14.9254
 
+# Okabe-Ito, ordered for luminance spread. See the colour note in the docstring.
+# Only TWO saturated hues, and they are the widest-separated pair Okabe-Ito
+# offers: blue L* = 46 and orange L* = 70.6, dL* = 24.6. Adding vermillion for a
+# third mark FAILED scripts/check_greyscale.py (blue vs vermillion, dL* = 8.2 --
+# the same grey on a mono printer), so the two minima and the maximum are told
+# apart by MARKER SHAPE, which is the channel that always survives.
+CURVE = "#0072B2"   # blue,   L* = 46
+GLOBAL = "#000000"  # black,  L* =  0
+LOCAL = "#E69F00"   # orange, L* = 70.6
+MAXPT = "#000000"   # black,  L* =  0
+
 
 def cost(x2):
     """C along the mass balance, as a function of x2 alone. BGW (15.8), p. 511."""
@@ -66,7 +84,7 @@ def make_figure():
     x2 = np.linspace(0.0, X2_MAX, 601)
     C = cost(x2)
 
-    ax.plot(x2, C, color="black", linestyle="-", zorder=3)
+    ax.plot(x2, C, color=CURVE, linestyle="-", zorder=3)
 
     # Interior maximum, located numerically on a fine grid then refined.
     fine = np.linspace(0.0, X2_MAX, 2_000_001)
@@ -95,37 +113,47 @@ def make_figure():
         rotation=90,
     )
 
-    # The three stationary points of interest.
-    for xx, yy, mk in ((0.0, C_left, "o"), (X2_MAX, C_right, "o"), (x2_max, C_max, "^")):
-        ax.plot([xx], [yy], marker=mk, markersize=9, color="black", zorder=5)
+    # The three points of interest. Marker SHAPE is the greyscale-safe channel;
+    # colour is redundant on top of it.
+    ax.plot([0.0], [C_left], marker="o", markersize=10, color=GLOBAL,
+            linestyle="none", zorder=5)
+    ax.plot([X2_MAX], [C_right], marker="s", markersize=10, color=LOCAL,
+            markerfacecolor="white", markeredgewidth=2.2, linestyle="none",
+            zorder=5)
+    ax.plot([x2_max], [C_max], marker="^", markersize=11, color=MAXPT,
+            markeredgecolor="black", markeredgewidth=0.8, linestyle="none",
+            zorder=5)
 
+    # Labels moved OUT of the curve, into the empty band below it.
     ax.annotate(
         f"global min\n\\${C_left:.2f}/hr\nreactor I only\n($x_1 = 12.5$)",
         xy=(0.0, C_left),
-        xytext=(1.2, 89.4),
+        xytext=(1.7, 85.6),
+        color=GLOBAL,
         fontsize=12,
-        arrowprops=dict(arrowstyle="->", lw=1.1, color="black"),
+        arrowprops=dict(arrowstyle="->", lw=1.2, color=GLOBAL),
     )
     ax.annotate(
         f"local min\n\\${C_right:.2f}/hr\nreactor II only\n($x_2 = 14.93$)",
         xy=(X2_MAX, C_right),
-        xytext=(8.6, 88.6),
-        ha="right",
+        xytext=(8.1, 85.6),
+        color=LOCAL,
         fontsize=12,
-        arrowprops=dict(arrowstyle="->", lw=1.1, color="black"),
+        arrowprops=dict(arrowstyle="->", lw=1.2, color=LOCAL),
     )
     ax.annotate(
         f"interior maximum, \\${C_max:.2f}/hr\nat $x_2 = {x2_max:.2f}$",
         xy=(x2_max, C_max),
-        xytext=(2.4, 101.2),
+        xytext=(0.6, 101.6),
+        color=MAXPT,
         fontsize=12,
-        arrowprops=dict(arrowstyle="->", lw=1.1, color="black"),
+        arrowprops=dict(arrowstyle="->", lw=1.2, color=MAXPT),
     )
 
     ax.set_xlabel("$x_2$, feed to reactor II (kmol/hr)")
     ax.set_ylabel("$C$ (\\$/hr)")
     ax.set_xlim(-0.6, X2_MAX + 1.6)
-    ax.set_ylim(85.0, 104.0)
+    ax.set_ylim(84.0, 105.0)
 
     fig.tight_layout()
     return fig

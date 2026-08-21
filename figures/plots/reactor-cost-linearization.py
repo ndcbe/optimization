@@ -39,6 +39,16 @@ independent non-colour channels rather than one. Colour separates the reactors
 (black L* = 0 vs blue L* = 46, dL* = 46), linestyle separates the models
 (solid = concave, dashed = linearized). One legend serves both panels and is
 keyed by linestyle as well as colour.
+
+2026-08-21, two changes Prof. Dowling asked for in the margin:
+
+  * "move here to avoid overlap" -- the "fixed charge" callout on the left
+    panel sat on top of reactor II's two curves. It is now in the empty band
+    above them, and the arrow does the pointing instead of the text.
+  * "include inset here", boxing x_r in [0, 5] on the right panel -- so the
+    right panel now carries an inset zoomed on the origin. At full scale the
+    jump from 0 to bbar_r is a few pixels tall, which hides the one feature
+    that makes a binary necessary; in the inset it is the whole picture.
 """
 
 import numpy as np
@@ -107,6 +117,45 @@ def _panel(ax, feed, title):
     ax.set_title(title, fontsize=14)
 
 
+def _origin_inset(ax):
+    """Zoom the jump at x_r = 0 on the right (vessel + feed) panel.
+
+    "include inset here" -- Prof. Dowling, 2026-08-21, boxing x_r in [0, 5].
+    The discontinuity is what forces a binary variable into the model and it is
+    invisible at full scale.
+    """
+    x_hi, y_hi = 1.6, 19.0
+    axins = ax.inset_axes([0.46, 0.05, 0.52, 0.38])
+    x = np.linspace(0.0, x_hi, 200)
+    x_pos = x[x > 0]
+
+    for name, p in REACTORS.items():
+        col = p["color"]
+        axins.plot(x, p["c_power"] * x**0.6 + FEED_PRICE * x,
+                   color=col, linestyle="-", linewidth=2.0)
+        axins.plot(x_pos, p["c_fixed"] + (p["c_slope"] + FEED_PRICE) * x_pos,
+                   color=col, linestyle="--", linewidth=2.0)
+        axins.plot([0.0], [p["c_fixed"]], marker="o", markersize=6,
+                   markerfacecolor="white", markeredgecolor=col,
+                   markeredgewidth=1.6, linestyle="none", zorder=5)
+        axins.plot([0.0], [0.0], marker="o", markersize=5, color=col,
+                   linestyle="none", zorder=5)
+
+    # The jump itself, measured: a double-headed arrow from zero cost up to
+    # the fixed charge reactor II would pay the instant it is switched on.
+    axins.annotate("", xy=(0.08, REACTORS["II"]["c_fixed"]), xytext=(0.08, 0.0),
+                   arrowprops=dict(arrowstyle="<->", lw=1.1, color="black"))
+    axins.annotate("jump $= \\bar b_r$", xy=(0.22, 0.1), fontsize=12,
+                   ha="left", va="bottom")
+    axins.set_xlim(-0.08, x_hi)
+    axins.set_ylim(-0.8, y_hi)
+    axins.tick_params(labelsize=11)
+    axins.set_xticks([0, 1])
+    axins.set_yticks([0, 5, 10, 15])
+    ax.indicate_inset_zoom(axins, edgecolor="black", linewidth=0.9, alpha=0.9)
+    return axins
+
+
 def make_figure():
     fig, (ax_l, ax_r) = plt.subplots(1, 2, figsize=(9.6, 4.2))
 
@@ -115,13 +164,17 @@ def make_figure():
 
     ax_l.set_ylabel("cost (\\$/hr)")
 
+    # MOVED 2026-08-21: was xytext=(4.2, 3.0), which put the text across
+    # reactor II's concave and linearized curves.
     ax_l.annotate(
         "fixed charge:\npaid only if\nthe unit exists",
-        xy=(0.55, 7.5),
-        xytext=(4.2, 3.0),
+        xy=(0.35, 7.0),
+        xytext=(5.2, 26.0),
         fontsize=12,
         arrowprops=dict(arrowstyle="->", lw=1.1, color="black"),
     )
+
+    _origin_inset(ax_r)
     ax_r.annotate(
         "adding the linear feed\nterm to both models\nhides the difference",
         xy=(11.0, 79.0),

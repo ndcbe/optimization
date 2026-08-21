@@ -1,8 +1,18 @@
-# Semester Project (Spring 2023)
+# Semester Project (Archived --- Spring 2023)
+
+```{warning}
+**This page describes Spring 2023 and is not assigned in Fall 2026.** Nothing on it is a deliverable.
+It is kept for the record, and because the project ideas below remain a useful list of ways to go deeper
+on a class topic.
+
+Fall 2026 has no semester project. Assessment is ten short homework assignments, the
+[](./project1.md), two in-class midterms, and an in-person final exam --- see the
+[syllabus](./syllabus.md) and the [semester calendar](./calendar.md).
+```
 
 Although homework is helpful for learning concepts, the goal of the class is to prepare you to apply optimization methods in your research or future careers. A project is the best way to accomplish this.
 
-During the semester project, you will develop mastery of a handful of concepts introduced in this class through an application of your choice. The semester project is the main evaluation criteria for the semester (instead of a final exam).
+During the semester project, you will develop mastery of a handful of concepts introduced in this class through an application of your choice. In Spring 2023 the semester project was the main evaluation criterion for the semester, in place of a final exam.
 
 Everyone is encouraged to structure their class projects to be aligned with their research. If you reuse any prior work, include a short paragraph in your project proposal and final report explaining the specific extensions you added for this class. (In other words, you should not completely recycle work you have already done; there needs to be something new.) Undergraduate students: please notify Prof. Dowling if you want to convert work from a previous/current class (including undergraduate research credit) into your semester project. Graduate students: please notify Prof. Dowling and other course instructors if you plan to “double count” a project for two current classes. This is likely fine as long as all instructors agree, but each version of the project should be tailored to each class.
 

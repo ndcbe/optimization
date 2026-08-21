@@ -87,9 +87,21 @@ Things the guide demonstrates but a style file cannot encode — do these by han
 
 ---
 
-## Course additions: greyscale is a strict requirement
+## Course additions: use colour, and make it survive greyscale
 
-**The governing decision (Prof. Dowling, 2026-08-17):**
+⚠ **The rule was RELAXED on 2026-08-21 and `check_greyscale.py` was rewritten to match. If you are
+reading an older figure's docstring that says "all three curves are BLACK because
+`check_greyscale.py` fails a coloured one", that constraint is gone.**
+
+**Prof. Dowling, 2026-08-19:**
+
+> **"Our greyscale test is way too strict."**
+> **"I do not want the figures to be greyscale. I want the figures to be okay if they are printed
+> in greyscale."**
+
+and, on individual figures, *"let's use some color"* and *"Make this colorful!?"*
+
+**The governing decision (Prof. Dowling, 2026-08-17), which still stands:**
 
 > **Colour first — design the figure to be as good as it can be in colour.
 > Then guarantee it still works in black and white.**
@@ -98,7 +110,20 @@ This is a **priority ordering, not an equal both-and requirement.** The colour v
 viewing mode: the website is on screen, and Prof. Dowling prints both the instructor and student
 copies in colour. The greyscale case is the **student who prints the student handout on a mono
 laser printer** — real and common, but secondary. So greyscale is a **pass/fail floor**, not an
-optimisation target. Do **not** flatten the palette to maximise luminance separation.
+optimisation target. Do **not** flatten the palette to maximise luminance separation, and do
+**not** drop colour to make the checker quieter — a monochrome figure with two or more series is
+now *reported* by `check_greyscale.py --recolour` as a candidate for having its colour put back.
+
+**The rule, in one sentence: a distinction may be carried by colour, but never by colour ALONE.**
+
+A figure fails only when *both* of these hold:
+
+1. two series are identified by chromatic colours that collapse to the same grey (ΔL\* < 10), **and**
+2. **neither** of those series carries a non-colour identity — no linestyle, dash pattern, marker,
+   or hatch.
+
+Either one alone is fine. Sky blue and orange print as the same grey; one dashed and one dotted,
+they pass, because the colour reader uses the hue and the photocopy reader uses the dashes.
 
 The source guide addresses **colour-blindness** and says nothing about greyscale. They are
 different properties: a palette can be perfectly distinguishable to a colour-blind reader and
@@ -119,17 +144,24 @@ collapse to identical greys on a photocopier. Okabe-Ito does exactly that. Measu
 
 | Rule | Status |
 | --- | --- |
-| Every series carries a **non-colour** identity — linestyle, marker, or direct label | **required**, and automatic for linestyle via `axes.prop_cycle` |
-| Greyscale **verified by measurement**, not by eye | **required** — `scripts/check_greyscale.py` |
+| Every series carries a **non-colour** identity — linestyle, marker, hatch, or direct label | **required**, and automatic via `axes.prop_cycle`, which pairs colour with linestyle |
+| Greyscale **verified by measurement**, not by eye | **required** — `scripts/check_greyscale.py --source` |
 | **Direct labelling** preferred over a legend where it fits | strong preference |
-| At most **four** series per axes | **required** — see below |
 | Sequential colour maps must be **monotone in luminance** (`viridis`, not `jet`/`coolwarm`) | **required** |
+| ~~At most **four** series per axes~~ | **withdrawn 2026-08-21** — see below |
+| **Monochrome** where colour would help | **discouraged** — reported as a recolour candidate |
 
-**Why four.** The cycle in `dowling.mplstyle` is ordered so its first four entries have the widest
-luminance spread the palette allows: ΔL\* ≥ 11.8, verified by brute force over all subsets. Five
-entries cannot exceed ΔL\* = 6.9 under *any* ordering of Okabe-Ito. Past four series, colour has
-run out of greyscale headroom and you must switch to markers, direct labelling, or small multiples.
-This is the concrete consequence of putting colour first: linestyle is load-bearing, not decoration.
+**Why the four-series cap is gone.** It was never about the number four; it was a consequence of
+requiring luminance separation *from colour alone*. The cycle in `dowling.mplstyle` is ordered so
+its first four entries have the widest luminance spread Okabe-Ito allows (ΔL\* ≥ 11.8, verified by
+brute force over all subsets); five entries cannot exceed ΔL\* = 6.9 under *any* ordering. Under the
+new rule the fifth series does not need luminance headroom, because it gets the fifth **linestyle**
+from the same cycle. **Four is still a good default for readability** — past four curves a plot is
+usually crowded whatever the palette — but it is a design preference now, not a gate.
+
+⚠ The **one place the cap still binds** is a sequential colormap, where there is no linestyle to
+fall back on: `viridis` bands must be far enough apart in L\* to be told apart in print, which is
+what forced the contour lines in `mccormick-envelopes.py`.
 
 Instructor-only figures may use colour freely.
 
@@ -138,15 +170,26 @@ Instructor-only figures may use colour freely.
 ## Verifying
 
 ```bash
-# the house style itself (the authoritative check)
+# figure SOURCES -- the authoritative check, because whether an encoding is
+# redundant is a fact about the source, not about the pixels
+python scripts/check_greyscale.py --source figures/plots
+
+# just the list of monochrome figures that could have their colour back
+python scripts/check_greyscale.py --source figures/plots --recolour
+
+# the house style: does its prop_cycle pair colour with a non-colour key?
 python scripts/check_greyscale.py --style figures/dowling.mplstyle -n 4
 
-# an ad-hoc palette
-python scripts/check_greyscale.py --colors '#0072B2' '#E69F00' tab:red
+# an ad-hoc palette. --redundant asserts the figure also varies
+# linestyle/marker/hatch, which downgrades a grey collapse to a warning
+python scripts/check_greyscale.py --colors '#0072B2' '#E69F00' --redundant
 
-# rendered images, or a directory of them (triage only — see the script's docstring
-# for why image mode over-reports on photographs and UI screenshots)
+# rendered images, or a directory of them (triage only — image mode cannot see a
+# linestyle, so a collapse there is a WARNING and never a failure)
 python scripts/check_greyscale.py media/figures
+
+# prove the checker can fail, not just pass
+python scripts/check_greyscale.py --selftest
 ```
 
 Exit status is 0 on pass, 1 on fail, so it gates in CI. `--strict` promotes warnings to failures.

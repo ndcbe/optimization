@@ -1,0 +1,335 @@
+import { default as useSWR } from 'swr';
+import {
+  ArrowTopRightOnSquareIcon as ExternalLinkIcon,
+  CheckCircleIcon,
+  DocumentCheckIcon,
+  DocumentPlusIcon,
+  NoSymbolIcon,
+  PlusCircleIcon,
+  XCircleIcon,
+} from '@heroicons/react/24/outline';
+import { HoverPopover, LinkCard } from '../components/index.js';
+import React, { useEffect, useState } from 'react';
+import { CodeBlock } from '../code.js';
+import classNames from 'classnames';
+
+const fetcher = (...args: Parameters<typeof fetch>) =>
+  fetch(...args).then((res) => {
+    if (res.status === 200) return res.text();
+    throw new Error(`Content returned with status ${res.status}.`);
+  });
+
+const jsonFetcher = (...args: Parameters<typeof fetch>) =>
+  fetch(...args).then((res) => {
+    if (res.status === 200) return res.json();
+    throw new Error(`Content returned with status ${res.status}.`);
+  });
+
+function extToLanguage(ext?: string): string | undefined {
+  return (
+    {
+      ts: 'typescript',
+      js: 'javascript',
+      py: 'python',
+      md: 'markdown',
+      yml: 'yaml',
+    }[ext ?? ''] ?? ext
+  );
+}
+
+function useLoadWhenOpen(open: boolean, url: string, loader: (...args: any[]) => any) {
+  const [cached, setCached] = useState<string>();
+  const { data, error } = useSWR(open ? url : null, loader);
+  useEffect(() => {
+    setCached(cached || data);
+  }, [cached, url, data]);
+  return { data: cached, error };
+}
+
+function GithubFilePreview({
+  url,
+  raw,
+  org,
+  repo,
+  file,
+  from,
+  to,
+  open,
+  className,
+}: {
+  url: string;
+  raw: string;
+  file: string;
+  org: string;
+  repo: string;
+  from?: number;
+  to?: number;
+  open: boolean;
+  className?: string;
+}) {
+  const { data, error } = useLoadWhenOpen(open, raw, fetcher);
+  let code = data;
+  if (error) {
+    return (
+      <div className="hover-document article w-[500px] sm:max-w-[500px]">
+        <a
+          href={url}
+          className={classNames('block text-inherit hover:text-inherit', className)}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <ExternalLinkIcon width="1rem" height="1rem" className="float-right" />
+        </a>
+        <div className="mt-2">Error loading "{file}" from GitHub.</div>
+      </div>
+    );
+  }
+  const lang = extToLanguage(file?.split('.').pop());
+
+  let startingLineNumber = 1;
+  let emphasizeLines: number[] = [];
+  const offset = 5;
+  if (code && from && to) {
+    startingLineNumber = from;
+    code = code
+      ?.split('\n')
+      .slice(from - 1, to)
+      .join('\n');
+  } else if (code && from) {
+    startingLineNumber = from + 1 - offset;
+    emphasizeLines = [from];
+    code = code
+      ?.split('\n')
+      .slice(Math.max(0, from - offset), from + offset)
+      .join('\n');
+  } else {
+    code = code?.split('\n').slice(0, 10).join('\n');
+  }
+  const description = code ? (
+    <>
+      <CodeBlock
+        value={code}
+        lang={lang}
+        filename={file}
+        showLineNumbers
+        startingLineNumber={startingLineNumber}
+        emphasizeLines={emphasizeLines}
+        showCopy={false}
+      />
+    </>
+  ) : null;
+  return (
+    <LinkCard
+      loading={!code}
+      url={url}
+      title={`GitHub - ${org}/${repo}`}
+      description={description}
+      className="hover-document article max-w-[80vw]"
+    />
+  );
+}
+
+// https://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color
+function useWhiteTextColor(bgColor: string): boolean {
+  const color = bgColor.charAt(0) === '#' ? bgColor.substring(1, 7) : bgColor;
+  const r = parseInt(color.substring(0, 2), 16); // hexToR
+  const g = parseInt(color.substring(2, 4), 16); // hexToG
+  const b = parseInt(color.substring(4, 6), 16); // hexToB
+  return r * 0.299 + g * 0.587 + b * 0.114 <= 186;
+}
+
+function GithubIssuePreview({
+  url,
+  org,
+  repo,
+  issue_number,
+  open,
+  className,
+}: {
+  url: string;
+  org: string;
+  repo: string;
+  issue_number?: string | number;
+  open: boolean;
+  className?: string;
+}) {
+  const { data, error } = useLoadWhenOpen(
+    open,
+    `https://api.github.com/repos/${org}/${repo}/issues/${issue_number}`,
+    jsonFetcher,
+  );
+  if (!data && !error) {
+    return (
+      <div className="hover-document article w-[500px] sm:max-w-[500px] animate-pulse">
+        Loading...
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="hover-document article">
+        <a
+          href={url}
+          className={classNames('block text-inherit hover:text-inherit', className)}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <ExternalLinkIcon className="float-right w-4 h-4" />
+        </a>
+        <div className="mt-2">Error loading from GitHub.</div>
+      </div>
+    );
+  }
+  const issueData = data as unknown as Record<string, any>;
+  const isPullRequest = Boolean(issueData.pull_request);
+  const issueState = issueData.state as string;
+  const isOpen = issueState === 'open';
+  const isMerged = Boolean(issueData.pull_request?.merged_at);
+  const isCompletedIssue = issueData.state_reason === 'completed';
+  const isNotPlannedIssue = !isPullRequest && issueState === 'closed' && !isCompletedIssue;
+  const dateString = new Date(issueData.created_at).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+  const iconClassName = 'inline-block mr-2 -translate-y-px h-6 w-6';
+  // Define the icon element we'll render based on the issue's state
+  let stateIcon: JSX.Element | null = null;
+  if (isPullRequest) {
+    // If it's a PR we choose between open, merged, not merged
+    if (isOpen) {
+      stateIcon = (
+        // PR still open
+        <DocumentPlusIcon
+          className={classNames(iconClassName, 'text-green-700 dark:text-green-500')}
+        />
+      );
+    } else {
+      stateIcon = isMerged ? (
+        // PR Merged
+        <DocumentCheckIcon
+          className={classNames(iconClassName, 'text-purple-700 dark:text-purple-500')}
+        />
+      ) : (
+        // PR closed as not merged
+        <XCircleIcon className={classNames(iconClassName, 'text-red-700 dark:text-red-500')} />
+      );
+    }
+  } else if (isOpen) {
+    // If it's an issue, we choose between open, completed, and "closed not completed"
+    stateIcon = (
+      // Issue still open
+      <PlusCircleIcon className={classNames(iconClassName, 'text-green-700 dark:text-green-500')} />
+    );
+  } else {
+    stateIcon = isNotPlannedIssue ? (
+      // Issue closed as not planned
+      <NoSymbolIcon className={classNames(iconClassName, 'text-slate-500 dark:text-slate-400')} />
+    ) : (
+      // Issue completed
+      <CheckCircleIcon
+        className={classNames(iconClassName, 'text-purple-700 dark:text-purple-500')}
+      />
+    );
+  }
+  return (
+    <div className="hover-document article w-[400px] sm:max-w-[400px] p-3">
+      <div className="text-xs font-light">
+        {org}/{repo}
+      </div>
+      <div className="my-2 text-lg font-bold dark:text-white">
+        {stateIcon}
+        {issueData.title}
+      </div>
+      <div className="text-xs font-light">
+        #{issue_number} opened on {dateString} by{' '}
+        <span className="font-normal">@{issueData.user.login}</span>
+      </div>
+      <p className="text-md max-h-[4rem] overflow-hidden">{issueData.body}</p>
+      {issueData.labels?.length > 0 && (
+        <div className="flex flex-wrap gap-1">
+          {issueData.labels?.map((label: any) => (
+            <span
+              key={label.id}
+              className={classNames('text-xs inline-flex items-center px-2 py-0.5 rounded-full', {
+                'text-white': useWhiteTextColor(label.color),
+              })}
+              style={{ backgroundColor: `#${label.color}` }}
+            >
+              {label.name}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function GithubLink({
+  kind,
+  children,
+  url,
+  org,
+  repo,
+  raw,
+  file,
+  from,
+  to,
+  issue_number,
+  className,
+}: {
+  children: React.ReactNode;
+  kind: 'file' | 'issue';
+  url: string;
+  raw: string;
+  org: string;
+  repo: string;
+  file: string;
+  from?: number;
+  issue_number?: string | number;
+  to?: number;
+  className?: string;
+}) {
+  return (
+    <HoverPopover
+      card={({ load }) => {
+        if (kind === 'file') {
+          return (
+            <GithubFilePreview
+              url={url}
+              raw={raw}
+              file={file}
+              from={from}
+              to={to}
+              open={load}
+              org={org}
+              repo={repo}
+              className={className}
+            />
+          );
+        }
+        if (kind === 'issue') {
+          return (
+            <GithubIssuePreview
+              url={url}
+              open={load}
+              org={org}
+              issue_number={issue_number}
+              repo={repo}
+              className={className}
+            />
+          );
+        }
+      }}
+    >
+      <a
+        href={url}
+        className={classNames('hover-link', className)}
+        target="_blank"
+        rel="noreferrer"
+      >
+        {children}
+      </a>
+    </HoverPopover>
+  );
+}

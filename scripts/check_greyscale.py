@@ -747,6 +747,33 @@ def main(argv: Sequence[str] | None = None) -> int:
             return 2
         print()
 
+    # ------------------------------------------------------------------ #
+    # Route source files given POSITIONALLY into --source.
+    #
+    # Found 2026-08-22, and it is the FOURTH usability trap in this checker
+    # (after the vacuous .ipynb PASS, the missing plot_surface, and the vacuous
+    # OK on a directory). Handing a .ipynb or .py to the positional `paths`
+    # argument sent it to the IMAGE reader, which reported
+    #
+    #     FAIL  notebooks/4-dev/SP.ipynb: unreadable (cannot identify image file ...)
+    #     RESULT: FAIL -- above, a distinction is carried by colour ALONE.
+    #
+    # and exited 1. That is WORSE than a vacuous pass: it is a confident false
+    # alarm, blaming colour for what is a wrong-argument mistake, and its
+    # summary line asserts a conclusion the run never tested. Several agent
+    # briefs on 2026-08-22 carried the positional form, so this fired for real.
+    #
+    # Routing rather than erroring, because the positional form is the obvious
+    # thing to type and the intent is never ambiguous: a notebook or a script is
+    # a SOURCE, never a rendered image.
+    src_exts = (".ipynb", ".py")
+    misrouted = [p for p in args.paths if p.lower().endswith(src_exts)]
+    if misrouted:
+        args.paths = [p for p in args.paths if p not in misrouted]
+        args.source = (args.source or []) + misrouted
+        print(f"note: treating {len(misrouted)} source file(s) given positionally "
+              f"as --source (a .ipynb/.py is never a rendered image)")
+
     if args.source:
         sources = list(iter_sources(args.source))
         print(f"Figure sources ({len(sources)})")

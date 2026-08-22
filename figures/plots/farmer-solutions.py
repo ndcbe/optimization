@@ -28,14 +28,31 @@ figures/README.md WITHDREW the four-series cap on 2026-08-21. Four is still the
 right number here, but because four is what the data has, not because a rule
 says so.)
 
-⚠ DEFECT FIXED 2026-08-21. The four bars indexed HATCH_CYCLE directly, 0 to 3,
-and in matplotlib 3.5.1 HATCH_CYCLE[0] ("///") and HATCH_CYCLE[1] ("\\\")
-render with the SAME SLOPE -- the backslash hatch leans the same way as the
-forward slash, differing only in density. So the first two bars, the +20% and
-average perfect-information solutions, carried ONE texture between them and were
-separated only by the 0.94-vs-0.80 face tint, and the legend showed two
-identical swatches. HATCHES below now names the four textures explicitly and
-skips index 1, exactly as plots/packing-local-solutions.py does.
+⚠ THE 2026-08-21 NOTE THAT USED TO SIT HERE IS RETRACTED (2026-08-22). It said
+the four bars could not walk HATCH_CYCLE 0 to 3 because in matplotlib 3.5.1 the
+backslash hatch leaned the same way as the forward slash, making indices 0 and
+1 one texture. That was a real defect, but it is DEAD: it does not reproduce
+under the matplotlib 3.11.1 in optimization_fall2026, where index 0 is +45 deg
+and index 1 is -45 deg -- by the hatch spec the most SEPARATED line pair the
+cycle offers. Do not reintroduce the workaround.
+
+HATCHES below still skips index 1, and the reason is now this figure's own,
+established by rendering the walk-the-cycle version and looking at it:
+
+  ⚠ MIRRORED SLOPES ON BARS THAT TOUCH MERGE INTO A HERRINGBONE. The bars
+  within a group abut, so with index 1 restored the +20% and average bars meet
+  along a shared edge where a +45 texture runs into a -45 one. The rendered
+  result is a single chevron-folded ribbon rather than two categories, most
+  obviously in the sugar-beets group where both bars are tall. On top of that,
+  the legend stacks the two swatches one directly above the other, each only a
+  few lines wide, so the reader is asked to judge the SIGN of a slope on the
+  smallest patch in the figure. Index 4 ("|||") cannot be read as a slash at
+  any size and does not fuse across an edge.
+
+So the hatch that replaced index 1 is kept on its merits, not out of fear of
+the old defect. See plots/evpi-vss-ladder.py, which is the same figure shape and
+reached the same conclusion, and contrast plots/licq-cusp.py, where the regions
+OVERLAP rather than abut and the mirrored pair is therefore exactly right.
 
 `scripts/check_greyscale.py --source` reports this file as
 "2 series, no colour, 0 distinct non-colour encodings". That is a false
@@ -64,10 +81,15 @@ from _house import HATCH_CYCLE
 # and for a four-category bar chart this is simply the correct encoding.
 FILLS = ("0.94", "0.80", "0.62", "0.42")
 
-# ⚠ NOT a straight walk down HATCH_CYCLE. Indices 0 and 1 render with the same
-# slope in matplotlib 3.5.1, so "///" and "\\\" are one texture at handout
-# size and the first two bars were told apart by their face tint alone. Index 1
-# is skipped and "|||" takes its place: vertical rules cannot be read as slashes.
+# ⚠ NOT a straight walk down HATCH_CYCLE, and NOT because of the matplotlib
+# 3.5.1 same-slope defect that used to be cited here -- that defect is dead
+# under 3.11.1, where "///" (+45) and "\\\" (-45) are the most separated line
+# pair in the cycle. See the retraction in the module docstring.
+#
+# Index 1 is skipped because the bars within a group ABUT: rendered, a +45
+# texture running into a -45 one across a shared edge fuses into a herringbone,
+# and the stacked legend swatches ask the reader to judge the sign of a slope on
+# a patch a few lines wide. "|||" cannot be read as a slash at any size.
 HATCHES = (HATCH_CYCLE[0], HATCH_CYCLE[4], HATCH_CYCLE[2], HATCH_CYCLE[3])
 
 CROPS = ("wheat", "corn", "sugar beets")

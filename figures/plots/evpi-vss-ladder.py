@@ -67,15 +67,31 @@ Two bar series, distinguished by HATCH texture and by a white vs grey face, not
 by hue; the legend is keyed by the hatch.  Panel (a) is entirely black, grey and
 #0072B2 (dL* = 46.0).  No hue carries meaning alone.
 
-⚠ DEFECT FIXED 2026-08-21.  The two bar series used HATCH_CYCLE[0] ("///") and
-HATCH_CYCLE[1] ("\\\"), and in matplotlib 3.5.1 those two render with the SAME
-SLOPE -- the backslash hatch comes out leaning the same way as the forward
-slash, differing only slightly in density.  The hatch channel this docstring
-named as the primary distinction was therefore not a distinction at all, and
-the two series were separated only by the white-vs-0.82 face tint.  The second
-series now uses HATCH_CYCLE[4] ("|||"), vertical rules, which cannot be confused
-with slashes at any size.  Same defect and same fix as
-plots/packing-local-solutions.py; see the note at the top of that file.
+⚠ THE 2026-08-21 NOTE HERE IS RETRACTED (2026-08-22).  It said the second bar
+series could not use HATCH_CYCLE[1] because in matplotlib 3.5.1 the backslash
+hatch rendered at the forward-slash slope, so [0] and [1] were one texture.
+That defect was real but is DEAD: under the matplotlib 3.11.1 in
+optimization_fall2026, [0] is +45 deg and [1] is -45 deg, which by the hatch
+spec is the most SEPARATED line pair the cycle offers.  Do not reintroduce the
+workaround.
+
+The second series still uses HATCH_CYCLE[4] ("|||"), now for a reason of this
+panel's own, established by rendering the [1] version and looking at it:
+
+  ⚠ MIRRORED SLOPES ON BARS THAT TOUCH MERGE INTO A HERRINGBONE.  The WS and RP
+  bars of a scenario abut, so a +45 texture meets a -45 one along a shared edge
+  and the pair renders as one chevron-folded block.  That is worst in exactly
+  the place this panel exists to show: in the "high" scenario WS and RP are
+  nearly the same height (167.7 vs 167.0), and the reader has to see TWO bars
+  with a small gap between them.  With [1] the boundary disappears into the
+  texture and only the white-vs-0.82 face tint survives -- which is precisely
+  the failure the 2026-08-21 note was trying to prevent, arrived at by the
+  opposite route.  Vertical rules cannot be confused with slashes at any size
+  and do not fuse across an edge.
+
+Same shape of conclusion as plots/farmer-solutions.py (grouped bars that abut);
+contrast plots/licq-cusp.py, where the two regions OVERLAP instead of abutting
+and the mirrored pair is the right choice because it superimposes into an "x".
 
 Panel (a)'s three rungs are all black solid lines, which `check_greyscale.py
 --source` reports as "3 series, no colour, 1 distinct encoding".  That is a
@@ -197,7 +213,11 @@ def _panel_b(ax):
     ax.bar(idx - w / 2, WS_SCEN / 1000.0, width=w, facecolor="white",
            edgecolor=BLACK, linewidth=1.6, hatch=HATCH_CYCLE[0],
            label="wait-and-see (WS)", zorder=3)
-    # ⚠ HATCH_CYCLE[4], not [1]: see the DEFECT note in the module docstring.
+    # ⚠ HATCH_CYCLE[4], not [1]: these bars abut, and mirrored slopes fuse into
+    # a herringbone across the shared edge -- worst in the "high" scenario,
+    # where the two bars are nearly equal and the gap is the point. NOT the old
+    # matplotlib 3.5.1 same-slope defect, which is dead; see the retraction in
+    # the module docstring.
     ax.bar(idx + w / 2, RP_SCEN / 1000.0, width=w, facecolor="0.82",
            edgecolor=BLACK, linewidth=1.6, hatch=HATCH_CYCLE[4],
            label="recourse plan (RP)", zorder=3)

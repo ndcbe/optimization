@@ -221,12 +221,19 @@ SERIES_CALLS = {
     "stem", "bar", "barh", "hist", "fill", "fill_between", "fill_betweenx",
     "axvspan", "axhspan", "hlines", "vlines", "contour", "contourf",
     "pcolormesh", "imshow", "quiver", "arrow", "annotate",
+    # 3-D surfaces. Added 2026-08-21: Stochastic-Gradient-Descent-3 drew each
+    # comparison figure as a plot_surface panel beside a contour panel, BOTH
+    # with cmap="jet". Only the contour was flagged, so trusting this checker
+    # would have left three non-monotone-luminance surfaces on the site. A
+    # colormap is as wrong on a surface as on a contour.
+    "plot_surface", "plot_wireframe", "plot_trisurf", "contour3D", "scatter3D",
 }
 # ...but of those, the ones that draw a *comparable series* -- two of these in
 # one figure are two things the reader must tell apart. annotate/arrow/imshow
 # are excluded: an arrow is labelled in place (see _house.label_curve) and an
 # image is one field, not two series.
-COMPARABLE = SERIES_CALLS - {"annotate", "arrow", "imshow", "hist"}
+COMPARABLE = SERIES_CALLS - {"annotate", "arrow", "imshow", "hist",
+                             "plot_surface", "plot_wireframe", "plot_trisurf"}
 
 COLOR_KW = {"color", "c", "facecolor", "fc", "edgecolor", "ec", "colors",
             "markerfacecolor", "mfc"}

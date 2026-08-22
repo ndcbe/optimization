@@ -32,8 +32,14 @@ of a continuous map land on the same grey once printed (7 levels gives min
 dL* = 11.9, 6 gives 14.5, and antialiased blends against the contour lines and
 the colorbar land below both). Contour LINES carry the same information, are
 each labelled with their own numeric value, and read better at handout size.
-The contours are the diamonds you would predict: the gap is 0 on the whole
-boundary and rises to a single peak at the box centre.
+The gap is 0 on the whole boundary and rises to a single peak at the box
+centre, so the contours are NESTED SQUARES, concentric with the box and
+axis-aligned. ⚠ Not diamonds -- that word stood here and in the handout's note
+until 2026-08-22, and the figure refutes it. The gap works out to
+min(x, y, 1-x, 1-y) on the unit box, i.e. the L-infinity distance to the
+boundary, whose level sets are the squares this panel draws. A DIAMOND would be
+the level set of the L-1 distance |x - 1/2| + |y - 1/2|, which is not what
+either envelope produces.
 
 Right panel -- the same thing along the diagonal x = y = t, where the gap is
 widest.
@@ -99,17 +105,34 @@ def make_figure():
              ls="none")
     # Both notes sit OUTSIDE the unit box: inside, they landed on the inline
     # contour labels, which is the one thing clabel cannot route around.
-    ax0.annotate("gap $=0$ on the whole boundary", xy=(0.5, 1.16),
-                 fontsize=11, ha="center", va="bottom")
-    ax0.annotate("widest at the centre: $(x^U-x^L)(y^U-y^L)/2 = 0.5$",
-                 xy=(0.5, -0.16), fontsize=11, ha="center", va="top",
-                 color=UPPER)
+    #
+    # ⚠ THEY MUST ALSO FIT THE AXES BOX, and until 2026-08-22 they did not.
+    # `set_aspect(1)` makes this panel's WIDTH a consequence of its height and
+    # of the y-range, so padding the y-limits to make room above and below the
+    # unit box is what squeezed the box to 188 px while the two notes rendered
+    # at 244 px and 352 px -- 1.3x and 1.9x the width of the panel they label,
+    # spilling across both spines (the upper note had the left spine drawn
+    # through the word "gap"). Fixed by shortening the first note, breaking the
+    # second over two lines, dropping to 10 pt, and trimming the y-padding,
+    # which widens the box to 216 px. Measured after the change: 176 px and
+    # 171 px, i.e. 20 px and 23 px of clearance on each side.
+    # If you edit either string, re-measure -- nothing in the build catches it.
+    ax0.annotate("gap $=0$ on the boundary", xy=(0.5, 1.09),
+                 fontsize=10, ha="center", va="bottom")
+    ax0.annotate("widest at the centre:\n$(x^U-x^L)(y^U-y^L)/2 = 0.5$",
+                 xy=(0.5, -0.065), fontsize=10, ha="center", va="top",
+                 linespacing=1.35, color=UPPER)
     ax0.set_xlabel("$x$")
     ax0.set_ylabel("$y$")
     ax0.set_title("envelope gap, upper $-$ lower", fontsize=13)
     ax0.set_aspect(1)
     ax0.set_xlim(-0.06, 1.06)
-    ax0.set_ylim(-0.34, 1.34)
+    ax0.set_ylim(-0.26, 1.20)
+    # Ticks named explicitly: the y-padding that makes room for the notes is
+    # outside the box and the auto-locator would put a tick at -0.25 in it,
+    # which is not a coordinate of anything.
+    ax0.set_xticks([0.0, 0.5, 1.0])
+    ax0.set_yticks([0.0, 0.5, 1.0])
 
     # ------------------------------------------- panel 2: the diagonal section
     t = np.linspace(XL, XU, 401)

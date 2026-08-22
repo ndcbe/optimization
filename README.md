@@ -53,7 +53,17 @@ ipopt --version
 jupyter lab
 ```
 
-Verified 2026-08-17 on macOS (Apple Silicon): Python 3.13.15, Pyomo 6.10.1, Ipopt 3.13.2.
+Verified 2026-08-17 and again 2026-08-22 on macOS (Apple Silicon), the second time from this file alone on
+a machine that had never had the environment: Python 3.13.15, Pyomo 6.10.1, NumPy 2.5.2, pandas 3.0.5,
+Ipopt 3.13.2, GLPK 5.0. Pyomo reports `glpk`, `cbc`, `ipopt`, `couenne`, `bonmin`, `appsi_highs` and `k_aug`
+all available; `gurobi` needs its own licence and is not expected to work out of the box.
+
+> **If a solver seems missing, check your `PATH` before believing it.** `SolverFactory("glpk").available()`
+> returns `False` when `glpsol` is installed but not visible — most often because the interpreter was called
+> by its full path instead of activating the environment. The two directories are separate: conda solvers
+> (`glpsol`, HiGHS) come from `conda activate`, and the IDAES binaries (`ipopt`, `k_aug`, `dot_sens`, `cbc`,
+> `bonmin`, `couenne`) come from `~/.idaes/bin`, which is never added automatically. Nothing about the error
+> distinguishes "not installed" from "not on the path".
 
 ---
 
@@ -111,16 +121,26 @@ checker will not catch that for you.
 
 ### Building the site
 
-> **Note:** the site is mid-migration from JupyterBook 1 to
-> [JupyterBook 2 / MyST](https://next.jupyterbook.org). The `environment.yml` above installs JupyterBook 2,
-> which requires the `myst.yml` configuration that is still being written. Until that lands, the build
-> commands here will not work against the `_config.yml` / `_toc.yml` files currently in the repository.
-
-Once the migration is complete:
+The site is built with [JupyterBook 2 / MyST](https://next.jupyterbook.org), configured by `myst.yml`.
 
 ```bash
 python ./scripts/process_notebooks.py
-jupyter-book build --html
+BASE_URL=/optimization jupyter-book build --html
 ```
+
+The output lands in `_build/html`. `BASE_URL` matters because the site is served from
+`https://ndcbe.github.io/optimization` rather than a domain root; without it every asset and internal link
+resolves one level too high and the page renders unstyled.
+
+No `npm install -g mystmd` is needed: the `jupyter-book` pip package in `environment.yml` manages its own
+Node toolchain. The bare `myst` command is therefore not on your `PATH`, which is expected — GitHub Actions
+installs `mystmd` from npm and calls `myst build --html` instead, and the two are equivalent.
+
+> **Do not delete `_build/`.** The site theme is downloaded at build time, and a GitHub rate-limit response
+> fails the build with no diagnostics at all. An incremental rebuild is also far faster.
+
+A clean build currently emits around 115 warnings and no errors. Most are a single mechanical class —
+`Duplicate identifier in project`, meaning two notebook cells share an id — so a warning count in that
+neighbourhood is the status quo rather than something you broke.
 
 Publishing to GitHub Pages happens automatically from `main` via GitHub Actions.

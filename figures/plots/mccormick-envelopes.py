@@ -138,9 +138,23 @@ def make_figure():
     t = np.linspace(XL, XU, 401)
     lo_t, hi_t = mccormick_envelopes(t, t)
 
-    # The relaxation gap. Hatched as well as tinted, per figures/README.md:
-    # HATCH_CYCLE[2] ("...") and NOT [0] or [1], which render with the same
-    # slope in matplotlib 3.5.1 and so are one texture, not two.
+    # The relaxation gap. Hatched as well as tinted, per figures/README.md.
+    #
+    # HATCH_CYCLE[2] ("...", dots), and the reason is NOT the one that used to
+    # be recorded here. That reason was a matplotlib 3.5.1 rendering defect in
+    # which every backslash hatch came out at the forward-slash slope, so [0]
+    # and [1] were "one texture, not two". It does not reproduce under the
+    # matplotlib 3.11.1 in optimization_fall2026, where [0] ("///", +45 deg)
+    # and [1] ("\\\", -45 deg) are by the hatch spec the most SEPARATED line
+    # pair the cycle offers. Do not reintroduce that workaround.
+    #
+    # Dots are kept for a reason of this figure's own, checked by rendering
+    # both: this is the ONLY hatched region in the figure, so nothing has to be
+    # separated from it and the index is free -- but three curves run THROUGH
+    # the region (solid, dashed, dash-dot). A line hatch competes with them;
+    # rendered with [1], the fill reads as a fourth set of strokes crossing the
+    # envelopes, worst near the right-hand tip where the region narrows. Dots
+    # stay in the background, which is what a shaded region is (_house.py).
     ax1.fill_between(t, lo_t, hi_t, facecolor="0.6", alpha=SHADE_ALPHA,
                      hatch=HATCH_CYCLE[2], edgecolor=plt.rcParams["hatch.color"],
                      linewidth=0.0, zorder=0)

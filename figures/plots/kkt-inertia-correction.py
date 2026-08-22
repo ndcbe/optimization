@@ -86,10 +86,20 @@ still identified independently of hue -- by being 1.2 pt thinner and by their
 own in-place lambda_i labels -- so the lightening buys margin without spending
 a channel.
 
-The shaded region keeps HATCH_CYCLE[0] and gains a pale green tint. Note the
-region is the ONLY shaded area here, so there is no second hatch to collide
-with; a figure shading two regions must not use HATCH_CYCLE[0] and [1] together,
-because in matplotlib 3.5.1 "///" and "\\\" render with the same slope.
+The shaded region keeps HATCH_CYCLE[0] and gains a pale green tint. It is the
+ONLY shaded area here, so there is no second hatch to collide with and the
+choice of index is free.
+
+⚠ A PROHIBITION THAT USED TO SIT IN THIS DOCSTRING IS GONE, because it was
+wrong: it said a figure shading two regions must never use HATCH_CYCLE[0] and
+[1] together. In fact [0] is "///" and [1] is "\\\" -- +45 and -45 degrees, so
+by the hatch spec they are the most SEPARATED line pair the cycle offers, not
+the least. The rule came from a matplotlib 3.5.1 rendering defect in which
+every backslash hatch came out at the forward-slash slope, making the two
+identical; that defect does not reproduce under the matplotlib 3.11.1 in
+optimization_fall2026 (measured on a rendered test patch, mean|A - B| = 28.2 --
+the load-bearing fact being only that it is not 0). See plots/licq-cusp.py,
+which pairs [0] with [1] deliberately. Do not reintroduce the workaround.
 """
 
 import numpy as np

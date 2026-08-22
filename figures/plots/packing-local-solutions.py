@@ -87,14 +87,24 @@ from scipy.optimize import minimize
 
 from _house import HATCH_CYCLE, SHADE_ALPHA
 
-# ⚠ NOT HATCH_CYCLE[0], [1], [2]. On the environment this figure was authored
-# in (matplotlib 3.5.1) EVERY backslash hatch renders with the same slope as
-# the forward-slash one, so HATCH_CYCLE[1] ("\\\") is pixel-for-pixel a
-# coarser HATCH_CYCLE[0] ("///"). Two of the three circles were therefore
-# indistinguishable in the first render -- visible only by looking at the PNG,
-# since the script itself asked for two different hatches and got them. Skipping
-# index 1 sidesteps it here; the shared cycle in _house.py is left alone because
-# other figures depend on its ordering and the right fix is upstream.
+# ⚠ NOT HATCH_CYCLE[0], [1], [2] -- but NOT for the reason this comment used to
+# give. The old reason was a matplotlib 3.5.1 rendering defect in which every
+# backslash hatch came out at the forward-slash slope, making HATCH_CYCLE[1]
+# ("\\\") pixel-for-pixel a coarser HATCH_CYCLE[0] ("///"). That defect does
+# NOT reproduce under the matplotlib 3.11.1 in optimization_fall2026: [0] is
+# +45 deg and [1] is -45 deg, which by the hatch spec is the most SEPARATED
+# line pair in the cycle. Do not reintroduce the workaround; plots/licq-cusp.py
+# pairs [0] with [1] on purpose.
+#
+# Index 1 is still skipped, for a reason of this figure's own, and it was
+# checked by rendering the alternative and looking at it. Three circles need
+# three textures, and the set below spends three different texture FAMILIES --
+# lines, dots, crosses -- so every pair differs in kind. Restoring [1] gives
+# "///", "\\\", "..." instead, which puts two of the three in the same family,
+# separated only by the SIGN of the slope. That is the most fragile cue here:
+# the hatch is drawn in pale grey at low alpha inside circles that touch, so at
+# handout size R_1 and R_2 stop reading as two kinds of thing. The rendered
+# comparison also loses the crossed "xxx" that currently makes R_3 distinctive.
 HATCHES = (HATCH_CYCLE[0], HATCH_CYCLE[2], HATCH_CYCLE[3])   # /// ... xxx
 
 # --- the instance -----------------------------------------------------------

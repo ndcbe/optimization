@@ -332,11 +332,46 @@ def _module_constants(tree) -> dict:
     return out
 
 
+def _source_text(path: str) -> str:
+    """Python source for `path`.
+
+    ⚠ A .ipynb needs its code cells extracted first. Notebook JSON is itself a
+    valid Python dict literal, so `ast.parse` SUCCEEDS on a raw .ipynb, finds
+    zero plotting calls, and the file is scored OK -- a *vacuously clean* PASS
+    that looks identical to a real one. That happened on 2026-08-21: five audit
+    shards were told to invoke `--source <notebook>.ipynb` and every greyscale
+    result they reported was unverified. RiskMeasures.ipynb passed as a
+    notebook and produced 36 FAILs once its cells were extracted.
+
+    Jupyter line magics (`!pip`, `%matplotlib`) are not Python, so they are
+    blanked rather than dropped -- keeping line numbers aligned with the cell.
+    """
+    if not path.endswith(".ipynb"):
+        return open(path, encoding="utf-8").read()
+    import json as _json
+    nb = _json.load(open(path, encoding="utf-8"))
+    lines = []
+    for cell in nb.get("cells", []):
+        if cell.get("cell_type") != "code":
+            continue
+        for line in "".join(cell.get("source", [])).split("\n"):
+            stripped = line.lstrip()
+            if stripped.startswith(("!", "%", "?")):
+                # keep the original indentation, or a magic inside an if/try
+                # block turns into an IndentationError and the whole notebook
+                # is scored "unparseable" -- another silent non-result.
+                indent = line[: len(line) - len(stripped)]
+                lines.append(f"{indent}pass  # magic")
+            else:
+                lines.append(line)
+    return "\n".join(lines)
+
+
 def analyse_source(path: str) -> tuple[list, list]:
-    """(series calls, complaints) for one figure script."""
+    """(series calls, complaints) for one figure script or notebook."""
     try:
-        tree = ast.parse(open(path, encoding="utf-8").read(), filename=path)
-    except (SyntaxError, OSError) as exc:
+        tree = ast.parse(_source_text(path), filename=path)
+    except (SyntaxError, OSError, ValueError) as exc:
         return [], [f"{path}: unparseable ({exc})"]
 
     names = _module_constants(tree)

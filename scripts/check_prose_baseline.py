@@ -289,6 +289,15 @@ def markdown_cells(nb_text: str):
     for cell in nb.get("cells", []):
         if cell.get("cell_type") != "markdown":
             continue
+        # Skip the generated AI-review banner. process_notebooks.py injects one
+        # markdown cell at the top of a PUBLISHED notebook that still has
+        # unreviewed agent prose (see build_ai_review_status.py). Published
+        # contrib/ notebooks are IN SCOPE here, so without this skip every
+        # banner would report as an ADDED cell and the audit would be measuring
+        # its own plumbing. Matched on metadata, not on the text: the wording is
+        # meant to be edited, and a text match would rot the moment it was.
+        if cell.get("metadata", {}).get("ai_review_banner"):
+            continue
         text = normalise(cell_source(cell))
         out.append({"i": len(out), "id": cell.get("id"),
                     "sha256": sha(text), "excerpt": excerpt(text)})

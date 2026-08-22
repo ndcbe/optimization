@@ -4,6 +4,120 @@ import re
 import os
 import shutil
 
+# ---------------------------------------------------------------------------
+# AI-review banner
+#
+# Prof. Dowling, 2026-08-22: "We need a way to track AI-drafted text on the
+# website. This way, I can see what is AI-draft when I review the corresponding
+# pages before each lecture. This also flags to students if content was
+# AI-drafted and I have not reviewed it yet."
+#
+# WHY THE BANNER IS INJECTED HERE, AND NOT WRITTEN INTO THE SOURCE.
+# notebooks/<N>/ is GENERATED; notebooks/<N>-dev/ is the authored corpus, and
+# that corpus is pre-LLM human prose the project is explicitly trying not to
+# contaminate (see scripts/check_prose_baseline.py). Writing a visible marker
+# into the -dev notebooks would mean an agent adding cells to the very corpus
+# the baseline exists to protect -- the fix would commit the disease. Injecting
+# at publish time keeps the source untouched, and the banner disappears on the
+# next publish the moment a row is flipped to `reviewed`.
+#
+# The state lives in scripts/ai_review_status.tsv, one row per notebook, edited
+# by hand. Regenerate counts with scripts/build_ai_review_status.py, which
+# preserves rows already marked `reviewed`.
+#
+# The injected cell carries metadata `ai_review_banner: true` so that
+# check_prose_baseline.py can skip it structurally -- published contrib/
+# notebooks are in that checker's scope, and without the skip every banner
+# would report as an ADDED cell and the audit would be measuring its own
+# plumbing.
+AI_STATUS_TSV = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                             "ai_review_status.tsv")
+AI_BANNER_STATUSES = ("unreviewed", "reviewed-stale")
+
+
+def load_ai_status(path=AI_STATUS_TSV):
+    """{notebook path: (status, changed, added)}. Missing file degrades to {}."""
+    if not os.path.exists(path):
+        print(f"  NOTE: {path} not found; AI-review banners disabled")
+        return {}
+    out = {}
+    with open(path, encoding="utf-8") as fp:
+        for line in fp:
+            line = line.rstrip("\n")
+            if not line.strip() or line.startswith("#"):
+                continue
+            f = line.split("\t")
+            if f[0] == "path":
+                continue
+            f += [""] * (7 - len(f))
+            out[f[0]] = (f[1], f[3], f[4])
+    return out
+
+
+AI_STATUS = load_ai_status()
+
+
+def ai_banner_cell(changed, added):
+    """The student- and instructor-facing notice. Wording is meant to be edited.
+
+    Two constraints on the text. It must be honest about SCOPE: the measurement
+    is against the anchor commit, so it covers everything since agent editing
+    began and NOT all AI-drafted text ever -- prose changed before 2026-08-17 is
+    invisible to it. And it must not imply anything about the code or results,
+    which are verified by a separate process.
+    """
+    counts = []
+    if int(changed or 0):
+        counts.append(f"{changed} rewritten")
+    if int(added or 0):
+        counts.append(f"{added} added")
+    detail = " and ".join(counts) if counts else "some"
+    body = (
+        "```{warning}\n"
+        "**AI-drafted prose, not yet reviewed by Prof. Dowling.**\n"
+        "\n"
+        f"Some of the writing on this page was drafted or edited by an AI assistant and has "
+        f"not yet been reviewed: {detail} markdown cells, measured against the last version "
+        "of this notebook predating AI editing (2026-08-17).\n"
+        "\n"
+        "This notice is about the *prose only*. It says nothing either way about the code, "
+        "the numbers or the figures, which are checked separately. It is removed once the "
+        "page has been reviewed.\n"
+        "```"
+    )
+    cell = new_markdown_cell(body)
+    cell.metadata["ai_review_banner"] = True
+    return cell
+
+
+def insert_ai_banner(nb, source_rel, published_rel, verbose=1):
+    """Insert the banner if this notebook's row says it is unreviewed.
+
+    Keyed on the -dev SOURCE path, because that is the authoring unit and the
+    unit Prof. Dowling reviews. Falls back to the published path for the handful
+    of notebooks that have no -dev source (some of contrib/).
+    """
+    row = AI_STATUS.get(source_rel) or AI_STATUS.get(published_rel)
+    if not row:
+        return False
+    status, changed, added = row
+    if status not in AI_BANNER_STATUSES:
+        return False
+
+    # After the title, not before it: MyST takes the page title from the first
+    # H1, and shoving a warning above it buries the heading and risks the title
+    # extraction. Title first, then the caveat about it.
+    at = 0
+    for i, cell in enumerate(nb.cells):
+        if cell.cell_type == "markdown" and re.search(r"^#\s", cell.source, re.M):
+            at = i + 1
+            break
+    nb.cells.insert(at, ai_banner_cell(changed, added))
+    if verbose >= 1:
+        print(f"  AI-review banner inserted at cell {at} ({status}: "
+              f"{changed} changed, {added} added)")
+    return True
+
 def process_notebook(folder_original, folder_new, filename, verbose=1):
 
     ''' Remove nbgrader content from notebooks and save updated version
@@ -159,6 +273,17 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
     replace_markdown('.\./.\./media/',
                      'https://raw.githubusercontent.com/ndcbe/optimization/main/media/')
     
+    ## AI-review banner -- last, so it is not disturbed by the rewrites above
+    # and so its own text is never subject to them.
+    insert_ai_banner(nb,
+                     source_rel="/".join(("notebooks",
+                                          os.path.basename(folder_original.rstrip("/")),
+                                          filename)),
+                     published_rel="/".join(("notebooks",
+                                             os.path.basename(folder_new.rstrip("/")),
+                                             filename)),
+                     verbose=verbose)
+
     ## Save new notebook
     output_notebook = os.path.join(folder_new, filename)
     

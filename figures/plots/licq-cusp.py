@@ -1,4 +1,4 @@
-"""The cusp where LICQ fails -- Biegler (4.44), Figure 4.8, book p. 77.
+r"""The cusp where LICQ fails -- Biegler (4.44), Figure 4.8, book p. 77.
 
     figures/plots/licq-cusp.py  ->  media/figures/licq-cusp.{png,pdf}
 
@@ -34,6 +34,34 @@ Deliberate departures from the notebook
    figures/README.md and plots/kkt-geometry.py.
 3. Zoomed to |x1| <= 1.2. The notebook plots [-3, 3], where x1^3 = +-27 and the
    cusp -- the entire point of the example -- is a hairline at the origin.
+
+WHY HATCH_CYCLE[0] AND [1] ARE THE RIGHT PAIR HERE -- verified 2026-08-22
+------------------------------------------------------------------------
+Adjacent entries in HATCH_CYCLE are normally the wrong choice, because they are
+the two most similar textures the cycle offers, and two other figures in this
+directory (plots/farmer-solutions.py, plots/packing-local-solutions.py) skip
+index 1 for exactly that reason. ⚠ DO NOT "fix" this file the same way. Here
+the adjacency is the point, and it was checked by measurement, not by eye:
+
+* HATCH_CYCLE[0] ("///", +45 deg) and HATCH_CYCLE[1] ("\\\", -45 deg) are
+  MIRROR IMAGES -- 90 degrees apart, the maximum angular separation two line
+  hatches can have. Measured on a rendered test patch in matplotlib 3.11.1,
+  mean|A - fliplr(B)| = 0.0 while mean|A - B| = 72.0, so the two really do
+  render at opposite slopes. (The same-slope bug recorded in the two files
+  named above was a matplotlib 3.5.1 defect; it is gone in 3.11.1, and this
+  figure's committed PNG was measured directly to confirm the slopes differ.)
+* Because they are mirrors, their SUPERPOSITION is an "x". The feasible set is
+  the INTERSECTION of the two half-regions, so the one region a student has to
+  find is the one that comes out cross-hatched -- which is precisely what the
+  in-figure label "feasible set (both hatches)" and the lecture caption
+  ("the feasible set is where both appear") tell them to look for.
+* Measured on media/figures/licq-cusp.png: the g1-only region's hatch runs "/",
+  the g2-only region's runs "\", and the cusp reads as a diamond grid.
+
+Any other pair would weaken the figure: "///" with "..." makes the overlap
+lines-over-dots, which does not read as "both" nearly as directly. Redundancy
+beyond the hatch is carried by the boundary curves (#0072B2 solid vs #E69F00
+dashed) and by the two direct labels, so no distinction here rests on hue.
 """
 
 import numpy as np

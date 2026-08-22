@@ -47,8 +47,32 @@ Deliberate choices
    either region being buried.
 2. HATCHING, not alpha. Two tinted regions on one axes produce a third tint
    where they overlap, which means nothing in black and white. See _house.py.
-3. The gap region -- in big-M but not in the hull -- is hatched a THIRD way and
+3. The gap region -- in big-M but not in the hull -- is hatched differently and
    labelled in place, because it is the actual subject of the figure.
+4. ONE texture for "the relaxation this panel is about", in BOTH panels.
+   Revised 2026-08-22, and a CONSISTENCY change, not a legibility fix -- the
+   figure was checked first and read correctly as it stood.
+
+   The two panel bodies used HATCH_CYCLE[0] ("///", +45 deg) on the left and
+   HATCH_CYCLE[1] ("\\\", -45 deg) on the right.  That was flagged as the
+   "adjacent cycle entries" defect and it is not one, twice over.  First, the
+   two never share an axes: the only pair a reader compares within one frame is
+   the right panel's hull body against its cut-away sliver, and that pair was
+   already "\\\" against HATCH_CYCLE[3] ("xxx") -- parallel lines against a
+   crossed grid, which the rendered PNG confirms is unmistakable.  Second,
+   "///" and "\\\" are mirror images and therefore 90 degrees apart, the widest
+   separation two line hatches can have, so they would have been a good pair
+   even in one axes; see the measurements in plots/confidence-ellipsoid-
+   criteria.py and plots/licq-cusp.py.
+
+   What the mirrored slopes DID do was flip the hatch direction between the two
+   panels for no reason, inviting the reader to think slope encoded something.
+   Both bodies now carry HATCH_CYCLE[0], so one texture means "the feasible
+   region of the relaxation named in the title" in both frames, the cut-away
+   keeps its own crossed texture, and the figure spends two hatches instead of
+   three.  The remaining same-axes pair is "///" against "xxx": still
+   parallel-versus-crossed, and the sliver stays the denser of the two, which
+   is what makes it read as the extra that big-M keeps.
 """
 
 import numpy as np
@@ -149,8 +173,11 @@ def make_figure():
     ax.fill_between(T, blo, hlo, where=(hlo > blo), facecolor="0.55",
                     alpha=SHADE_ALPHA, hatch=HATCH_CYCLE[3],
                     edgecolor=plt.rcParams["hatch.color"], linewidth=0.0)
+    # Same texture as the big-M body on the left panel: see note 4 in the
+    # docstring. HATCH_CYCLE[0] here, not [1], so the slope does not flip
+    # between the two frames.
     ax.fill_between(T, hlo, hhi, facecolor="0.55", alpha=SHADE_ALPHA,
-                    hatch=HATCH_CYCLE[1],
+                    hatch=HATCH_CYCLE[0],
                     edgecolor=plt.rcParams["hatch.color"], linewidth=0.0)
     ax.plot(T, hlo, color="black", linestyle="-", linewidth=2.2)
     ax.plot(T, hhi, color="black", linestyle="-", linewidth=2.2)

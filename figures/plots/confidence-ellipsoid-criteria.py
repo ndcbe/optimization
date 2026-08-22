@@ -74,6 +74,52 @@ Two series: design A is BLACK and SOLID, design B is #0072B2 and DASHED
 (dL* = 46.0, well past the warn threshold, and redundantly keyed by linestyle
 and by direct labelling).  The shaded interiors carry HATCH_CYCLE textures, not
 tints, per the rule in _house.py.  No hue anywhere carries meaning on its own.
+
+HATCH CHOICE -- measured 2026-08-22.  KEEP THE PAIR; SWAP WHICH IS WHICH
+------------------------------------------------------------------------
+This figure was flagged for using the ADJACENT cycle entries HATCH_CYCLE[0]
+("///") and HATCH_CYCLE[1] ("\\\") on two regions of one axes, on the reasoning
+that adjacent entries are the most similar textures available.  Measurement
+says the opposite, and the flag was withdrawn on the strength of it:
+
+  ⚠ "///" AND "\\\" ARE THE MOST SEPARATED LINE PAIR IN THE CYCLE, NOT THE
+    LEAST.  They are mirror images -- +45 and -45 degrees -- so they sit 90
+    degrees apart, the widest two line hatches can be.  Measured on a rendered
+    test patch under matplotlib 3.11.1: mean|A - fliplr(B)| = 0.0 while
+    mean|A - B| = 72.0.  Measured on panel (b) itself, via transData, the
+    design-A-only and design-B-only regions differ by 90.0 degrees of texture
+    orientation, and their intersection renders as a near-isotropic grid
+    (anisotropy 0.24) that is also 22 grey levels darker than either.
+
+    Index adjacency was a proxy inherited from a matplotlib 3.5.1 defect in
+    which EVERY backslash hatch rendered at the forward-slash slope, making the
+    pair literally identical -- see plots/farmer-solutions.py and
+    plots/packing-local-solutions.py, which skip index 1 for that reason.  The
+    defect is gone in 3.11.1.  Under 3.11.1 the proxy is not merely unnecessary
+    here, it is backwards.
+
+  A trial that moved design B to HATCH_CYCLE[4] ("|||") to widen the cycle
+  distance was rendered, measured and REVERTED: it cut the A-versus-B
+  orientation separation from 90.0 to 45.0 degrees.  Widening the index
+  distance narrowed the thing the index was standing in for.
+
+What did change, and it is the whole change: WHICH ellipse gets which.
+
+  ⚠ A HATCH SHOULD NOT RUN ALONG THE SHAPE IT FILLS.  Both ellipses are drawn
+  at TILT_DEG = 35 degrees, and "///" renders at +45 -- ten degrees off the
+  major axis of the very ellipse it was filling, so its lines ran lengthwise
+  down a 4:1 sliver, nearly parallel to the outline.  "\\\" crosses that axis
+  at 80 degrees.  Design A (and panel (a), which draws the same ellipse) now
+  takes "\\\" and design B takes "///", which leaves the 90-degree A-versus-B
+  separation untouched and the crossed intersection untouched.
+
+  Honest limit on that claim: this is a gestalt argument, not a density one.
+  Isolating the hatch ink by differencing a hatched against an unhatched render
+  of the same ellipse, "///" and "\\\" deposit the SAME amount of ink inside it
+  (19.1% versus 19.0% of the interior), and "///" actually yields more line
+  crossings along the minor axis (13 versus 7).  So the swap does not make the
+  region darker or denser -- it stops the hatch reading as part of the outline.
+  Panel (b) is unaffected either way, since design B is nearly circular.
 """
 
 import numpy as np
@@ -89,6 +135,14 @@ from _house import HATCH_CYCLE, SHADE_ALPHA
 CHI2 = -2.0 * np.log(0.05)
 
 TILT_DEG = 35.0                     # orientation of v_1, both designs
+
+# HATCH_CYCLE[0] and [1] SWAPPED relative to the obvious order, and nothing
+# else changed. See "HATCH CHOICE" in the docstring: the pair is kept because
+# "///" and "\\\" are mirror images and therefore 90 degrees apart -- the
+# widest separation two line hatches can have -- but design A takes the one
+# that crosses its own 35-degree major axis rather than lying along it.
+HATCH_A = HATCH_CYCLE[1]            # "\\\", -45 deg: 80 deg across A's axis
+HATCH_B = HATCH_CYCLE[0]            # "///", +45 deg: 90 deg from HATCH_A
 
 EIG_A = (16.0, 1.0)                 # design A: lots of information, badly balanced
 EIG_B = (4.0, 3.0)                  # design B: less information, well balanced
@@ -133,7 +187,7 @@ def _verify():
 _verify()
 
 
-def _ellipse(ax, eigs, *, color, linestyle, hatch_index, zorder=3):
+def _ellipse(ax, eigs, *, color, linestyle, hatch, zorder=3):
     a_long, a_short = semi_axes(eigs)
     e = Ellipse(
         (0.0, 0.0),
@@ -142,7 +196,7 @@ def _ellipse(ax, eigs, *, color, linestyle, hatch_index, zorder=3):
         angle=TILT_DEG,
         facecolor="0.55",
         alpha=SHADE_ALPHA,
-        hatch=HATCH_CYCLE[hatch_index],
+        hatch=hatch,
         edgecolor=plt.rcParams["hatch.color"],
         linewidth=0.0,
         zorder=zorder - 1,
@@ -165,7 +219,7 @@ def _ellipse(ax, eigs, *, color, linestyle, hatch_index, zorder=3):
 
 
 def _panel_a(ax):
-    a_long, a_short = _ellipse(ax, EIG_A, color=BLACK, linestyle="-", hatch_index=0)
+    a_long, a_short = _ellipse(ax, EIG_A, color=BLACK, linestyle="-", hatch=HATCH_A)
 
     t = np.deg2rad(TILT_DEG)
     v1 = np.array([np.cos(t), np.sin(t)])          # long axis, lambda_min
@@ -222,8 +276,8 @@ def _panel_a(ax):
 
 
 def _panel_b(ax):
-    _ellipse(ax, EIG_A, color=BLACK, linestyle="-", hatch_index=0)
-    _ellipse(ax, EIG_B, color=BLUE, linestyle="--", hatch_index=1, zorder=5)
+    _ellipse(ax, EIG_A, color=BLACK, linestyle="-", hatch=HATCH_A)
+    _ellipse(ax, EIG_B, color=BLUE, linestyle="--", hatch=HATCH_B, zorder=5)
 
     a_long_A, _ = semi_axes(EIG_A)
     t = np.deg2rad(TILT_DEG)

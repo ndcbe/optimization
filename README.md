@@ -10,10 +10,9 @@ https://ndcbe.github.io/optimization
 
 ## Running the notebooks
 
-Most students should use **Google Colab** — nothing needs to be installed. Every notebook opens with a setup
-cell that detects Colab and installs Pyomo, the solvers and the course helper module for you, so the only
-step is getting the notebook into Colab: use the **download button** at the top of any notebook page on the
-website to save the `.ipynb`, then upload it to [Colab](https://colab.research.google.com/).
+Most students should use **Google Colab** — nothing needs to be installed. Every notebook page on the website
+has an **"Open in Colab"** button at the top; click it and the notebook opens in Colab ready to run. Its first
+cell detects Colab and installs Pyomo, the solvers and the course helper module for you.
 
 The instructions below are for running the notebooks locally, or for contributing to this website.
 
@@ -74,7 +73,8 @@ all available; `gurobi` needs its own licence and is not expected to work out of
 ## Contributing to the website
 
 See the [contribution instructions](https://ndcbe.github.io/optimization/org/contribute.html) for the fork,
-branch, and pull request workflow.
+branch, and pull request workflow. **Maintainers: see [`DEVELOPER.md`](DEVELOPER.md)** for the custom theme,
+the "Open in Colab" button, and how to update the theme from the upstream fork.
 
 ### Repository layout
 

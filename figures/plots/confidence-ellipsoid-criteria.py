@@ -83,20 +83,32 @@ that adjacent entries are the most similar textures available.  Measurement
 says the opposite, and the flag was withdrawn on the strength of it:
 
   ⚠ "///" AND "\\\" ARE THE MOST SEPARATED LINE PAIR IN THE CYCLE, NOT THE
-    LEAST.  They are mirror images -- +45 and -45 degrees -- so they sit 90
-    degrees apart, the widest two line hatches can be.  Measured on a rendered
-    test patch under matplotlib 3.11.1: mean|A - fliplr(B)| = 0.0 while
-    mean|A - B| = 72.0.  Measured on panel (b) itself, via transData, the
-    design-A-only and design-B-only regions differ by 90.0 degrees of texture
-    orientation, and their intersection renders as a near-isotropic grid
-    (anisotropy 0.24) that is also 22 grey levels darker than either.
+    LEAST.  "///" is +45 degrees and "\\\" is -45, so by the hatch spec they
+    sit 90 degrees apart -- the widest two line hatches can be.  Confirmed by
+    rendering under matplotlib 3.11.1: the two patches differ (mean|A - B| ~ 28
+    on a test patch; the load-bearing fact is only that it is not 0).  Measured
+    on panel (b) itself, via transData, the design-A-only and design-B-only
+    regions differ by 90.0 degrees of texture orientation, and their
+    intersection renders as a near-isotropic grid (anisotropy 0.24) that is
+    also 22 grey levels darker than either.
+
+    ⚠ Do NOT restate this as "the two are exact mirror images".  An earlier
+    version of this note claimed mean|A - fliplr(B)| = 0.0; re-measured over
+    three variants of the test patch it came out 1.5, 5.2 and 4.1, because
+    pixel-level mirror-ness depends on hatch phase and on whether the patch is
+    drawn with a border.  The +/-45 degree geometry is the stable fact.
 
     Index adjacency was a proxy inherited from a matplotlib 3.5.1 defect in
     which EVERY backslash hatch rendered at the forward-slash slope, making the
-    pair literally identical -- see plots/farmer-solutions.py and
-    plots/packing-local-solutions.py, which skip index 1 for that reason.  The
-    defect is gone in 3.11.1.  Under 3.11.1 the proxy is not merely unnecessary
-    here, it is backwards.
+    pair literally identical.  The defect is gone in 3.11.1, so the proxy is
+    not merely unnecessary here, it is backwards.  Seven files in this
+    directory cited that defect; all seven notes were corrected on 2026-08-22.
+    Four figures do still steer around index 1 -- farmer-solutions and
+    evpi-vss-ladder because their bars ABUT and mirrored slopes fuse into a
+    herringbone across the shared edge, packing-local-solutions because it
+    needs three texture FAMILIES for three circles, mccormick-envelopes because
+    a line hatch would compete with the three curves crossing its one shaded
+    region.  None of those reasons applies to two overlapping ellipses.
 
   A trial that moved design B to HATCH_CYCLE[4] ("|||") to widen the cycle
   distance was rendered, measured and REVERTED: it cut the A-versus-B
@@ -138,9 +150,9 @@ TILT_DEG = 35.0                     # orientation of v_1, both designs
 
 # HATCH_CYCLE[0] and [1] SWAPPED relative to the obvious order, and nothing
 # else changed. See "HATCH CHOICE" in the docstring: the pair is kept because
-# "///" and "\\\" are mirror images and therefore 90 degrees apart -- the
-# widest separation two line hatches can have -- but design A takes the one
-# that crosses its own 35-degree major axis rather than lying along it.
+# "///" (+45 deg) and "\\\" (-45 deg) are 90 degrees apart -- the widest
+# separation two line hatches can have -- but design A takes the one that
+# crosses its own 35-degree major axis rather than lying along it.
 HATCH_A = HATCH_CYCLE[1]            # "\\\", -45 deg: 80 deg across A's axis
 HATCH_B = HATCH_CYCLE[0]            # "///", +45 deg: 90 deg from HATCH_A
 

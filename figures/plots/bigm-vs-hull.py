@@ -60,10 +60,13 @@ Deliberate choices
    the right panel's hull body against its cut-away sliver, and that pair was
    already "\\\" against HATCH_CYCLE[3] ("xxx") -- parallel lines against a
    crossed grid, which the rendered PNG confirms is unmistakable.  Second,
-   "///" and "\\\" are mirror images and therefore 90 degrees apart, the widest
-   separation two line hatches can have, so they would have been a good pair
-   even in one axes; see the measurements in plots/confidence-ellipsoid-
-   criteria.py and plots/licq-cusp.py.
+   "///" is +45 deg and "\\\" is -45 deg, so they sit 90 degrees apart -- the
+   widest separation two line hatches can have -- and they would have been a
+   good pair even in one axes; see plots/licq-cusp.py, which pairs them on
+   purpose, and plots/confidence-ellipsoid-criteria.py.  (Do not restate that
+   as "exact mirror images": pixel-level mirror-ness depends on hatch phase and
+   on whether the patch has a border.  The +/-45 deg geometry is the stable
+   fact.)
 
    What the mirrored slopes DID do was flip the hatch direction between the two
    panels for no reason, inviting the reader to think slope encoded something.

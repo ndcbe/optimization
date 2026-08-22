@@ -37,22 +37,41 @@ Deliberate departures from the notebook
 
 WHY HATCH_CYCLE[0] AND [1] ARE THE RIGHT PAIR HERE -- verified 2026-08-22
 ------------------------------------------------------------------------
-Adjacent entries in HATCH_CYCLE are normally the wrong choice, because they are
-the two most similar textures the cycle offers, and two other figures in this
-directory (plots/farmer-solutions.py, plots/packing-local-solutions.py) skip
-index 1 for exactly that reason. ⚠ DO NOT "fix" this file the same way. Here
-the adjacency is the point, and it was checked by measurement, not by eye:
+⚠ DO NOT "fix" this file by moving the second region off index 1. Pairing
+HATCH_CYCLE[0] with [1] is deliberate here, and it is the best pair available:
 
-* HATCH_CYCLE[0] ("///", +45 deg) and HATCH_CYCLE[1] ("\\\", -45 deg) are
-  MIRROR IMAGES -- 90 degrees apart, the maximum angular separation two line
-  hatches can have. Measured on a rendered test patch in matplotlib 3.11.1,
-  mean|A - fliplr(B)| = 0.0 while mean|A - B| = 72.0, so the two really do
-  render at opposite slopes. (The same-slope bug recorded in the two files
-  named above was a matplotlib 3.5.1 defect; it is gone in 3.11.1, and this
-  figure's committed PNG was measured directly to confirm the slopes differ.)
-* Because they are mirrors, their SUPERPOSITION is an "x". The feasible set is
-  the INTERSECTION of the two half-regions, so the one region a student has to
-  find is the one that comes out cross-hatched -- which is precisely what the
+* HATCH_CYCLE[0] ("///") is +45 deg and HATCH_CYCLE[1] ("\\\") is -45 deg, so
+  by the hatch spec they are 90 degrees apart -- the maximum angular separation
+  two line hatches can have, i.e. the most SEPARATED line pair in the cycle
+  rather than the least. Confirmed by rendering: under the matplotlib 3.11.1 in
+  optimization_fall2026 the two patches differ (mean|A - B| ~ 28 on a test
+  patch; the load-bearing fact is only that it is not 0).
+
+  ⚠ Do NOT restate this as "they are exact mirror images". Whether the rendered
+  patches mirror each other pixel-for-pixel depends on hatch phase and on
+  whether the patch is drawn with a border -- measured over three such
+  variants, mean|A - fliplr(B)| came out 1.5, 5.2 and 4.1, and an earlier note
+  in this file claimed 0.0. The +/-45 deg geometry is the stable fact; quote
+  that and nothing stronger.
+
+  Nothing here rests on index adjacency being safe *in general*, either. Two
+  other figures in this directory, plots/farmer-solutions.py and
+  plots/evpi-vss-ladder.py, do skip index 1 -- but for a reason that is the
+  opposite of an argument against this file: their bars ABUT, and mirrored
+  slopes meeting along a shared edge fuse into a herringbone. Here the two
+  regions OVERLAP, which is what makes the same pair correct.
+
+  (Seven files in this directory used to cite a matplotlib 3.5.1 defect that
+  rendered every backslash hatch at the forward-slash slope. Four of them
+  actually steered around index 1 in the drawing -- farmer-solutions,
+  evpi-vss-ladder, packing-local-solutions, mccormick-envelopes -- and
+  kkt-inertia-correction carried it as a blanket prohibition it never applied.
+  All seven notes were corrected on 2026-08-22; all four figures kept their
+  substitute hatch, each for a reason of its own rather than the dead defect.)
+
+* Because the slopes are opposite, their SUPERPOSITION is an "x". The feasible
+  set is the INTERSECTION of the two half-regions, so the one region a student
+  has to find is the one that comes out cross-hatched -- precisely what the
   in-figure label "feasible set (both hatches)" and the lecture caption
   ("the feasible set is where both appear") tell them to look for.
 * Measured on media/figures/licq-cusp.png: the g1-only region's hatch runs "/",

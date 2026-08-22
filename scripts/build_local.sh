@@ -37,11 +37,15 @@ echo "==> Generating published notebooks from -dev sources"
 python ./scripts/process_notebooks.py
 
 echo "==> Checking no solutions leaked into published notebooks"
-if grep -rl "BEGIN SOLUTION" notebooks/ 2>/dev/null | grep -v -- "-dev/" | grep -q .; then
-  echo "FAIL: solution markers found in PUBLISHED notebooks. Not building."
-  grep -rl "BEGIN SOLUTION" notebooks/ | grep -v -- "-dev/"
+# NOT a grep. A solution leaks through a cell's stored OUTPUTS as readily as
+# through its source, and `grep -r "BEGIN SOLUTION"` sees only the source -- it
+# was clean throughout the 2026-08-21 leak, while 32 cells published their
+# answers as output. check_solution_leaks.py checks both, plus the drop-output
+# tag; run it with --selftest to watch it fail on purpose.
+python ./scripts/check_solution_leaks.py || {
+  echo "FAIL: solution content found in PUBLISHED notebooks. Not building."
   exit 1
-fi
+}
 
 echo "==> Building"
 jupyter-book build --html

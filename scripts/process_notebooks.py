@@ -185,6 +185,49 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
     replace_code(HIDDEN_TESTS, "# Removed autograder test. You may delete this cell.",
                  clear_outputs=True)
 
+    # -----------------------------------------------------------------------
+    # Cells whose OUTPUT is an answer even though their SOURCE is not.
+    #
+    # Prof. Dowling, 2026-08-22 (JUDGEMENT_CALLS G1c): "I want the instructor
+    # copy to have the answers. I then want those answers, including Python
+    # output, to get dropped from the published version."
+    #
+    # The two patterns above cover cells that CONTAIN a solution block. They
+    # cannot cover the other case: a cell of fully provided code that CALLS a
+    # function the student had to write, so its stored output is the student's
+    # deliverable. `Algorithms4` cell 30 is the example -- three lines of given
+    # setup, then `barrier_subproblem(...)`, whose implementation is a solution
+    # block five cells earlier, and whose full iteration table is stored right
+    # there. No regex over the source can tell that apart from
+    # `Algorithms3` cell 17, whose stored table the assignment text explicitly
+    # gives the student ("The (hopefully) correct results for the test cases are
+    # available online in this notebook. Answer the questions using these
+    # results.").
+    #
+    # So it is a per-cell editorial call, and it is recorded per cell, as a
+    # standard nbformat cell TAG. Tags survive round-trips and are editable from
+    # the Jupyter UI (View > Cell Toolbar > Tags), so marking or unmarking a cell
+    # does not mean hand-editing JSON. The instructor source keeps its outputs
+    # either way -- only the published copy loses them.
+    DROP_OUTPUT_TAG = "drop-output"
+
+    def drop_tagged_outputs():
+        count = 0
+        for cell in nb.cells:
+            if cell.cell_type != "code":
+                continue
+            if DROP_OUTPUT_TAG not in (cell.get("metadata", {}).get("tags") or []):
+                continue
+            if cell.get("outputs") or cell.get("execution_count") is not None:
+                count += 1
+            cell.outputs = []
+            cell.execution_count = None
+        if verbose >= 1 and count:
+            print(f"  Dropped stored output from {count} cell(s) "
+                  f"tagged '{DROP_OUTPUT_TAG}'")
+
+    drop_tagged_outputs()
+
     # Match "./data/" or "../data/" only -- NOT the character in front of them.
     #
     # This was ".\./data/", where the leading "." is a regex wildcard matching

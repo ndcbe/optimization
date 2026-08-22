@@ -10,8 +10,12 @@ https://ndcbe.github.io/optimization
 
 ## Running the notebooks
 
-Most students should use **Google Colab** — every notebook has an "Open in Colab" button, and nothing needs to
-be installed. The instructions below are for running the notebooks locally, or for contributing to this website.
+Most students should use **Google Colab** — nothing needs to be installed. Every notebook opens with a setup
+cell that detects Colab and installs Pyomo, the solvers and the course helper module for you, so the only
+step is getting the notebook into Colab: use the **download button** at the top of any notebook page on the
+website to save the `.ipynb`, then upload it to [Colab](https://colab.research.google.com/).
+
+The instructions below are for running the notebooks locally, or for contributing to this website.
 
 ### 1. Install conda
 

@@ -1,0 +1,115 @@
+.font-system {
+  font-family: Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+}
+
+/* Hide the output prompts from jupyter by default */
+.jp-OutputPrompt {
+  @apply hidden;
+}
+
+/* Pandas tables */
+/* Here we use important to overwrite mt from typography.css */
+
+table.dataframe {
+  @apply border-none border-collapse text-black border-spacing-0 text-xs table-fixed !m-0;
+}
+
+.dataframe thead {
+  @apply align-bottom border-b border-black;
+}
+
+.dataframe th {
+  @apply font-bold;
+}
+
+.dataframe td {
+  @apply p-2 leading-normal text-right whitespace-normal align-middle border-none max-w-none;
+}
+
+/* System to override the Jupyter colors depending on line parity */
+
+.jp-OutputArea-output table tr:nth-child(odd) {
+  @apply bg-neutral-100 dark:bg-neutral-900 [&>*]:hover:bg-sky-100 [&>*]:dark:hover:bg-sky-950;
+}
+
+.jp-OutputArea-output table tr:nth-child(even) {
+  @apply bg-neutral-200 dark:bg-neutral-800 [&>*]:hover:bg-sky-100 [&>*]:dark:hover:bg-sky-950;
+}
+
+html.dark {
+  /* Defaults use Material Design specification */
+  --jp-ui-font-color0: rgba(255, 255, 255, 1);
+  --jp-ui-font-color1: rgba(255, 255, 255, 0.87);
+  --jp-ui-font-color2: rgba(255, 255, 255, 0.54);
+  --jp-ui-font-color3: rgba(255, 255, 255, 0.38);
+  --jp-ui-inverse-font-color0: rgba(0, 0, 0, 1);
+  --jp-ui-inverse-font-color1: rgba(0, 0, 0, 0.8);
+  --jp-ui-inverse-font-color2: rgba(0, 0, 0, 0.5);
+  --jp-ui-inverse-font-color3: rgba(0, 0, 0, 0.3);
+  --jp-content-font-color0: rgba(255, 255, 255, 1);
+  --jp-content-font-color1: rgba(255, 255, 255, 1);
+  --jp-content-font-color2: rgba(255, 255, 255, 0.7);
+  --jp-content-font-color3: rgba(255, 255, 255, 0.5);
+  --jp-layout-color0: #111;
+  --jp-layout-color1: var(--md-grey-900);
+  --jp-layout-color2: var(--md-grey-800);
+  --jp-layout-color3: var(--md-grey-700);
+  --jp-layout-color4: var(--md-grey-600);
+}
+
+/* ======================================================================
+ * Regular stdout
+ * ====================================================================== */
+/* Light mode */
+.jupyter-output {
+  --ansi-black: rgb(0 0 0);
+  --ansi-blue: rgb(0 0 187);
+
+  --ansi-white: rgb(102, 102, 102);
+  --ansi-yellow: #854d0e;
+  --ansi-green: #1d7500;
+  --ansi-cyan: #0c6ea6;
+}
+
+/* Dark mode */
+html.dark .jupyter-output {
+  --ansi-black: rgb(153, 153, 153);
+  --ansi-blue: rgb(117, 117, 249);
+  --ansi-red: #f93939;
+  --ansi-magenta: rgb(225, 61, 225);
+
+  /* Nicer white */
+  --ansi-white: rgb(229, 229, 229);
+  --ansi-green: #00eb00;
+  --ansi-yellow: #facc15;
+  --ansi-cyan: #00fafa;
+}
+
+/* ======================================================================
+ * Jupyter error cells
+ * ====================================================================== */
+/* Light mode */
+.jupyter-error {
+  @apply bg-red-50;
+  --ansi-black: rgb(0 0 0);
+  --ansi-red: #b91c1c;
+  --ansi-green: #1d7500;
+  --ansi-yellow: #854d0e;
+  --ansi-blue: #1e40af;
+  --ansi-magenta: #86198f;
+  --ansi-cyan: #0c6ea6;
+  --ansi-white: #575757;
+}
+
+/* Dark mode */
+html.dark .jupyter-error {
+  @apply bg-red-900/30;
+  --ansi-black: #b5b5b5;
+  --ansi-red: #ff9494;
+  --ansi-green: #00eb00;
+  --ansi-yellow: #facc15;
+  --ansi-blue: #93c5fd;
+  --ansi-magenta: #f0abfc;
+  --ansi-cyan: #00fafa;
+  --ansi-white: #b5b5b5;
+}

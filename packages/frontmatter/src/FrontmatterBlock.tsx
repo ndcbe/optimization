@@ -1,0 +1,388 @@
+import React from 'react';
+import classNames from 'classnames';
+import type { ExpandedThebeFrontmatter, PageFrontmatter } from 'myst-frontmatter';
+import { SourceFileKind } from 'myst-spec-ext';
+import { OpenAccessIcon, GithubIcon, XIcon } from '@scienceicons/react/24/solid';
+import { LicenseBadges } from './licenses.js';
+import { DownloadsDropdown } from './downloads.js';
+import { AuthorAndAffiliations, AuthorsList } from './Authors.js';
+import { LaunchButton } from './LaunchButton.js';
+
+import { PencilSquareIcon } from '@heroicons/react/24/outline';
+
+function ExternalOrInternalLink({
+  to,
+  className,
+  title,
+  children,
+}: {
+  to: string;
+  className?: string;
+  title?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <a href={to} className={className} title={title}>
+      {children}
+    </a>
+  );
+}
+
+export function DoiText({ doi: possibleLink, className }: { doi?: string; className?: string }) {
+  if (!possibleLink) return null;
+  const doi = possibleLink.replace(/^(https?:\/\/)?(dx\.)?doi\.org\//, '');
+  const url = `https://doi.org/${doi}`;
+  return (
+    <a
+      className={classNames(
+        'myst-fm-doi-text no-underline text-inherit hover:text-inherit',
+        className,
+      )}
+      target="_blank"
+      rel="noopener noreferrer"
+      href={url}
+      title="DOI (Digital Object Identifier)"
+    >
+      {url}
+    </a>
+  );
+}
+
+export function DoiBadge({ doi: possibleLink, className }: { doi?: string; className?: string }) {
+  if (!possibleLink) return null;
+  const doi = possibleLink.replace(/^(https?:\/\/)?(dx\.)?doi\.org\//, '');
+  const url = `https://doi.org/${doi}`;
+  return (
+    <div
+      className={classNames('myst-fm-doi-badge flex-none', className)}
+      title="DOI (Digital Object Identifier)"
+    >
+      <a
+        className="myst-fm-doi-link font-light no-underline hover:font-light hover:underline text-inherit hover:text-inherit"
+        target="_blank"
+        rel="noopener noreferrer"
+        href={url}
+      >
+        {url}
+      </a>
+    </div>
+  );
+}
+
+export function DateString({
+  date,
+  format = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  },
+  spacer,
+}: {
+  date?: string;
+  format?: Intl.DateTimeFormatOptions;
+  spacer?: boolean;
+}) {
+  if (!date) return null;
+  // Parse the date
+  // As this is a YYYY-MM-DD form, the parser interprets this as a UTC date
+  // (see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#the_epoch_timestamps_and_invalid_date)
+  const utcDate = new Date(date);
+
+  // Now cast our UTC-date into the local timezone
+  const localDate = new Date(utcDate.getUTCFullYear(), utcDate.getUTCMonth(), utcDate.getUTCDate());
+
+  // Then format as human-readable in the local timezone.
+  const dateString = localDate.toLocaleDateString('en-US', format);
+  return (
+    <time dateTime={date} className={classNames('myst-fm-date-string', { 'text-spacer': spacer })}>
+      {dateString}
+    </time>
+  );
+}
+
+export function TwitterLink({ twitter: possibleLink }: { twitter?: string }) {
+  if (!possibleLink) return null;
+  const twitter = possibleLink.replace(/^(https?:\/\/)?(?:twitter|x)\.com\//, '');
+  return (
+    <a
+      href={`https://x.com/${twitter}`}
+      title={`X Account: ${twitter}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="myst-fm-twitter-link text-inherit hover:text-inherit"
+    >
+      <XIcon
+        width="1.25rem"
+        height="1.25rem"
+        className="myst-fm-twitter-icon inline-block mr-1 opacity-60 hover:opacity-100"
+      />
+    </a>
+  );
+}
+
+export function GitHubLink({ github: possibleLink }: { github?: string }) {
+  if (!possibleLink) return null;
+  const github = possibleLink.replace(/^(https?:\/\/)?github\.com\//, '');
+  return (
+    <a
+      href={`https://github.com/${github}`}
+      title={`GitHub Repository: ${github}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="myst-fm-github-link text-inherit hover:text-inherit"
+    >
+      <GithubIcon
+        width="1.25rem"
+        height="1.25rem"
+        className="myst-fm-github-icon inline-block mr-1 opacity-60 hover:opacity-100"
+      />
+    </a>
+  );
+}
+
+function ColabLogo() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      focusable="false"
+      aria-hidden="true"
+      className="myst-fm-colab-icon inline-block h-5 w-5 align-text-bottom"
+    >
+      <path
+        d="M4.54,9.46,2.19,7.1a6.93,6.93,0,0,0,0,9.79l2.36-2.36A3.59,3.59,0,0,1,4.54,9.46Z"
+        fill="#E8710A"
+      />
+      <path
+        d="M2.19,7.1,4.54,9.46a3.59,3.59,0,0,1,5.08,0l1.71-2.93h0l-.1-.08h0A6.93,6.93,0,0,0,2.19,7.1Z"
+        fill="#F9AB00"
+      />
+      <path
+        d="M11.34,17.46h0L9.62,14.54a3.59,3.59,0,0,1-5.08,0L2.19,16.9a6.93,6.93,0,0,0,9,.65l.11-.09"
+        fill="#F9AB00"
+      />
+      <path
+        d="M12,7.1a6.93,6.93,0,0,0,0,9.79l2.36-2.36a3.59,3.59,0,1,1,5.08-5.08L21.81,7.1A6.93,6.93,0,0,0,12,7.1Z"
+        fill="#F9AB00"
+      />
+      <path
+        d="M21.81,7.1,19.46,9.46a3.59,3.59,0,0,1-5.08,5.08L12,16.9A6.93,6.93,0,0,0,21.81,7.1Z"
+        fill="#E8710A"
+      />
+    </svg>
+  );
+}
+
+export function ColabLink({ sourceUrl }: { sourceUrl?: string }) {
+  if (!sourceUrl || !/\.ipynb(?:$|[?#])/.test(sourceUrl)) return null;
+  const colabUrl = sourceUrl.replace(
+    /^https?:\/\/github\.com\//,
+    'https://colab.research.google.com/github/',
+  );
+  if (colabUrl === sourceUrl) return null;
+  return (
+    <a
+      href={colabUrl}
+      title="Open in Colab"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Open notebook in Colab"
+      className="myst-fm-colab-link text-inherit hover:text-inherit"
+    >
+      <ColabLogo />
+    </a>
+  );
+}
+
+export function OpenAccessBadge({ open_access }: { open_access?: boolean }) {
+  if (!open_access) return null;
+  return (
+    <a
+      href="https://en.wikipedia.org/wiki/Open_access"
+      target="_blank"
+      rel="noopener noreferrer"
+      title="Open Access"
+      className="myst-fm-open-access-badge text-inherit hover:text-inherit"
+    >
+      <OpenAccessIcon
+        width="1.25rem"
+        height="1.25rem"
+        className="myst-fm-block-open-access-icon mr-1 inline-block opacity-60 hover:opacity-100 hover:text-[#E18435]"
+      />
+    </a>
+  );
+}
+
+export function EditLink({ editUrl }: { editUrl?: string }) {
+  if (!editUrl) return null;
+  return (
+    <a
+      href={editUrl}
+      title="Edit This Page"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="myst-fm-edit-link text-inherit hover:text-inherit"
+    >
+      <PencilSquareIcon
+        width="1.25rem"
+        height="1.25rem"
+        className="myst-fm-edit-icon inline-block mr-1 opacity-60 hover:opacity-100"
+      />
+    </a>
+  );
+}
+
+export function Journal({
+  venue,
+  volume,
+  issue,
+  className,
+}: {
+  venue?: Required<PageFrontmatter>['venue'];
+  volume?: Required<PageFrontmatter>['volume'];
+  issue?: Required<PageFrontmatter>['issue'];
+  className?: string;
+}) {
+  if (!venue) return null;
+  const { title, url } = typeof venue === 'string' ? { title: venue, url: null } : venue;
+  if (!title) return null;
+  return (
+    <div className={classNames('myst-fm-journal flex-none mr-2', className)}>
+      {url ? (
+        <ExternalOrInternalLink
+          className="myst-fm-journal-link font-semibold no-underline smallcaps"
+          to={url}
+          title={title}
+        >
+          {title}
+        </ExternalOrInternalLink>
+      ) : (
+        <span className="myst-fm-journal-title font-semibold smallcaps">{title}</span>
+      )}
+      {volume != null && (
+        <span className="myst-fm-journal-volume pl-2 ml-2 border-l">
+          Volume {volume.title}
+          {issue != null && <>, Issue {issue.title}</>}
+        </span>
+      )}
+    </div>
+  );
+}
+
+export function FrontmatterBlock({
+  frontmatter,
+  kind = SourceFileKind.Article,
+  authorStyle = 'block',
+  hideBadges,
+  hideExports,
+  hideAuthors,
+  className,
+  thebe,
+  location,
+}: {
+  frontmatter: Omit<PageFrontmatter, 'parts'>;
+  kind?: SourceFileKind;
+  authorStyle?: 'block' | 'list';
+  hideBadges?: boolean;
+  hideExports?: boolean;
+  hideAuthors?: boolean;
+  className?: string;
+  thebe?: ExpandedThebeFrontmatter;
+  location?: string;
+}) {
+  if (!frontmatter) return null;
+  const {
+    title,
+    subtitle,
+    subject,
+    doi,
+    open_access,
+    license,
+    github,
+    venue,
+    volume,
+    issue,
+    exports,
+    downloads,
+    date,
+    authors,
+    enumerator,
+    edit_url,
+    source_url,
+  } = frontmatter;
+  const isJupyter = kind === SourceFileKind.Notebook;
+  const hasExports = downloads ? downloads.length > 0 : exports && exports.length > 0;
+  const hasAuthors = authors && authors.length > 0;
+  const hasBadges = !!open_access || !!license || !!hasExports || !!isJupyter || !!github;
+  const hasHeaders = !!subject || !!venue || !!volume || !!issue;
+  const hasDateOrDoi = !!doi || !!date;
+  const showHeaderBlock = hasHeaders || (hasBadges && !hideBadges) || (hasExports && !hideExports);
+  const hideLaunch: boolean = false;
+
+  if (!title && !subtitle && !showHeaderBlock && !hasAuthors && !hasDateOrDoi) {
+    // Nothing to show!
+    return null;
+  }
+  return (
+    <div
+      id="skip-to-frontmatter"
+      aria-label="article frontmatter"
+      className={classNames('myst-fm-block', className)}
+    >
+      {showHeaderBlock && (
+        <div className="myst-fm-block-header flex items-center mb-5 h-6 text-sm font-light">
+          {subject && (
+            <div
+              className={classNames('myst-fm-block-subject flex-none pr-2 smallcaps', {
+                'mr-2 border-r': venue,
+              })}
+            >
+              {subject}
+            </div>
+          )}
+          <Journal venue={venue} volume={volume} issue={issue} />
+          <div className="flex-grow"></div>
+          {!hideBadges && (
+            <div className="myst-fm-block-badges">
+              <LicenseBadges license={license} />
+              <OpenAccessBadge open_access={open_access} />
+              <GitHubLink github={github} />
+            </div>
+          )}
+          <ColabLink sourceUrl={source_url ?? undefined} />
+          <EditLink editUrl={edit_url ?? undefined} />
+          {!hideExports && <DownloadsDropdown exports={(downloads ?? exports) as any} />}
+          {!hideLaunch && thebe && location && <LaunchButton thebe={thebe} location={location} />}
+        </div>
+      )}
+      {title && (
+        <h1 className="myst-fm-block-title mb-0">
+          {enumerator && (
+            <span className="myst-fm-block-enumerator mr-3 select-none"> {enumerator} </span>
+          )}
+          {title}
+        </h1>
+      )}
+      {subtitle && (
+        <p className="myst-fm-block-subtitle mt-2 mb-0 lead text-zinc-600 dark:text-zinc-400">
+          {subtitle}
+        </p>
+      )}
+      {!hideAuthors && hasAuthors && authorStyle === 'list' && (
+        <AuthorsList authors={frontmatter.authors} affiliations={frontmatter.affiliations} />
+      )}
+      {!hideAuthors && hasAuthors && authorStyle === 'block' && (
+        <AuthorAndAffiliations
+          authors={frontmatter.authors}
+          affiliations={frontmatter.affiliations}
+        />
+      )}
+      {hasDateOrDoi && (
+        <div className="myst-fm-block-date-doi flex mt-2 text-sm font-light">
+          <DateString date={date} spacer={!!doi} />
+          <DoiBadge doi={doi} />
+        </div>
+      )}
+    </div>
+  );
+}

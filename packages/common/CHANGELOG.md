@@ -1,0 +1,307 @@
+# @myst-theme/common
+
+## 1.2.2
+
+## 1.2.1
+
+## 1.2.0
+
+## 1.1.4
+
+## 1.1.3
+
+### Patch Changes
+
+- be43281: Fix bug with trailing slash in URLs
+
+## 1.1.2
+
+### Patch Changes
+
+- c3c427d: Add alt text for logo
+
+## 1.1.1
+
+## 1.1.0
+
+## 1.0.1
+
+### Patch Changes
+
+- 796a556: Added a constant to reflect the current MyST AST version supported by the `@myst-theme/*` packages.
+
+## 1.0.0
+
+### Major Changes
+
+- 16a3bc8: Updates the theme to accept a new AST structure for notebook output. These changes are not backwards compatible, and after this change, only the new AST structure is supported. Meaning, content upgrades are required to use the new themes. See https://github.com/jupyter-book/mystmd/pull/1903 for related AST changes.
+
+## 0.18.0
+
+### Minor Changes
+
+- dee582b: Add human-readable CSS classes to myst components
+
+### Patch Changes
+
+- c6699ff: Add hide_authors handling
+
+## 0.17.1
+
+## 0.17.0
+
+### Patch Changes
+
+- 2049d12: Upgrade to mystmd 1.5.1
+
+## 0.16.0
+
+### Minor Changes
+
+- 8fba231: Render external URLs in table of contents
+
+## 0.15.2
+
+## 0.15.1
+
+## 0.15.0
+
+## 0.14.3
+
+## 0.14.2
+
+## 0.14.1
+
+## 0.14.0
+
+### Patch Changes
+
+- b0b67b6: Update to myst 1.3.24
+- 0ae2575: Add support for custom CSS styles
+
+## 0.13.7
+
+### Patch Changes
+
+- 098de07: Update static links in parts in config
+
+## 0.13.6
+
+### Patch Changes
+
+- e65d974: Add enumerators to page titles and toc
+
+## 0.13.5
+
+## 0.13.4
+
+## 0.13.3
+
+### Patch Changes
+
+- 653bd6c: Support url slugs with multiple path segments
+
+## 0.13.2
+
+### Patch Changes
+
+- a2e58e5: Expose PageFrontmatterWithDownloads
+- a2e58e5: Update to mystmd 1.3.13
+
+## 0.13.1
+
+### Patch Changes
+
+- 4d55ef2: Support parts mdast trees in page frontmatter
+
+## 0.13.0
+
+## 0.12.0
+
+## 0.11.0
+
+### Patch Changes
+
+- 844dbe3f: Updates to myst
+
+## 0.10.0
+
+### Patch Changes
+
+- f0b52512: Modified `getProjectHeadings` to work with plain `projectSlugs` to support custom theme routes that use `baseurl` but have no separate project.
+
+## 0.9.10
+
+### Patch Changes
+
+- 54097c18: Upgrade to mystmd 1.3.0
+
+## 0.9.9
+
+## 0.9.8
+
+## 0.9.7
+
+## 0.9.6
+
+## 0.9.5
+
+### Patch Changes
+
+- 1169041e: Update `myst-*` and `thebe-*` deps
+
+## 0.9.4
+
+## 0.9.3
+
+### Patch Changes
+
+- 2224feb9: Upgrade myst
+
+## 0.9.2
+
+## 0.9.1
+
+### Patch Changes
+
+- 7eae252c: Upgrade MyST dependencies
+
+## 0.9.0
+
+### Minor Changes
+
+- b59ddf0b: Migrated to meta helper functions to the Remix V2 pattern, old meta helpers functions are still available with a `_v1` suffix.
+
+### Patch Changes
+
+- 34f2a76b: Update packages
+
+## 0.8.3
+
+### Patch Changes
+
+- 5ecc18e6: Add favicon
+
+## 0.8.2
+
+### Patch Changes
+
+- 6f97346e: Update myst dependencies
+
+## 0.8.1
+
+### Patch Changes
+
+- bb0f4b2b: Add downloads to supersede exports
+- bb0f4b2b: Update myst versions
+
+## 0.8.0
+
+## 0.7.0
+
+## 0.6.1
+
+## 0.6.0
+
+## 0.5.22
+
+### Patch Changes
+
+- 89d5489b: Support twitter as site option
+
+## 0.5.21
+
+## 0.5.20
+
+## 0.5.19
+
+## 0.5.18
+
+### Patch Changes
+
+- 8fa48f9: bump `myst-*`
+
+## 0.5.17
+
+### Patch Changes
+
+- b4eadf0: Bumped `myst-*` dependencies
+
+## 0.5.16
+
+### Patch Changes
+
+- d4631de: Update to remove myst-cli-utils
+
+## 0.5.15
+
+### Patch Changes
+
+- 9f44076: Update myst deps
+- d21e6f2: Updates to myst and bug fix for myst-demo (clone for html output).
+
+## 0.5.14
+
+## 0.5.13
+
+### Patch Changes
+
+- b7bcab9: Update myst deps
+
+## 0.5.12
+
+### Patch Changes
+
+- d997102: Update packages to latest myst versions
+
+## 0.5.11
+
+### Patch Changes
+
+- 9f59645: Move logo and logo_dark to options.
+
+## 0.5.10
+
+## 0.5.9
+
+## 0.5.8
+
+## 0.5.7
+
+### Patch Changes
+
+- c3c8175: Update myst dependencies
+
+## 0.5.6
+
+### Patch Changes
+
+- e6c1ec89: Added ability to start thebe sessions for notebooks on the correct path such that relative importants and file loading will work. As a result base `myst` packages have also been upgraded, mainly for types so we can consume the new `location` field appropraitely, that holds the path information.
+
+## 0.5.5
+
+## 0.5.4
+
+## 0.5.3
+
+### Patch Changes
+
+- 1948a7a: Move to GenericParent instead of Root
+
+## 0.5.2
+
+## 0.5.1
+
+## 0.5.0
+
+## 0.4.2
+
+### Patch Changes
+
+- 03538542: Upgrade myst packages to 1.1.8
+
+## 0.4.1
+
+### Patch Changes
+
+- 56523c92: Move types to @myst-theme/common

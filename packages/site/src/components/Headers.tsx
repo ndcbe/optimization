@@ -1,0 +1,110 @@
+import {
+  FrontmatterBlock,
+  GitHubLink,
+  Journal,
+  LicenseBadges,
+  OpenAccessBadge,
+} from '@myst-theme/frontmatter';
+import { useGridSystemProvider } from '@myst-theme/providers';
+import classNames from 'classnames';
+import type { PageFrontmatterWithDownloads } from '@myst-theme/common';
+import { ThemeButton } from './Navigation/index.js';
+
+export function ArticleHeader({
+  frontmatter,
+  children,
+  toggleTheme,
+  className,
+  hideAuthors,
+}: {
+  frontmatter: PageFrontmatterWithDownloads;
+  children?: React.ReactNode;
+  toggleTheme?: boolean;
+  className?: string;
+  hideAuthors?: boolean;
+}) {
+  const grid = useGridSystemProvider();
+  const { subject, venue, volume, issue, ...rest } = frontmatter ?? {};
+  const positionBackground = {
+    'col-page-right': grid === 'article-left-grid',
+    'col-page': grid === 'article-grid',
+  };
+  const positionFrontmatter = {
+    'col-body': grid === 'article-left-grid',
+    'col-page-left': grid === 'article-grid',
+  };
+  return (
+    <header className="myst-article-header relative col-screen">
+      {frontmatter?.banner && (
+        // This is the banner contained in a full-bleed div
+        <div
+          className={classNames(
+            'myst-article-header-background absolute',
+            grid,
+            'subgrid-gap col-screen bg-no-repeat bg-cover bg-top w-full h-full -z-10 pointer-events-none',
+          )}
+          style={{
+            backgroundImage: `url(${frontmatter?.banner})`,
+          }}
+        />
+      )}
+      <div
+        className={classNames(
+          'myst-article-header-content w-full relative col-screen article',
+          grid,
+          'subgrid-gap',
+          {
+            'my-[2rem] pb-[1rem] md:my-[4rem]': frontmatter?.banner,
+            'my-[2rem]': !frontmatter?.banner,
+          },
+          className,
+        )}
+      >
+        <div
+          className={classNames('myst-article-header-banner', positionBackground, {
+            'shadow-2xl bg-white/80 dark:bg-black/80 backdrop-blur': frontmatter?.banner,
+          })}
+        >
+          <div
+            className={classNames('flex w-full align-middle py-2 mb-[1rem] text-sm', {
+              'px-4 w-full': frontmatter?.banner,
+              'bg-white/80 dark:bg-black/80': frontmatter?.banner,
+              ...positionBackground,
+            })}
+          >
+            {subject && <div className={classNames('flex-none pr-2 smallcaps')}>{subject}</div>}
+            <Journal
+              venue={venue}
+              volume={volume}
+              issue={issue}
+              className="hidden pl-2 border-l md:block"
+            />
+            <div className="flex-grow"></div>
+            <div className="hidden sm:block">
+              <LicenseBadges license={frontmatter?.license} />
+              <OpenAccessBadge open_access={frontmatter?.open_access} />
+              <GitHubLink github={frontmatter?.github} />
+            </div>
+            {toggleTheme && (
+              <ThemeButton className="myst-article-header-theme-button inline-block w-5 h-5 mt-0.5 ml-1" />
+            )}
+          </div>
+          <div className="flex flex-col mb-10 md:flex-row">
+            <FrontmatterBlock
+              frontmatter={rest}
+              authorStyle="list"
+              className={classNames('myst-article-header-fm flex-grow', {
+                'pt-6 px-6': frontmatter?.banner,
+                ...positionFrontmatter,
+              })}
+              hideAuthors={hideAuthors}
+              hideBadges
+              hideExports
+            />
+            {children}
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+}

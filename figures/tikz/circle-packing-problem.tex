@@ -1,0 +1,95 @@
+% Circle packing, THE PROBLEM -- not the answer.
+%
+%   figures/tikz/circle-packing-problem.tex
+%       -> media/figures/circle-packing-problem.{png,svg}
+%
+% Drawn for folio 2-3, green ink at Problem A: "add figure illustration."
+%
+% This is the WAY IN to Biegler's Example 4.4 (p. 67): three circles of given
+% radii, a box that must contain them, and a perimeter to be minimised. It is
+% deliberately DISTINCT from figures/plots/packing-local-solutions.py, which
+% shows two solved arrangements and makes an argument about local optima. The
+% arrangement below is a feasible one, NOT an optimal one -- the box is
+% obviously too big, which is the point: the reader can see that squeezing it
+% is what the model is for.
+%
+% INSTANCE. R = (1.0, 0.7, 0.6), the same radii as packing-local-solutions.py
+% and as the lecture, so the two figures sit beside each other consistently.
+% ⚠ The course NOTEBOOK uses a different instance, R = (10, 5, 3), whose best
+% perimeter is 98.284. Do not label this figure with that number, and do not
+% label the notebook's with this one. No perimeter value appears here at all,
+% because this figure shows a feasible point rather than a solution.
+%
+% GEOMETRY, checked rather than eyeballed. Box B = 4.2 wide, A = 3.2 high.
+% Centres (1.3, 1.3), (3.0, 2.2), (3.3, 0.8). Every "in box" inequality holds
+% with slack, and the three centre distances are 1.924, 2.062 and 1.432
+% against required 1.7, 1.6 and 1.3 -- so no overlap, and the closest pair
+% (R_2, R_3) is close enough that the "no overlap" annotation has something to
+% point at.
+%
+% GREYSCALE. The circles are outlined in Okabe-Ito blue and filled pale grey;
+% every annotation is black text with a black rule or arrow. Nothing here is
+% distinguished by colour -- the three circles are told apart by their labels
+% R_1, R_2, R_3, exactly as the model indexes them.
+\definecolor{okabeblue}{HTML}{0072B2}  % Okabe-Ito blue, as in dowling.mplstyle
+\begin{tikzpicture}[
+    scale=1.55,
+    >={Latex[length=2.2mm]},
+    every node/.style={font=\small},
+    circ/.style={draw=okabeblue, line width=1.1pt, fill=black!7},
+    dim/.style={<->, black, line width=0.5pt},
+    ext/.style={black!55, line width=0.4pt},
+  ]
+
+  % ---- the box ------------------------------------------------------------
+  \draw[black, line width=1.2pt] (0,0) rectangle (4.2,3.2);
+
+  % ---- the three circles --------------------------------------------------
+  \draw[circ] (1.3,1.3) circle (1.0);
+  \draw[circ] (3.0,2.2) circle (0.7);
+  \draw[circ] (3.3,0.8) circle (0.6);
+
+  % centres, and the radius of circle 1 drawn as an arrow
+  \fill (1.3,1.3) circle (0.035);
+  \fill (3.0,2.2) circle (0.035);
+  \fill (3.3,0.8) circle (0.035);
+  \draw[->, black, line width=0.5pt] (1.3,1.3) -- (2.007,2.007)
+      node[midway, above left=-1.5pt, inner sep=1pt] {$R_1$};
+  \node[below right=0pt and 1pt] at (1.3,1.3) {$(x_1,y_1)$};
+  \node[above right=-1pt and 2pt] at (3.0,2.2) {$R_2$};
+  \node[below right=-1pt and 2pt] at (3.3,0.8) {$R_3$};
+
+  % ---- the two decision variables that ARE the objective ------------------
+  % B, along the bottom
+  \draw[ext] (0,0) -- (0,-0.62);
+  \draw[ext] (4.2,0) -- (4.2,-0.62);
+  \draw[dim] (0,-0.45) -- (4.2,-0.45) node[midway, fill=white, inner sep=1.5pt] {$B$};
+  % A, up the left
+  \draw[ext] (0,0) -- (-0.62,0);
+  \draw[ext] (0,3.2) -- (-0.62,3.2);
+  \draw[dim] (-0.45,0) -- (-0.45,3.2) node[midway, fill=white, inner sep=1.5pt] {$A$};
+
+  % ---- what is being minimised --------------------------------------------
+  \node[anchor=south west, align=left, font=\small] at (-0.45,3.45)
+      {\textbf{minimize the perimeter} $\;2(A+B)$\\[-1pt]
+       \textit{over} the box $A,B$ \textit{and} every centre $(x_i,y_i)$};
+
+  % ---- the two families of constraint, each pointed at once ---------------
+  % "in box": the slack between circle 2 and the right wall is x_2 <= B - R_2.
+  \draw[<->, black, line width=0.5pt] (3.7,2.2) -- (4.2,2.2);
+  \node[anchor=west, align=left] at (4.32,2.2)
+      {\textbf{in box}\\[-2pt] $x_i \le B - R_i$};
+
+  % "no overlap": the closest pair, centre to centre.
+  \draw[black, line width=0.5pt, dashed] (3.0,2.2) -- (3.3,0.8);
+  \node[anchor=west, align=left] at (4.32,0.85)
+      {\textbf{no overlap}\\[-2pt]
+       $\lVert c_i - c_j \rVert \ge R_i + R_j$};
+  \draw[->, black, line width=0.5pt] (4.30,1.05) -- (3.20,1.48);
+
+  % ---- the honest caption on the arrangement itself ------------------------
+  \node[anchor=north west, align=left, font=\small\itshape] at (-0.45,-0.78)
+      {a feasible arrangement, not the optimal one:\\[-1pt]
+       the box still has room to shrink};
+
+\end{tikzpicture}

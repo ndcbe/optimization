@@ -1,4 +1,5 @@
-"""Optimal energy arbitrage for a 24 h battery: price, power, state of charge.
+"""Optimal energy arbitrage for a 24 h battery: price, charging, discharging,
+state of charge.
 
     figures/plots/battery-arbitrage.py  ->  media/figures/battery-arbitrage.{png,pdf}
 
@@ -27,11 +28,31 @@ same objective. Ipopt (an interior-point method) tends to return an interior,
 "spread out" point; HiGHS returns a vertex. The teaching content is the same:
 buy in the trough, sell in the peaks, and end where you started.
 
-Greyscale: ONE series per panel, all black, told apart by the panel they are
-in and by their y-axis label. Nothing is keyed by colour. Shaded charge and
-discharge bands were tried and dropped -- twelve bands across three panels read
-as noise at handout size, and the vertical alignment of the panels already
-makes the point they were meant to make.
+COLOUR, restored 2026-08-22 on Prof. Dowling's folio 1-13 note: "Let's move
+back to color plots for price, charging, discharging, and energy level. In the
+git history, you will find a prior version of the plots that were in color."
+That prior version is the pre-figure-pipeline notebook -- `04e85dc4` and
+earlier, cells 119/120 of `notebooks/1-dev/Pyomo-Nuts-and-Bolts.ipynb`:
+
+    plt.plot(t, E_control, 'b.-')       # state of charge, BLUE
+    plt.step(t_, c_control_, 'r.-')     # charging,        RED
+    plt.step(t_, d_control_, 'g.-')     # discharging,     GREEN
+
+Two changes to that scheme, both required by this course's figure policy and
+neither of them a change of meaning:
+
+  * matplotlib's bare 'r' / 'g' are the one pair a red-green colour-blind
+    reader cannot separate at all. The Okabe-Ito members of the same two hue
+    families -- vermillion #D55E00 and bluish green #009E73 -- carry the same
+    "red = buying, green = selling" reading and are safe. Blue is #0072B2.
+  * vermillion (L* = 54.2) and bluish green (L* = 57.7) collapse to the same
+    grey, so charging and discharging ALSO differ in linestyle and in marker.
+    Colour is never the only channel; see figures/README.md.
+
+The two power series were previously netted into a single black `c_t - d_t`
+trace. They are drawn separately again because Prof. Dowling's note names
+charging and discharging as two of the four things he wants in colour, and
+because that is what the historical version plotted.
 """
 
 from pathlib import Path
@@ -50,6 +71,11 @@ ETA = 0.88
 E0 = 2.0
 C_MAX = D_MAX = 1.0
 E_MAX = 4.0
+
+# Okabe-Ito. See the module docstring for why these three and not 'b'/'r'/'g'.
+BLUE = "#0072B2"  # L* = 46.0 -- price, and state of charge
+VERMILLION = "#D55E00"  # L* = 54.2 -- charging  (was 'r')
+BLUISH_GREEN = "#009E73"  # L* = 57.7 -- discharging (was 'g')
 
 
 def solve_arbitrage(price):
@@ -85,30 +111,43 @@ def make_figure():
     assert np.isclose(energy[-1], E0)
 
     hours = np.arange(1, N + 1)
-    fig, axes = plt.subplots(3, 1, figsize=(6.6, 6.0), sharex=True)
+    fig, axes = plt.subplots(3, 1, figsize=(6.6, 6.4), sharex=True)
     ax_p, ax_u, ax_e = axes
 
     # --- panel 1: the data ------------------------------------------------
-    ax_p.step(hours, price, where="mid", color="black")
+    ax_p.step(hours, price, where="mid", color=BLUE, linestyle="-")
     ax_p.set_ylabel("price\n[\\$/MWh]")
 
     # --- panel 2: the decision --------------------------------------------
-    net = c - d
-    ax_u.step(hours, net, where="mid")
+    # Charging and discharging as two series, as the notebook drew them before
+    # the figure pipeline existed. Three redundant channels per series --
+    # colour, linestyle, marker -- so neither the colour-blind reader nor the
+    # photocopier reader loses the distinction.
+    ax_u.step(hours, c, where="mid", color=VERMILLION, linestyle="-",
+              linewidth=2.6)
+    ax_u.step(hours, d, where="mid", color=BLUISH_GREEN, linestyle="--",
+              linewidth=2.6)
     ax_u.axhline(0.0, color="0.7", linewidth=0.8, zorder=0)
-    ax_u.set_ylabel("$c_t - d_t$\n[MW]")
-    ax_u.set_ylim(-1.7, 1.7)
-    # Direct labelling: the sign of c - d is the decision, and "charge" above
-    # the axis / "discharge" below it says so without a legend.
-    ax_u.annotate("charge", xy=(0.4, 1.25), fontsize=12, va="center")
-    ax_u.annotate("discharge", xy=(0.4, -1.3), fontsize=12, va="center")
+    ax_u.set_ylabel("power\n[MW]")
+    ax_u.set_ylim(-0.15, 1.95)
+
+    # Direct labelling, in the series colour -- preferred over a legend
+    # (figures/README.md). Pinned in axes coordinates rather than to a data
+    # point: c_t and d_t both max out at 1 MW and the two labels landed on top
+    # of each other when placed at their argmax.
+    ax_u.annotate("charge $c_t$ (solid)", xy=(0.02, 0.90),
+                  xycoords="axes fraction", color=VERMILLION, fontsize=12,
+                  ha="left", va="top")
+    ax_u.annotate("discharge $d_t$ (dashed)", xy=(0.98, 0.90),
+                  xycoords="axes fraction", color=BLUISH_GREEN, fontsize=12,
+                  ha="right", va="top")
 
     # --- panel 3: the state -----------------------------------------------
     # NOT a step plot: energy is the integral of power, so it is piecewise
     # linear in time. This is the modelling lesson the notebook flags in a
     # comment on cell 114, and it is the reason this panel exists.
     ax_e.plot(np.concatenate([[0], hours]), np.concatenate([[E0], energy]),
-              marker="o", markersize=5, color="black")
+              marker="o", markersize=5, color=BLUE, linestyle="-")
     ax_e.set_ylabel("$E_t$\n[MWh]")
     ax_e.set_ylim(-0.3, E_MAX + 0.4)
     ax_e.axhline(E_MAX, color="0.7", linewidth=0.8, linestyle=":", zorder=0)

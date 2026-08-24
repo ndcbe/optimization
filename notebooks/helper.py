@@ -45,7 +45,7 @@ helper.set_plotting_style()
 ```
 """
 
-__version__ = "2026.08.18"
+__version__ = "2026.08.24"
 
 import shutil
 import sys
@@ -57,19 +57,65 @@ import subprocess
 
 import matplotlib.pyplot as plt
 
-def set_plotting_style():
-    SMALL_SIZE = 14
-    MEDIUM_SIZE = 16
-    BIGGER_SIZE = 18
+# The house figure style. ONE source of style, shared with the LaTeX lecture
+# handouts -- see figures/README.md. On Colab only the notebook is present (this
+# file itself is fetched by raw URL), so the repo copy cannot be assumed on disk.
+_STYLE_URL = (
+    "https://raw.githubusercontent.com/ndcbe/optimization/main/figures/dowling.mplstyle"
+)
+_STYLE_LOCAL = "../../figures/dowling.mplstyle"
 
-    plt.rc('font', size=SMALL_SIZE)  # controls default text sizes
-    plt.rc('axes', titlesize=SMALL_SIZE)  # fontsize of the axes title
-    plt.rc('axes', labelsize=MEDIUM_SIZE)  # fontsize of the x and y labels
-    plt.rc('xtick', labelsize=SMALL_SIZE)  # fontsize of the tick labels
-    plt.rc('ytick', labelsize=SMALL_SIZE)  # fontsize of the tick labels
-    plt.rc('legend', fontsize=SMALL_SIZE)  # legend fontsize
-    plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
-    plt.rc('lines', linewidth=3)
+# figure.figsize is DELIBERATELY not taken from the style file. See the docstring
+# of set_plotting_style below; 6.4 x 4.8 is matplotlib's own default, which is
+# what every notebook in this repo has always rendered at.
+NOTEBOOK_FIGSIZE = (6.4, 4.8)
+
+
+def set_plotting_style(figsize=NOTEBOOK_FIGSIZE):
+    """Apply the course house figure style to every subsequent matplotlib figure.
+
+    Loads ``figures/dowling.mplstyle`` -- the single source of figure style,
+    shared with the LaTeX lecture handouts -- so a notebook figure and a handout
+    figure look like they came from the same course. That brings in the
+    Okabe-Ito colour cycle paired element-wise with a linestyle cycle (so every
+    series carries a redundant, colour-free identity and survives greyscale
+    printing), viridis as the default colormap, inward ticks on all four sides,
+    and the guide's font and line weights. Read the header of the style file for
+    why each of those is the way it is.
+
+    Arguments:
+        figsize: default figure size in inches, or None to accept the style
+            file's own ``figure.figsize``.
+
+    Notes:
+        **Why figsize is overridden.** The style file sets ``figure.figsize: 4, 4``,
+        which is calibrated for a single-column figure in the printed handout.
+        A notebook figure is rendered inline in a browser at its native size, and
+        at 4 x 4 the style's own 16 pt bold axis labels and 15 pt tick labels no
+        longer fit: x tick labels get dropped and legends collide with the data.
+        Canvas size is layout, and layout is per-medium; everything that is
+        figure *identity* -- colour, linestyle, colormap, fonts, ticks -- is
+        taken from the style file unchanged. Individual figures should still set
+        their own ``figsize`` when the aspect ratio matters, exactly as the
+        scripts in ``figures/plots/`` do.
+
+        **Grid.** The style sets ``axes.grid: False``. A notebook that calls
+        ``plt.grid(True)`` still gets a grid; the house convention is to leave it
+        off and use light ``axvline`` rules where a reading aid is needed.
+    """
+    style = _STYLE_URL if on_colab() else _STYLE_LOCAL
+
+    try:
+        plt.style.use(style)
+    except (OSError, ValueError) as e:
+        # Never let a missing style file break a notebook: a wrong-looking plot
+        # is recoverable, a stopped notebook in front of a class is not.
+        print(f"WARNING: could not load the house style from {style} ({e}).")
+        print("Falling back to matplotlib defaults with the course line width.")
+        plt.rc("lines", linewidth=3)
+
+    if figsize is not None:
+        plt.rc("figure", figsize=figsize)
 
 
 def _check_available(executable_name):

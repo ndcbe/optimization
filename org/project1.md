@@ -1,5 +1,9 @@
 # Pyomo Mini Project
 
+```{warning}
+**This is a draft assignment. It is still being updated for Fall 2026.**
+```
+
 Summary: choose an optimization paper from the literature. Use an AI tool to extract the mathematical
 model from it. Then **check the AI's work against the paper, on paper, with a pencil.** Correct it,
 implement it, and try to reproduce a published result.

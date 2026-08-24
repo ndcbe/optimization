@@ -11,7 +11,7 @@
 # JupyterBook 1 command that no longer exists in this environment, so the
 # script could not work at all.
 #
-# TWO THINGS THAT BITE:
+# THREE THINGS THAT BITE:
 #
 # 1. node lives in the conda environment's bin and is NOT on the default PATH.
 #    Without it, jupyter-book stops with a "Node.js not found" install prompt.
@@ -20,6 +20,12 @@
 #    from notebooks/N-dev/ and strips the solution blocks. CI deliberately does
 #    NOT run it -- it reads assignments from ../optimization-private, which CI
 #    cannot see -- so a local build is the only place it happens.
+#
+# 3. scripts/build_theme_dist.sh must also run BEFORE the build. The packaged
+#    theme's build/ bundle is not committed (see DEVELOPER.md) -- it is a
+#    build artifact, regenerated fresh from vendor/myst-theme every run, in
+#    CI and locally alike. Skipping this does not error; myst falls back to
+#    the stock theme silently, and the Colab button just isn't there.
 # ---------------------------------------------------------------------------
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -32,6 +38,14 @@ command -v jupyter-book >/dev/null 2>&1 || {
   echo "    conda activate optimization_fall2026"
   exit 1
 }
+
+command -v npm >/dev/null 2>&1 || {
+  echo "npm not found. Needed to build themes/pyomo-book-theme-dist (see DEVELOPER.md)."
+  exit 1
+}
+
+echo "==> Building packaged custom theme from vendor/myst-theme"
+bash ./scripts/build_theme_dist.sh
 
 echo "==> Generating published notebooks from -dev sources"
 python ./scripts/process_notebooks.py

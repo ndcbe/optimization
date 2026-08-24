@@ -49,6 +49,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install ghp-import
 
+      # Regenerates themes/pyomo-book-theme-dist (including its build/ bundle)
+      # from vendor/myst-theme on every run, rather than relying on a
+      # pre-built artifact committed to the repo. Mirrors pyomo-doe's
+      # deploy.yml, which builds the same theme fork the same way. See
+      # DEVELOPER.md for why the packaged artifact is not committed: a
+      # generic `build/` .gitignore rule (unrelated to this theme) silently
+      # dropped it from every commit, so `myst build` had nothing to consume.
+      - name: Build packaged custom theme
+        run: bash ./scripts/build_theme_dist.sh
+
       - name: Build site
         run: myst build --html
 

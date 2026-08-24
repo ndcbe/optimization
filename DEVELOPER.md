@@ -18,9 +18,15 @@ find ~ -maxdepth 5 -type d -name pyomo-doe -not -path '*/.git/*' 2>/dev/null
 
 ```bash
 conda activate optimization_fall2026
+bash ./scripts/build_theme_dist.sh               # rebuild the packaged theme (needs npm)
 python ./scripts/process_notebooks.py            # -dev sources -> published copies
 BASE_URL=/optimization jupyter-book build --html # -> _build/html
 ```
+
+`build_theme_dist.sh` must run before the build. Its output, `themes/pyomo-book-theme-dist/build/`, is not
+committed — see *Architecture* below — so skipping this step does not error; MyST silently falls back to
+the stock theme and the Colab button is simply absent. `scripts/build_local.sh` runs all three steps for
+you, in order.
 
 `BASE_URL` matters: the site is served from `https://ndcbe.github.io/optimization`, not a domain root.
 Without it every asset and internal link resolves one level too high and the page renders unstyled.
@@ -76,7 +82,7 @@ change to `process_notebooks.py`. The guard on `.ipynb` is why markdown pages co
 | Layer | Path | Committed? |
 | --- | --- | --- |
 | Source of truth (`git subtree` of the fork) | `vendor/myst-theme` | ✅ yes — 441 files, 4.2 MB |
-| Packaged artifact that `myst.yml` consumes | `themes/pyomo-book-theme-dist` | ✅ yes — 125 files, 23 MB |
+| Packaged artifact that `myst.yml` consumes | `themes/pyomo-book-theme-dist` | Partly — `template.yml`, `server.js`, `package.json`, `package-lock.json`, `public/` are committed; `build/` and `node_modules/` are **not**, and are rebuilt by `scripts/build_theme_dist.sh` every time (CI runs it as a `Build packaged custom theme` step, before `myst build --html`) |
 
 `myst.yml` points at the **packaged artifact**, never the raw subtree:
 
@@ -88,6 +94,17 @@ site:
 The split is not optional. MyST requires a template directory containing `template.yml`, `server.js`,
 `package.json`, `package-lock.json`, `public/` and `build/`; the raw subtree is a development workspace and
 has none of that assembled.
+
+⚠ **CORRECTED 2026-08-24 — `build/` was never actually committed, and that broke CI for ~1.5 days.**
+This section used to claim the packaged artifact was fully committed (125 files, 23 MB). It wasn't: a
+generic `build/` rule in `.gitignore` (2023-era Python boilerplate, unrelated to this theme) silently
+dropped `themes/pyomo-book-theme-dist/build/` from every commit, including the one that set this whole
+arrangement up. Every CI run since 2026-08-22 failed with *"myst.yml 'files.4' file does not exist:
+themes/pyomo-book-theme-dist/build/\*\*/\*"* — `exit 0` claims from that period should not be trusted, and
+nobody noticed at the time. **The fix was not to commit `build/` after all** (that just reintroduces the
+"forgot to rebuild" risk this file already warns about below) **but to build it in CI**, matching
+`pyomo-doe`'s `deploy.yml`, which has done exactly this from the start. `.gitignore`'s `build/` rule is
+correct as-is now that nothing expects it to track this path.
 
 ⚠ **`node_modules` is never committed.** `myst build` runs `npm install` inside the packaged theme on first
 use, creating a **29 MB** tree there. It was not covered by any pre-existing ignore rule and would have been
@@ -129,32 +146,43 @@ git subtree pull --prefix=vendor/myst-theme \
     https://github.com/dowlinglab/myst-theme colab-button --squash
 ```
 
-**3. Regenerate the packaged artifact.** The subtree is source; `myst.yml` reads the artifact, so a subtree
-pull alone changes nothing the site can see:
+**3. Regenerate the packaged artifact locally, to verify the change before pushing.** The subtree is
+source; `myst.yml` reads the artifact, so a subtree pull alone changes nothing the site can see, and CI
+will not tell you the change is broken until it deploys:
 
 ```bash
 bash scripts/build_theme_dist.sh
 ```
 
 This installs the vendored workspace dependencies, builds the production book theme, assembles
-`themes/pyomo-book-theme-dist`, and regenerates its `package-lock.json`. It takes several minutes and prints
-a wall of npm deprecation warnings — those are normal.
+`themes/pyomo-book-theme-dist` (including `build/`), and regenerates its `package-lock.json`. It takes
+several minutes and prints a wall of npm deprecation warnings — those are normal.
 
 **4. Rebuild and verify** (next section). **Do not skip this.**
 
-**5. Commit both layers together:**
+**5. Commit `vendor/myst-theme`, and the non-generated parts of `themes/pyomo-book-theme-dist` if they
+changed:**
 
 ```bash
-git add vendor/myst-theme themes/pyomo-book-theme-dist
+git add vendor/myst-theme
+# Only if template.yml, server.js, package.json or public/ actually changed --
+# build/ and node_modules/ are .gitignore'd on purpose; CI (and build_local.sh)
+# regenerate them fresh on every run via scripts/build_theme_dist.sh.
+git add themes/pyomo-book-theme-dist/template.yml themes/pyomo-book-theme-dist/server.js \
+        themes/pyomo-book-theme-dist/package.json themes/pyomo-book-theme-dist/public
 git commit -m "Update the vendored MyST theme to <upstream sha>"
 ```
 
-⚠ **Committing one without the other is the failure mode to avoid.** A new subtree with a stale artifact
-deploys the *old* theme while `git log` claims the new one — and nothing errors.
+⚠ **CORRECTED 2026-08-24.** This used to say "commit both layers together" and warn that committing one
+without the other silently deploys a stale theme. That risk is gone now that neither CI nor
+`build_local.sh` depends on a committed `build/` — both rebuild it from `vendor/myst-theme` on every run,
+so the subtree is always the single source of truth and there is nothing to go stale. See the *Architecture*
+section above for how this was discovered: the old approach is exactly what broke CI for ~1.5 days.
 
-### If you would rather not rebuild
+### If you would rather not rebuild locally
 
-`pyomo-doe` holds an already-built artifact for the same fork. Copying it over is legitimate and skips the
+`pyomo-doe` holds an already-built artifact for the same fork, useful for a quick local preview without
+waiting on an npm build. Copying it over is legitimate and skips the
 npm build entirely:
 
 ```bash

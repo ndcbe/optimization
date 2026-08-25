@@ -653,6 +653,77 @@ are generated output and are overwritten on the next build. Student contribution
 
 ---
 
+## 11a. Deliberately published answers
+
+A few problems are **completion-graded exam-calibration** exercises: the student attempts them cold,
+then checks their own work against a published answer. Prof. Dowling, 2026-08-25, on the diet and
+portfolio problems in Pyomo 1 — the answers go on the public site *"because the homework is
+completion-based."*
+
+That is a deliberate exception to section 11, so it is **marked explicitly** rather than left to
+prose:
+
+```python
+### BEGIN PUBLISHED ANSWER
+# 4 foods, 3 nutrient constraints -> 1 degree of freedom
+print(f"minimum cost = {2.28:.2f} USD/day")
+### END PUBLISHED ANSWER
+```
+
+```markdown
+State the degree of freedom of the diet model.
+
+<!-- BEGIN PUBLISHED ANSWER -->
+4 decision variables minus 3 active nutrient constraints, so DOF = 1.
+<!-- END PUBLISHED ANSWER -->
+```
+
+`process_notebooks.py` passes the whole block through to the published notebook — **markers and
+stored outputs included** — instead of replacing it with `# Add your solution here`.
+
+:::{warning}
+**Scope limit. This is for completion-graded, exam-calibration material only.** Anything graded on
+correctness keeps `### BEGIN SOLUTION`. No tool can enforce that — it is an editorial judgement —
+which is exactly why it is written down. **It must not become a general-purpose escape hatch.**
+:::
+
+**Why a marker, rather than just writing the answer in prose.** Written as ordinary markdown, a
+deliberate answer and a genuine leak are *indistinguishable* — to `check_solution_leaks.py`, and to
+the next person reading the file. Thirteen graded discussion answers went live on this site in
+August 2026 and the obvious grep stayed clean throughout. **An exception the tooling understands is
+safe; an exception that works by the tooling not noticing is not.** The markers therefore *survive*
+into the published notebook: the public artifact carries its own evidence that the answer was meant
+to be there.
+
+**Two spellings, and they are not interchangeable.** `###` is a comment in a code cell but an **H3
+heading** in markdown, where it would print "BEGIN PUBLISHED ANSWER" on the page and land in the
+table of contents. The HTML-comment form renders as nothing. Using the wrong one for the cell type
+is a checker failure, not a silent pass.
+
+Formatting requirements, same discipline as section 11 — bare markers on their own lines, correctly
+paired, in order, **both in the same cell**, never nested.
+
+**What still fails, deliberately:**
+
+| Written | Result |
+| --- | --- |
+| `### BEGIN SOLUTION` anywhere in a published notebook | **FAIL** — unchanged, and not whitelisted by this marker |
+| `### BEGIN SOLUTION` *inside* a published-answer block | **FAIL** — the two must never be confusable |
+| A `BEGIN` with no `END`, or an `END` with no `BEGIN` | **FAIL** — publish aborts |
+| Nested published-answer blocks | **FAIL** |
+| `## BEGIN PUBLISHED ANSWER`, or `<!-- BEGIN PUBLISHED ANSWER` unterminated | **FAIL** — a near-miss is reported, never ignored |
+| `###` form in markdown, or `<!-- -->` form in a code cell | **FAIL** |
+| A published-answer cell also tagged `drop-output` | **FAIL** — opposite instructions |
+
+Both scripts prove they can fail:
+
+```bash
+python scripts/check_solution_leaks.py --selftest   # 15 failure cases
+python scripts/process_notebooks.py --selftest      # strip / pass-through / abort
+```
+
+---
+
 ## 12. Model diagnostics
 
 When a model will not solve, or solves to something implausible, reach for the IDAES diagnostics
@@ -767,6 +838,8 @@ Run through this before you submit an assignment or open a pull request.
 - [ ] LP and MILP models call `pyo.SolverFactory("appsi_highs")`, not `"glpk"`; `tee=` is on `solve()`
 - [ ] **Every `solve()` is followed by a termination-condition check before any `pyo.value()`**
 - [ ] `### BEGIN SOLUTION` / `### END SOLUTION` markers are bare, paired, and inside code cells
+- [ ] Any `PUBLISHED ANSWER` block is on **completion-graded** material, and uses the spelling that
+      matches its cell type (§11a). Correctness-graded work keeps `### BEGIN SOLUTION`
 - [ ] Data in `notebooks/data/`, images in `media/`, both committed, case matched exactly
 - [ ] Figures use the house style; at most four series per axes
 - [ ] `black` has been run

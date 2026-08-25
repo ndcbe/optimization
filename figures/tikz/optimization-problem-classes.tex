@@ -162,10 +162,68 @@
 \draw[go] (socp) -- node[sub, right] {$\supseteq$} (qp);
 \draw[go] (qp)   -- node[sub, right] {$\supseteq$} (lp);
 
-\node[lbl, anchor=north, rotate=-90] at (-4.62,-8.0) {more specialized $\longrightarrow$};
-\node[lbl, anchor=west, align=left] at (-4.30,-7.15)
-      {SOCP and SDP are\\ the \emph{conic} programs ---\\ we will not cover them,\\
-       but this is where they fit};
+% BRACE over SDP + SOCP. Prof. Dowling, 2026-08-25: "Add the brace for SDP and
+% SOCP. I like the 'conic' label. We do not need to specify that those are not
+% covered. That is clear from the color coding." -- so the label is the single
+% word, and the brace carries NO coverage information. Coverage is already
+% encoded four ways (dotted rule, grey fill, grey text, legend); a fifth would
+% make the brace look like it meant something extra.
+%
+% Its real job is the SHADING DISCONTINUITY. Read down the chain and the
+% shading goes middle / not-covered / not-covered / middle / middle, because
+% the chain is ordered by inclusion and the shading by what we cover. The brace
+% groups the two dotted boxes so the eye reads ONE interruption with a reason
+% rather than an alternation that looks like a mistake.
+%
+% ⚠ GEOMETRY: this brace must not widen the figure. It lives entirely inside
+% the gap between the chain's right edge (x = -5.05) and the annotation, and
+% the "more specialized" label was moved DOWN, not out, to make room. Width is
+% 1803 px before and after -- checked, because the site fixes the rendered
+% width at 720 CSS px and any growth shrinks all the type.
+%
+% 🔴 DRAWN BY HAND, and NOT with decorations.pathreplacing's `brace'. That
+% library is not in figures/preamble.tex, and loading it with a body-level
+% \usetikzlibrary -- which is what this figure first did -- COMPILES CLEANLY
+% AND SILENTLY WIDENS THE PICTURE BY 43 pt. Loading a library in the body
+% emits stray horizontal material, and inside a `standalone' document that
+% material is part of the page: 432.588 pt -> 475.759 pt, i.e. 1803 px -> 1983
+% px, with no warning of any kind. A trailing % only reduced it to 472.438 pt.
+% Measured with pdfinfo on both, after a smoke test that proved it compiled and
+% proved nothing about the width.
+%
+% Adding the library to preamble.tex instead would work, but that file is
+% shared by all eight diagrams AND \input by the lecture handouts, so it is not
+% something to change to serve one brace. Two arcs and a nub need no library at
+% all -- `to[out=,in=]' is core TikZ.
+%
+% Geometry: spine at x = -5.02 (the chain's boxes end at -5.05), nub 0.22 cm to
+% its right, spanning SDP's top edge to SOCP's bottom edge.
+\draw[thick]
+  (-5.02,-6.10) to[out=0,in=90]   (-4.91,-6.24)
+              -- (-4.91,-6.96) to[out=-90,in=180] (-4.80,-7.10)
+              to[out=180,in=90]  (-4.91,-7.24)
+              -- (-4.91,-7.96) to[out=-90,in=0]   (-5.02,-8.10);
+\node[font=\footnotesize, rotate=-90] at (-4.58,-7.10) {conic};
+
+% OUTSIDE the chain, not inside it. Inside, it stacked directly under the
+% brace's "conic" label in the same narrow column and the two read as one
+% vertical string, "conic more specialized". Outside is also the symmetric
+% placement: the mixed-integer chain carries the same label on ITS outer side.
+% ⚠ x = -7.05 is deliberate -- the label extends LEFTWARDS from its anchor to
+% about -7.37, and the band's left edge is -7.40. Any further left and it sets
+% the bounding box and widens the figure. Page width re-measured after moving
+% it: 432.588 pt, unchanged.
+\node[lbl, anchor=north, rotate=-90] at (-7.05,-6.20) {more specialized $\longrightarrow$};
+
+% TRIMMED with the brace. This used to read "SOCP and SDP are the conic
+% programs --- we will not cover them, but this is where they fit". The first
+% clause is now the brace label and the second is the colour coding, so both
+% were cut. What survives is the part NEITHER of those says, and the part that
+% answers his original question ("Where does conic optimization fit into this
+% diagram?"): the conic programs are what LP and QP generalize to, and the
+% chain is where they belong.
+\node[lbl, anchor=west, align=left] at (-4.25,-7.10)
+      {generalize LP and QP ---\\ this is where they fit};
 
 % --- mixed-integer branch ------------------------------------------------
 % Same reading direction as the convex chain: MINLP >= MIQP >= MILP >= IP/BIP.

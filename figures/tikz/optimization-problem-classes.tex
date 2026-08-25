@@ -15,10 +15,25 @@
 %      cannot express LP < QP < SOCP < SDP, so the four are drawn as a chain
 %      of inclusions instead of as siblings.
 %   3. THE MIXED-INTEGER BRANCH IS ALSO A NESTING, and MIQP is in it. "What
-%      about MIQPs and other specific problem types?" Biegler's chain runs
-%      MINLP -> MILP -> IP downward, which reads as specialisation but is drawn
-%      as descent; here it runs IP < MILP < MIQP < MINLP so both chains read
-%      the same direction (special -> general).
+%      about MIQPs and other specific problem types?"
+%
+% ---------------------------------------------------------------------------
+% BOTH CHAINS READ GENERAL -> SPECIFIC DOWNWARD, and that is a coherence
+% constraint rather than a taste. Prof. Dowling, 2026-08-25: "I am a little
+% curious that your ordering goes from most specific (top) to most general
+% (bottom). I think it should be reversed, with the most general at the top."
+% He is right: the TREE already narrows downward (Optimization problem ->
+% Continuous/Discrete -> Differentiable/Nondifferentiable -> Convex/Nonconvex),
+% so chains running the other way contradict the thing they hang from.
+%
+% 🔴 THE RELATION SYMBOL IS A MATHEMATICAL CLAIM AND MUST BE FLIPPED WITH THE
+% BOXES. Reversing SDP/SOCP/QP/LP while leaving "c" in place would assert
+% SDP c SOCP c QP c LP, which is FALSE. The arrows keep pointing down, with the
+% whole rest of the figure, and the symbol becomes "\supseteq": read downward,
+% SDP >= SOCP >= QP >= LP and MINLP >= MIQP >= MILP >= IP, both true. Turning
+% the arrows upward instead would have kept "\subseteq" but given the picture
+% two reading directions, which is the defect being fixed. The margin
+% annotations say "more specialized ->" downward to match.
 %   4. THERE IS A PARADIGM BAND AT THE BOTTOM. "I also want to have boxes at
 %      the bottom that highlight modeling paradigms, such as stochastic
 %      programming and dynamic optimization."
@@ -93,8 +108,8 @@
 
 % =========================================================================
 % THE TREE.  Two symmetric vertical chains -- convex on the left, mixed-integer
-% on the right -- so both inclusions read top-to-bottom, special to general,
-% and neither costs any width.
+% on the right -- so both inclusions read top-to-bottom, GENERAL to SPECIFIC,
+% the same direction the tree above them narrows, and neither costs any width.
 % =========================================================================
 \node[struct] (root) at (0.29,0) {Optimization problem};
 
@@ -111,96 +126,111 @@
 \draw[go] (cont) -- (smooth);
 \draw[go] (cont) -- (nonsmooth);
 
-\node[cov] (convex)    at (-6.0,-5.1) {Convex};
+% CONVEX IS MIDDLE-STATE. Prof. Dowling, 2026-08-25, correcting his own first
+% answer to NB14: "Also shade convexity with the 'specialized algorithms exist'
+% color. I selected the wrong answer." Convex analysis IS covered -- KKT,
+% constraint qualifications, Part II theory -- but convex SOLVERS are not, which
+% is the same relationship LP and QP have to this course.
+%
+% ⚠ The chain below therefore shades middle / not-covered / not-covered /
+% middle / middle downward. THAT DISCONTINUITY IS CORRECT and must not be
+% smoothed out: the chain order is a mathematical inclusion and outranks
+% visual tidiness.
+\node[modeled] (convex) at (-6.0,-5.1) {Convex};
 \node[cov] (nonconvex) at (-3.3,-5.1) {Nonconvex\\ NLP};
 
 \draw[go] (smooth) -- (convex);
 \draw[go] (smooth) -- (nonconvex);
 
 % The convex classes as a CHAIN OF INCLUSIONS, which is the whole reason this
-% figure differs from Biegler's. LP c QP c SOCP c SDP: every linear program is
-% a quadratic program with a zero Hessian, every convex QP (indeed every convex
-% QCQP) is representable as a second-order cone program, and every SOCP is a
-% semidefinite program with block-diagonal structure. Biegler's flat
-% Convex -> {LP, QP} cannot say any of that.
-\node[modeled] (lp)   at (-6.0,-6.5)  {LP};
-\node[modeled] (qp)   at (-6.0,-7.7)  {QP};
-\node[uncov]   (socp) at (-6.0,-8.9)  {SOCP};
-\node[uncov]   (sdp)  at (-6.0,-10.1) {SDP};
+% figure differs from Biegler's: every SDP contains the SOCPs as the case where
+% the matrices are block-diagonal; every SOCP contains the convex QPs (indeed
+% the convex QCQPs), which contain the LPs as the case of a zero Hessian.
+% Biegler's flat Convex -> {LP, QP} cannot say any of that.
+%
+% The edge Convex -> SDP is an IS-A edge like every other edge in the tree, so
+% it claims only "an SDP is a convex program", which is true. It does NOT claim
+% SDP is the most general convex program -- a general convex NLP is broader --
+% and "Convex" remains the head of the branch for exactly that reason.
+\node[uncov]   (sdp)  at (-6.0,-6.5)  {SDP};
+\node[uncov]   (socp) at (-6.0,-7.7)  {SOCP};
+\node[modeled] (qp)   at (-6.0,-8.9)  {QP};
+\node[modeled] (lp)   at (-6.0,-10.1) {LP};
 
-\draw[go] (convex) -- (lp);
-\draw[go] (lp)   -- node[sub, right] {$\subseteq$} (qp);
-\draw[go] (qp)   -- node[sub, right] {$\subseteq$} (socp);
-\draw[go] (socp) -- node[sub, right] {$\subseteq$} (sdp);
+\draw[go] (convex) -- (sdp);
+\draw[go] (sdp)  -- node[sub, right] {$\supseteq$} (socp);
+\draw[go] (socp) -- node[sub, right] {$\supseteq$} (qp);
+\draw[go] (qp)   -- node[sub, right] {$\supseteq$} (lp);
 
-\node[lbl, anchor=north, rotate=-90] at (-4.62,-6.7) {more general $\longrightarrow$};
-\node[lbl, anchor=west, align=left] at (-4.35,-9.5)
+\node[lbl, anchor=north, rotate=-90] at (-4.62,-8.0) {more specialized $\longrightarrow$};
+\node[lbl, anchor=west, align=left] at (-4.30,-7.15)
       {SOCP and SDP are\\ the \emph{conic} programs ---\\ we will not cover them,\\
        but this is where they fit};
 
 % --- mixed-integer branch ------------------------------------------------
-% Same reading direction as the convex chain. IP c MILP c MIQP c MINLP.
-\node[cov]     (ip)    at (3.9,-3.4) {IP / BIP\\ \scriptsize all variables integer};
-\node[cov]     (milp)  at (3.9,-5.1) {MILP};
-\node[modeled] (miqp)  at (3.9,-6.4) {MIQP};
-\node[cov]     (minlp) at (3.9,-7.7) {MINLP};
+% Same reading direction as the convex chain: MINLP >= MIQP >= MILP >= IP/BIP.
+\node[cov]     (minlp) at (3.9,-3.4) {MINLP};
+\node[modeled] (miqp)  at (3.9,-4.7) {MIQP};
+\node[cov]     (milp)  at (3.9,-6.0) {MILP};
+\node[cov]     (ip)    at (3.9,-7.45) {IP / BIP\\ \scriptsize all variables integer};
 
-\draw[go] (mip)  -- (ip);
-\draw[go] (ip)   -- node[sub, right] {$\subseteq$} (milp);
-\draw[go] (milp) -- node[sub, right] {$\subseteq$} (miqp);
-\draw[go] (miqp) -- node[sub, right] {$\subseteq$} (minlp);
+\draw[go] (mip)   -- (minlp);
+\draw[go] (minlp) -- node[sub, right] {$\supseteq$} (miqp);
+\draw[go] (miqp)  -- node[sub, right] {$\supseteq$} (milp);
+\draw[go] (milp)  -- node[sub, right] {$\supseteq$} (ip);
 
-\node[lbl, anchor=north, rotate=-90] at (5.7,-4.0) {more general $\longrightarrow$};
+\node[lbl, anchor=north, rotate=-90] at (5.7,-4.1) {more specialized $\longrightarrow$};
 
 % =========================================================================
 % LEGEND -- placed in the dead space under the mixed-integer chain rather
 % than in a strip of its own, which would cost 2 cm of width-scaled height.
 % It repeats all three treatments, so a black-and-white reader can decode the
 % figure from here without seeing a single hue.
+%
+% Wording is Prof. Dowling's, 2026-08-25. The middle label is set on TWO LINES
+% rather than one: the figure's width is what fixes its on-screen type size,
+% so a longer label must grow downward, never sideways.
 % =========================================================================
-\node[cov, minimum width=7mm, minimum height=4.5mm, inner sep=1pt] at (0.9,-8.9) {};
-\node[anchor=west, font=\footnotesize] at (1.35,-8.9) {\textbf{Covered this semester}};
+\node[cov, minimum width=7mm, minimum height=4.5mm, inner sep=1pt] at (0.9,-8.75) {};
+\node[anchor=west, font=\footnotesize] at (1.35,-8.75)
+      {\textbf{Our focus this semester}};
 
-\node[modeled, minimum width=7mm, minimum height=4.5mm, inner sep=1pt] at (0.9,-9.6) {};
-\node[anchor=west, font=\footnotesize] at (1.35,-9.6)
-      {\textbf{Modeled --- but not its algorithms}};
+\node[modeled, minimum width=7mm, minimum height=4.5mm, inner sep=1pt] at (0.9,-9.7) {};
+\node[anchor=west, font=\footnotesize, align=left] at (1.35,-9.7)
+      {\textbf{Specialized algorithms}\\ \textbf{not covered this semester}};
 
-\node[uncov, minimum width=7mm, minimum height=4.5mm, inner sep=1pt] at (0.9,-10.3) {};
-\node[anchor=west, font=\footnotesize] at (1.35,-10.3) {\textbf{Not covered this semester}};
+\node[uncov, minimum width=7mm, minimum height=4.5mm, inner sep=1pt] at (0.9,-10.6) {};
+\node[anchor=west, font=\footnotesize] at (1.35,-10.6)
+      {\textbf{Not covered this semester}};
 
 % =========================================================================
 % THE PARADIGM BAND.  Drawn as a different KIND of object -- rounded tags in a
 % dashed enclosure, no tree edges, and ONE arrow that points at the tree as a
 % whole rather than at any node in it. That is the orthogonality claim, drawn.
+%
+% CUT BACK TO A LIST 2026-08-25, on Prof. Dowling's instruction: "Let's cut a
+% lot of the text in the modeling paradigms box. Instead, let's just list the
+% paradigms." The per-tag glosses ("discretizes into a large NLP", "an LP or an
+% MINLP, only bigger") and the explanatory paragraph MOVED INTO THE NOTEBOOK
+% PROSE rather than being deleted -- orthogonality is the point students most
+% often miss and is the whole reason the band exists. Exactly ONE line of it
+% stays here, because a band of five bare names claims nothing at all.
 % =========================================================================
-\fill[bandgrey, rounded corners=6pt] (-7.4,-16.55) rectangle (7.2,-11.15);
+\fill[bandgrey, rounded corners=6pt] (-7.4,-14.95) rectangle (7.2,-11.35);
 \draw[dashed, thick, rounded corners=6pt, black!55]
-      (-7.4,-16.55) rectangle (7.2,-11.15);
+      (-7.4,-14.95) rectangle (7.2,-11.35);
 
-\draw[->, >=stealth, very thick, dashed, black!55] (-1.0,-11.15) -- (-1.0,-10.5);
-\node[lbl, anchor=west, black!55] at (-0.8,-10.85)
-      {realized \emph{as} one of the classes above};
+\draw[->, >=stealth, very thick, dashed, black!55] (-1.0,-11.35) -- (-1.0,-10.75);
 
-\node[anchor=north west, align=left, font=\small] at (-7.15,-11.30)
-      {\textbf{Modeling paradigms --- these cut \emph{across} the tree above;}\\
-       \textbf{they are not a branch of it.}\\
-       \footnotesize Each is a way of \emph{writing a problem down}. Once written down it \emph{is} one of
-       the classes above ---\\ \footnotesize which one depends on the model, not on the paradigm.};
+\node[anchor=north west, align=left, font=\small] at (-7.15,-11.50)
+      {\textbf{Modeling paradigms}\\
+       \footnotesize These cut \emph{across} the tree above: each is realized \textbf{as} one of the classes
+       above, not as another branch of it.};
 
-\node[tag] (par1) at (-4.93,-13.05)
-      {\textbf{Dynamic optimization}\\ DAEs, collocation\\[2pt]
-       \emph{discretizes into a large NLP}};
-\node[tag] (par2) at (-0.11,-13.05)
-      {\textbf{Parameter estimation}\\ and experimental design\\[2pt]
-       \emph{usually an NLP}};
-\node[tag] (par3) at (4.72,-13.05)
-      {\textbf{Stochastic programming}\\ under uncertainty\\[2pt]
-       \emph{an LP or an MINLP, only bigger}};
-\node[tag] (par4) at (-4.93,-14.85)
-      {\textbf{Logical models}\\ disjunctions, GDP\\[2pt]
-       \emph{becomes an MILP or MINLP}};
-\node[tag] (par5) at (-0.11,-14.85)
-      {\textbf{Decision support}\\ multi-objective, bilevel\\[2pt]
-       \emph{wraps any class above}};
+\node[tag] (par1) at (-4.93,-12.75) {\textbf{Dynamic optimization}};
+\node[tag] (par2) at (-0.11,-12.75) {\textbf{Parameter estimation and experimental design}};
+\node[tag] (par3) at (4.72,-12.75)  {\textbf{Stochastic programming}};
+\node[tag] (par4) at (-4.93,-14.05) {\textbf{Logical models (GDP)}};
+\node[tag] (par5) at (-0.11,-14.05) {\textbf{Decision support}};
 
 \end{tikzpicture}

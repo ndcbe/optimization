@@ -50,6 +50,15 @@
 % in black and white decodes the figure from the legend alone.
 %
 % ---------------------------------------------------------------------------
+% WIDTH IS A LEGIBILITY CONSTRAINT, NOT A LAYOUT PREFERENCE. The website gives
+% a figure ~720 CSS px of column width whatever its natural size, so the
+% authored width in cm fixes how big the type is on screen: at 24 cm wide,
+% \footnotesize renders about 5 px tall and nobody can read it. This picture is
+% therefore laid out TALL AND NARROW (~14.5 cm), with both inclusion chains
+% running vertically and the paradigm band on two rows. Height is free --- only
+% width is scaled. Measured in the built page before and after.
+%
+% ---------------------------------------------------------------------------
 % NO \ref/\eqref anywhere: this file is rendered standalone by figures/Makefile
 % as well as \input by the handout, and a cross-reference would print "??".
 
@@ -63,7 +72,7 @@
   % --- coverage treatments ------------------------------------------------
   cov/.style     = {draw, thick, rectangle, rounded corners=1.5pt, fill=white,
                     align=center, inner sep=4pt, minimum height=8mm,
-                    minimum width=1.6cm},
+                    minimum width=1.9cm},
   modeled/.style = {cov, densely dashed, fill=classblue},
   uncov/.style   = {cov, densely dotted, fill=black!12, text=black!48},
   struct/.style  = {cov, very thick},
@@ -77,42 +86,33 @@
   % Hyphenation off: "Stochastic pro-gramming" across two lines is worse than
   % a short line.
   tag/.style     = {draw, rounded corners=4pt, thin, fill=white, anchor=north,
-                    align=center, text width=3.85cm, inner sep=5pt,
+                    align=center, text width=4.05cm, inner sep=5pt,
                     font=\footnotesize, hyphens/.code={},
                     execute at begin node={\hyphenpenalty=10000\exhyphenpenalty=10000}},
 ]
 
 % =========================================================================
-% The paradigm band is drawn FIRST so it sits behind everything. Drawing it
-% with an explicit rectangle rather than \usetikzlibrary{fit,backgrounds}
-% keeps figures/preamble.tex unchanged.
+% THE TREE.  Two symmetric vertical chains -- convex on the left, mixed-integer
+% on the right -- so both inclusions read top-to-bottom, special to general,
+% and neither costs any width.
 % =========================================================================
-\fill[bandgrey, rounded corners=6pt] (-13.2,-11.30) rectangle (10.0,-8.30);
-\draw[dashed, thick, rounded corners=6pt, black!55]
-      (-13.2,-11.30) rectangle (10.0,-8.30);
+\node[struct] (root) at (0.29,0) {Optimization problem};
 
-% =========================================================================
-% THE TREE
-% =========================================================================
-\node[struct] (root) at (-0.05,0) {Optimization problem};
-
-\node[struct] (cont) at (-4.9,-1.6)
-      {Continuous variables only\\ (nonlinear program, NLP)};
-\node[struct] (mip)  at (4.8,-1.6)
-      {Some discrete variables\\ (mixed-integer)};
+\node[struct] (cont) at (-3.33,-1.7) {Continuous variables\\ (NLP)};
+\node[struct] (mip)  at (3.9,-1.7)   {Some discrete variables\\ (mixed-integer)};
 
 \draw[go] (root) -- (cont);
 \draw[go] (root) -- (mip);
 
 % --- continuous branch ---------------------------------------------------
-\node[cov]   (smooth)    at (-6.75,-3.3) {Differentiable\\ (smooth)};
-\node[uncov] (nonsmooth) at (-2.2,-3.3)  {Nondifferentiable\\ (nonsmooth)};
+\node[cov]   (smooth)    at (-4.65,-3.4) {Differentiable\\ (smooth)};
+\node[uncov] (nonsmooth) at (-1.0,-3.4)  {Nondifferentiable\\ (nonsmooth)};
 
 \draw[go] (cont) -- (smooth);
 \draw[go] (cont) -- (nonsmooth);
 
-\node[cov] (convex)    at (-8.9,-4.9) {Convex};
-\node[cov] (nonconvex) at (-4.6,-4.9) {Nonconvex NLP};
+\node[cov] (convex)    at (-6.0,-5.1) {Convex};
+\node[cov] (nonconvex) at (-3.3,-5.1) {Nonconvex\\ NLP};
 
 \draw[go] (smooth) -- (convex);
 \draw[go] (smooth) -- (nonconvex);
@@ -121,87 +121,86 @@
 % figure differs from Biegler's. LP c QP c SOCP c SDP: every linear program is
 % a quadratic program with a zero Hessian, every convex QP (indeed every convex
 % QCQP) is representable as a second-order cone program, and every SOCP is a
-% semidefinite program with block-diagonal structure.
-\node[modeled] (lp)   at (-12.0,-6.6) {LP};
-\node[modeled] (qp)   at (-10.0,-6.6) {QP};
-\node[uncov]   (socp) at (-8.0,-6.6)  {SOCP};
-\node[uncov]   (sdp)  at (-5.9,-6.6)  {SDP};
+% semidefinite program with block-diagonal structure. Biegler's flat
+% Convex -> {LP, QP} cannot say any of that.
+\node[modeled] (lp)   at (-6.0,-6.5)  {LP};
+\node[modeled] (qp)   at (-6.0,-7.7)  {QP};
+\node[uncov]   (socp) at (-6.0,-8.9)  {SOCP};
+\node[uncov]   (sdp)  at (-6.0,-10.1) {SDP};
 
-\node[sub] at (-11.0,-6.6) {$\subseteq$};
-\node[sub] at (-9.0,-6.6)  {$\subseteq$};
-\node[sub] at (-6.95,-6.6) {$\subseteq$};
+\draw[go] (convex) -- (lp);
+\draw[go] (lp)   -- node[sub, right] {$\subseteq$} (qp);
+\draw[go] (qp)   -- node[sub, right] {$\subseteq$} (socp);
+\draw[go] (socp) -- node[sub, right] {$\subseteq$} (sdp);
 
-% comb connector: all four hang off "Convex"
-\draw[plain] (convex.south) -- (-8.9,-6.0);
-\draw[plain] (-12.0,-6.0) -- (-5.9,-6.0);
-\draw[plain] (-12.0,-6.0) -- (lp.north);
-\draw[plain] (-10.0,-6.0) -- (qp.north);
-\draw[plain] (-8.0,-6.0)  -- (socp.north);
-\draw[plain] (-5.9,-6.0)  -- (sdp.north);
-
-\node[lbl, anchor=north] at (-8.9,-7.2) {increasing generality $\longrightarrow$\\
-      (SOCP and SDP are the \emph{conic} programs)};
+\node[lbl, anchor=north, rotate=-90] at (-4.62,-6.7) {more general $\longrightarrow$};
+\node[lbl, anchor=west, align=left] at (-4.35,-9.5)
+      {SOCP and SDP are\\ the \emph{conic} programs ---\\ we will not cover them,\\
+       but this is where they fit};
 
 % --- mixed-integer branch ------------------------------------------------
-% Same reading direction as the convex chain: special at the top, general at
-% the bottom. IP c MILP c MIQP c MINLP.
-\node[cov]     (ip)    at (4.8,-3.3) {IP / BIP\\ \scriptsize all variables integer};
-\node[cov]     (milp)  at (4.8,-4.9) {MILP};
-\node[modeled] (miqp)  at (4.8,-6.1) {MIQP};
-\node[cov]     (minlp) at (4.8,-7.3) {MINLP};
+% Same reading direction as the convex chain. IP c MILP c MIQP c MINLP.
+\node[cov]     (ip)    at (3.9,-3.4) {IP / BIP\\ \scriptsize all variables integer};
+\node[cov]     (milp)  at (3.9,-5.1) {MILP};
+\node[modeled] (miqp)  at (3.9,-6.4) {MIQP};
+\node[cov]     (minlp) at (3.9,-7.7) {MINLP};
 
 \draw[go] (mip)  -- (ip);
 \draw[go] (ip)   -- node[sub, right] {$\subseteq$} (milp);
 \draw[go] (milp) -- node[sub, right] {$\subseteq$} (miqp);
 \draw[go] (miqp) -- node[sub, right] {$\subseteq$} (minlp);
 
-\node[lbl, anchor=west, rotate=-90] at (7.1,-3.7)
-      {increasing generality $\longrightarrow$};
+\node[lbl, anchor=north, rotate=-90] at (5.7,-4.0) {more general $\longrightarrow$};
 
 % =========================================================================
-% THE PARADIGM BAND -- contents
+% LEGEND -- placed in the dead space under the mixed-integer chain rather
+% than in a strip of its own, which would cost 2 cm of width-scaled height.
+% It repeats all three treatments, so a black-and-white reader can decode the
+% figure from here without seeing a single hue.
 % =========================================================================
-\node[anchor=north west, align=left, font=\small] at (-12.95,-8.45)
-      {\textbf{Modeling paradigms --- these cut \emph{across} the tree above; they are not a branch of it.}\\
-       \footnotesize Each is a way of \emph{writing a problem down}. Once written down it \emph{is} one of the
-       classes above --- which one depends on the model, not on the paradigm.};
+\node[cov, minimum width=7mm, minimum height=4.5mm, inner sep=1pt] at (0.9,-8.9) {};
+\node[anchor=west, font=\footnotesize] at (1.35,-8.9) {\textbf{Covered this semester}};
 
-\node[tag] (par1) at (-10.90,-9.35)
-      {\textbf{Dynamic optimization}\\ DAEs, collocation\\[2pt]
-       \emph{discretizes into a large NLP}};
-\node[tag] (par2) at (-6.25,-9.35)
-      {\textbf{Parameter estimation}\\ and experimental design\\[2pt]
-       \emph{usually an NLP}};
-\node[tag] (par3) at (-1.60,-9.35)
-      {\textbf{Stochastic programming}\\ under uncertainty\\[2pt]
-       \emph{an LP or an MINLP, only bigger}};
-\node[tag] (par4) at (3.05,-9.35)
-      {\textbf{Logical models}\\ disjunctions, GDP\\[2pt]
-       \emph{becomes an MILP or MINLP}};
-\node[tag] (par5) at (7.70,-9.35)
-      {\textbf{Decision support}\\ multi-objective, bilevel\\[2pt]
-       \emph{wraps any class above}};
+\node[modeled, minimum width=7mm, minimum height=4.5mm, inner sep=1pt] at (0.9,-9.6) {};
+\node[anchor=west, font=\footnotesize] at (1.35,-9.6)
+      {\textbf{Modeled --- but not its algorithms}};
 
-% One arrow, pointing at the TREE AS A WHOLE rather than at any node in it.
-% That is the orthogonality claim, drawn.
-\draw[->, >=stealth, very thick, dashed, black!55] (-0.05,-8.30) -- (-0.05,-7.55);
-\node[lbl, anchor=west, black!55] at (0.15,-7.95)
+\node[uncov, minimum width=7mm, minimum height=4.5mm, inner sep=1pt] at (0.9,-10.3) {};
+\node[anchor=west, font=\footnotesize] at (1.35,-10.3) {\textbf{Not covered this semester}};
+
+% =========================================================================
+% THE PARADIGM BAND.  Drawn as a different KIND of object -- rounded tags in a
+% dashed enclosure, no tree edges, and ONE arrow that points at the tree as a
+% whole rather than at any node in it. That is the orthogonality claim, drawn.
+% =========================================================================
+\fill[bandgrey, rounded corners=6pt] (-7.4,-16.55) rectangle (7.2,-11.15);
+\draw[dashed, thick, rounded corners=6pt, black!55]
+      (-7.4,-16.55) rectangle (7.2,-11.15);
+
+\draw[->, >=stealth, very thick, dashed, black!55] (-1.0,-11.15) -- (-1.0,-10.5);
+\node[lbl, anchor=west, black!55] at (-0.8,-10.85)
       {realized \emph{as} one of the classes above};
 
-% =========================================================================
-% LEGEND -- repeats all three treatments, so a black-and-white reader can
-% decode the figure from here without seeing a single hue.
-% =========================================================================
-\node[cov, minimum width=8mm, minimum height=5mm, inner sep=2pt] at (-13.0,-12.35) {};
-\node[anchor=west, font=\footnotesize] at (-12.5,-12.35)
-      {\textbf{Covered this semester}};
+\node[anchor=north west, align=left, font=\small] at (-7.15,-11.30)
+      {\textbf{Modeling paradigms --- these cut \emph{across} the tree above;}\\
+       \textbf{they are not a branch of it.}\\
+       \footnotesize Each is a way of \emph{writing a problem down}. Once written down it \emph{is} one of
+       the classes above ---\\ \footnotesize which one depends on the model, not on the paradigm.};
 
-\node[modeled, minimum width=8mm, minimum height=5mm, inner sep=2pt] at (-8.0,-12.35) {};
-\node[anchor=west, font=\footnotesize] at (-7.5,-12.35)
-      {\textbf{Modeled this semester; its specialized algorithms are not}};
-
-\node[uncov, minimum width=8mm, minimum height=5mm, inner sep=2pt] at (2.4,-12.35) {};
-\node[anchor=west, font=\footnotesize] at (2.9,-12.35)
-      {\textbf{Not covered this semester}};
+\node[tag] (par1) at (-4.93,-13.05)
+      {\textbf{Dynamic optimization}\\ DAEs, collocation\\[2pt]
+       \emph{discretizes into a large NLP}};
+\node[tag] (par2) at (-0.11,-13.05)
+      {\textbf{Parameter estimation}\\ and experimental design\\[2pt]
+       \emph{usually an NLP}};
+\node[tag] (par3) at (4.72,-13.05)
+      {\textbf{Stochastic programming}\\ under uncertainty\\[2pt]
+       \emph{an LP or an MINLP, only bigger}};
+\node[tag] (par4) at (-4.93,-14.85)
+      {\textbf{Logical models}\\ disjunctions, GDP\\[2pt]
+       \emph{becomes an MILP or MINLP}};
+\node[tag] (par5) at (-0.11,-14.85)
+      {\textbf{Decision support}\\ multi-objective, bilevel\\[2pt]
+       \emph{wraps any class above}};
 
 \end{tikzpicture}

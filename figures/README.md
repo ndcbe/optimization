@@ -21,7 +21,8 @@ a notebook's answer with `scipy`.
 | **`results/<name>.json`** | that notebook's extracted results, committed, so a **style** change re-renders with no solver |
 | **`render_from_notebook.py`** | re-runs one tagged cell against `results/<name>.json` → PNG **and** PDF |
 | **`../scripts/check_results_fresh.py`** | has the model changed since the archive was written? |
-| `../notebooks/pyomo_results.py` | the extract / archive / save-the-figure plumbing the notebooks import |
+| `../notebooks/helper.py` | Colab setup, the house style, **and** the extract / archive / save-the-figure plumbing |
+| `../notebooks/pyomo_results.py` | a backward-compatible **shim** over `helper.py`; see its docstring |
 | `Makefile` | renders all three source languages → `../media/figures/` at 300 dpi |
 | `dowling.mplstyle` | shared matplotlib style — the exact analogue of `preamble.tex`, for plots |
 | `dowling-markers.mplstyle` | optional overlay adding a cycled marker (sparse data only) |
@@ -296,9 +297,14 @@ figure infrastructure right now."*).
 Because **a notebook is a teaching artifact.** If the student sees only `plot_frontier(m)` imported
 from somewhere, the plotting has been hidden from the person who is supposed to be learning it.
 
-So there is deliberately **no library of `plot_*()` functions** in `notebooks/pyomo_results.py`, and
+So there is deliberately **no library of `plot_*()` functions** in `notebooks/helper.py`, and
 adding one would be a regression. That module holds only the parts that are the same for every
 figure and teach nothing: extraction, archiving, and saving at the right dpi to the right path.
+
+⚠ **Merging the plumbing into `helper.py` (2026-08-25) did not change this.** Prof. Dowling asked
+for one helper file — *"Let's have helper contain all of the useful scripts/colab add-ons"* — and in
+the same breath restated the other half: *"Python generated plots that visualize Pyomo related data —
+those should live in the notebooks."* **Plumbing merges; plots do not.**
 
 There is also nothing left to share. The figure has **one** implementation — the notebook cell —
 and `render_from_notebook.py` runs that same cell rather than reimplementing it.
@@ -320,10 +326,10 @@ directory has always made.
 
 ```
 cell N     build + solve the Pyomo model            <- the only cell that needs a solver
-cell N+1   results = {...}  ->  pyr.save_results()  <- extract to plain Python, archive as JSON
+cell N+1   results = {...}  ->  helper.save_results()  <- extract to plain Python, archive as JSON
 cell N+2   def plot_<name>(results): ...            <- tagged figure:<name>; the figure's ONLY source
            fig = plot_<name>(results)
-           pyr.save_figure(fig, "<name>")
+           helper.save_figure(fig, "<name>")     <- returns None, so it prints no path
 ```
 
 Worked end to end in **`notebooks/1-dev/Portfolio-Optimization.ipynb`**, section "Step 5. Solve,
@@ -341,12 +347,13 @@ the handout's `\includegraphics`.
 | --- | --- |
 | `results` | the `"data"` block of `figures/results/<name>.json` |
 | `np`, `pd`, `plt` | numpy, pandas, matplotlib.pyplot |
-| `pyr` | `notebooks/pyomo_results.py` |
+| `helper` | `notebooks/helper.py` — **the going-forward name** |
+| `pyr` | the *same object* under the old name, for the notebooks that still say `import pyomo_results as pyr` |
 
 **ON EXIT** the cell must leave **`fig`** bound to the matplotlib `Figure`.
 
 **The cell MUST NOT** solve, import Pyomo, read a data file, use an unseeded random number, or use
-any name from an earlier cell other than the four above. Everything the plot needs must be inside
+any name from an earlier cell other than the five above. Everything the plot needs must be inside
 `results`. That restriction is what makes the cell runnable in both places — and it is the
 "separate the solve from the analysis" discipline enforced rather than requested.
 
@@ -358,20 +365,39 @@ relying on the default renders at two different aspect ratios depending on who g
 figure needs the hatch sequence, copy the literal into the cell with a comment pointing at
 `plots/_house.py`. (`HATCH_CYCLE = ("///", "\\\\\\", "...", "xxx", "|||", "---")`, `SHADE_ALPHA = 0.18`.)
 
-The cell **SHOULD** end with `pyr.save_figure(fig, "<name>")`. That is what makes the notebook the
+The cell **SHOULD** end with `helper.save_figure(fig, "<name>")`. That is what makes the notebook the
 generator. It is a no-op on Colab, and `render_from_notebook.py` disables it (the driver owns where
 its output goes and must never rewrite the archive it just read).
 
-### The API — `notebooks/pyomo_results.py`
+🔴 **`save_figure` and `save_results` return `None`, and this contract is why.** Because the call is
+the *last statement of the cell*, anything it returned became the cell's `execute_result` — and the
+published page displayed an absolute path out of the maintainer's home directory:
 
-Imported by the notebook, alongside `helper`. The install cell becomes:
+```
+'/Users/adowling/DowlingLab/Teaching/optimization/figures/results/portfolio-efficient-frontier.json'
+```
+
+13 cells across 5 notebooks, all introduced by the conversions of 2026-08-24. **The contract induced
+the bug**, so it was fixed in the contract's own terms rather than by asking every future author to
+remember a `;` or a `_ =`. Both writers still *print* what they wrote, which is the part a maintainer
+reads. **Do not "restore" the return value.**
+
+### The API — `notebooks/helper.py`
+
+⚠ **Moved here from `notebooks/pyomo_results.py` on 2026-08-25**, on Prof. Dowling's instruction that
+`helper` hold all the Colab add-ons. **`pyomo_results.py` is now a thin re-export shim**, so
+`import pyomo_results as pyr` still works and the four notebooks that use it were not touched; the
+class-wide pass repoints them and deletes the shim. `notebooks/1-dev/NLP.ipynb` is the migrated pilot.
+
+The reason the merge is worth doing is the install cell: it is the first thing a student runs and the
+first thing that can fail, and **every extra module costs a `wget` line that can 404**. One file is
+one failure mode. The install cell is now:
 
 ```python
 import sys
 
 if "google.colab" in sys.modules:
     !wget "https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/helper.py"
-    !wget "https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/pyomo_results.py"
     import helper
 
     helper.easy_install()
@@ -379,19 +405,21 @@ else:
     sys.path.insert(0, "../")
     import helper
 helper.set_plotting_style()
-
-import pyomo_results as pyr
 ```
+
+⚠ **The Colab `wget` resolves against `main`.** Everything merged into `helper.py` **404s on Colab
+until it is pushed** — which was already true of `pyomo_results.py` and is still an open item. Colab
+does not work for these notebooks today; that is a push away, not a code change.
 
 | call | does |
 | --- | --- |
-| `pyr.extract(m, x=m.x, obj=m.OBJ)` | solved components → `{'x': {'DJI': 0.31, …}, 'obj': 1.8e-05}` |
-| `pyr.value_of(component)` | one component → float, or `{index: float}` |
-| `pyr.table(df)` | DataFrame → `{"columns": […], "rows": [[…]]}` |
-| `pyr.as_dataframe(tbl)` / `pyr.column(tbl, "rho")` | the inverses |
-| `pyr.save_results(name, data, notebook=…, source_tag=…, description=…, solver=…)` | writes `figures/results/<name>.json` |
-| `pyr.load_results(name)` | reads it; falls back to the raw URL on Colab |
-| `pyr.save_figure(fig, name)` | writes `media/figures/<name>.{png,pdf}` at 300 dpi |
+| `helper.extract(m, x=m.x, obj=m.OBJ)` | solved components → `{'x': {'DJI': 0.31, …}, 'obj': 1.8e-05}` |
+| `helper.value_of(component)` | one component → float, or `{index: float}` |
+| `helper.table(df)` | DataFrame → `{"columns": […], "rows": [[…]]}` |
+| `helper.as_dataframe(tbl)` / `helper.column(tbl, "rho")` | the inverses |
+| `helper.save_results(name, data, notebook=…, source_tag=…, description=…, solver=…)` | writes `figures/results/<name>.json` |
+| `helper.load_results(name)` | reads it; falls back to the raw URL on Colab |
+| `helper.save_figure(fig, name)` | writes `media/figures/<name>.{png,pdf}` at 300 dpi |
 
 `extract` is deliberately small. **If extracting your model needs more than it offers, write that
 extraction in the notebook** — do not grow an abstraction here.
@@ -414,7 +442,7 @@ unreviewable binary that stops loading on a library upgrade and whose diff nobod
   "notebook": "notebooks/1-dev/Portfolio-Optimization.ipynb",   // ALWAYS the -dev copy
   "description": "…",
   "generated": "2026-08-24",
-  "generator": "pyomo_results 2026.08.24",
+  "generator": "helper 2026.08.25",
   "source_tag": "handout:portfolio-model",   // the model cell; null if there is no model
   "source_digest": "39ac1cbc9c1c8c0f",       // what makes staleness detectable
   "solver": "Ipopt (tol 1e-12) via Pyomo"
@@ -451,7 +479,8 @@ Both are citation bugs; fix them while you are there.
 
 1. **Find the notebook** that already solves this problem, in `notebooks/<n>-dev/`. Confirm it
    really generates the figure's content; a script *citing* a notebook is not proof.
-2. **Add `import pyomo_results as pyr`** to the install cell, with the Colab `wget` line.
+2. **Nothing to add to the install cell** — `helper` is already imported there. (An unmigrated
+   notebook may still say `import pyomo_results as pyr`; either name works.)
 3. **Split the cells**: solve, then extract + `save_results`, then a tagged plot cell.
 4. **Move the script's plotting body into the tagged cell**, converting it to read from `results`.
    Keep the script's docstring insight — the *why* — as comments or as the function's docstring;

@@ -51,7 +51,10 @@ handout ``\includegraphics``.
 
       results   the "data" block of figures/results/<name>.json
       np, pd, plt          numpy, pandas, matplotlib.pyplot
-      pyr                  notebooks/pyomo_results.py
+      helper               notebooks/helper.py -- the going-forward name
+      pyr                  the same object, under the old name. Four notebooks
+                           still say `import pyomo_results as pyr`; that module
+                           is now a shim over helper.py. See its docstring.
 
   ON EXIT the cell must leave::
 
@@ -73,9 +76,13 @@ handout ``\includegraphics``.
   disk on Colab. A notebook figure needing a hatch sequence copies the literal
   with a comment pointing here.
 
-  The cell SHOULD end with ``pyr.save_figure(fig, "<name>")``. That call is a
+  The cell SHOULD end with ``helper.save_figure(fig, "<name>")`` (or
+  ``pyr.save_figure(...)`` in a notebook that has not migrated). That call is a
   no-op off-repo, and this driver saves the figure itself, so it is harmless on
-  both paths and it is what makes the notebook the generator.
+  both paths and it is what makes the notebook the generator. It returns
+  ``None``, so ending the cell with it prints nothing -- which is the point:
+  when it returned the path, that absolute path was published as the cell's
+  output on the course website.
 
 WHY ``exec`` AND NOT ``nbclient``
 ---------------------------------
@@ -200,9 +207,9 @@ def render(name, cells=None, out_dir=OUT_DIR, results_dir=RESULTS_DIR, dpi=300):
 
 
 class _ReadOnlyResults:
-    """``pyomo_results`` with its two writers disabled.
+    """``helper`` with its two writers disabled. Bound as both `helper` and `pyr`.
 
-    A ``figure:`` cell ends with ``pyr.save_figure(fig, name)``, which is right
+    A ``figure:`` cell ends with ``save_figure(fig, name)``, which is right
     when the notebook runs it and wrong here: this driver owns where the output
     goes (``--out-dir`` exists so a check can render somewhere harmless), and a
     style re-render must never rewrite the archive it just read from. Everything
@@ -226,13 +233,20 @@ def _namespace(data):
     import numpy as np
     import pandas as pd
 
+    # ONE object under TWO names. `helper` is what a migrated notebook says;
+    # `pyr` is what the four not-yet-migrated ones say, via the shim. Binding
+    # the same instance means a cell cannot behave differently depending on
+    # which name it happens to use.
+    plumbing = _ReadOnlyResults()
+
     return {
         "__name__": "__figure_cell__",
         "results": data,
         "np": np,
         "pd": pd,
         "plt": plt,
-        "pyr": _ReadOnlyResults(),
+        "helper": plumbing,
+        "pyr": plumbing,
     }
 
 

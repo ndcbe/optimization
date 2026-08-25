@@ -89,6 +89,68 @@ files) that this course does not use.
 
 ---
 
+## 2a. The five-step spine
+
+A notebook that applies optimization to a problem is organised on the same five steps used in
+lecture, as `##` headings, in this order and with these names:
+
+```
+## Step 0: Problem statement          what is being decided, and why
+## Step 1: Mathematical model         sets, parameters, variables, objective, constraints
+## Step 2: Degree of freedom analysis variables minus equality constraints
+## Step 3: Pyomo implementation       the build function, and nothing else
+## Step 4: Analyze results            solve, tabulate, interpret
+```
+
+The point is that Step 2 sits between the mathematics and the code. **Do not implement a model in
+Pyomo until it is written down and counted** — most mistakes in an optimization project are made at
+the formulation step, and they are far cheaper to find on paper.
+
+**Variants of one problem are `###` subsections, not extra steps.** When a notebook compares several
+options, scenarios or formulations, the *steps stay the top-level spine* and each variant gets an
+`###` subsection inside every step, with the same name each time:
+
+```
+## Step 1: Mathematical model
+### Option 1: business as usual
+### Option 2: a second truck
+### Option 3: pool the remote farms
+## Step 2: Degree of freedom analysis
+### Option 1: business as usual
+...
+```
+
+so that a reader can go down a step comparing the variants, or across the variants following one.
+[](../notebooks/1/Milk-Pooling.ipynb) is the worked template. Two things it does that are the
+substance of the convention, not decoration:
+
+- **One build function, taking the variant as an argument.** Three options, one
+  `create_milk_model(local, pooled)`. If two build functions differ by a set or a flag, they are one
+  function, and saying so is usually the most interesting sentence in the notebook.
+- **Steps 2 and 3 check each other.** Step 2 counts by hand; Step 3 prints the same counts out of
+  Pyomo. A disagreement is a real finding, in either direction.
+
+Do not pad. Variants rarely deserve equal space — in the template, Options 1 and 2 get a paragraph
+each and Option 3 gets the whole of the hard analysis. **Manufactured symmetry is worse than an
+honest two-line subsection.**
+
+:::{note}
+**When this does not apply.** The spine is for notebooks that *solve a problem*. Do not force it
+onto:
+
+- **tutorials and reference notebooks**, whose organising principle is the software, not a problem —
+  [](../notebooks/1/Pyomo-Nuts-and-Bolts.ipynb) is arranged by Pyomo component and should stay that
+  way;
+- **theory and algorithm notebooks**, where there is no single model to count;
+- **notebooks with one model and no variants**, which keep the five steps but take no `###`
+  subsections at all — the subsection layer exists only to hold the variants.
+
+Existing notebooks are not being converted wholesale. Use the spine for new work, and when a
+notebook is being substantially rewritten anyway.
+:::
+
+---
+
 ## 3. Naming
 
 | Object | Convention | Example |
@@ -696,6 +758,7 @@ Run through this before you submit an assignment or open a pull request.
 - [ ] The Colab setup cell is the first code cell, verbatim, with `import sys` inside it
 - [ ] Every random number generator is seeded
 - [ ] The model is built by a function that returns a `ConcreteModel`
+- [ ] A problem-solving notebook uses the five-step spine, with variants as `###` subsections
 - [ ] Index sets are `pyo.Set` / `pyo.RangeSet`, named in UPPER CASE
 - [ ] `domain=` not `within=`; known bounds in `bounds=`
 - [ ] Constraints and objectives use the `@m.Constraint` / `@m.Objective` decorator, not `rule=`

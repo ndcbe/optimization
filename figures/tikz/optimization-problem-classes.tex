@@ -45,9 +45,12 @@
 % as a different KIND of object -- rounded tags inside a dashed enclosure, no
 % tree edges, one arrow pointing back up at the whole tree rather than at any
 % node in it. If it were drawn as more tree nodes it would teach the opposite
-% of what it is for. The five entries are the course's own Part I list
+% of what it is for. Five of the six entries are the course's own Part I list
 % (see ../../optimization-private/lecture-notes/lectures/introduction.tex,
-% "The semester").
+% "The semester"); ROBUST OPTIMIZATION is the sixth, added 2026-08-25 on Prof.
+% Dowling's instruction ("add 'Robust Optimization' as a modeling paradigm, but
+% mark it as not covered this semester") and marked with the tree's own
+% not-covered treatment -- see the `paruncov' style below.
 %
 % ---------------------------------------------------------------------------
 % GREYSCALE. The colour policy (figures/dowling.mplstyle header, and
@@ -80,7 +83,34 @@
 % Okabe-Ito blue at low saturation. The hue is the colour-vision-safe blue from
 % the house palette; the tint keeps black text on it readable.
 \definecolor{classblue}{HTML}{C7E0EE}
-\definecolor{bandgrey}{HTML}{F4F4F4}
+
+% THE BAND'S OWN COLOUR PAIR. Prof. Dowling, 2026-08-25: "let's make the outline
+% of the modeling paradigms dark green with a light green background." It
+% replaces a dashed grey enclosure on #F4F4F4.
+%
+% ⚠ THERE IS A TINT CEILING AS WELL AS A FLOOR. scripts/check_greyscale.py calls
+% a colour "chromatic" only at saturation (max-min channel) >= 0.12; an earlier
+% round used #D6E7F2 and the checker reported the whole figure as "rendered with
+% no chromatic colour at all", i.e. the colour half of a colour-code was not
+% arriving. #BFE6C4 has saturation 0.153 -- EXACTLY the calibrated blue tint's,
+% so it clears the floor by the same margin a colour already approved here does,
+% while staying light enough for black text.
+%
+% In GREYSCALE dark-green-on-light-green prints much like the grey-on-grey it
+% replaces, and that is fine: the band is told apart from the tree by its SHAPE
+% (rounded tags, dashed enclosure, no tree edges, one arrow), never by hue.
+%
+% 🔴 THE TRAILING % ON THE NEXT LINE IS LOAD-BEARING. DO NOT DELETE IT.
+% These \definecolor lines sit in the BODY of a `standalone' document, so the
+% newline after each one is a SPACE, and every space widens the page. The
+% approved width (432.651 pt = 1803 px) was set with TWO colour lines here;
+% replacing one grey with two greens is a third, and it silently grew the page
+% to 435.972 pt = 1817 px -- pdflatex and make both reported success. The % eats
+% one newline and puts the width back exactly. Same failure mode as the
+% \usetikzlibrary bug documented at the brace: measure with pdfinfo, never
+% assume, because nothing warns you.
+\definecolor{bandgreen}{HTML}{BFE6C4}%
+\definecolor{bandgreendark}{HTML}{1B6B3A}
 
 \begin{tikzpicture}[
   every node/.style = {font=\small},
@@ -104,6 +134,14 @@
                     align=center, text width=4.05cm, inner sep=5pt,
                     font=\footnotesize, hyphens/.code={},
                     execute at begin node={\hyphenpenalty=10000\exhyphenpenalty=10000}},
+  % 🔴 A NOT-COVERED TAG REUSES THE TREE'S ENCODING EXACTLY -- dotted rule, grey
+  % fill, grey text, the same three redundant channels `uncov' uses on SOCP, SDP
+  % and Nondifferentiable. Deliberately NOT a second visual language: the legend
+  % strip already defines this treatment, so it covers the band for free and the
+  % reader learns one convention instead of two. Only the SHAPE keys come from
+  % `tag' (rounded corners, width, anchor), which is what keeps the band reading
+  % as a different kind of object from the tree.
+  paruncov/.style = {tag, densely dotted, fill=black!12, text=black!48},
 ]
 
 % =========================================================================
@@ -281,11 +319,15 @@
 % often miss and is the whole reason the band exists. Exactly ONE line of it
 % stays here, because a band of five bare names claims nothing at all.
 % =========================================================================
-\fill[bandgrey, rounded corners=6pt] (-7.4,-14.95) rectangle (7.2,-11.35);
-\draw[dashed, thick, rounded corners=6pt, black!55]
+% ⚠ COLOURS ONLY. The dashed enclosure, the rounded tags, the absence of tree
+% edges and the single arrow back at the tree are the band's grammar and are
+% unchanged; recolouring must not weaken any of them, which is why the arrow
+% takes the same dark green as the enclosure rather than staying grey.
+\fill[bandgreen, rounded corners=6pt] (-7.4,-14.95) rectangle (7.2,-11.35);
+\draw[dashed, thick, rounded corners=6pt, bandgreendark]
       (-7.4,-14.95) rectangle (7.2,-11.35);
 
-\draw[->, >=stealth, very thick, dashed, black!55] (-1.0,-11.35) -- (-1.0,-10.75);
+\draw[->, >=stealth, very thick, dashed, bandgreendark] (-1.0,-11.35) -- (-1.0,-10.75);
 
 \node[anchor=north west, align=left, font=\small] at (-7.15,-11.50)
       {\textbf{Modeling paradigms}\\
@@ -297,5 +339,9 @@
 \node[tag] (par3) at (4.72,-12.75)  {\textbf{Stochastic programming}};
 \node[tag] (par4) at (-4.93,-14.05) {\textbf{Logical models (GDP)}};
 \node[tag] (par5) at (-0.11,-14.05) {\textbf{Decision support}};
+% Six paradigms sit 3 + 3 on the SAME two rows and the SAME three columns the
+% five used, so the sixth tag costs no width and no height: the band's corners
+% are unchanged and the page is still 1803 px wide.
+\node[paruncov] (par6) at (4.72,-14.05) {\textbf{Robust optimization}};
 
 \end{tikzpicture}

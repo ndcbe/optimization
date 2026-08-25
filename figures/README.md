@@ -3,14 +3,26 @@
 Everything in this directory exists so a figure is **authored once** and appears identically on the
 website and in the printed course pack. There is **one** figure pipeline, not two.
 
+🔴 **A figure has exactly one source, and if a notebook makes it, the notebook IS that source.**
+Prof. Dowling, 2026-08-24: *"If the figure is generated in a notebook, such as showing algorithm
+results in Part II, we should use the version from the notebook in the lecture notes."* See
+**[Solve → extract → plot](#solve--extract--plot-the-notebook-is-the-source)** below; it changes how
+about 25 of the 44 figures here are built, and it retires the rule that a plot script may re-derive
+a notebook's answer with `scipy`.
+
 | File | Role |
 | --- | --- |
 | `preamble.tex` | shared TikZ setup — loaded by `Makefile` *and* `\input` by the handouts |
 | `tikz/<name>.tex` | a bare `tikzpicture`; the single source for one diagram |
-| `plots/<name>.py` | a `make_figure() -> Figure`; the single source for one plot |
+| `plots/<name>.py` | a `make_figure() -> Figure`; the single source for one plot **that no notebook makes** |
 | `plots/_house.py` | conventions a style file cannot encode — hatch cycle, direct labelling |
 | `render.py` | runs one `plots/<name>.py` and writes its PNG **and** PDF |
-| `Makefile` | renders both source languages → `../media/figures/` at 300 dpi |
+| **a notebook cell tagged `figure:<name>`** | the single source for one plot **that a notebook makes** |
+| **`results/<name>.json`** | that notebook's extracted results, committed, so a **style** change re-renders with no solver |
+| **`render_from_notebook.py`** | re-runs one tagged cell against `results/<name>.json` → PNG **and** PDF |
+| **`../scripts/check_results_fresh.py`** | has the model changed since the archive was written? |
+| `../notebooks/pyomo_results.py` | the extract / archive / save-the-figure plumbing the notebooks import |
+| `Makefile` | renders all three source languages → `../media/figures/` at 300 dpi |
 | `dowling.mplstyle` | shared matplotlib style — the exact analogue of `preamble.tex`, for plots |
 | `dowling-markers.mplstyle` | optional overlay adding a cycled marker (sparse data only) |
 | `../scripts/check_greyscale.py` | the enforcement tool: does this figure survive black-and-white printing? |
@@ -198,6 +210,9 @@ Exit status is 0 on pass, 1 on fail, so it gates in CI. `--strict` promotes warn
 
 ## Adding a figure
 
+🔴 **First: does a notebook generate this figure?** If so it is not a script at all — see
+[Solve → extract → plot](#solve--extract--plot-the-notebook-is-the-source).
+
 **Diagram** → `tikz/<name>.tex`, then `make`. The handout `\input`s the same file.
 
 **Plot** → a committed script under `plots/<name>.py`, then `make`. Write **one** function:
@@ -223,10 +238,262 @@ cells below it for exploration.
 ⚠ **One output directory, two source languages.** `tikz/foo.tex` and `plots/foo.py` would both write
 `../media/figures/foo.png`. `make` refuses to run if any name appears in both.
 
-⚠ **Do not make a plot script depend on a solver.** Two of the three migrated plots re-derive their
-data with `numpy`/`scipy` rather than Pyomo + Ipopt, so `make` needs no solver binary and finishes
-in seconds. If a figure genuinely needs a long solve, commit the solved trajectory as data and read
-it.
+⚠ **`make` still needs no solver — but a figure must no longer be re-derived to achieve that.**
+This paragraph used to read *"Do not make a plot script depend on a solver... re-derive their data
+with `numpy`/`scipy` rather than Pyomo + Ipopt."* **That rule was reversed on 2026-08-24**, and the
+reversal is the subject of the next section. Its *intent* survives intact: nothing in this
+directory ever calls a solver. What changed is how. A figure a notebook makes is now re-rendered
+from that notebook's **archived results**, not recomputed by a second implementation. See
+[Solve → extract → plot](#solve--extract--plot-the-notebook-is-the-source).
+
+---
+
+## Solve → extract → plot: the notebook is the source
+
+**Added 2026-08-24. This is the contract. If you are retrofitting a figure, everything you need is
+in this section.**
+
+### The rule, and where it came from
+
+Prof. Dowling:
+
+> *"If it is for a Pyomo example, I want to plot the results from Pyomo. … I do not want to
+> recreate figures with scipy for the Pyomo sections. That seems very confusing."*
+>
+> *"What I do like is to separate the Pyomo solve from the analysis. For example, we could extract
+> the results from Pyomo and then make functions that plot those results."*
+>
+> *"For research code, I encourage my students to pickle or otherwise extract and store the
+> optimization results. That way, they can use archived results to adjust their plotting scripts.
+> Thus, adjusting the plotting script does not require resolving the model. We can teach the same
+> separation in the notebooks by separating the solve and analyze as different steps in different
+> cells."*
+>
+> *"If the figure is generated in a notebook, such as showing algorithm results in Part II, we
+> should use the version from the notebook in the lecture notes."*
+>
+> *"But Python generated plots that visualize Pyomo related data — those should live in the
+> notebooks."*
+
+**One question decides which pipeline a figure uses: does a notebook generate it?**
+
+| | Source | Built by |
+| --- | --- | --- |
+| A notebook generates it (**~25 of 44**) | the notebook cell tagged `figure:<name>` | running the notebook; `make` re-renders from `results/<name>.json` |
+| No notebook generates it (**~19 of 44**) | `plots/<name>.py` | `render.py`, exactly as before — **unchanged, do not touch these** |
+
+There is no Part I / Part II split in this rule. *"Do not rely on Pyomo for most of the examples
+and plots in Part II"* is about **Pyomo**, not about notebooks: a Part II notebook makes its figures
+with numpy and scipy while implementing an algorithm, and those figures are the ones the lecture
+should use.
+
+⚠ **`figures/tikz/` is untouched by all of this.** Diagrams authored in TikZ keep their pipeline
+exactly as it is (Prof. Dowling, 2026-08-24: *"I am okay with not changing how we handle tikz
+figure infrastructure right now."*).
+
+### Why the plotting code lives in the notebook cell and not in a shared module
+
+Because **a notebook is a teaching artifact.** If the student sees only `plot_frontier(m)` imported
+from somewhere, the plotting has been hidden from the person who is supposed to be learning it.
+
+So there is deliberately **no library of `plot_*()` functions** in `notebooks/pyomo_results.py`, and
+adding one would be a regression. That module holds only the parts that are the same for every
+figure and teach nothing: extraction, archiving, and saving at the right dpi to the right path.
+
+There is also nothing left to share. The figure has **one** implementation — the notebook cell —
+and `render_from_notebook.py` runs that same cell rather than reimplementing it.
+
+### Why the archive still exists now that the notebook writes the PDF
+
+**Because the common regeneration is a STYLE change, not a model change.** The house style was
+reworked across every figure in this repo on 2026-08-24. Doing that again with notebook-only
+generation means running ~20 notebooks with Ipopt and HiGHS; from the archive it is
+
+```bash
+python3 figures/render_from_notebook.py --all      # seconds, no solver, works in CI
+```
+
+That is the archive's only job. It is also what keeps `make` solver-free, which is a promise this
+directory has always made.
+
+### The three stages, in cells
+
+```
+cell N     build + solve the Pyomo model            <- the only cell that needs a solver
+cell N+1   results = {...}  ->  pyr.save_results()  <- extract to plain Python, archive as JSON
+cell N+2   def plot_<name>(results): ...            <- tagged figure:<name>; the figure's ONLY source
+           fig = plot_<name>(results)
+           pyr.save_figure(fig, "<name>")
+```
+
+Worked end to end in **`notebooks/1-dev/Portfolio-Optimization.ipynb`**, section "Step 5. Solve,
+extract, plot — three separate steps". Read that before retrofitting your first figure.
+
+### The cell contract — `figure:<name>`
+
+A cell that generates a handout figure carries the notebook tag **`figure:<name>`**, where `<name>`
+is the figure name shared by `media/figures/<name>.{png,pdf}`, `figures/results/<name>.json`, and
+the handout's `\includegraphics`.
+
+**ON ENTRY** the cell may assume exactly these names are bound, and no others:
+
+| name | is |
+| --- | --- |
+| `results` | the `"data"` block of `figures/results/<name>.json` |
+| `np`, `pd`, `plt` | numpy, pandas, matplotlib.pyplot |
+| `pyr` | `notebooks/pyomo_results.py` |
+
+**ON EXIT** the cell must leave **`fig`** bound to the matplotlib `Figure`.
+
+**The cell MUST NOT** solve, import Pyomo, read a data file, use an unseeded random number, or use
+any name from an earlier cell other than the four above. Everything the plot needs must be inside
+`results`. That restriction is what makes the cell runnable in both places — and it is the
+"separate the solve from the analysis" discipline enforced rather than requested.
+
+⚠ **The cell MUST set its own `figsize`.** `helper.set_plotting_style()` overrides
+`figure.figsize` for on-screen readability and `render_from_notebook.py` does not, so a figure
+relying on the default renders at two different aspect ratios depending on who generated it.
+
+⚠ **The cell MUST NOT `import _house`.** `plots/_house.py` is not on disk on Colab. If a notebook
+figure needs the hatch sequence, copy the literal into the cell with a comment pointing at
+`plots/_house.py`. (`HATCH_CYCLE = ("///", "\\\\\\", "...", "xxx", "|||", "---")`, `SHADE_ALPHA = 0.18`.)
+
+The cell **SHOULD** end with `pyr.save_figure(fig, "<name>")`. That is what makes the notebook the
+generator. It is a no-op on Colab, and `render_from_notebook.py` disables it (the driver owns where
+its output goes and must never rewrite the archive it just read).
+
+### The API — `notebooks/pyomo_results.py`
+
+Imported by the notebook, alongside `helper`. The install cell becomes:
+
+```python
+import sys
+
+if "google.colab" in sys.modules:
+    !wget "https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/helper.py"
+    !wget "https://raw.githubusercontent.com/ndcbe/optimization/main/notebooks/pyomo_results.py"
+    import helper
+
+    helper.easy_install()
+else:
+    sys.path.insert(0, "../")
+    import helper
+helper.set_plotting_style()
+
+import pyomo_results as pyr
+```
+
+| call | does |
+| --- | --- |
+| `pyr.extract(m, x=m.x, obj=m.OBJ)` | solved components → `{'x': {'DJI': 0.31, …}, 'obj': 1.8e-05}` |
+| `pyr.value_of(component)` | one component → float, or `{index: float}` |
+| `pyr.table(df)` | DataFrame → `{"columns": […], "rows": [[…]]}` |
+| `pyr.as_dataframe(tbl)` / `pyr.column(tbl, "rho")` | the inverses |
+| `pyr.save_results(name, data, notebook=…, source_tag=…, description=…, solver=…)` | writes `figures/results/<name>.json` |
+| `pyr.load_results(name)` | reads it; falls back to the raw URL on Colab |
+| `pyr.save_figure(fig, name)` | writes `media/figures/<name>.{png,pdf}` at 300 dpi |
+
+`extract` is deliberately small. **If extracting your model needs more than it offers, write that
+extraction in the notebook** — do not grow an abstraction here.
+
+**Both writers are no-ops when the repo is not on disk**, and print a one-line note saying so. A
+Colab session has nowhere to commit to; the student still sees the figure inline. Verified by
+simulation, not assumed.
+
+### The on-disk format — JSON, not pickle
+
+Prof. Dowling's decision, and the reason matters: in research code `pickle` is the right reach, and
+the notebook narrative says so. A **committed** artifact is different. A pickle in git is an
+unreviewable binary that stops loading on a library upgrade and whose diff nobody can read.
+
+```jsonc
+{
+ "meta": {
+  "schema": 1,
+  "figure": "portfolio-efficient-frontier",
+  "notebook": "notebooks/1-dev/Portfolio-Optimization.ipynb",   // ALWAYS the -dev copy
+  "description": "…",
+  "generated": "2026-08-24",
+  "generator": "pyomo_results 2026.08.24",
+  "source_tag": "handout:portfolio-model",   // the model cell; null if there is no model
+  "source_digest": "39ac1cbc9c1c8c0f",       // what makes staleness detectable
+  "solver": "Ipopt (tol 1e-12) via Pyomo"
+ },
+ "data": { … }
+}
+```
+
+A **table** is stored split, `{"columns": [...], "rows": [[...]]}`, not as a list of records:
+records repeat every column name on every row (the portfolio sweep is 60 × 7, so 420 repetitions of
+seven strings) and the git diff of a re-solve stops being readable. Floats are written at full
+precision — `json` round-trips them exactly, and rounding to make the file pretty would make the
+figure differ from the notebook.
+
+### Naming, and where things live
+
+| thing | path |
+| --- | --- |
+| the tagged cell | `notebooks/<n>-dev/<Notebook>.ipynb`, tag `figure:<name>` |
+| the archive | `figures/results/<name>.json` — **committed** |
+| the outputs | `media/figures/<name>.png` and `.pdf` — **committed** |
+| the handout | `\includegraphics{\figout <name>.pdf}` — unchanged |
+
+`<name>` is one string, used everywhere, and it stays the same as the retired `plots/<name>.py` so
+no lecture `\includegraphics` has to change. `make` refuses to run if two sources claim one name,
+which is what catches a script that should have been deleted.
+
+🔴 **`notebooks/<n>/` is GENERATED output that `process_notebooks.py` overwrites. Always retrofit
+`notebooks/<n>-dev/`.** Two scripts cite the generated copy — `l1-merit-kink-threshold.py` cites
+`notebooks/6/Globalization.ipynb` and `pendulum-drift.py` cites `notebooks/3/DAE_background.ipynb`.
+Both are citation bugs; fix them while you are there.
+
+### Retrofitting one figure — the checklist
+
+1. **Find the notebook** that already solves this problem, in `notebooks/<n>-dev/`. Confirm it
+   really generates the figure's content; a script *citing* a notebook is not proof.
+2. **Add `import pyomo_results as pyr`** to the install cell, with the Colab `wget` line.
+3. **Split the cells**: solve, then extract + `save_results`, then a tagged plot cell.
+4. **Move the script's plotting body into the tagged cell**, converting it to read from `results`.
+   Keep the script's docstring insight — the *why* — as comments or as the function's docstring;
+   several of those docstrings record a real subtlety that must not be lost.
+5. **Run the notebook.** It writes `media/figures/<name>.*` and `figures/results/<name>.json`.
+6. 🔴 **Compare the regenerated figure with the committed one as an IMAGE**, before and after.
+   Rasterise both PDFs (`pdftocairo -png -r 150 -singlefile`) and diff the arrays. `portfolio-`
+   `efficient-frontier` came out byte-identical at 150 dpi. **An unintended change means the
+   retrofit is wrong**; an intended one must be stated.
+7. **Delete `plots/<name>.py`** and record it in the private repo's `claude/deleted_notebooks.md`
+   (path, reason, commit).
+8. **Verify**:
+   ```bash
+   python3 scripts/check_results_fresh.py                    # archive vs model cell
+   python3 figures/render_from_notebook.py <name>            # solver-free path works
+   python3 scripts/check_greyscale.py --source notebooks/<n>-dev/<Notebook>.ipynb
+   cd ../optimization-private/lecture-notes && python3 check_code_sync.py
+   ```
+9. **Commit** the notebook, the archive, the two `media/figures/` files and the script deletion.
+
+### The freshness checker
+
+`figures/results/<name>.json` is a committed generated artifact, and one that nothing polices goes
+stale silently — someone tightens a bound in the notebook, nobody re-runs it, and the pack ships
+last term's answer with every build green. `scripts/check_results_fresh.py` pins each archive to
+the `handout:<tag>` model cell it names, using the same normalisation and digest as
+`lecture-notes/check_code_sync.py` (imported, not restated). Verdicts: `OK`, `STALE`, `ORPHAN`,
+`MISSING`, `MALFORMED`, and `UNVERIFIED` (a data figure with no model cell to pin — a warning, never
+a failure).
+
+⚠ **It sees the MODEL cell, not the solve.** Change the sweep range, the solver options or the
+input data and the digest is unchanged. That is accepted and argued in the script's docstring: a
+change to the sweep is one you are making *while looking at the figure*, and a change to the model
+is one made for an unrelated reason with no thought of the figure at all. The second is the case
+that needs a machine to notice.
+
+Run `--selftest` on both `check_results_fresh.py` and `render_from_notebook.py` before believing
+either a red or a green result. A checker that cannot fail is indistinguishable from one that passes.
+
+---
+
+## Style details
 
 ### Shaded regions need hatching
 

@@ -368,11 +368,20 @@ output is a figure.
 | NLP | Ipopt | `"ipopt"` |
 | MINLP | Bonmin / Couenne | `"bonmin"`, `"couenne"` |
 
-**HiGHS is the course default for anything linear.** GLPK was the default through Fall 2024 and has
-been retired: HiGHS is faster, is actively developed, and installs everywhere with
-`pip install highspy` — no `apt-get`, so it works on Colab, macOS and Windows identically. If you
-are reading an older notebook that calls `pyo.SolverFactory("glpk")`, replace it with
+**HiGHS is the course default for anything linear.** GLPK was the default through Fall 2024 and
+**CBC through Fall 2026**; both have been retired. HiGHS is faster, is actively developed, and
+installs everywhere with `pip install highspy` — no `apt-get`, no separate executable — so it works
+on Colab, macOS and Windows identically. If you are reading an older notebook that calls
+`pyo.SolverFactory("glpk")` or `pyo.SolverFactory("cbc")`, replace it with
 `pyo.SolverFactory("appsi_highs")`.
+
+:::{note}
+**There is exactly one sanctioned exception in this repo**, and it is not a style choice:
+`notebooks/7-dev/NLP-Diagnostics.ipynb` still calls CBC, because IDAES's legacy `DegeneracyHunter`
+raises when its internal MILP is infeasible under HiGHS. See the fourth bullet below. A notebook
+whose *subject* is comparing solvers — `Sudoku_Solver.ipynb` benchmarks HiGHS against CBC — is also
+free to name others; that is the point of it.
+:::
 
 ```python
 # YES
@@ -381,7 +390,7 @@ results = solver.solve(m, tee=True)
 assert pyo.check_optimal_termination(results)
 ```
 
-Two details that bite:
+Details that bite — the last three were all found switching this repo off CBC:
 
 - **`tee` is a keyword of `solve()`, not of `SolverFactory()`.** The shell-based solvers (`glpk`,
   `cbc`, `ipopt`) silently swallow `SolverFactory("glpk", tee=True)` and print nothing;
@@ -392,9 +401,38 @@ Two details that bite:
   `results.solver.termination_condition` work exactly as in §7. You only need the APPSI-native
   `results.termination_condition` form if you construct the solver directly from
   `pyomo.contrib.appsi`, which this course does not do.
+- 🔴 **On an infeasible model HiGHS RAISES, where a shell solver returns.** This is the one real
+  behavioural difference. `SolverFactory("cbc").solve(m)` on an infeasible model hands back a
+  warning-status results object you can branch on; `appsi_highs` raises `RuntimeError` from inside
+  `solve()`, because it is asked to load a solution that does not exist. **If a failed solve is a
+  possible or intended outcome — a branch-and-bound node, an infeasibility demo, a library that
+  probes with MILPs — pass `load_solutions=False` and load explicitly:**
+
+  ```python
+  results = opt.solve(m, load_solutions=False)
+  if pyo.check_optimal_termination(results):
+      m.solutions.load_from(results)   # only now are the variables populated
+      print(pyo.value(m.obj))
+  elif results.solver.termination_condition == pyo.TerminationCondition.infeasible:
+      print("infeasible")
+  ```
+
+  This is what forces the CBC exception in `NLP-Diagnostics.ipynb`: IDAES's legacy
+  `DegeneracyHunter` makes the bare `solver.solve(milp, tee=tee)` call internally, so there is no
+  way to pass the flag from the notebook. The current `DiagnosticsToolbox` API is fine.
+- **`tee=True` shows you nothing in Jupyter.** HiGHS writes its log to the process's stdout rather
+  than through Python, so the notebook never captures it — the cell just renders empty. Print the
+  objective yourself instead of relying on the solver log.
 
 HiGHS may report a binary variable as `-0.0` rather than `0.0`. Compare with a tolerance
 (`if pyo.value(m.x[i]) >= 0.5:`), never with `== 0`.
+
+**Format numbers before printing them.** CBC's shell interface rounded its solution file to about 8
+decimals, which flattered every `print(pyo.value(x))` in the repo. HiGHS returns full double
+precision, so the same line now prints `83.75000000000003`, `6.999999999999998`, or an integer
+vehicle count of `10.99999999999997`. None of that is information. Use `f"{...:.4g}"`, `round()` for
+a value you know is integral, and snap to zero below the feasibility tolerance
+(`if abs(gap) < 1e-9: gap = 0.0`) rather than publishing `1.1e-16`.
 
 **Alternate optima are real.** Several course models have ties — the knapsack has two distinct
 selections worth 25, and the integer-cut exercise in `assignments/Pyomo2.ipynb` has two worth 14.

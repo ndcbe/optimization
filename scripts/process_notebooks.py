@@ -3,6 +3,15 @@ from nbformat.v4.nbbase import new_code_cell, new_markdown_cell, new_notebook
 import re
 import os
 import shutil
+import sys
+
+# The published-answer marker is DEFINED ONCE, in the checker, and imported
+# here. Two copies of the grammar is how the stripper and the check that guards
+# it drift apart, and the drift would be silent in exactly the direction that
+# matters: the stripper stops recognising a block, the checker keeps saying the
+# block is fine.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from check_solution_leaks import published_answer_findings  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # AI-review banner
@@ -118,6 +127,60 @@ def insert_ai_banner(nb, source_rel, published_rel, verbose=1):
               f"{changed} changed, {added} added)")
     return True
 
+# ---------------------------------------------------------------------------
+# Deliberately published answers
+#
+# Prof. Dowling, 2026-08-25, on the diet and portfolio problems: the answers go
+# on the public site "because the homework is completion-based." The student is
+# meant to attempt the problem cold and then check their own work.
+#
+# That is an exception to the standing rule this pipeline enforces, so it is
+# made explicit rather than left to prose. A block between
+#
+#     ### BEGIN PUBLISHED ANSWER   ...   ### END PUBLISHED ANSWER      (code)
+#     <!-- BEGIN PUBLISHED ANSWER --> ... <!-- END PUBLISHED ANSWER --> (markdown)
+#
+# passes through UNCHANGED -- markers and stored outputs included. The markers
+# survive so that the published notebook carries its own evidence the answer was
+# intended; written as plain prose, a deliberate answer and a leak look the same
+# to the checker and to the next reader.
+#
+# WHY THIS FUNCTION EXISTS, given that no strip pattern matches the marker and
+# pass-through is therefore already the behaviour. Pass-through by ACCIDENT is
+# one broadened regex away from becoming a strip, and the failure is silent:
+# the answer quietly stops being published and nobody notices for a semester.
+# So the count of well-formed blocks is measured before and after processing and
+# must match. It also refuses to publish a MALFORMED marker at all -- an
+# unmatched BEGIN is precisely the typo that would otherwise reach the site.
+#
+# SCOPE LIMIT: completion-graded, exam-calibration material only. Anything
+# graded on correctness keeps ### BEGIN SOLUTION. Not machine-enforceable; see
+# org/pyomo-style-guide.md section 11a.
+def published_answer_audit(nb, label, verbose=1):
+    """Per-cell count of well-formed published-answer blocks.
+
+    Raises SystemExit if any marker is malformed, so a typo aborts the publish
+    instead of quietly changing what gets published.
+    """
+    findings = []
+    counts = []
+    for i, cell in enumerate(nb.cells):
+        tags = (cell.get("metadata") or {}).get("tags") or []
+        f, n = published_answer_findings(
+            cell.cell_type, cell.source, tags, where=f"{label}: cell {i}: ")
+        findings += f
+        counts.append(n)
+    if findings:
+        print(f"\nABORT: malformed PUBLISHED ANSWER marker in {label}:")
+        for f in findings:
+            print(f"  {f}")
+        raise SystemExit(1)
+    if verbose >= 1 and sum(counts):
+        print(f"  Passing through {sum(counts)} PUBLISHED ANSWER block(s) "
+              f"(deliberate; completion-graded material)")
+    return counts
+
+
 def process_notebook(folder_original, folder_new, filename, verbose=1):
 
     ''' Remove nbgrader content from notebooks and save updated version
@@ -135,6 +198,10 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
         if verbose >= 1:
             print("\nOpening ",input_notebook)
         nb = nbformat.read(fp, as_version=4)
+
+    # Validate published-answer markers BEFORE anything is rewritten, and record
+    # how many blocks there are so the pass-through can be verified afterwards.
+    pa_before = published_answer_audit(nb, input_notebook, verbose=verbose)
 
     # display file metadata
     if verbose >= 2:
@@ -327,6 +394,28 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
                                              filename)),
                      verbose=verbose)
 
+    ## Verify the published answers actually survived.
+    #
+    # Compare the multiset of NON-ZERO per-cell counts. Not position by
+    # position, and not the raw lists: insert_ai_banner() adds a cell, so the
+    # raw lists differ in length by one on every unreviewed notebook even when
+    # nothing is wrong. (That is not hypothetical -- the first version of this
+    # guard compared the raw lists and aborted the publish on notebooks/1-dev/
+    # IP.ipynb, which contains no published answer at all.)
+    #
+    # Any block that vanished, or that lost a marker to one of the rewrites
+    # above, shows up here as a mismatch and aborts the publish. A regression
+    # that silently stops publishing an answer is worth failing loudly for;
+    # nobody re-reads the generated notebook.
+    pa_after = published_answer_audit(nb, f"{input_notebook} (after processing)",
+                                      verbose=0)
+    nonzero = lambda counts: sorted(c for c in counts if c)  # noqa: E731
+    if nonzero(pa_before) != nonzero(pa_after):
+        raise SystemExit(
+            f"\nABORT: {input_notebook} had {sum(pa_before)} PUBLISHED ANSWER "
+            f"block(s) before processing and {sum(pa_after)} after. The "
+            f"pipeline is stripping or damaging a block it must pass through.")
+
     ## Save new notebook
     output_notebook = os.path.join(folder_new, filename)
     
@@ -338,39 +427,220 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
 # Testing
 #process_notebook("./notebooks/01", "03-Flow-control.ipynb")
 
-"""
-IMPORTANT. We assume the source files are in XX-dev and the new files go into XX.
-The list below is just values for XX.
-"""
-folders = ["1", "2", "3", "4", "5","6","7","8","contrib"]
 
-for fld in folders:
-    
-    # Loop over filenames
-    full_folder_name_original = "./notebooks/" + fld + "-dev"
-    full_folder_name_new = "./notebooks/" + fld
-    
-    print("Processing files in ", full_folder_name_original)
-    
+def publish_all():
+    """The publish pass. Paths are relative: run this from the repo ROOT."""
+    # IMPORTANT. We assume the source files are in XX-dev and the new files go
+    # into XX. The list below is just values for XX.
+    folders = ["1", "2", "3", "4", "5", "6", "7", "8", "contrib"]
+
+    for fld in folders:
+
+        # Loop over filenames
+        full_folder_name_original = "./notebooks/" + fld + "-dev"
+        full_folder_name_new = "./notebooks/" + fld
+
+        print("Processing files in ", full_folder_name_original)
+
+        for file in sorted(os.listdir(full_folder_name_original)):
+
+            # Check if file is a notebook using ending
+            if re.match(r"(.*?)\.ipynb$", file):
+
+                # process the notebook!
+                process_notebook(full_folder_name_original,
+                                 full_folder_name_new, file, verbose=1)
+
+    # Assignments live in the private repo.
+    full_folder_name_original = "../optimization-private/notebooks/assignments/"
+    full_folder_name_new = "./notebooks/assignments/"
+
     for file in sorted(os.listdir(full_folder_name_original)):
-        
+
         # Check if file is a notebook using ending
-        if re.match("(.*?)\.ipynb$", file):
-            
+        if re.match(r"(.*?)\.ipynb$", file):
+
             # process the notebook!
-            process_notebook(full_folder_name_original, full_folder_name_new, file, verbose=1)
+            process_notebook(full_folder_name_original,
+                             full_folder_name_new, file, verbose=1)
 
-"""
-Process assignments which are in a private repo
-"""
-# Loop over filenames
-full_folder_name_original = "../optimization-private/notebooks/assignments/"
-full_folder_name_new = "./notebooks/assignments/"
 
-for file in sorted(os.listdir(full_folder_name_original)):
-    
-    # Check if file is a notebook using ending
-    if re.match("(.*?)\.ipynb$", file):
-        
-        # process the notebook!
-        process_notebook(full_folder_name_original, full_folder_name_new, file, verbose=1)
+# ---------------------------------------------------------------------------
+# Self-test.
+#
+# Runs the real process_notebook() over notebooks built in a temp directory and
+# asserts on the FILE IT WROTE, not on an in-memory object. A tool that says OK
+# is not evidence until you have watched it say FAIL, so the last two cases
+# assert that a malformed marker and a damaged pipeline both abort.
+
+def _selftest_nb(cells):
+    return {"cells": cells, "metadata": {}, "nbformat": 4, "nbformat_minor": 4}
+
+
+def _sc(source, outputs=None):
+    return {"cell_type": "code", "execution_count": 1, "metadata": {},
+            "outputs": outputs or [], "source": source}
+
+
+def _sm(source):
+    return {"cell_type": "markdown", "metadata": {}, "source": source}
+
+
+def _so(text):
+    return {"output_type": "stream", "name": "stdout", "text": [text]}
+
+
+SELFTEST_SOLUTION = ("# Compute the optimal diet cost.\n"
+                     "### BEGIN SOLUTION\n"
+                     "cost = 2.28\n"
+                     "### END SOLUTION\n")
+SELFTEST_ANSWER_CODE = ("### BEGIN PUBLISHED ANSWER\n"
+                        "# 4 foods, 3 nutrient constraints -> 1 degree of freedom\n"
+                        "print('cost = 2.28')\n"
+                        "### END PUBLISHED ANSWER\n")
+SELFTEST_ANSWER_MD = ("Check your work against the answer below.\n"
+                      "\n"
+                      "<!-- BEGIN PUBLISHED ANSWER -->\n"
+                      "DOF = 4 variables - 3 active constraints = 1.\n"
+                      "<!-- END PUBLISHED ANSWER -->\n")
+
+
+def selftest():
+    import json
+    import tempfile
+
+    ok = True
+
+    def check(label, condition, detail=""):
+        nonlocal ok
+        if not condition:
+            ok = False
+        print(f"  [{'PASS' if condition else 'FAIL':4s}] {label}")
+        if detail and not condition:
+            print(f"         {detail}")
+
+    with tempfile.TemporaryDirectory() as d:
+        src_dir = os.path.join(d, "src")
+        out_dir = os.path.join(d, "out")
+        os.makedirs(src_dir)
+        os.makedirs(out_dir)
+
+        def write(name, nb):
+            with open(os.path.join(src_dir, name), "w") as fp:
+                json.dump(nb, fp)
+
+        write("t.ipynb", _selftest_nb([
+            _sc(SELFTEST_SOLUTION, outputs=[_so("cost = 2.28\n")]),
+            _sc(SELFTEST_ANSWER_CODE, outputs=[_so("cost = 2.28\n")]),
+            _sm(SELFTEST_ANSWER_MD),
+            _sc("### BEGIN HIDDEN TESTS\nassert cost == 2.28\n"
+                "### END HIDDEN TESTS\n", outputs=[_so("ok\n")]),
+        ]))
+        process_notebook(src_dir, out_dir, "t.ipynb", verbose=0)
+        with open(os.path.join(out_dir, "t.ipynb")) as fp:
+            pub = json.load(fp)["cells"]
+
+        s0 = "".join(pub[0]["source"])
+        check("solution block stripped from source",
+              "BEGIN SOLUTION" not in s0 and "cost = 2.28" not in s0, s0)
+        check("stripped cell lost its stored outputs",
+              not pub[0]["outputs"], str(pub[0]["outputs"]))
+
+        s1 = "".join(pub[1]["source"])
+        check("published answer passed through VERBATIM",
+              s1 == SELFTEST_ANSWER_CODE, repr(s1))
+        check("published answer KEPT its stored outputs",
+              "".join(pub[1]["outputs"][0]["text"]) == "cost = 2.28\n",
+              str(pub[1]["outputs"]))
+
+        s2 = "".join(pub[2]["source"])
+        check("markdown published answer passed through VERBATIM",
+              s2 == SELFTEST_ANSWER_MD, repr(s2))
+
+        s3 = "".join(pub[3]["source"])
+        check("hidden tests stripped, outputs cleared",
+              "HIDDEN TESTS" not in s3 and not pub[3]["outputs"], s3)
+
+        # Must NOT abort: the AI-review banner INSERTS a cell, which lengthens
+        # the per-cell count list. The first version of the pass-through guard
+        # compared the raw lists and aborted the whole publish on the first
+        # unreviewed notebook it met -- one with no published answer at all.
+        write("banner.ipynb", _selftest_nb([
+            _sm("# A title\n"),
+            _sc(SELFTEST_ANSWER_CODE, outputs=[_so("cost = 2.28\n")]),
+        ]))
+        saved_status = dict(AI_STATUS)
+        AI_STATUS[os.path.join(src_dir, "banner.ipynb")] = ("unreviewed", "1", "0")
+        AI_STATUS["/".join(("notebooks", os.path.basename(src_dir),
+                            "banner.ipynb"))] = ("unreviewed", "1", "0")
+        try:
+            process_notebook(src_dir, out_dir, "banner.ipynb", verbose=0)
+        except SystemExit as exc:
+            check("banner insertion does not trip the pass-through guard",
+                  False, str(exc))
+        else:
+            with open(os.path.join(out_dir, "banner.ipynb")) as fp:
+                bcells = json.load(fp)["cells"]
+            banner = any(c["metadata"].get("ai_review_banner") for c in bcells)
+            answer = any("".join(c["source"]) == SELFTEST_ANSWER_CODE
+                         for c in bcells)
+            check("banner insertion does not trip the pass-through guard",
+                  banner and answer,
+                  f"banner={banner} answer_survived={answer}")
+        finally:
+            AI_STATUS.clear()
+            AI_STATUS.update(saved_status)
+
+        # Must ABORT: an unmatched marker is the typo that would otherwise
+        # publish the answer with nothing left to grep for.
+        write("bad.ipynb", _selftest_nb([
+            _sc("### BEGIN PUBLISHED ANSWER\ncost = 2.28\n")]))
+        try:
+            process_notebook(src_dir, out_dir, "bad.ipynb", verbose=0)
+        except SystemExit:
+            check("unmatched PUBLISHED ANSWER marker aborts the publish", True)
+        else:
+            check("unmatched PUBLISHED ANSWER marker aborts the publish", False,
+                  "it published instead")
+        check("the aborted notebook was NOT written",
+              not os.path.exists(os.path.join(out_dir, "bad.ipynb")))
+
+        # Must ABORT: simulate the regression this guard exists for -- a strip
+        # pattern broadened until it eats a published-answer block.
+        write("reg.ipynb", _selftest_nb([_sc(SELFTEST_ANSWER_CODE)]))
+        # Patch the compiled-pattern path the pipeline actually uses. Verified
+        # load-bearing: with the before/after count comparison removed, this
+        # same patch publishes '# Add your solution here' and exits 0.
+        real_compile = re.compile
+
+        class _EatingPattern:
+            def __init__(self, inner):
+                self._inner = inner
+
+            def findall(self, s):
+                return ["x"] if "PUBLISHED ANSWER" in s else self._inner.findall(s)
+
+            def sub(self, repl, s):
+                if "PUBLISHED ANSWER" in s:
+                    return "# Add your solution here"
+                return self._inner.sub(repl, s)
+
+        re.compile = lambda p, *a, **kw: _EatingPattern(real_compile(p, *a, **kw))
+        try:
+            process_notebook(src_dir, out_dir, "reg.ipynb", verbose=0)
+        except SystemExit:
+            check("a pipeline that EATS a published answer aborts", True)
+        else:
+            check("a pipeline that EATS a published answer aborts", False,
+                  "the answer was silently dropped and the publish succeeded")
+        finally:
+            re.compile = real_compile
+
+    print("\nself-test", "PASSED" if ok else "FAILED")
+    return 0 if ok else 1
+
+
+if __name__ == "__main__":
+    if "--selftest" in sys.argv:
+        sys.exit(selftest())
+    publish_all()

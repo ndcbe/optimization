@@ -43,9 +43,11 @@ that was flattened to satisfy the old rule and can now have its colour back.
 
 MODES
 -----
-  --source PATH ...   figure scripts (figures/plots/*.py). THE AUTHORITATIVE
-                      MODE, because whether an encoding is redundant is a fact
-                      about the source, not about the pixels.
+  --source PATH ...   figure scripts and notebooks (figures/plots/*.py,
+                      notebooks/*-dev/*.ipynb), or a directory of them. THE
+                      AUTHORITATIVE MODE, because whether an encoding is
+                      redundant is a fact about the source, not about the
+                      pixels.
   --style FILE        a matplotlib style file: does its prop_cycle pair colour
                       with a non-colour key, and how far apart are the colours?
   --colors C1 C2 ...  an ad-hoc palette. Add --redundant to assert that the
@@ -89,6 +91,14 @@ USAGE
 
 Exit status: 0 when nothing fails, 1 on a failure (or on a warning with
 --strict), 2 on a usage or IO error.
+
+⚠ AN ARGUMENT THIS SCRIPT DOES NOT UNDERSTAND IS AN ERROR, NOT A SKIP.
+An unknown flag, a path that does not exist, a file that is neither a figure
+source nor an image, and a directory with nothing in it to check all exit 2
+with a message. This used to be the opposite: `check_greyscale.py <dir>` with
+no images inside printed `RESULT: PASS` and exited 0 -- indistinguishable from
+a real pass, and `claude/NEXT_STEPS.md` records that "the wrong ones exit 0
+just like the right one". `--help` prints this text.
 """
 
 from __future__ import annotations
@@ -339,6 +349,89 @@ def _module_constants(tree) -> dict:
     return out
 
 
+def _advance_line_state(line: str, depth: int, delim):
+    """Advance (bracket depth, open string delimiter, backslash continuation).
+
+    A hand-rolled scanner rather than `tokenize`, because the whole point is to
+    read a cell that is NOT valid Python yet: it still has its magics in it, and
+    `tokenize` raises on the first `%matplotlib`.
+
+    Returns (depth, delim, continued) after consuming one PHYSICAL line, where
+    `delim` is the triple-quote still open at end of line (or None) and
+    `continued` says the line ended in a backslash. All three are false/zero
+    exactly when the NEXT physical line begins a new LOGICAL line -- which is
+    the only place a Jupyter magic can legally appear.
+    """
+    i, n = 0, len(line)
+    continued = False
+    while i < n:
+        ch = line[i]
+        if delim:                                   # inside a string
+            if ch == "\\":
+                i += 2
+                continue
+            if line.startswith(delim, i):
+                i += len(delim)
+                delim = None
+                continue
+            i += 1
+            continue
+        if ch == "#":                               # comment to end of line
+            break
+        if ch in "\"'":
+            if line.startswith(ch * 3, i):
+                delim = ch * 3
+                i += 3
+            else:
+                delim = ch
+                i += 1
+            continue
+        if ch in "([{":
+            depth += 1
+        elif ch in ")]}":
+            depth = max(0, depth - 1)
+        elif ch == "\\" and i == n - 1:
+            continued = True
+        i += 1
+    if delim and len(delim) == 1:
+        # A single-quoted string cannot span a newline; treat it as closed so
+        # one stray apostrophe in a comment-like line does not desynchronise
+        # the rest of the cell.
+        delim = None
+    return depth, delim, continued
+
+
+def _is_magic_line(line: str, depth: int, delim, continued: bool) -> bool:
+    """True only for a REAL Jupyter magic: `%`/`%%`/`!`/`?` starting a LOGICAL line.
+
+    🔴 The naive test -- "first non-blank character is % or !" -- misfires on a
+    `%`-format CONTINUATION line, which is what `black` produces from a long
+    print:
+
+        print(
+            "Rectangle %s: (%.4g, %.4g)"
+            % (i, x, y)                 <-- NOT a magic
+        )
+
+    Blanking that line cost real work twice on 2026-08-25. Two distinct
+    symptoms, and the second is the worse one:
+
+      * inside brackets the substitute `pass` is a syntax error, the whole
+        notebook scores `unparseable -> FAIL`, and the summary line blames
+        COLOUR for a mistake that has nothing to do with colour;
+      * inside a multi-line string the `# magic` comment can swallow the
+        CLOSING `\"\"\"`, so the string runs on, later plotting calls are eaten
+        as string content, and the file still PARSES -- a confident, silent
+        PASS on a figure the checker never actually looked at.
+
+    A magic is only a magic at the start of a logical line, so that is what is
+    tested: no open bracket, no open string, no backslash continuation.
+    """
+    if depth or delim or continued:
+        return False
+    return line.lstrip().startswith(("!", "%", "?"))
+
+
 def _source_text(path: str) -> str:
     """Python source for `path`.
 
@@ -352,6 +445,8 @@ def _source_text(path: str) -> str:
 
     Jupyter line magics (`!pip`, `%matplotlib`) are not Python, so they are
     blanked rather than dropped -- keeping line numbers aligned with the cell.
+    ⚠ Only a magic at the START OF A LOGICAL LINE is blanked; see
+    `_is_magic_line` for why the obvious test is wrong and what it cost.
     """
     if not path.endswith(".ipynb"):
         return open(path, encoding="utf-8").read()
@@ -361,16 +456,22 @@ def _source_text(path: str) -> str:
     for cell in nb.get("cells", []):
         if cell.get("cell_type") != "code":
             continue
+        # State is per CELL: each cell is parsed by Jupyter on its own, so an
+        # unclosed bracket in one cell must not leak into the next.
+        depth, delim, continued = 0, None, False
         for line in "".join(cell.get("source", [])).split("\n"):
-            stripped = line.lstrip()
-            if stripped.startswith(("!", "%", "?")):
+            if _is_magic_line(line, depth, delim, continued):
                 # keep the original indentation, or a magic inside an if/try
                 # block turns into an IndentationError and the whole notebook
                 # is scored "unparseable" -- another silent non-result.
+                stripped = line.lstrip()
                 indent = line[: len(line) - len(stripped)]
                 lines.append(f"{indent}pass  # magic")
-            else:
-                lines.append(line)
+                # The substitute is bracket-, string- and continuation-neutral,
+                # so the state does not need advancing across it.
+                continue
+            lines.append(line)
+            depth, delim, continued = _advance_line_state(line, depth, delim)
     return "\n".join(lines)
 
 
@@ -678,16 +779,51 @@ def iter_images(paths: Iterable[str]) -> Iterable[str]:
             yield p
 
 
+SOURCE_EXTS = (".py", ".ipynb")
+
+
 def iter_sources(paths: Iterable[str]) -> Iterable[str]:
     for p in paths:
         if os.path.isdir(p):
             for f in sorted(os.listdir(p)):
                 # figures/plots/_*.py are shared helpers, not figures -- the
                 # Makefile's wildcard skips them and so does this.
-                if f.endswith(".py") and not f.startswith("_"):
+                if f.endswith(SOURCE_EXTS) and not f.startswith("_"):
                     yield os.path.join(p, f)
         else:
             yield p
+
+
+# --------------------------------------------------------------------------
+# Argument validation -- an argument this script does not understand is an
+# ERROR, never a silent skip.
+#
+# 🔴 Why this exists. On 2026-08-25 a sibling checker was handed three
+# adversarial notebooks as arguments, ignored them, scanned its own fixed
+# corpus, printed a clean result and exited 0 -- and the reader all but reported
+# the OPPOSITE of the truth. The same class of trap is documented for this
+# script in `claude/NEXT_STEPS.md`: "the wrong ones exit 0 just like the right
+# one". A checker that answers a question you did not ask, in the voice of the
+# question you did ask, is worse than one that crashes.
+# --------------------------------------------------------------------------
+def _validate_paths(paths, kind, exts, ap) -> None:
+    """Refuse a path this mode cannot read, and a directory with nothing in it."""
+    for p in paths:
+        if os.path.isdir(p):
+            matches = [f for f in os.listdir(p)
+                       if f.endswith(exts) and not f.startswith("_")]
+            if not matches:
+                ap.error(f"{p}: directory contains no {kind} "
+                         f"({', '.join(exts)}). Scanning it would print a "
+                         f"clean result that tested nothing -- refusing "
+                         f"rather than exiting 0")
+            continue
+        if not os.path.exists(p):
+            ap.error(f"{p}: no such file or directory")
+        if not p.lower().endswith(exts):
+            ap.error(f"{p}: not a {kind} (expected {', '.join(exts)}). "
+                     f"Give figure scripts and notebooks to --source; give "
+                     f"rendered images as positional paths")
 
 
 # --------------------------------------------------------------------------
@@ -773,6 +909,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         args.source = (args.source or []) + misrouted
         print(f"note: treating {len(misrouted)} source file(s) given positionally "
               f"as --source (a .ipynb/.py is never a rendered image)")
+
+    # Anything still unrecognised is a usage error, not something to skip.
+    _validate_paths(args.source or [], "figure source", SOURCE_EXTS, ap)
+    _validate_paths(args.paths, "rendered image", tuple(sorted(IMAGE_EXTS)), ap)
 
     if args.source:
         sources = list(iter_sources(args.source))
@@ -970,6 +1110,178 @@ def make_figure():
     ax.plot(x, y2, ":", color="#E69F00")
     return fig
 ''', "OK")
+
+    # ------------------------------------------------------------------ #
+    # 11. NOTEBOOK EXTRACTION. Added 2026-08-25, after the `%`-continuation
+    #     trap cost two agents a working day between them. Each of these is a
+    #     .ipynb, because the bug lives in the cell extractor and a .py never
+    #     goes through it.
+    # ------------------------------------------------------------------ #
+    import json as _json
+
+    def nbcase(label, cellsources, want):
+        nonlocal ok
+        with tempfile.TemporaryDirectory() as tmp:
+            p = os.path.join(tmp, "nb.ipynb")
+            nb = {"cells": [{"cell_type": "code", "execution_count": None,
+                             "metadata": {}, "outputs": [],
+                             "source": s.splitlines(keepends=True)}
+                            for s in cellsources],
+                  "metadata": {}, "nbformat": 4, "nbformat_minor": 4}
+            with open(p, "w", encoding="utf-8") as fp:
+                _json.dump(nb, fp)
+            r = Report()
+            got = check_source(p, r)
+        good = got == want
+        ok &= good
+        print(f"  {'OK  ' if good else 'FAIL'} {label}: {got} (expected {want})")
+        if not good:
+            for m in r.fails + r.warns + r.recolour:
+                print(f"         {m}")
+
+    # 11a. The exact shape `black` produces from a long print. Under the old
+    #      extractor the `% (...)` line became `pass`, the cell stopped
+    #      parsing, and the notebook scored FAIL "unparseable" -- a colour
+    #      verdict on a file whose colours were never read. Here the two
+    #      curves carry linestyles, so the honest answer is OK.
+    nbcase("%-format continuation, redundant encoding", ['''
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+print(
+    "Rectangle %s: (%.4g, %.4g)"
+    % (i, xi, yi)
+)
+ax.plot(x, y1, color="#56B4E9", linestyle="--")
+ax.plot(x, y2, color="#E69F00", linestyle=":")
+'''], "OK")
+
+    # 11b. Same continuation, hue-only curves: the checker must still FAIL.
+    #      A fix that made everything parse by making everything pass would be
+    #      no fix at all.
+    nbcase("%-format continuation, hue-only curves", ['''
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+label = (
+    "value %.2f"
+    % v
+)
+ax.plot(x, y1, color="#56B4E9")
+ax.plot(x, y2, color="#E69F00")
+'''], "FAIL")
+
+    # 11c. 🔴 THE SILENT ONE. A `%` continuation inside a triple-quoted string:
+    #      the substitute's `# magic` comment swallowed the CLOSING quotes, the
+    #      string ran on, both plot calls were eaten as string content, and the
+    #      file PARSED. Old verdict: OK. Truth: FAIL. Verified by hand
+    #      2026-08-25 against the pre-fix extractor.
+    nbcase("%-continuation that swallowed a closing triple quote", ['''
+import matplotlib.pyplot as plt
+banner = """Run %s
+%s""" % (a, b)
+fig, ax = plt.subplots()
+ax.plot(x, y1, color="#56B4E9")
+ax.plot(x, y2, color="#E69F00")
+# a closing fence in prose: """
+z = 1
+'''], "FAIL")
+
+    # 11d. A GENUINE magic must still be blanked, or the notebook stops
+    #      parsing for the opposite reason. Both spellings, indented and not,
+    #      and `!pip` too.
+    nbcase("genuine magics are still blanked", ['''
+%matplotlib inline
+!pip install pyomo
+import matplotlib.pyplot as plt
+if True:
+    %time fig, ax = plt.subplots()
+ax.plot(x, y1, color="#56B4E9", linestyle="--")
+ax.plot(x, y2, color="#E69F00", linestyle=":")
+'''], "OK")
+
+    # 11e. A `%%` CELL magic on the first line of a cell.
+    nbcase("%%cell magic at the top of a cell", [
+        'import matplotlib.pyplot as plt\n',
+        '''%%capture
+fig, ax = plt.subplots()
+ax.plot(x, y1, color="#56B4E9", marker="o")
+ax.plot(x, y2, color="#E69F00", marker="s")
+'''], "OK")
+
+    # 11e'. ...and the scanner state must RESET between cells. Jupyter parses
+    #       each cell on its own, so an unclosed bracket left dangling in one
+    #       cell must not make the NEXT cell's magic look like a continuation.
+    #       Checked on the extracted text directly: a cell that never closes
+    #       its bracket is unparseable for an unrelated reason, so a verdict
+    #       would not isolate this.
+    with tempfile.TemporaryDirectory() as tmp:
+        p = os.path.join(tmp, "reset.ipynb")
+        nb = {"cells": [{"cell_type": "code", "execution_count": None,
+                         "metadata": {}, "outputs": [],
+                         "source": [s]}
+                        for s in ("vals = [1, 2,\n", "%matplotlib inline\n")],
+              "metadata": {}, "nbformat": 4, "nbformat_minor": 4}
+        with open(p, "w", encoding="utf-8") as fp:
+            _json.dump(nb, fp)
+        text = _source_text(p)
+    good = "pass  # magic" in text
+    ok &= good
+    print(f"  {'OK  ' if good else 'FAIL'} scanner state resets between cells "
+          f"(a magic after a cell that ends mid-bracket is still blanked)")
+
+    # 11f. A backslash continuation is a logical-line continuation too.
+    nbcase("%-format after a backslash continuation", ['''
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+label = "value %.2f" \\
+    % v
+ax.plot(x, y1, color="#56B4E9", linestyle="--")
+ax.plot(x, y2, color="#E69F00", linestyle=":")
+'''], "OK")
+
+    # ------------------------------------------------------------------ #
+    # 12. ARGUMENT HANDLING. An argument this script does not understand must
+    #     be an ERROR. See the comment above _validate_paths for the incident.
+    # ------------------------------------------------------------------ #
+    import contextlib
+    import io
+
+    def argcase(label, argv, want_code, want_in_output=None):
+        nonlocal ok
+        buf_out, buf_err = io.StringIO(), io.StringIO()
+        try:
+            with contextlib.redirect_stdout(buf_out), \
+                    contextlib.redirect_stderr(buf_err):
+                code = main(argv)
+        except SystemExit as exc:                               # argparse exits
+            code = exc.code if exc.code is not None else 0
+        text = buf_out.getvalue() + buf_err.getvalue()
+        good = code == want_code
+        if want_in_output:
+            good = good and want_in_output in text
+        ok &= good
+        print(f"  {'OK  ' if good else 'FAIL'} {label}: exit {code} "
+              f"(expected {want_code})")
+        if not good:
+            print(f"         output: {text.strip()[:300]}")
+
+    with tempfile.TemporaryDirectory() as tmp:
+        empty = os.path.join(tmp, "empty")
+        os.mkdir(empty)
+        open(os.path.join(tmp, "notes.txt"), "w").write("not a figure\n")
+        argcase("--help prints usage and exits 0", ["--help"], 0, "--source")
+        argcase("unknown option is rejected", ["--colours", "#000000"], 2)
+        argcase("typo'd flag is rejected", ["--selftests"], 2)
+        argcase("no arguments at all is rejected", [], 2)
+        argcase("nonexistent path is rejected",
+                [os.path.join(tmp, "nope.png")], 2, "no such file")
+        argcase("a non-image, non-source file is rejected",
+                [os.path.join(tmp, "notes.txt")], 2)
+        argcase("--source on a nonexistent file is rejected",
+                ["--source", os.path.join(tmp, "nope.py")], 2)
+        argcase("a directory with nothing to check is rejected, not passed",
+                [empty], 2, "refusing")
+        argcase("--source on an empty directory is rejected, not passed",
+                ["--source", empty], 2, "refusing")
 
     # --- colour science, checked against the numbers in figures/README.md ---
     for hexv, want in [("#000000", 0.0), ("#0072B2", 46.0), ("#E69F00", 70.6),

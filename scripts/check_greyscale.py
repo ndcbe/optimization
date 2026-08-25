@@ -1254,6 +1254,10 @@ ax.plot(x, y2, color="#E69F00", linestyle=":")
                 code = main(argv)
         except SystemExit as exc:                               # argparse exits
             code = exc.code if exc.code is not None else 0
+        except Exception as exc:                                # noqa: BLE001
+            # A crash is a wrong answer too, and letting it propagate would
+            # abort the self-test instead of failing one case.
+            code = f"crashed ({type(exc).__name__}: {exc})"
         text = buf_out.getvalue() + buf_err.getvalue()
         good = code == want_code
         if want_in_output:

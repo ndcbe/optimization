@@ -82,13 +82,33 @@ enforce that -- it is an editorial rule -- so it is written down here, in
 
 USAGE
 -----
-    python3 scripts/check_solution_leaks.py             # check the public tree
+    python3 scripts/check_solution_leaks.py              # check the public tree
     python3 scripts/check_solution_leaks.py --selftest   # prove it can FAIL
+    python3 scripts/check_solution_leaks.py --published notebooks/1-dev/LP.ipynb
+    python3 scripts/check_solution_leaks.py --source  a.ipynb b.ipynb
 
-Exit status is 0 when clean and 1 on any finding, so it can gate a build.
-A tool that says OK is not evidence until you have watched it say FAIL.
+Exit status is 0 when clean, 1 on any finding, and 2 on a usage error, so it
+can gate a build. A tool that says OK is not evidence until you have watched it
+say FAIL.
+
+⚠ AN ARGUMENT THIS SCRIPT DOES NOT UNDERSTAND IS AN ERROR, NOT A SKIP.
+This script used to recognise `--selftest` and NOTHING else: every other
+argument -- file paths, `--help`, typos -- was silently discarded, and it
+scanned its fixed corpus and exited 0 regardless. On 2026-08-25 someone handed
+it three deliberately-leaking notebooks as paths to see whether a leak could
+slip through. It ignored them, scanned the clean public tree, printed `clean`
+and exited 0, and that was very nearly reported as "all three leaks got
+through" -- the exact opposite of the truth. A checker that answers a question
+you did not ask, in the voice of the question you did ask, is worse than one
+that crashes.
+
+Hence `--published` and `--source`: naming the notebooks to check is now a
+thing you CAN do, so the natural attempt no longer has to be a mistake. Which
+list a notebook belongs in matters -- `--published` applies the rules for a
+notebook that ships, `--source` those for an authored `-dev` original.
 """
 
+import argparse
 import json
 import re
 import sys
@@ -346,11 +366,64 @@ def check_sources(paths):
     return findings
 
 
-def main():
-    pub = published_notebooks()
-    src = source_notebooks()
+def build_parser():
+    ap = argparse.ArgumentParser(
+        description="Fail if solution content reached a published notebook.",
+        formatter_class=argparse.RawDescriptionHelpFormatter, epilog=__doc__)
+    ap.add_argument("paths", nargs="*", help=argparse.SUPPRESS)
+    ap.add_argument("--published", nargs="+", metavar="NB", default=None,
+                    help="check these notebooks with the PUBLISHED rules "
+                         "instead of scanning notebooks/ (markers, stored "
+                         "outputs on stripped cells, markers in outputs)")
+    ap.add_argument("--source", nargs="+", metavar="NB", default=None,
+                    help="check these notebooks with the SOURCE rules instead "
+                         "of scanning the -dev tree (matched BEGIN/END, "
+                         "markers in markdown, published-answer blocks)")
+    ap.add_argument("--selftest", action="store_true",
+                    help="run the failure cases and prove each one FAILS")
+    return ap
+
+
+def _validate_notebooks(paths, flag, ap):
+    out = []
+    for p in paths:
+        path = Path(p)
+        if not path.exists():
+            ap.error(f"{p}: no such file or directory")
+        if path.is_dir():
+            ap.error(f"{p}: is a directory. {flag} takes notebook FILES; "
+                     f"expand the glob yourself so the run says what it read")
+        if path.suffix != ".ipynb":
+            ap.error(f"{p}: not a .ipynb")
+        out.append(path)
+    return out
+
+
+def main(argv=None):
+    ap = build_parser()
+    args = ap.parse_args(argv)
+
+    if args.selftest:
+        return selftest()
+
+    if args.paths:
+        # 🔴 The near-miss of 2026-08-25. These used to be discarded in silence.
+        ap.error(f"unrecognised argument(s): {' '.join(args.paths)}. "
+                 f"To check particular notebooks, say which rules apply: "
+                 f"--published NB... or --source NB.... With no arguments this "
+                 f"script scans the whole tree")
+
+    explicit = args.published is not None or args.source is not None
+    if explicit:
+        pub = _validate_notebooks(args.published or [], "--published", ap)
+        src = _validate_notebooks(args.source or [], "--source", ap)
+    else:
+        pub = published_notebooks()
+        src = source_notebooks()
+
     findings = check_published(pub) + check_sources(src)
-    print(f"Checked {len(pub)} published notebook(s) and {len(src)} source(s).")
+    print(f"Checked {len(pub)} published notebook(s) and {len(src)} source(s)"
+          f"{' (named on the command line)' if explicit else ''}.")
     if findings:
         print(f"\nFAIL: {len(findings)} finding(s).\n")
         for f in findings:
@@ -531,11 +604,71 @@ def selftest():
             print("  [answer passes ] a correctly marked published answer, with "
                   "outputs, is allowed")
 
+        # ---------------------------------------------------------------
+        # ARGUMENT HANDLING. Added 2026-08-25 after the near-miss described
+        # in the module docstring: three leaking notebooks passed as paths
+        # were discarded, the clean corpus was scanned instead, and the
+        # run exited 0. Each case below is checked through main(), i.e.
+        # through the same entry point a caller uses.
+        # ---------------------------------------------------------------
+        import contextlib
+        import io
+
+        leaky = write("leak.ipynb", _nb([_code("### BEGIN SOLUTION\nx = 1\n"
+                                               "### END SOLUTION\n")]))
+        clean_nb = write("fine.ipynb", _nb([_code("print(1)\n",
+                                                  outputs=[_out("1\n")])]))
+        notes = d / "notes.txt"
+        notes.write_text("not a notebook\n", encoding="utf-8")
+
+        def argcase(label, argv, want_code, want_in_output=None):
+            nonlocal ok
+            buf_out, buf_err = io.StringIO(), io.StringIO()
+            try:
+                with contextlib.redirect_stdout(buf_out), \
+                        contextlib.redirect_stderr(buf_err):
+                    code = main(argv)
+            except SystemExit as exc:                       # argparse exits
+                code = exc.code if exc.code is not None else 0
+            except Exception as exc:                        # noqa: BLE001
+                # A crash is a wrong answer too, and letting it propagate
+                # would abort the self-test instead of failing one case.
+                code = f"crashed ({type(exc).__name__}: {exc})"
+            text = buf_out.getvalue() + buf_err.getvalue()
+            good = code == want_code
+            if want_in_output:
+                good = good and want_in_output in text
+            if not good:
+                ok = False
+            print(f"  [{'exit ' + str(code):13s}] {label} "
+                  f"(expected {want_code})")
+            if not good:
+                print(f"                  -> {text.strip()[:300]}")
+
+        argcase("--help prints usage and exits 0", ["--help"], 0, "--published")
+        argcase("a bare path is REJECTED, not silently ignored",
+                [str(leaky)], 2, "unrecognised argument")
+        argcase("an unknown flag is rejected", ["--check-everything"], 2)
+        argcase("a typo'd flag is rejected", ["--selftests"], 2)
+        argcase("a nonexistent notebook is rejected",
+                ["--published", str(d / "nope.ipynb")], 2, "no such file")
+        argcase("a non-notebook file is rejected",
+                ["--published", str(notes)], 2, "not a .ipynb")
+        argcase("a directory is rejected", ["--source", str(d)], 2,
+                "is a directory")
+        # 🔴 The point of the whole exercise: a leaking notebook named on the
+        #    command line must FAIL, and a clean one must PASS. If these two
+        #    agreed, the flag would be as useless as ignoring the path was.
+        argcase("--published on a LEAKING notebook exits 1",
+                ["--published", str(leaky)], 1, "BEGIN SOLUTION")
+        argcase("--published on a clean notebook exits 0",
+                ["--published", str(clean_nb)], 0, "clean")
+        argcase("--source on a notebook with an unmatched BEGIN exits 1",
+                ["--source", str(d / "e.ipynb")], 1)
+
     print("\nself-test", "PASSED" if ok else "FAILED")
     return 0 if ok else 1
 
 
 if __name__ == "__main__":
-    if "--selftest" in sys.argv:
-        sys.exit(selftest())
     sys.exit(main())

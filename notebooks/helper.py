@@ -82,6 +82,7 @@ nothing.
 __version__ = "2026.08.25"
 
 import shutil
+import warnings
 import sys
 import os.path
 import os
@@ -743,7 +744,19 @@ def digest_of_tag(tag):
     if ex is None:
         return None
     bare = tag[len(ex.TAG_PREFIX):] if tag.startswith(ex.TAG_PREFIX) else tag
-    snippets, _ = ex.find_snippets([ex.DEFAULT_NB_GLOB])
+    # ⚠ Suppress nbformat's MissingIDFieldWarning while we read the notebooks
+    # off disk. Added 2026-08-25 after the warning was BAKED INTO PUBLISHED
+    # OUTPUT three separate times: nbformat writes it to stderr, the running
+    # cell captures stderr as a stream output, and the warning text contains
+    # the interpreter's absolute path -- so the course website ended up
+    # displaying /Users/<name>/opt/anaconda3/envs/... Scrubbing the stored
+    # output does not help, because the next re-execution puts it straight
+    # back; this is the only place that can stop it.
+    # It is a warning ABOUT NOTEBOOKS WE ONLY READ, never write, so ignoring
+    # it here changes nothing except what students see.
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        snippets, _ = ex.find_snippets([ex.DEFAULT_NB_GLOB])
     for s in snippets:
         if s.tag == bare:
             return ex.digest(s.source)

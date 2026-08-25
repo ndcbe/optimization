@@ -199,6 +199,28 @@ def render(name, cells=None, out_dir=OUT_DIR, results_dir=RESULTS_DIR, dpi=300):
     return png
 
 
+class _ReadOnlyResults:
+    """``pyomo_results`` with its two writers disabled.
+
+    A ``figure:`` cell ends with ``pyr.save_figure(fig, name)``, which is right
+    when the notebook runs it and wrong here: this driver owns where the output
+    goes (``--out-dir`` exists so a check can render somewhere harmless), and a
+    style re-render must never rewrite the archive it just read from. Everything
+    else -- ``as_dataframe``, ``table``, ``column`` -- passes straight through.
+    """
+
+    def __getattr__(self, name):
+        return getattr(pyr, name)
+
+    @staticmethod
+    def save_figure(fig, name, **kw):
+        return None
+
+    @staticmethod
+    def save_results(*a, **kw):
+        return None
+
+
 def _namespace(data):
     """The names a ``figure:`` cell may assume. Fresh per figure; see the contract."""
     import numpy as np
@@ -210,7 +232,7 @@ def _namespace(data):
         "np": np,
         "pd": pd,
         "plt": plt,
-        "pyr": pyr,
+        "pyr": _ReadOnlyResults(),
     }
 
 

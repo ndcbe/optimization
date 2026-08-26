@@ -1,0 +1,210 @@
+% Four consequences of the convex-set definition, in one row of four panels.
+%
+%   figures/tikz/convex-sets.tex
+%       -> media/figures/convex-sets.{png,svg}
+%
+% Drawn for the TODO in optimization-private/lecture-notes/lectures/
+% continuous-optimization.tex: "please create illustrations that show these
+% ideas in tikz", sitting under Definition (Biegler eq. 1.3, p. 4):
+%
+%   theta x_a + (1-theta) x_b  in S   for all theta in (0,1), all x_a, x_b in S
+%
+% and above the four-item list this figure illustrates, item for item and in
+% the lecture's own order:
+%
+%   1. a hyperplane   {x : a'x  = b}  is convex
+%   2. a half-space   {x : a'x <= b}  is convex
+%   3. an intersection of convex sets is convex
+%   4. the OUTSIDE of a disk is NOT convex -- "take two points on opposite rims
+%      and the segment between them crosses the hole"  (the lecture's words)
+%
+% WHY ONE FIGURE AND NOT FOUR. The definition is a single test applied four
+% times, and the payload is the CONTRAST: the same construction -- pick two
+% points, draw the segment, ask whether it stayed -- passes three times and
+% fails once. Four separate figures would let a reader meet the counterexample
+% without the three passes fresh in mind, which is exactly the comparison being
+% taught. So every panel draws the same two points x_a, x_b and the same
+% segment, and only the set underneath changes.
+%
+% PANEL 4 IS THE PEDAGOGICAL PAYLOAD and is drawn to read as different at a
+% glance, before any caption is read: vermillion rather than blue, a DASHED
+% rather than solid set boundary, a segment that visibly leaves the shading,
+% and a drawn X (two crossing rules, not a font glyph) sitting on the part of
+% the segment that is outside S.
+%
+% GEOMETRY, computed rather than eyeballed.
+%   P1  line through (0.15,0.60) and (3.25,2.80); x_a, x_b are at t = 0.2 and
+%       0.8 along it, so both are ON the line and so is everything between.
+%       The normal a is (-2.2,3.1)/|.| , perpendicular by construction.
+%   P2  boundary from (0.10,2.90) to (3.30,0.90), i.e. y = 2.9 - 0.625(x-0.1).
+%       x_a = (0.90,1.00) against boundary y = 2.400; x_b = (2.40,0.60)
+%       against y = 1.463. Both strictly below, so both are interior.
+%   P3  disks A = (1.25,1.75) r 1.0 and B = (2.25,1.55) r 1.0; centres are
+%       1.020 apart, so the lens is non-empty and wide enough to hold two
+%       points. x_a = (1.55,1.35): 0.500 from A, 0.728 from B -- in both.
+%       x_b = (1.95,2.05): 0.762 from A, 0.583 from B -- in both. The lobe
+%       labels sit in one disk only: S_1 at (0.55,2.35) is 0.922 from A and
+%       1.879 from B; S_2 at (2.95,1.00) is 0.890 from B and 1.858 from A.
+%   P4  hole = disk (1.70,1.70) r 0.95; S is the window MINUS that disk, drawn
+%       with the even-odd rule so the hole is genuinely unfilled rather than
+%       painted over. x_a and x_b are at 200 deg and 20 deg -- exactly opposite
+%       rims -- so the segment between them passes through the centre and its
+%       middle 2 x 0.95 = 1.90 of 1.90 total length lies in the hole. The
+%       "leaves S" claim is therefore geometric, not artistic licence.
+%
+% GREYSCALE (scripts/check_greyscale.py). No distinction here is carried by
+% colour alone. Convex vs not-convex is signalled FOUR ways -- hue, boundary
+% line style (solid vs dashed), the drawn X, and the word "not" in bold in the
+% caption -- and any one of them survives a mono laser printer. Inside panel 3,
+% S_1 and S_2 are told apart by line style (solid vs dashed) and by their
+% printed labels, not by hue; both are the same blue.
+%
+% NB: `cap' is NOT available as a style name -- /tikz/cap is the built-in
+% line-cap key, and using it fails with "the key '/tikz/cap' requires a value".
+% Hence `panelcap'. Same trap as the rung* names in uncertainty-responses.tex.
+%
+% WIDTH. Four 3.4cm panels on a 3.95cm pitch: 15.25cm plus a few mm of
+% overhang, against a 6.5in = 16.5cm text block (letter, 1.0in margins). No
+% \resizebox is needed or wanted -- the font sizes here are the handout's own.
+
+% `patterns' is loaded HERE rather than in the course-pack preamble so this
+% file is self-contained: the same source is \input by the lecture and built
+% standalone by figures/Makefile. As of 2026-08-25 the pack's preamble.tex
+% loads decorations.pathreplacing, positioning, tikzmark and arrows.meta but
+% NOT patterns, so without this line the hatched fills below fail in the
+% handout while building fine here. \usetikzlibrary is idempotent, so loading
+% it twice is harmless. Same arrangement as uncertainty-responses.tex.
+\usetikzlibrary{patterns}
+
+\definecolor{okabeblue}{HTML}{0072B2}       % Okabe-Ito blue,       as in dowling.mplstyle
+\definecolor{okabevermillion}{HTML}{D55E00} % Okabe-Ito vermillion, as in dowling.mplstyle
+
+\begin{tikzpicture}[
+    >={Latex[length=2.0mm]},
+    font=\small,
+    win/.style={draw=black!35, line width=0.4pt},          % the window on R^2
+    setline/.style={draw=okabeblue, line width=1.1pt},     % boundary of a convex set
+    setlinealt/.style={draw=okabeblue, line width=1.1pt, dashed},
+    badline/.style={draw=okabevermillion, line width=1.1pt, dashed},
+    seg/.style={draw=black, line width=1.3pt},             % the segment that STAYS
+    badseg/.style={draw=okabevermillion, line width=1.3pt},% the segment that LEAVES
+    pt/.style={fill=black, draw=black, circle, inner sep=0pt, minimum size=3.4pt},
+    ptlab/.style={font=\scriptsize, inner sep=1.5pt},
+    setlab/.style={font=\scriptsize, inner sep=1pt},
+    panelcap/.style={font=\small, align=center, text width=34mm, anchor=north},
+  ]
+
+% =====================================================================
+% Panel 1 -- a hyperplane {x : a'x = b}
+% =====================================================================
+\begin{scope}[xshift=0cm]
+  \draw[win] (0.1,0.1) rectangle (3.3,3.3);
+  \begin{scope}
+    \clip (0.1,0.1) rectangle (3.3,3.3);
+    \draw[setline] (0.15,0.60) -- (3.25,2.80);
+    % the normal, so the reader can see WHICH linear equality this is
+    \draw[->, black, line width=0.5pt] (1.70,1.70) -- (1.35,2.19);
+    \node[setlab, anchor=south east] at (1.37,2.17) {$a$};
+  \end{scope}
+  % x_a at t = 0.2, x_b at t = 0.8 along the line -- both on it by construction
+  \draw[seg] (0.77,1.04) -- (2.63,2.36);
+  \node[pt] (a1) at (0.77,1.04) {};
+  \node[pt] (b1) at (2.63,2.36) {};
+  \node[ptlab, below right] at (a1) {$x_a$};
+  \node[ptlab, above left]  at (b1) {$x_b$};
+  \node[setlab, anchor=north east, text=okabeblue] at (3.22,0.95)
+        {$a^{\top} x = b$};
+  \node[panelcap] at (1.7,-0.15) {\textbf{hyperplane}\\[-1pt]
+        a linear \emph{equality}\\[-1pt] is convex};
+\end{scope}
+
+% =====================================================================
+% Panel 2 -- a half-space {x : a'x <= b}
+% =====================================================================
+\begin{scope}[xshift=3.95cm]
+  \begin{scope}
+    \clip (0.1,0.1) rectangle (3.3,3.3);
+    \fill[okabeblue!12] (0.10,2.90) -- (3.30,0.90) -- (3.30,0.10) -- (0.10,0.10) -- cycle;
+    \path[pattern=north east lines, pattern color=okabeblue!45]
+          (0.10,2.90) -- (3.30,0.90) -- (3.30,0.10) -- (0.10,0.10) -- cycle;
+  \end{scope}
+  \draw[win] (0.1,0.1) rectangle (3.3,3.3);
+  \draw[setline] (0.10,2.90) -- (3.30,0.90);
+  % x_a: boundary is y = 2.400 there; x_b: boundary is y = 1.463. Both interior.
+  \draw[seg] (0.90,1.00) -- (2.40,0.60);
+  \node[pt] (a2) at (0.90,1.00) {};
+  \node[pt] (b2) at (2.40,0.60) {};
+  \node[ptlab, above left]  at (a2) {$x_a$};
+  \node[ptlab, above right] at (b2) {$x_b$};
+  \node[setlab, text=okabeblue, anchor=north east] at (3.20,3.22) {$a^{\top} x > b$};
+  \node[setlab, anchor=west] at (0.30,1.85) {$S$};
+  \node[panelcap] at (1.7,-0.15) {\textbf{half-space}\\[-1pt]
+        a linear \emph{inequality}\\[-1pt] is convex};
+\end{scope}
+
+% =====================================================================
+% Panel 3 -- an intersection of convex sets is convex
+% =====================================================================
+\begin{scope}[xshift=7.90cm]
+  \draw[win] (0.1,0.1) rectangle (3.3,3.3);
+  \begin{scope}
+    \clip (0.1,0.1) rectangle (3.3,3.3);
+    \fill[okabeblue!8] (1.25,1.75) circle (1.0);
+    \fill[okabeblue!8] (2.25,1.55) circle (1.0);
+    % the lens: everything in A that is also in B
+    \begin{scope}
+      \clip (1.25,1.75) circle (1.0);
+      \fill[okabeblue!25] (2.25,1.55) circle (1.0);
+      \path[pattern=north east lines, pattern color=okabeblue!60]
+            (2.25,1.55) circle (1.0);
+    \end{scope}
+    % S_1 solid, S_2 dashed: the two sets are told apart WITHOUT colour
+    \draw[setline]    (1.25,1.75) circle (1.0);
+    \draw[setlinealt] (2.25,1.55) circle (1.0);
+  \end{scope}
+  \draw[seg] (1.55,1.35) -- (1.95,2.05);
+  \node[pt] (a3) at (1.55,1.35) {};
+  \node[pt] (b3) at (1.95,2.05) {};
+  \node[ptlab, left]        at (a3) {$x_a$};
+  \node[ptlab, above right] at (b3) {$x_b$};
+  \node[setlab] at (0.55,2.35) {$S_1$};
+  % pushed out to (3.00,1.25) so it clears the "S_1 cap S_2" callout at
+  % handout size; still 0.808 from B's centre (inside B) and 1.820 from A's
+  % (outside A), so it labels the right lobe.
+  \node[setlab] at (3.00,1.25) {$S_2$};
+  \node[setlab, anchor=north] at (1.95,0.62) {$S_1 \cap S_2$};
+  \draw[->, black, line width=0.5pt] (1.95,0.66) -- (1.88,1.26);
+  \node[panelcap] at (1.7,-0.15) {\textbf{intersection}\\[-1pt]
+        of convex sets\\[-1pt] is convex};
+\end{scope}
+
+% =====================================================================
+% Panel 4 -- the OUTSIDE of a disk is NOT convex.  The counterexample.
+% =====================================================================
+\begin{scope}[xshift=11.85cm]
+  % S = window MINUS the disk. even odd rule leaves the hole genuinely unfilled.
+  \fill[okabevermillion!12, even odd rule]
+        (0.1,0.1) rectangle (3.3,3.3)  (1.70,1.70) circle (0.95);
+  \path[pattern=north west lines, pattern color=okabevermillion!45, even odd rule]
+        (0.1,0.1) rectangle (3.3,3.3)  (1.70,1.70) circle (0.95);
+  \draw[win] (0.1,0.1) rectangle (3.3,3.3);
+  \draw[badline] (1.70,1.70) circle (0.95);
+  % x_a at 200 deg, x_b at 20 deg -- opposite rims, so the segment is a diameter
+  \draw[badseg] (0.8071,1.3751) -- (2.5929,2.0249);
+  \node[pt] (a4) at (0.8071,1.3751) {};
+  \node[pt] (b4) at (2.5929,2.0249) {};
+  \node[ptlab, below left]  at (a4) {$x_a$};
+  \node[ptlab, above right] at (b4) {$x_b$};
+  % the X: two crossing rules, NOT a font glyph, so it cannot fail to render
+  \draw[okabevermillion, line width=1.2pt] (1.53,1.53) -- (1.87,1.87);
+  \draw[okabevermillion, line width=1.2pt] (1.53,1.87) -- (1.87,1.53);
+  % Short, because it must fit INSIDE the hole: anything wider runs over x_a.
+  % The full statement is the definition printed above the figure; what this
+  % label has to say is only "and this point is not in S".
+  \node[setlab, anchor=north, text=okabevermillion] at (1.70,1.46) {$\notin S$};
+  \node[setlab, anchor=west] at (0.28,2.90) {$S$};
+  \node[panelcap] at (1.7,-0.15) {\textbf{outside of a disk}\\[-1pt]
+        the segment crosses\\[-1pt] the hole: \textbf{not} convex};
+\end{scope}
+
+\end{tikzpicture}

@@ -438,9 +438,15 @@ FIGURE_TAG_PREFIX = "figure:"
 
 
 def have_repo() -> bool:
-    """Is the public repo on disk? False on Colab, and on a bare notebook copy."""
-    return os.path.isdir(os.path.join(_REPO, "figures")) and os.path.isdir(
-        os.path.join(_REPO, "notebooks")
+    """Can helper writers update the public repo?
+
+    False on Colab, on a bare notebook copy, and during the read-only notebook
+    execution audit. The audit still reads local inputs; it simply must not
+    rewrite committed result archives or rendered figures as a side effect.
+    """
+    return not os.environ.get("OPTIMIZATION_NOTEBOOK_READ_ONLY") and (
+        os.path.isdir(os.path.join(_REPO, "figures"))
+        and os.path.isdir(os.path.join(_REPO, "notebooks"))
     )
 
 

@@ -22,6 +22,12 @@ Solver binaries
 
 Each notebook runs in its own subprocess so that a kernel crash or a hang is
 reported as such instead of taking the whole pass down.
+
+The execution audit is read-only. It puts ``notebooks/`` on ``PYTHONPATH`` so
+private authored assignments resolve the public ``helper.py`` just as their
+published copies do, and sets ``OPTIMIZATION_NOTEBOOK_READ_ONLY=1`` so helper
+archive/figure writers display their normal message without changing committed
+artifacts.
 """
 
 from __future__ import annotations
@@ -98,6 +104,15 @@ def _prepend_to_path(directory: str) -> None:
     if directory in (current.split(os.pathsep) if current else []):
         return
     os.environ["PATH"] = (
+        f"{directory}{os.pathsep}{current}" if current else directory
+    )
+
+
+def _prepend_to_pythonpath(directory: str) -> None:
+    current = os.environ.get("PYTHONPATH", "")
+    if directory in (current.split(os.pathsep) if current else []):
+        return
+    os.environ["PYTHONPATH"] = (
         f"{directory}{os.pathsep}{current}" if current else directory
     )
 
@@ -248,6 +263,8 @@ def main() -> int:
     args = parser.parse_args()
 
     prepend_solver_dirs_to_path()
+    _prepend_to_pythonpath(str(REPO_ROOT / "notebooks"))
+    os.environ["OPTIMIZATION_NOTEBOOK_READ_ONLY"] = "1"
 
     # child mode
     if args._exec:

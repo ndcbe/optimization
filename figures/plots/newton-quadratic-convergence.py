@@ -252,7 +252,7 @@ def make_figure():
     axR.set_ylim(1e-16, 3e2)
     axR.set_xlabel("iteration $k$")
     axR.set_ylabel(r"$\|\nabla f(x^k)\|$")
-    axR.set_title("both runs are quadratic", fontsize=14)
+    axR.set_title("both runs end quadratically", fontsize=14)
     axR.set_xticks(range(0, 9))
     axR.grid(True, which="major", axis="y", color="0.85", linewidth=0.6)
     axR.set_axisbelow(True)

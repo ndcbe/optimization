@@ -2289,7 +2289,11 @@ def main(argv=None):
             continue  # consume the RNG stream, but do not touch the file
         path = DATA_DIR / f"sudoku_puzzles_{n}.csv"
         if args.check:
-            existing = path.read_text(newline="") if path.exists() else None
+            if path.exists():
+                with path.open(encoding="utf-8", newline="") as stream:
+                    existing = stream.read()
+            else:
+                existing = None
             match = existing == text
             failures += not match
             print(f"{path.name}: {'reproduces' if match else 'DIFFERS'}")

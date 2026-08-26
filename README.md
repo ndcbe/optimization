@@ -92,6 +92,23 @@ python ./scripts/process_notebooks.py
 Assignment notebooks come from a separate private repository that must be checked out as a **sibling
 directory** (`../optimization-private`). Without it, the assignment step of the script will fail.
 
+### Verifying a change
+
+Use the repository-level runner instead of assembling a remembered subset of checks:
+
+```bash
+./scripts/verify_all.sh --fast
+./scripts/verify_all.sh --selftest
+./scripts/verify_all.sh --full
+```
+
+`--fast` runs the deterministic, repository-local checks and is suitable for CI. `--selftest` exercises
+the deliberately failing fixtures that show the checkers are capable of rejecting bad input. `--full`
+runs the fast gate, verifies the notebook-to-handout Pyomo extraction against the sibling private
+repository, and executes every authored notebook; it therefore needs `../optimization-private`, the
+course conda environment, and the solver binaries described above. A mode is required intentionally:
+an unattended verification run should never silently choose a narrower contract than its caller meant.
+
 ### The prose baseline
 
 The notebooks are a **pre-LLM corpus written in human voices** — mostly Prof. Dowling's, and past students'

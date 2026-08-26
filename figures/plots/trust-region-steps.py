@@ -31,7 +31,7 @@ chosen so that
   * ||p^C|| = 0.695 < Delta = 1.5 < ||p^N|| = 2.088, i.e. the plotted radius
     falls in the THIRD of the three cases on Biegler p. 55 -- the only one in
     which the convex-combination weight (our \\cvxwt, his eta) is used at all.
-    Here it comes out theta = 0.66.
+    Here it comes out theta = 0.643 (dogleg_step returns 0.6434961).
 
 WHAT THE PICTURE HAS TO SHOW, and does:
 
@@ -199,7 +199,7 @@ def make_figure():
     )
     ax.annotate(
         r"$-\nabla f(x^k)$",
-        xy=(ray[0] + 0.07, ray[1] - 0.03),
+        xy=(ray[0] + 0.07, ray[1] - 0.16),
         ha="left",
         va="top",
         fontsize=12,

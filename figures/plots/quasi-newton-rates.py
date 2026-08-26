@@ -16,8 +16,12 @@ Test problem: Rosenbrock, from x0 = (-1.2, 1). This is deliberately Nocedal &
 Wright's OWN comparison problem -- their function (2.22), and the table on
 printed p. 141 reports steepest descent / BFGS / Newton taking 5264 / 34 / 21
 iterations to drive the gradient norm to 1e-5 from this exact starting point,
-with Wolfe line searches. This script reproduces 22 (Newton) and 36 (BFGS),
-which is agreement to within what the line-search details can move.
+with Wolfe line searches. Measured at THAT criterion this script reproduces
+21 (Newton) and 34 (BFGS) -- exactly the printed table, not merely close.
+The counts to this script's own GTOL = 1e-11 are 22 and 37, and quoting those
+against the book's 1e-5 figures compares two different stopping rules; an
+earlier version of this docstring did, and called the exact reproduction
+"agreement to within what the line-search details can move".
 
     f(x) = 100 (x2 - x1^2)^2 + (1 - x1)^2,   x* = (1, 1),  f(x*) = 0
 

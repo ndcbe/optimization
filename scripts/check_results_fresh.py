@@ -101,15 +101,15 @@ WARN_VERDICTS = {"UNVERIFIED"}
 def _load_deps():
     """Import the two modules that DEFINE the things being checked.
 
-    ``pyomo_results.REQUIRED_META`` is the format; ``render_from_notebook``
+    ``helper.REQUIRED_META`` is the format; ``render_from_notebook``
     knows which cells are tagged and ``extract_pyomo_code`` defines the digest.
     All three are imported rather than restated, so this file cannot drift into
     checking a format nobody writes.
     """
-    import pyomo_results
+    import helper
     import render_from_notebook
 
-    return pyomo_results, render_from_notebook
+    return helper, render_from_notebook
 
 
 # ---------------------------------------------------------------------------
@@ -208,23 +208,23 @@ def main(argv=None) -> int:
         return selftest()
 
     try:
-        pyr, rfn = _load_deps()
+        helper, rfn = _load_deps()
     except ImportError as exc:
         print(f"error: {exc}", file=sys.stderr)
         print(
             "Run this from inside the public repo; it imports notebooks/"
-            "pyomo_results.py and figures/render_from_notebook.py.",
+            "helper.py and figures/render_from_notebook.py.",
             file=sys.stderr,
         )
         return 2
-    ex = pyr._extractor()
+    ex = helper._extractor()
     if ex is None:
         print("error: cannot find scripts/extract_pyomo_code.py", file=sys.stderr)
         return 2
 
     archives = read_archives()
     cells = {n: (p, i) for n, (p, i, _) in rfn.find_figure_cells().items()}
-    rows, _ = compare(archives, cells, current_digests(ex), pyr.REQUIRED_META)
+    rows, _ = compare(archives, cells, current_digests(ex), helper.REQUIRED_META)
 
     print("Figure results freshness  --  the notebook is the golden copy\n")
     if not rows:
@@ -319,9 +319,9 @@ def selftest() -> int:
     # A comment-only edit must NOT be stale. That is a property of the digest,
     # so it is tested against the real extractor rather than a fixture.
     try:
-        import pyomo_results
+        import helper
 
-        ex = pyomo_results._extractor()
+        ex = helper._extractor()
         cell = "m = pyo.ConcreteModel()\n# a comment\nm.x = pyo.Var(bounds=(0, 1))\n"
         reworded = cell.replace("# a comment", "# a much better comment")
         same = ex.digest(cell) == ex.digest(reworded)

@@ -22,7 +22,6 @@ a notebook's answer with `scipy`.
 | **`render_from_notebook.py`** | re-runs one tagged cell against `results/<name>.json` → PNG **and** PDF |
 | **`../scripts/check_results_fresh.py`** | has the model changed since the archive was written? |
 | `../notebooks/helper.py` | Colab setup, the house style, **and** the extract / archive / save-the-figure plumbing |
-| `../notebooks/pyomo_results.py` | a backward-compatible **shim** over `helper.py`; see its docstring |
 | `Makefile` | renders all three source languages → `../media/figures/` at 300 dpi |
 | `dowling.mplstyle` | shared matplotlib style — the exact analogue of `preamble.tex`, for plots |
 | `dowling-markers.mplstyle` | optional overlay adding a cycled marker (sparse data only) |
@@ -348,7 +347,6 @@ the handout's `\includegraphics`.
 | `results` | the `"data"` block of `figures/results/<name>.json` |
 | `np`, `pd`, `plt` | numpy, pandas, matplotlib.pyplot |
 | `helper` | `notebooks/helper.py` — **the going-forward name** |
-| `pyr` | the *same object* under the old name, for the notebooks that still say `import pyomo_results as pyr` |
 
 **ON EXIT** the cell must leave **`fig`** bound to the matplotlib `Figure`.
 
@@ -385,9 +383,8 @@ reads. **Do not "restore" the return value.**
 ### The API — `notebooks/helper.py`
 
 ⚠ **Moved here from `notebooks/pyomo_results.py` on 2026-08-25**, on Prof. Dowling's instruction that
-`helper` hold all the Colab add-ons. **`pyomo_results.py` is now a thin re-export shim**, so
-`import pyomo_results as pyr` still works and the four notebooks that use it were not touched; the
-class-wide pass repoints them and deletes the shim. `notebooks/1-dev/NLP.ipynb` is the migrated pilot.
+`helper` hold all the Colab add-ons. The remaining callers migrated on 2026-08-26 and the temporary
+compatibility shim was deleted. `helper` is now the only course module students download.
 
 The reason the merge is worth doing is the install cell: it is the first thing a student runs and the
 first thing that can fail, and **every extra module costs a `wget` line that can 404**. One file is
@@ -479,8 +476,7 @@ Both are citation bugs; fix them while you are there.
 
 1. **Find the notebook** that already solves this problem, in `notebooks/<n>-dev/`. Confirm it
    really generates the figure's content; a script *citing* a notebook is not proof.
-2. **Nothing to add to the install cell** — `helper` is already imported there. (An unmigrated
-   notebook may still say `import pyomo_results as pyr`; either name works.)
+2. **Nothing to add to the install cell** — `helper` is already imported there.
 3. **Split the cells**: solve, then extract + `save_results`, then a tagged plot cell.
 4. **Move the script's plotting body into the tagged cell**, converting it to read from `results`.
    Keep the script's docstring insight — the *why* — as comments or as the function's docstring;

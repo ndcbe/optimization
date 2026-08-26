@@ -1,13 +1,3 @@
-import shutil
-import sys
-import os.path
-import os
-import requests
-import urllib
-
-import subprocess
-
-
 #!/usr/bin/env python
 ###############################################################################
 # The Institute for the Design of Advanced Energy Systems Integrated Platform
@@ -55,10 +45,9 @@ and the first thing that can fail, and **every module the course adds costs
 another ``wget`` line that can 404**. Two files meant two chances to half-install
 and a confusing traceback several cells later. One file is one failure mode.
 
-``notebooks/pyomo_results.py`` used to hold the second half of this file. It
-still exists as a **thin re-export shim** so ``import pyomo_results as pyr``
-keeps working unchanged -- four notebooks and two scripts still spell it that
-way. New code should import from ``helper``.
+``notebooks/pyomo_results.py`` used to hold the second half of this file. The
+remaining callers migrated here on 2026-08-26, and that compatibility shim was
+removed. Import this module directly.
 
 WHAT IS IN HERE
 ---------------
@@ -81,14 +70,19 @@ nothing.
 
 __version__ = "2026.08.25"
 
-import shutil
-import warnings
-import sys
-import os.path
-import os
+import datetime as _dt
+import importlib.util as _ilu
+import json
 import re
-
+import requests
+import shutil
 import subprocess
+import sys
+import os
+import os.path
+import urllib
+import urllib.request
+import warnings
 
 # The house figure style. ONE source of style, shared with the LaTeX lecture
 # handouts -- see figures/README.md. On Colab only the notebook is present (this
@@ -137,7 +131,7 @@ def set_plotting_style(figsize=NOTEBOOK_FIGSIZE):
         off and use light ``axvline`` rules where a reading aid is needed.
     """
     # ⚠ Imported HERE, not at module scope. This file is now also imported by
-    # scripts/check_results_fresh.py (via the pyomo_results shim), which is a
+    # scripts/check_results_fresh.py, which is a
     # checker that must run in CI with no display and no plotting stack in
     # play. set_plotting_style is the only function in this file that needs
     # pyplot, so it is the only place that pays for it.
@@ -399,7 +393,7 @@ on a branch is not reachable from Colab until it is pushed.
 🔴 NEITHER WRITER RETURNS A VALUE, AND THAT IS THE FIX FOR A REAL BUG
 ----------------------------------------------------------------------
 ``save_results`` and ``save_figure`` used to return the path they wrote. The
-cell contract says a plot cell *ends* with ``pyr.save_figure(fig, "<name>")``,
+cell contract says a plot cell *ends* with ``helper.save_figure(fig, "<name>")``,
 so in a notebook that return became the cell's ``execute_result`` -- and the
 published course website displayed an absolute path out of the maintainer's
 home directory::
@@ -415,13 +409,6 @@ across the notebooks, ``figures/render_from_notebook.py`` and
 it. Both functions still PRINT what they wrote, which is the part a maintainer
 actually reads.
 """
-
-import datetime as _dt
-import importlib.util as _ilu
-import json
-import os
-import sys
-import urllib.request
 
 RAW_BASE = "https://raw.githubusercontent.com/ndcbe/optimization/main"
 
@@ -499,7 +486,7 @@ def _scalar(v):
 def extract(model=None, **components):
     """Solved model -> a plain dict, one entry per named component::
 
-        results = pyr.extract(m, x=m.x, variance=m.OBJ, rho=m.rho)
+        results = helper.extract(m, x=m.x, variance=m.OBJ, rho=m.rho)
         # {'x': {'DJI': 0.31, ...}, 'variance': 1.83e-05, 'rho': 0.0008}
 
     ``model`` is accepted and ignored as the first positional argument so the

@@ -51,10 +51,7 @@ handout ``\includegraphics``.
 
       results   the "data" block of figures/results/<name>.json
       np, pd, plt          numpy, pandas, matplotlib.pyplot
-      helper               notebooks/helper.py -- the going-forward name
-      pyr                  the same object, under the old name. Four notebooks
-                           still say `import pyomo_results as pyr`; that module
-                           is now a shim over helper.py. See its docstring.
+      helper               notebooks/helper.py
 
   ON EXIT the cell must leave::
 
@@ -76,8 +73,7 @@ handout ``\includegraphics``.
   disk on Colab. A notebook figure needing a hatch sequence copies the literal
   with a comment pointing here.
 
-  The cell SHOULD end with ``helper.save_figure(fig, "<name>")`` (or
-  ``pyr.save_figure(...)`` in a notebook that has not migrated). That call is a
+  The cell SHOULD end with ``helper.save_figure(fig, "<name>")``. That call is a
   no-op off-repo, and this driver saves the figure itself, so it is harmless on
   both paths and it is what makes the notebook the generator. It returns
   ``None``, so ending the cell with it prints nothing -- which is the point:
@@ -119,7 +115,7 @@ NB_GLOB = os.path.join(REPO, "notebooks", "*-dev", "*.ipynb")
 TAG_PREFIX = "figure:"
 
 sys.path.insert(0, os.path.join(REPO, "notebooks"))
-import pyomo_results as pyr  # noqa: E402
+import helper  # noqa: E402
 
 
 # ---------------------------------------------------------------------------
@@ -174,7 +170,7 @@ def render(name, cells=None, out_dir=OUT_DIR, results_dir=RESULTS_DIR, dpi=300):
         raise SystemExit(
             f"figures/results/{name}.json is missing, so there is nothing to "
             f"re-render from.\nRun {os.path.relpath(nb_path, REPO)}; its solve cell "
-            f"calls pyomo_results.save_results('{name}', ...). Commit the JSON."
+            f"calls helper.save_results('{name}', ...). Commit the JSON."
         )
     payload = json.loads(open(archive, encoding="utf-8").read())
 
@@ -207,7 +203,7 @@ def render(name, cells=None, out_dir=OUT_DIR, results_dir=RESULTS_DIR, dpi=300):
 
 
 class _ReadOnlyResults:
-    """``helper`` with its two writers disabled. Bound as both `helper` and `pyr`.
+    """``helper`` with its two writers disabled.
 
     A ``figure:`` cell ends with ``save_figure(fig, name)``, which is right
     when the notebook runs it and wrong here: this driver owns where the output
@@ -217,7 +213,7 @@ class _ReadOnlyResults:
     """
 
     def __getattr__(self, name):
-        return getattr(pyr, name)
+        return getattr(helper, name)
 
     @staticmethod
     def save_figure(fig, name, **kw):
@@ -233,10 +229,6 @@ def _namespace(data):
     import numpy as np
     import pandas as pd
 
-    # ONE object under TWO names. `helper` is what a migrated notebook says;
-    # `pyr` is what the four not-yet-migrated ones say, via the shim. Binding
-    # the same instance means a cell cannot behave differently depending on
-    # which name it happens to use.
     plumbing = _ReadOnlyResults()
 
     return {
@@ -246,7 +238,6 @@ def _namespace(data):
         "pd": pd,
         "plt": plt,
         "helper": plumbing,
-        "pyr": plumbing,
     }
 
 

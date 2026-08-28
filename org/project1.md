@@ -1,11 +1,11 @@
-# Pyomo Mini Project
+# Pyomo Project
 
 ```{warning}
 **This is a draft assignment. It is still being updated for Fall 2026.**
 ```
 
-Summary: choose a published optimization model from the literature. Use an AI tool to extract the
-mathematical model from its source. Then **check the AI's work against the source, on paper, with a pencil.** Correct it,
+Summary: choose a published optimization model from the literature, e.g., paper, report, book.
+Use an AI tool to extract the mathematical model from its source. Then **check the AI's work against the source, on paper, with a pencil.** Correct it,
 implement it, and try to reproduce a published result.
 
 Worth **10% of the course grade**. See the [semester calendar](./calendar.md) for the due date.
@@ -14,26 +14,21 @@ This is an **individual assignment**. Each paper or specific model from a longer
 first student who posts it in the Canvas proposal discussion. Two students may not analyze the same paper
 or the same model from a book or report.
 
-## What changed for Fall 2026, and why
+## This is an AI-forward assignment
 
 The previous version of this project asked you to build a Pyomo model of a problem you chose. That was
-mainly a programming assignment, and a programming assignment no longer measures much: a capable AI tool
-turns a clear problem statement into a working Pyomo model in a couple of minutes.
+mainly a programming assignment. Arguably, with modern AI tools, mastering programming aspects are
+less important, and instead this assignment can focus on promiting curiosity and practicing critical 
+assessment skils.
 
-So the code is not the assignment. **The assignment is the verification loop:**
+This assignment focuses on verification of AI modeling output. You will:
 
-1. An AI tool produces a plausible artifact --- a formulation, a degree-of-freedom analysis, an implementation.
-2. You check that artifact against the primary source, by hand, the old fashioned way.
-3. You correct it, and you can say exactly what was wrong and how you knew.
+1. Use an AI tool to produce an optimization formulation, a degree-of-freedom analysis, and computational (Pyomo) implementation.
+2. Check the AI outputs against the primary source, by hand, the old fashioned way.
+3. Correct the AI output, explain what was wrong and how you knew, and explore an optimization model
 
-Step 2 is the one nobody does, and it is the entire point. A tool will hand you something that looks
+We expect the AI tool(s) you use will give you something that looks
 right, reads fluently, and runs. **You are the one accountable for whether it is true.**
-
-```{note}
-You are **required** to use an AI tool on this project. That makes the
-[Artificial Intelligence Policy](./syllabus.md#artificial-intelligence-policy) central rather than a
-caveat: everything you submit is disclosed, and your own words are still your own words.
-```
 
 Before starting, read both the [Artificial Intelligence Policy](./syllabus.md#artificial-intelligence-policy)
 and the [Collaboration Policy and Honor Code](./syllabus.md#collaboration-policy-and-honor-code).
@@ -48,7 +43,7 @@ This assignment adds more specific rules. Each stage is labeled:
 
 By completing this project, you will:
 
-* Read a published technical source closely enough to find what it does not say
+* Read a published technical source closely enough to reproduce the results
 * Extract a mathematical program from prose, and write it in set notation
 * Perform and interpret a degree-of-freedom analysis on someone else's model
 * Audit an AI tool's technical output against a primary source, and correct it
@@ -60,25 +55,37 @@ By completing this project, you will:
 Pick a citable, published source --- for example, a journal or conference paper, book, or technical
 report --- that **contains a complete optimization model and numerical results you can analyze.** A
 course notebook, blog post, or undocumented code repository is not a published model for this purpose.
+Moreover, if a paper, report, or book includes a computer implementation of the model (e.g., as supporting 
+information), you are not allowed to use that until the final verification step, after you have done
+extensive \emph{manual/human guided} verification. The purpose of this assignment is to practice 
+reproducing someoneelse's results when you are not given the code.
 
 ### The test your source must pass
 
-Before you commit, confirm all three:
+Before you commit to a literature source, confirm:
 
 1. **The model is printed in the source.** You can point to specific equations or clearly identified
-   passages that give the objective, constraints, and definitions needed to reconstruct it.
-2. **There is a numerical result you can name.** A specific table entry, a figure, or a number in the
+   passages that give the objective, constraints, and definitions needed to reconstruct it. You might need to
+   check if the paper has a supporting information.
+2. **There is a numerical result you can try to reproduce.** A specific table entry, a figure, or a number in the
    text that you intend to reproduce.
 3. **The model is small enough to finish.** Roughly: the full model fits in under about thirty numbered
    equations, and the formulation fits on two pages in your own notation.
 
-**Rejected by construction:** review and survey papers without a complete model; sources where the
-optimization is done inside a commercial black box with no printed model; sources reporting only
-qualitative results; sources whose model
-is stated only as "we solved the standard formulation, see reference [14]".
+**Do not choose a literature source** that is:
+* a review and survey papers without a complete model
+* a source where the optimization is done inside a commercial black box with accessible model
+* a sources reporting only qualitative results
+* a sources whose model is stated only as "we solved the standard formulation, see reference..."
+
+Note: Some dynamic optimization papers rely on sequential optimization methods, such as multiple shooting. while
+this is a valid optimization approach and perhaps the best choice for certain classes of problems, we will not
+cover the basics of these modeling methods: sensitivity or adjoint equations, dynamic modeling environments such as 
+CasADi or Modelica. For this assignment, we recommend choosing a dynamic optimization problem that was successfully solved
+with a simultanous method, such as orthagonal collocation on finite elements.
 
 ```{tip}
-Small and specific beats important and vague. A three-set, six-constraint scheduling model from a 2019
+Small and specific beats important and vague. A three-set, six-constraint scheduling model from a solid but niche
 journal paper is a much better choice than a landmark paper with a forty-page appendix.
 ```
 
@@ -86,8 +93,8 @@ journal paper is a much better choice than a landmark paper with a forty-page ap
 
 Published code is permitted and useful for validation, but it does not replace your implementation.
 **Do not upload, paste, or otherwise share the published code with your AI agent.** Build your model from
-the published document first. Only after your implementation is complete may you inspect and run the
-published code to validate your model and investigate discrepancies.
+the published document first. Only after your implementation is complete and you have done some 
+validation by yourself may you inspect and run the published code to validate your model and investigate discrepancies.
 
 ### Where to look
 
@@ -116,7 +123,7 @@ Keep the proposal to less than one page and answer these four questions concisel
 
 1. Which optimization model from the published literature do you want to analyze? Give the complete
    citation and identify the equations or passages containing the model and the result you will target.
-2. Why did you choose this model?
+2. Why did *you* choose this model?
 3. Do you have all necessary input data? If not, how will you obtain it quickly? List likely sources and
    any assumptions you expect to make.
 4. What do you hope to learn by completing this mini project?
@@ -124,7 +131,7 @@ Keep the proposal to less than one page and answer these four questions concisel
 A bulleted response to each question is welcome. A few sentences or a short paragraph per question is
 also fine.
 
-Posting is not an approval process, and you do not need explicit permission to continue. The instructor
+ The instructor
 will contact you if there are concerns about scope, missing information, or substantial overlap with
 another project.
 
@@ -134,7 +141,7 @@ clearly stated assumptions rather than restricted data.
 
 ## The steps
 
-### Step 1 --- Read the source on paper
+### Step 1: Read the source on paper
 
 **AI category: No AI.**
 
@@ -143,34 +150,35 @@ definitions, the data sources, and the result you plan to reproduce. Mark the pl
 
 Keep this copy. It is where your questions in Step 2 come from.
 
-### Step 2 --- Interrogate the source with an AI tool
+### Step 2: Interrogate the source with an AI tool
 
 **AI category: AI required.**
 
 Give the source to an AI tool and ask it **at least five clarifying questions that you drafted yourself,**
-from your marked-up copy. Questions about this source, not questions about optimization in general.
+from your marked-up copy. The questions should be about this source, not optimization in general.
 
-Good questions come from the margins: *what are the units of $\alpha$ in equation (7)?* --- *is the
-capacity limit per period or cumulative?* --- *equation (12) has an index $j$ that never appears in the
-set definitions; what is it?*
+Good questions come from your notes in the margins:
+* *What are the units of $\alpha$ in equation (7)?*
+* *Is the capacity limit per period or cumulative?* 
+* *Equation (12) has an index $j$ that never appears in the set definitions. What is it?*
 
 Keep the questions and document the interaction using either the full transcript(s) or the detailed
 AI-session report described under **AI disclosure** below.
 
-### Step 3 --- Reflect on the interaction
+### Step 3: Reflect on the interaction
 
 **AI category: No AI.** Write this reflection yourself after reviewing the documented interaction.
 
 A short paragraph. What did the tool do well? Where did it fail, stall, or make something up? Did it
 answer a question the source does not actually answer, and if so, how did you notice?
 
-One honest paragraph is worth more than a page of praise.
+One honest paragraph is worth more than a page of praise. This paragraph should be written by you. 
 
-### Step 4 --- Extract the model with the AI tool, and export a report
+### Step 4: Extract the model with the AI tool, and export a report
 
 **AI category: AI required.**
 
-Working with the tool, extract the optimization problem from the source and put it in **set notation, in
+Working with an AI tool, extract the optimization problem from the source and put it in **set notation, in
 the form we use in class:**
 
 * **Sets** --- each index set, and what it indexes
@@ -179,9 +187,11 @@ the form we use in class:**
 * **Constraints** --- grouped and named for the physics or requirement they express, not `con1`
 * **Objective** --- with its sense and its units
 
-In **symbols, not numbers**: $|\mathcal{T}|$ periods, not 168 periods.
+Use **symbols, not numbers**. For example, $|\mathcal{T}|$ periods, not 168 periods.
 
 Then perform a **degree-of-freedom analysis** with the six-row table, counted in symbols:
+
+% TODO: Update this to count variables with bounds. See Lecture 2.
 
 | Count | Number |
 | --- | --- |
@@ -192,9 +202,7 @@ Then perform a **degree-of-freedom analysis** with the six-row table, counted in
 | linear inequality constraints | |
 | nonlinear inequality constraints | |
 
-There is **no bottom-line total, deliberately.** Netting inequalities and bounds against variables
-requires knowing which inequalities are *active* at the solution, and we do not have the tools for that
-until the constrained-optimization lectures. Count; do not subtract.
+
 
 Also classify the problem and say how you know: LP, MILP, NLP, MINLP? Convex? Any differential
 constraints? Any uncertain parameters?
@@ -205,7 +213,7 @@ model and the degree-of-freedom analysis.
 **Submit that report exactly as the tool produced it.** Do not clean it up. It is the "before" half of
 the evidence, and without it there is no way to see what you corrected.
 
-### Step 5 --- Check the report against the source, in pencil
+### Step 5: Check the report against the source, in pencil on paper
 
 **AI category: No AI.**
 
@@ -225,22 +233,18 @@ You are checking, line by line:
 Mark every correction on the printout. Then **scan or photograph the annotated pages and submit them.**
 
 ```{warning}
-**A clean printout with no marks scores poorly.** Finding nothing is almost always evidence of not
-looking. Every AI-extracted formulation that has been checked carefully in the preparation of this course
-had something wrong with it --- a dropped constraint, a sum over the wrong set, an index that does not
-exist, a variable count off by a factor of two.
-
-This is the deliverable that cannot be produced by a tool, and it is weighted accordingly.
+In the unlikely event your AI generated model and analysis is perfect, you should submit evidence that
+you checked it in detail with a pencil.
 ```
 
-### Step 6 --- Correct it, and typeset the corrected model yourself
+### Step 6: Correct it, and typeset the corrected model yourself
 
 **AI category: AI permitted after independent work.** Decide and record every technical correction from
 your comparison with the source before asking AI for help. AI may help with formatting after that point,
 but it may not replace your source-based judgment.
 
 Typeset the **corrected** model and degree-of-freedom analysis in LaTeX, in a markdown cell, in the
-format of Step 4. **No screenshots of mathematics. Ever.**
+format of Step 4. **No screenshots of mathematics.** You may use the typeset model from Step 5 as a starting point.
 
 Then a **change list**: every correction you made, in a short table.
 
@@ -251,19 +255,20 @@ Then a **change list**: every correction you made, in a short table.
 The third column is the graded one. A correction you cannot point to a page, equation, or table for is
 an opinion, not a correction.
 
-### Step 7 --- Implement, and try to reproduce a result
+### Step 7: Implement, and try to reproduce a result
 
 **AI category: AI required for your implementation; no AI when inspecting published code.**
 
-Ask the AI tool to help generate a Pyomo implementation **of your corrected model** --- not of its own
-uncorrected version. Then attempt to reproduce the result you named in your proposal. You remain
+Ask the AI tool to help generate a Pyomo implementation **of your corrected model**. Then attempt to 
+reproduce the result you named in your proposal. You remain
 responsible for testing every equation and interpreting the result.
 
 The implementation follows [](pyomo-style-guide.md): built in a function, a termination check before any
 `pyo.value()` call, a seeded random number generator if anything is random, and comments **in your own
 words**.
 
-If the source distributes code, wait until your own model is implemented. Then, without sharing that
+If the source distributes code, wait until your own model is implemented. Then, try to reproduce the
+published result without using the published code. After try this by yourself, without sharing the published code
 code with the AI tool, use it as an independent validation source: run it if practical, compare its
 equations, data, assumptions, and results with yours, and document any discrepancy. Cite the code and
 respect its license.
@@ -286,15 +291,6 @@ A failed reproduction that is diagnosed carefully is a full-credit answer. An un
 **Finding a discrepancy between the published model and the code is a success, not a problem with your
 paper.** You would be surprised how many papers contain a small disagreement between the methods section
 and what the software actually does.
-
-This course has hit exactly that in its own materials. MO-book notebook 5.1 sums the blending constraints
-over the wrong index set and swaps two constants in its markdown, while its code is right both times. An
-earlier problem set in this course stated a return constraint with $\ge$ and coded it as $=$ --- which
-agrees at the parameter value where the constraint is active and differs by 45% where it is not. And two
-contributed notebooks on this website ran without error for years while being, respectively,
-**infeasible** and **unbounded** --- see §7 and §8 of [](pyomo-style-guide.md).
-
-Running is not the same as correct. Neither is published.
 ```
 
 ## What you submit
@@ -308,7 +304,8 @@ Include:
 * AI-session documentation --- either full transcript(s) or a detailed report --- plus the AI-exported
   model/DOF report, in readable PDF, HTML, Markdown, or text form;
 * one PDF containing the scanned handwritten/annotated work; and
-* any input data files needed to run the notebook.
+* any input data files needed to run the notebook
+* text file named README.md or README.txt that described each file in the submitted zip archive
 
 Use descriptive filenames, and do not include environments, caches, solver scratch files, or unrelated
 downloads. Published source code is not a required submission; include it only when redistribution is
@@ -328,24 +325,21 @@ permitted and it is necessary to understand your validation.
 | 10 | References | Everything you used, cited |
 
 Items 4, 5 and 6 are one chain: the artifact, the check, the correction. **Submitting 6 without 4 and 5
-is not a corrected model; it is an unsourced claim.**
-
-The notebook is the grading entry point. Put the AI-exported report, AI-session documentation, and
-handwritten scan in separate readable files within the same ZIP and link to their filenames from the
-notebook.
+is not a corrected model. It is an unsourced claim.**
 
 ## AI disclosure
 
 Every submission ends with a section titled **AI Disclosure**, reporting:
 
-* **Which tool or tools**, and which steps you used each one for
+* **Which tool or tools**, and which steps you used each one for. Please use model names or version numbers.
 * **The key points and trajectory** of the AI session or sessions: the important questions, changes in
   direction, and outputs you adopted or rejected
 * **What it got wrong** --- across the whole project, not just Step 5
 * **How you knew** --- this is the graded part
 
-You may satisfy the trajectory requirement by submitting full transcript(s) or by writing a detailed,
-accurate report. Raw prompts and transcripts are not required when the report provides enough detail to
+Even if you submitting full transcript(s) or by writing a detailed,
+accurate report of your AI sessions, you should still describe in a few sentences here the overall trajectory of
+your use of AI for this assignment. Raw prompts and transcripts are not required when the report provides enough detail to
 understand how the work developed.
 
 Per the [Artificial Intelligence Policy](./syllabus.md#artificial-intelligence-policy), your code
@@ -380,7 +374,7 @@ cannot defend a section, do not submit it.
 ## Contributing to the class website
 
 A strong verified notebook may be invited to join the class website as a contributed example. This is
-optional, happens after grading, and goes through review --- see [](contribute.md). It is not part of the
+optional, happens after grading, and goes through review: see [](contribute.md). It is not part of the
 project grade.
 
 ## Checklist

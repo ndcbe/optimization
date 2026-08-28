@@ -69,6 +69,7 @@ if [ "$MODE" = "--selftest" ]; then
   run_check "AI-review-status self-test" python scripts/build_ai_review_status.py --selftest
   run_check "Pyomo-code extraction self-test" python scripts/extract_pyomo_code.py --selftest
   run_check "result-freshness self-test" python scripts/check_results_fresh.py --selftest
+  run_check "live-page media self-test" python scripts/check_media.py --selftest
   run_check "greyscale self-test" python scripts/check_greyscale.py --selftest
   run_check "archived-result renderer self-test" python figures/render_from_notebook.py --selftest
   finish
@@ -80,6 +81,7 @@ run_check "prose baseline" python scripts/check_prose_baseline.py
 run_check "AI review registry" python scripts/build_ai_review_status.py --check
 run_check "deterministic Sudoku data" python scripts/generate_sudoku_puzzles.py --check
 run_check "archived result freshness" python scripts/check_results_fresh.py
+run_check "live-page media references" python scripts/check_media.py
 run_check "figure source-name collisions" make -C figures names
 run_check "figure style in greyscale" python scripts/check_greyscale.py --style figures/dowling.mplstyle -n 4
 run_check "committed figures in greyscale" python scripts/check_greyscale.py media/figures

@@ -109,6 +109,10 @@ repository, and executes every authored notebook; it therefore needs `../optimiz
 course conda environment, and the solver binaries described above. A mode is required intentionally:
 an unattended verification run should never silently choose a narrower contract than its caller meant.
 
+The fast tier also audits media references on every live MyST page. Missing and case-mismatched local
+images fail the gate. Remote images, embedded payloads, missing alt text, and apparently orphaned media
+are reported for provenance review without turning editorial judgement into an automatic failure.
+
 ### The prose baseline
 
 The notebooks are a **pre-LLM corpus written in human voices** — mostly Prof. Dowling's, and past students'

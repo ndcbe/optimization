@@ -110,9 +110,17 @@ of class, and studying for the final is a reasonable thing to do with that week 
 Homework is designed around an **independent attempt followed by critical use of assistance**. Unless an
 assignment gives a different time, begin each problem by working for approximately **30 minutes without
 generative AI, solution pages, or help from another person**. Stop the independent period early if you
-complete the problem. After that attempt, you may use AI and the collaboration permitted below unless the
-assignment says otherwise. Each assignment may impose additional problem-specific rules, including a
+complete the problem. During this period, you may consult lecture notes, textbooks, and the course website;
+bias toward those course sources, and do not open solution pages on the course website. After that attempt,
+you may use AI and the collaboration permitted below unless the assignment says otherwise. The 30-minute
+guideline applies **once per top-level problem**, not separately to every subpart, unless the assignment
+explicitly says otherwise. Each assignment may impose additional problem-specific rules, including a
 different time limit or a requirement that a particular stage be completed with or without AI.
+
+Each homework problem includes a required, concise **AI and independent-work report**. State approximately
+how long the independent attempt took, how far you got, where you became stuck, what AI or collaborative
+help you used afterward, and how you verified it. If you used no AI, say so. The time estimate is not a
+speed test; it gives the instructor useful data for improving the length and design of future assignments.
 
 See the [Artificial Intelligence Policy](#artificial-intelligence-policy) below. What does not change is
 that **you are responsible for understanding and verifying everything you submit.** The exams are
@@ -125,7 +133,18 @@ interpretation parts are the best available practice for the exams.
 
 ## Collaboration Policy and Honor Code
 
-You are permitted (and encouraged) to discuss solution approaches to the weekly homework assignments with classmates, however there is to be no wholesale copying or paraphrasing of code, solutions, or written discussions. You are encouraged to ask questions, including posting pseudocode or code screenshots, on the disccsion board on Canvas. Likewise, you may use any material posted by the instructors or your classmates in the discussion board on Canvas that you understand. Copying of code from classmates or the discussion board that you do not understand is not permitted. This policy is meant to facilitate collaboration while ensuring everyone in the class has the same access. Students MAY NOT use old HW files and solutions for the homework assignments: if you cannot do the problems for homework, you will not be able to do them on the exams either.
+You are permitted and encouraged to discuss solution approaches, debug together, compare numerical
+results, and write code together after the required independent attempt. Everyone who submits jointly
+developed ideas or code must have made a genuine intellectual contribution and must be able to explain the
+work. One student writing a solution and distributing it to classmates who did not intellectually
+contribute is not collaboration; it is prohibited sharing and copying. Wholesale copying or paraphrasing
+of code, solutions, or written discussions is not permitted.
+
+You are encouraged to ask questions, including posting pseudocode or code screenshots, on the discussion
+board on Canvas. You may use material posted there by instructors or classmates when you understand it,
+acknowledge the help, and comply with the assignment's disclosure instructions. Students may not use old
+homework files or solutions: if you cannot do the problems for homework, you will not be able to do them on
+the exams either.
 
 *As a guiding principle, if you are not comfortable explaining your solution strategy to the instructor, you should not turn in the work as your own.*
 
@@ -196,7 +215,9 @@ See the [Pseudocode Guidelines](https://ndcbe.github.io/data-and-computing/noteb
 
 ## Assignment Submission
 
-Assignments should be submitted electronically via Gradescope. For Jupyter Notebooks, you will need to upload the `.ipynb` file to Gradescope. Likewise, handwritten analysis should be scanned to a PDF and submitted via Gradescope.
+Assignments should be submitted electronically through Canvas in the format stated on each assignment.
+For Jupyter notebooks, upload the `.ipynb` file; handwritten analysis should be scanned into one readable
+PDF unless the assignment specifies a different package.
 
 ## Regrade Requests
 
@@ -235,16 +256,20 @@ using AI tools critically as a scientist or engineer. The following principles a
    **AI required**. Follow the most specific instruction that applies.
 2. **Begin independently.** Unless an assignment specifies another time, work on each homework problem for
    approximately 30 minutes without generative AI, solution pages, or help from another person. If you
-   complete the problem sooner, the independent period is complete. The purpose is to discover what you
-   can do and where you become stuck before asking a tool to intervene.
+   complete the problem sooner, the independent period is complete. You may consult lecture notes,
+   textbooks, and nonsolution pages of the course website, with a preference for these course sources.
+   The default is once per top-level problem, not once per subpart. The purpose is to discover what you can
+   do and where you become stuck before asking a tool to intervene.
 3. **Use assistance critically.** When AI is permitted or required, treat its output as an unverified
    proposal. Check mathematical claims against course or primary sources, test code, inspect units and
    assumptions, and decide for yourself whether the result is correct. Code that runs is not necessarily
    correct.
-4. **Disclose use.** Follow the disclosure format stated in the assignment. At minimum, identify the tool,
-   describe what you used it for, state what advice or output you adopted, and explain how you verified it.
-   If you did not use AI, say so. AI-powered editing tools, including tools that suggest rewritten prose,
-   count as AI use and must be disclosed when used.
+4. **Disclose use.** Every homework problem ends with a concise AI and independent-work report; prompts and
+   transcripts are not required for ordinary homework. Follow any more detailed format stated in the
+   assignment. At minimum, estimate the independent time, describe how far you got, identify the tool,
+   describe what you used it for and adopted, and explain how you verified it. If you did not use AI, say
+   so. AI-powered editing tools, including tools that suggest rewritten prose, count as AI use and must be
+   disclosed when used.
 5. **Your understanding and voice remain yours.** You must be able to explain every equation, line of code,
    and conclusion you submit. Code comments, interpretations, reflections, and answers to discussion
    questions must communicate your own understanding in your own words. Use descriptive variable names and
@@ -267,7 +292,6 @@ The University of Notre Dame is committed to social justice. We share that commi
 Diminished mental health can interfere with optimal academic performance. The source of symptoms might be related to your course work; if so, please speak with us. However, problems with other parts of your life can also contribute to decreased academic performance. The University Counseling Center (UCC) provides cost-free and confidential mental health services to help you manage personal challenges that threaten your emotional or academic well-being. Remember, getting help is a smart and courageous thing to do — for yourself and for those who care about you. For more resources please see ucc.nd.edu. The UCC is located on the third floor of Saint Liam Hall Phone: 574-631-7336. Hours: Monday-Friday 8:30am – 5:00pm. Urgent Crisis Line 24/7. 
 
 Any student who has a documented disability and is registered with Disability Services should speak with the professor as soon as possible regarding accommodations. Students who are not registered should contact the [Office of Disability Services](https://sarabeadisabilityservices.nd.edu/). 
-
 
 
 

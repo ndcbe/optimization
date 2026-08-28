@@ -10,6 +10,10 @@ implement it, and try to reproduce a published result.
 
 Worth **10% of the course grade**. See the [semester calendar](./calendar.md) for the due date.
 
+This is an **individual assignment**. Each paper or specific model from a longer source is reserved by the
+first student who posts it in the Canvas proposal discussion. Two students may not analyze the same paper
+or the same model from a book or report.
+
 ## What changed for Fall 2026, and why
 
 The previous version of this project asked you to build a Pyomo model of a problem you chose. That was
@@ -98,13 +102,15 @@ closely. If you need a starting point, these collections cite the papers their e
 
 Follow the citation and read the original published source. The collection is the index, not the source.
 
-### Proposal --- due Friday, October 2, 2026
+### Proposal --- due Monday, September 21, 2026
 
 **AI category: No AI.** This is your choice, motivation, and plan.
 
-Post your proposal in the designated **Canvas Discussion by 5pm on Friday, October 2**. Earlier posts are
-strongly encouraged: everyone can see what classmates are studying, find shared interests, and avoid
-unintended overlap.
+Post your proposal using the instructor's template in the designated **Canvas Discussion by 5pm on
+Monday, September 21**. Posts are visible to the class in chronological order. Earlier posts are strongly
+encouraged: everyone can see what classmates are studying, find shared interests, and avoid unintended
+overlap. A paper or specific model belongs to the first student who posts it; check the existing posts
+before choosing.
 
 Keep the proposal to less than one page and answer these four questions concisely:
 
@@ -121,6 +127,10 @@ also fine.
 Posting is not an approval process, and you do not need explicit permission to continue. The instructor
 will contact you if there are concerns about scope, missing information, or substantial overlap with
 another project.
+
+Use only public or otherwise nonconfidential data that may be submitted with the project. Proprietary or
+confidential data are not permitted. If required data are unavailable, use documented public sources or
+clearly stated assumptions rather than restricted data.
 
 ## The steps
 
@@ -144,11 +154,12 @@ Good questions come from the margins: *what are the units of $\alpha$ in equatio
 capacity limit per period or cumulative?* --- *equation (12) has an index $j$ that never appears in the
 set definitions; what is it?*
 
-Submit the questions and the full transcript.
+Keep the questions and document the interaction using either the full transcript(s) or the detailed
+AI-session report described under **AI disclosure** below.
 
 ### Step 3 --- Reflect on the interaction
 
-**AI category: No AI.** Write this reflection yourself after reviewing the transcript.
+**AI category: No AI.** Write this reflection yourself after reviewing the documented interaction.
 
 A short paragraph. What did the tool do well? Where did it fail, stall, or make something up? Did it
 answer a question the source does not actually answer, and if so, how did you notice?
@@ -294,7 +305,8 @@ notebook is the main narrative and should open and run with paths relative to th
 Include:
 
 * one Jupyter notebook containing the narrative, corrected model, implementation, results, and disclosure;
-* the full AI transcript and the AI-exported report in readable PDF, HTML, Markdown, or text form;
+* AI-session documentation --- either full transcript(s) or a detailed report --- plus the AI-exported
+  model/DOF report, in readable PDF, HTML, Markdown, or text form;
 * one PDF containing the scanned handwritten/annotated work; and
 * any input data files needed to run the notebook.
 
@@ -305,7 +317,7 @@ permitted and it is necessary to understand your validation.
 | # | Deliverable | What it is evidence of |
 | --- | --- | --- |
 | 1 | Full citation of the source, and your reproduction target | You chose a source this assignment can be done on |
-| 2 | Your five clarifying questions, and the full AI transcript | The questions came from your reading, not from the tool |
+| 2 | Your five clarifying questions and AI-session documentation | The questions came from your reading, and the interaction's trajectory is visible |
 | 3 | Reflection paragraph on the AI interaction | You noticed how the tool behaved |
 | 4 | The AI-exported model and DOF report, **unedited** | The "before" state --- without it, no correction is visible |
 | 5 | **Scan of the annotated printout** | You checked it by hand. Cannot be faked by a tool |
@@ -318,16 +330,23 @@ permitted and it is necessary to understand your validation.
 Items 4, 5 and 6 are one chain: the artifact, the check, the correction. **Submitting 6 without 4 and 5
 is not a corrected model; it is an unsourced claim.**
 
-The notebook is the grading entry point. Put the AI-exported report, transcript, and handwritten scan in
-separate readable files within the same ZIP and link to their filenames from the notebook.
+The notebook is the grading entry point. Put the AI-exported report, AI-session documentation, and
+handwritten scan in separate readable files within the same ZIP and link to their filenames from the
+notebook.
 
 ## AI disclosure
 
 Every submission ends with a section titled **AI Disclosure**, reporting:
 
 * **Which tool or tools**, and which steps you used each one for
+* **The key points and trajectory** of the AI session or sessions: the important questions, changes in
+  direction, and outputs you adopted or rejected
 * **What it got wrong** --- across the whole project, not just Step 5
 * **How you knew** --- this is the graded part
+
+You may satisfy the trajectory requirement by submitting full transcript(s) or by writing a detailed,
+accurate report. Raw prompts and transcripts are not required when the report provides enough detail to
+understand how the work developed.
 
 Per the [Artificial Intelligence Policy](./syllabus.md#artificial-intelligence-policy), your code
 comments and your written answers must be **in your own words**, and you are responsible for
@@ -368,10 +387,11 @@ project grade.
 
 Work down this list before you submit.
 
-- [ ] Proposal posted in the Canvas Discussion by October 2 (earlier encouraged)
+- [ ] Individual proposal posted in the Canvas Discussion by September 21 (earlier encouraged)
+- [ ] Paper or specific model was not already claimed in an earlier Canvas post
 - [ ] Paper passes all three selection tests
 - [ ] Paper printed and read with a pencil
-- [ ] Five or more clarifying questions, drafted by you, with the full transcript
+- [ ] Five or more clarifying questions, drafted by you, with transcript(s) or a detailed session report
 - [ ] Reflection paragraph on what the AI tool did well and badly
 - [ ] AI-exported report included **unedited**
 - [ ] Report printed, checked against the source by hand, and **the annotated scan submitted**
@@ -388,5 +408,7 @@ Work down this list before you submit.
 - [ ] Missing information the source would need for reproducibility, listed
 - [ ] AI disclosure section present
 - [ ] References for all data, models, figures, and code
+- [ ] No proprietary or confidential data used
+- [ ] AI tools and session trajectory documented by transcript(s) or a detailed report
 - [ ] All submission files packaged in one simple ZIP; notebook links to supporting files
 - [ ] `black` has been run; the notebook passes **Restart & Run All** from a fresh kernel

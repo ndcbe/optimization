@@ -11,8 +11,8 @@ This page is generated from the instructor's master calendar. If it disagrees wi
 | Friday, September 4, 2026 | [](../notebooks/assignments/Pyomo1.ipynb) |
 | Friday, September 11, 2026 | [](../notebooks/assignments/Pyomo2.ipynb) |
 | Friday, September 18, 2026 | [](../notebooks/assignments/Pyomo3.ipynb) |
+| Monday, September 21, 2026 | [Pyomo Mini Project proposal](./project1.md#proposal-due-monday-september-21-2026), posted in the Canvas Discussion |
 | Friday, September 25, 2026 | Pyomo 4 |
-| Friday, October 2, 2026 | [Pyomo Mini Project proposal](./project1.md#proposal-due-friday-october-2-2026), posted in the Canvas Discussion |
 | Friday, October 16, 2026 | [](../org/project1.md) |
 | Friday, October 23, 2026 | [](../notebooks/assignments/Algorithms1.ipynb) |
 | Friday, October 30, 2026 | [](../notebooks/assignments/Algorithms2.ipynb) |

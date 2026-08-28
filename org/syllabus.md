@@ -107,10 +107,17 @@ get wrong is not practice.
 students this makes the final assignment effectively optional, which is deliberate: it falls on the last day
 of class, and studying for the final is a reasonable thing to do with that week instead.
 
-**You may use AI tools on the homework** --- see the [Artificial Intelligence Policy](#artificial-intelligence-policy)
-below. What does not change is that **you are responsible for understanding everything you submit.** The
-exams are individual, in person, and without a computer, so anything you hand in without understanding is a
-debt that comes due in September, November, and December.
+Homework is designed around an **independent attempt followed by critical use of assistance**. Unless an
+assignment gives a different time, begin each problem by working for approximately **30 minutes without
+generative AI, solution pages, or help from another person**. Stop the independent period early if you
+complete the problem. After that attempt, you may use AI and the collaboration permitted below unless the
+assignment says otherwise. Each assignment may impose additional problem-specific rules, including a
+different time limit or a requirement that a particular stage be completed with or without AI.
+
+See the [Artificial Intelligence Policy](#artificial-intelligence-policy) below. What does not change is
+that **you are responsible for understanding and verifying everything you submit.** The exams are
+individual, in person, and without a computer, so anything you hand in without understanding is a debt that
+comes due in September, November, and December.
 
 Most problems include *pencil and paper analysis* (derive a model, count degrees of freedom, write
 pseudocode, complete a proof), a computational part, and interpretation of the results. The analysis and
@@ -218,13 +225,40 @@ We will use Python 3 in this class. You have three options to use Python:
 
 ## Artificial Intelligence Policy
 
-Please review the university-wide [Generative AI Policy for Students](https://honorcode.nd.edu/generative-ai-policy-for-students-august-2023/) distributed via email in August 2023. We will adopt the following additional policies for CBE/ACMS 60499:
-* Anyone who uses Generative AI tools (e.g., Copilot, ChatCPT) must add a discloser statement at the end of their assignment submissions. In this disclosure statement, you must describe which Generative AI tool you used and how you used it. For example, many professional scientists and engineers find these technologies especially helpful for refining the quality of plots generated in Python.
-* Many practicing scientists and engineers find [Copilot](https://copilot.microsoft.com/), which is available in [Visual Studio Code](https://visualstudio.microsoft.com/github-copilot/, more helpful and reliable than [ChatGPT](https://chat.openai.com). However, ChatGPT and Copilot occasionally generate code with incorrect logic or calculations. You should critically examine any code from Generative AI tools, collaborators, and class examples.
-* As described above, you must comment all code in your assignments. Furthermore, students must write comments in their own words. This ensures that anyone who uses Generative AI for help still practices interpreting the code. In other words, everyone who passes CBE/ACMS 60499 should be able to perform calculations and explain the underlying logic in code.
-* Students are expected to use descriptive variable names; sometimes, Generative AI tools suggest generic variable names.
-* Students are responsible for understanding all code they submit, especially if they collaborate with another student or use Generative AI. The exams will be individual and without access to Generative AI tools.
-* Answers to discussion questions, which often critically interpret results or connect calculations with concepts from class, must be written in your own words. You should use tools like [Grammarly](https://www.grammarly.com) to improve spelling, grammar, sentence structure, and conciseness. But you must perform the critical analysis on your own.
+Please review Notre Dame's current
+[Generative AI Policy for Students](https://honorcode.nd.edu/generative-ai-policy-for-students-august-2023/).
+CBE/ACMS 60499 is an **AI-forward course**: you will practice both solving technical problems yourself and
+using AI tools critically as a scientist or engineer. The following principles apply throughout the course.
+
+1. **Assignment-specific instructions control.** Every assignment may add more specific rules. A problem
+   or project step may be labeled **No AI**, **AI permitted after the independent attempt**, or
+   **AI required**. Follow the most specific instruction that applies.
+2. **Begin independently.** Unless an assignment specifies another time, work on each homework problem for
+   approximately 30 minutes without generative AI, solution pages, or help from another person. If you
+   complete the problem sooner, the independent period is complete. The purpose is to discover what you
+   can do and where you become stuck before asking a tool to intervene.
+3. **Use assistance critically.** When AI is permitted or required, treat its output as an unverified
+   proposal. Check mathematical claims against course or primary sources, test code, inspect units and
+   assumptions, and decide for yourself whether the result is correct. Code that runs is not necessarily
+   correct.
+4. **Disclose use.** Follow the disclosure format stated in the assignment. At minimum, identify the tool,
+   describe what you used it for, state what advice or output you adopted, and explain how you verified it.
+   If you did not use AI, say so. AI-powered editing tools, including tools that suggest rewritten prose,
+   count as AI use and must be disclosed when used.
+5. **Your understanding and voice remain yours.** You must be able to explain every equation, line of code,
+   and conclusion you submit. Code comments, interpretations, reflections, and answers to discussion
+   questions must communicate your own understanding in your own words. Use descriptive variable names and
+   comment all submitted code.
+6. **Do not misrepresent authorship.** Material generated or materially revised by an AI tool must not be
+   presented as solely your own work. Some assignments intentionally require an unedited AI artifact or
+   transcript as evidence; those clearly labeled artifacts are quotations for analysis, not
+   student-authored answers.
+7. **Exams are independent.** The two midterms and final exam are individual and do not permit access to AI,
+   a computer, or the internet.
+
+The [Collaboration Policy and Honor Code](#collaboration-policy-and-honor-code) still applies when AI is
+permitted. AI assistance does not excuse wholesale copying, replace the required independent attempt, or
+remove your responsibility to understand, verify, and disclose the submitted work.
 
 ## Inclusiveness, Mental Health, and Disabilities
 
@@ -233,7 +267,6 @@ The University of Notre Dame is committed to social justice. We share that commi
 Diminished mental health can interfere with optimal academic performance. The source of symptoms might be related to your course work; if so, please speak with us. However, problems with other parts of your life can also contribute to decreased academic performance. The University Counseling Center (UCC) provides cost-free and confidential mental health services to help you manage personal challenges that threaten your emotional or academic well-being. Remember, getting help is a smart and courageous thing to do — for yourself and for those who care about you. For more resources please see ucc.nd.edu. The UCC is located on the third floor of Saint Liam Hall Phone: 574-631-7336. Hours: Monday-Friday 8:30am – 5:00pm. Urgent Crisis Line 24/7. 
 
 Any student who has a documented disability and is registered with Disability Services should speak with the professor as soon as possible regarding accommodations. Students who are not registered should contact the [Office of Disability Services](https://sarabeadisabilityservices.nd.edu/). 
-
 
 
 

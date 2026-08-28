@@ -95,6 +95,11 @@ def ai_banner_cell(changed, added):
         "```"
     )
     cell = new_markdown_cell(body)
+    # This cell is generated afresh on every publish. nbformat otherwise gives
+    # it a random ID, making an unchanged publish dirty dozens of notebooks.
+    # Cell IDs need only be unique within a notebook, so a stable generated ID
+    # is both valid and reproducible.
+    cell["id"] = "ai-review-banner"
     cell.metadata["ai_review_banner"] = True
     return cell
 
@@ -582,11 +587,16 @@ def selftest():
             with open(os.path.join(out_dir, "banner.ipynb")) as fp:
                 bcells = json.load(fp)["cells"]
             banner = any(c["metadata"].get("ai_review_banner") for c in bcells)
+            banner_ids = [c.get("id") for c in bcells
+                          if c["metadata"].get("ai_review_banner")]
             answer = any("".join(c["source"]) == SELFTEST_ANSWER_CODE
                          for c in bcells)
             check("banner insertion does not trip the pass-through guard",
                   banner and answer,
                   f"banner={banner} answer_survived={answer}")
+            check("generated banner has a deterministic cell ID",
+                  banner_ids == ["ai-review-banner"],
+                  repr(banner_ids))
         finally:
             AI_STATUS.clear()
             AI_STATUS.update(saved_status)

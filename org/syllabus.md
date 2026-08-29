@@ -188,7 +188,7 @@ using AI tools critically as a scientist or engineer. The following principles a
    transcript as evidence; those clearly labeled artifacts are quotations for analysis, not
    student-authored answers.
 7. **Exams are independent.** The two midterms and final exam are individual, on paper, and permit no
-   electronic device other than a simple calculator --- so no AI, no computer, and no internet. See
+   electronic device other than a scientific or graphing calculator (thus no AI, no computer, and no internet). See
    [Exams](#exams).
 
 The [Collaboration Policy and Honor Code](#collaboration-policy-and-honor-code) still applies when AI is
@@ -206,14 +206,13 @@ exam period. Dates are on the [semester calendar](./calendar.md).
 | Midterm 2 | Wednesday, November 4, in class | open course pack / open binder |
 | Final | Tuesday, December 15, 7:30--9:30 pm | open course pack / open binder |
 
-All exams are **individual**. The only electronic device permitted is a **simple calculator** --- one that
-is not programmable and has no network access. No laptops, tablets, phones, smart watches, e-readers, or
+All exams are **individual**. The only electronic device permitted is a scientifi or graphing calculator (no network access 
+or communication). No laptops, tablets, phones, smart watches, e-readers, or
 any other electronic device may be out during an exam.
 
 **Your notes must be on paper.** Students who take notes on a tablet during class should print them before
-each exam. Reading notes from a tablet is not permitted even with connectivity switched off; this is a new
-recommendation for the college, and a single rule that applies to everyone is fairer and easier to
-invigilate than one that depends on what a device could be doing.
+each exam. Reading notes from a tablet is not permitted even with connectivity switched off. This is a new
+recommendation for the College.
 
 ## Pyomo Project
 
@@ -276,7 +275,6 @@ We will use Python 3 in this class. You have three options to use Python:
 1. (Recommended for Most People.) Use Google Colab. This allows you to complete all assignments from any internet accessible computer.
 2. (Recommended for Advanced Users.) Install [anaconda3](https://www.anaconda.com/download/) on your own computer. This is a free distribution of Python that includes common packages for data analysis and scientific computing. You will need to install popular packages such as `numpy`, `scipy`, `pandas`, `matplotlib`, and `pyomo`.
 3. Use anaconda3 installed on any ESC-maintained computer.
-
 
 ## Inclusiveness, Mental Health, and Disabilities
 

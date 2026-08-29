@@ -1,8 +1,5 @@
 # Pyomo Project
 
-```{warning}
-**This is a draft assignment. It is still being updated for Fall 2026.**
-```
 
 Summary: choose a published optimization model from the literature, e.g., paper, report, book.
 Use an AI tool to extract the mathematical model from its source. Then **check the AI's work against the source, on paper, with a pencil.** Correct it,

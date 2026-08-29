@@ -187,8 +187,9 @@ using AI tools critically as a scientist or engineer. The following principles a
    presented as solely your own work. Some assignments intentionally require an unedited AI artifact or
    transcript as evidence; those clearly labeled artifacts are quotations for analysis, not
    student-authored answers.
-7. **Exams are independent.** The two midterms and final exam are individual and do not permit access to AI,
-   a computer, or the internet.
+7. **Exams are independent.** The two midterms and final exam are individual, on paper, and permit no
+   electronic device other than a simple calculator --- so no AI, no computer, and no internet. See
+   [Exams](#exams).
 
 The [Collaboration Policy and Honor Code](#collaboration-policy-and-honor-code) still applies when AI is
 permitted. AI assistance does not excuse wholesale copying, replace the required independent attempt, or
@@ -205,11 +206,14 @@ exam period. Dates are on the [semester calendar](./calendar.md).
 | Midterm 2 | Wednesday, November 4, in class | open course pack / open binder |
 | Final | Tuesday, December 15, 7:30--9:30 pm | open course pack / open binder |
 
-All exams are **individual** and **without a computer or internet access**. You may not use a tablet, watch,
-phone, or other device to reach a Python environment, an AI tool, or the internet during an exam.
+All exams are **individual**. The only electronic device permitted is a **simple calculator** --- one that
+is not programmable and has no network access. No laptops, tablets, phones, smart watches, e-readers, or
+any other electronic device may be out during an exam.
 
-Students who take notes on a tablet during class should print their notes. This is a new recommendation for
-the college. Allowing tablet access even for notes only causes temptations...
+**Your notes must be on paper.** Students who take notes on a tablet during class should print them before
+each exam. Reading notes from a tablet is not permitted even with connectivity switched off; this is a new
+recommendation for the college, and a single rule that applies to everyone is fairer and easier to
+invigilate than one that depends on what a device could be doing.
 
 ## Pyomo Project
 

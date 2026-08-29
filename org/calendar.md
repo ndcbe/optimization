@@ -34,7 +34,8 @@ All assignments are due at 5pm unless otherwise noted.
 | Midterm 2 | Wednesday, November 4, 2026, in class |
 | Final | Tuesday, December 15, 2026, 7:30--9:30 pm |
 
-All three are in person, individual, and open course pack. No computer or internet access.
+All three are in person, individual, and open course pack. Notes must be on paper, and the only
+electronic device permitted is a simple calculator --- see the [syllabus](./syllabus.md#exams).
 
 ## Class Meetings
 

@@ -14,7 +14,7 @@ once:
      gamma_j >= 0 together reproduce [.]_+, and at the optimum gamma_j equals
      the positive part exactly.
 
-The website's only picture of this is media/cvar_diagram.PNG, a screenshot that
+The website's only picture of this is media/contrib/cvar_diagram.png, a screenshot that
 figure_inventory.md lists under trap 1 and that fails the greyscale gate. This
 replaces it from committed code.
 

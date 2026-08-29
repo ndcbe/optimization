@@ -86,7 +86,7 @@ The median grade in 60499 will likely be an A- or B+.
 
 Senior graduate students may audit this course with the permission of the instructor. The expectations for auditing are:
 1. Attend and participate in at least 75% of the class sessions. 
-2. Attempt each homework assignment (2 hours). 
+2. Attempt each homework assignment. 
 
 ## Homework
 

@@ -1,21 +1,12 @@
 # Syllabus
 
-CBE 60499, ACMS 60499: Optimization for Decision Science
+CBE 60499 / ACMS 60499: Optimization for Decision Science
 
 University of Notre Dame, Fall 2026
 
-## Course Information
-
-**Class:** Mondays and Wednesdays, 12:30 -- 1:45 pm, 303 Cushing Hall
-
-```{note}
-A room change request is pending. Check Canvas for the current location before the first class.
-```
+**Lectures:** Mondays and Wednesdays, 12:30 - 1:45 pm, 184 Nieuwland Science Hall
 
 **Dates:** August 24 -- December 9, 2026
-
-**Exams:** Midterm 1 on Wednesday, September 30 and Midterm 2 on Wednesday, November 4, both in class. The
-final exam is in person on Tuesday, December 15, 7:30--9:30 pm.
 
 ## Prerequisites 
 
@@ -23,12 +14,8 @@ A background in linear algebra and numericalmethods is strongly recommended but 
 
 ## Instructor
 
-**Prof. Alexander (Alex) Dowling** --- office hours by appointment in 369 Nieuwland Science Hall.
+**Prof. Alexander (Alex) Dowling** --- office hours 30 minutes after class in 256 Nieuwland Science Hall.
 
-```{note}
-**There are no teaching assistants this semester.** Please post questions to the Canvas discussion board;
-that is the fastest way to get an answer and everyone benefits from it.
-```
 
 To schedule a meeting with Prof. Dowling:
 * Check his availability on [Google calendar](https://calendar.google.com/calendar/u/0?cid=YWRvd2xpbmdAbmQuZWR1)
@@ -48,6 +35,8 @@ We encourage you to post all your questions including your mathematical models, 
 
 ## Textbook and Reference Materials
 
+% TODO: Plese update against the front matter in the lecture notes.
+
 Primary References:
 1. *Nonlinear Programming: Concepts, Algorithms, and Applications to Chemical Processes* by Lorenz T. Biegler [Chapter PDFs are available on SIAM website for free (on campus)](https://epubs.siam.org/doi/book/10.1137/1.9780898719383)
 2. *Pyomo - Optimization Modeling in Python* by William E. Hart, Carl D. Laird, Jean-Paul Watson, David L. Woodruff, Gabriel A. Hackebeil, Bethany L. Nicholson, John D. Siirola. [A PDF is available via the campus library.](https://link-springer-com.proxy.library.nd.edu/book/10.1007%2F978-3-319-58821-6)
@@ -60,11 +49,13 @@ Additional References:
 
 ## Classroom Meetings
 
-Classroom meetings are a mix of i) traditional chalk board instruction, ii) computer demonstrations, and iii) in-class activities. Please bring an internet connected laptop computer. You are encouraged to review the [relevant notebooks](./calendar.md) and chapters in reference textbooks before and after each class meeting.
+Classroom meetings are a mix of i) traditional chalk board instruction, ii) computer demonstrations, and iii) in-class activities. You are encouraged to review the [relevant notebooks](./calendar.md) and chapters in reference textbooks before and after each class meeting.
+
+This semester, Prof. Dowling is creating a coursepack. For each lecture, we will bring printed handouts with gaps for note taking. A PDF will also be posted before each lecture on Canvas.
 
 You are expected to attend and actively participate in all class sessions.  If you miss class for an official University excused function (e.g., illness, conference travel), please find notes for that lecture, do the reading, and avail yourself of office hours to catch up on the missed material.
 
-## Focus and Final Grades
+## Final Grades
 
 As an advanced technical elective, this class aims to prepare you to apply computational optimization methods in your immediate research or future careers by focusing on:
 - Basic algorithms and theory
@@ -96,16 +87,15 @@ Senior graduate students may audit this course with the permission of the instru
 
 ## Homework
 
-There are **ten short homework assignments**. They are deliberately small: each reinforces one or two
-specific skills from the preceding lectures, and most should take an hour or two.
+There are **ten homework assignments**, which contain a mix of pencil and paper analysis problems and computer implementation.
 
 **Grading is completion based.** Full credit is awarded for a genuine, complete attempt at every part --
 not for getting every answer right. The point of the homework is practice, and practice you are afraid to
 get wrong is not practice.
 
-**Your lowest homework score is dropped.** Ten assignments are set and the best nine count. For many
-students this makes the final assignment effectively optional, which is deliberate: it falls on the last day
-of class, and studying for the final is a reasonable thing to do with that week instead.
+**Your lowest homework score is dropped.** For many
+students this makes the final assignment effectively optional, which is deliberate: Prof. Dowling knows that
+the last week of the semester can be crazy.
 
 Homework is designed around an **independent attempt followed by critical use of assistance**. Unless an
 assignment gives a different time, begin each problem by working for approximately **30 minutes without
@@ -160,90 +150,6 @@ The following is a non-exhaustive list of collaborative scenarios that are PROHI
 * It is late at night, you are frustrated with syntax errors, and you just cannot get one of the homework problems to work. You find a screenshot on Canvas of code from a classmate and an associated discussion. Desperate to finish the assignment, you start adapting your code to follow the screenshot. To keep it simple, you copy line-by-line, do not change variable names, and copy some comments but skip others. You end up submitted code that looks almost identical to your classmate. You remember the instructor keeps emphasizing the comments should be in our own words to show that you understand the solution. You decide to go to bed and add those comments in the morning. You oversleep and submit code without any comments or acknowledgments of your classmates. This is prohibited by the collaboration policy because you submitted work that is not your own. You did not acknowledge sources, and you can not explain with confidence the solution procedure to the instructor.
 * You have no prior programming experience and feel like you are falling behind. You feel like the homework takes you three times as long as your classmates. You conclude the only way you can keep up is to do the homework with a partner. They do half the assignment and you do the other half. You then exchange solutions. The person who completed each problem then explains the solution to the partner. Each person changes the comments, adds some extra white spaces, and changes a few variable names to ensure the solutions are not identical. This is prohibited by the collaboration policy because each person did not make an honest effort to solve every problem on their own. Although each person either explained or had the solutions explained to them, they likely cannot defend all of their solutions on their own to the instructor. 
 
-## Exams
-
-There are **three in-person exams**: two midterms during class and a final exam during the University final
-exam period. Dates are on the [semester calendar](./calendar.md).
-
-| Exam | When | Notes permitted |
-| --- | --- | --- |
-| Midterm 1 | Wednesday, September 30, in class | open course pack / open binder |
-| Midterm 2 | Wednesday, November 4, in class | open course pack / open binder |
-| Final | Tuesday, December 15, 7:30--9:30 pm | open course pack / open binder |
-
-All exams are **individual** and **without a computer or internet access**. You may not use a tablet, watch,
-phone, or other device to reach a Python environment, an AI tool, or the internet during an exam.
-
-Students who take notes on a tablet during class should sit in the front rows during exams. Tablets may be
-used **only** to read notes you prepared yourself, with connectivity disabled --- the same access a student
-who printed their notes into a binder would have.
-
-## Pyomo Mini Project
-
-In the Pyomo Mini Project you choose a paper from the optimization literature, extract its model with the
-help of an AI tool, and then **check that extraction against the paper by hand, on paper, in pencil**. You
-then implement the corrected model --- or audit the authors' own code, if the paper ships any --- and try to
-reproduce one of their results. It is worth 10% of the course grade; see the
-[semester calendar](./calendar.md) for the due date.
-
-Half the grade is the checking and the correcting. Finding a discrepancy between a paper's printed model and
-its own code is a **success**, not a problem with your choice of paper.
-
-```{note}
-**Project 2 has been retired.** In previous years a second, larger project ran through the second half of the
-semester. It is replaced by the two in-class midterms and the in-person final. With capable AI coding tools
-widely available, an invigilated exam is a more honest measure of what you personally understand.
-```
-
-See [](../org/project1.md) for the project description, the deliverables, and the grading breakdown.
-
-## Grading Standards
-
-All computer code must be commented. No exceptions.
-
-All graphs must have labeled axes with UNITS. Likewise, all final answers need UNITS and should be rounded to the appropriate number of significant digits. For the projects, please prepare [publication quality graphics](https://ndcbe.github.io/data-and-computing/notebooks/01/Publication-Quality-Figures.html)
-
-Be sure to answer the questions that are asked. When discussing results, only report the appropriate number of significant figures.
-
-**Problem Sets:** Not all (sub)questions on problem sets will be graded in detail. You may lose points for missing comments, missing units, unlabeled graphs, and non-sensible significant figures (digits) for final answers, even for problems only graded for completion.
-
-**Formatting**: The expectation is that your submission includes neatly written code with extensive comments, well-labeled graphs, and answers to any discussion questions. Your project submissions should be professionally formatted, like a laboratory report. Your response to discussion questions and code comments MUST be written in your own words.
-
-**Pseudocode:** Some assignments require you to write brief pseudocode. Your pseudocode needs to reflect all the main steps and logic of your solution. You do not need to rewrite your pseudocode if your final solution has different main steps or logic. Instead, you should update your pseudocode with a few notes showing the change. In our experience, rewriting the pseudocode is very helpful if you find a mistake in your logic but get stuck making modifications. Prof. Dowling has been programming in Python for 20 years. He writes pseudocode and so do other professional software developers.
-
-See the [Pseudocode Guidelines](https://ndcbe.github.io/data-and-computing/notebooks/01/Pseudocode.html#pseudocode-guidlines) and [Python and Commenting Guidelines](https://ndcbe.github.io/data-and-computing/notebooks/01/Pseudocode.html#python-and-commenting-guidelines) for additional details.
-
-## Assignment Submission
-
-Assignments should be submitted electronically through Canvas in the format stated on each assignment.
-For Jupyter notebooks, upload the `.ipynb` file; handwritten analysis should be scanned into one readable
-PDF unless the assignment specifies a different package.
-
-## Regrade Requests
-
-Mistakes can be made during grading. Regrades to correct these mistakes will be considered for **up to ONE week after assignment grades are posted online**. 
-
-Regrade requests must be submitted in writing via Gradescope. Please include a 1-3 sentence explanation of the grading mistake. We will not consider adjustments to the grading point distribution.
-
-All regrade requests will result in a reevaluation of the entire assignment. For rubric selection mistakes in Gradescope, this means we will recheck all rubric selections. For more substantial requests, the grader may choose to reexamine the entire problem (including all subparts) and possibly the entire assignment.
-
-## Late Policy
-
-**Students are expected to submit work on time.** Late work is accepted at the discretion of the instructor.
-
-If there is an extenuating circumstance, please **email the instructor with 60499 in the subject**, ideally
-at least 24 hours before the deadline. Briefly explain the circumstance and propose an alternate deadline.
-
-Note that the lowest homework score is dropped, which is intended to absorb the ordinary bad week without
-anyone needing to ask.
-
-## Software
-
-We will use Python 3 in this class. You have three options to use Python:
-1. (Recommended for Most People.) Use Google Colab. This allows you to complete all assignments from any internet accessible computer.
-2. (Recommended for Advanced Users.) Install [anaconda3](https://www.anaconda.com/download/) on your own computer. This is a free distribution of Python that includes common packages for data analysis and scientific computing. You will need to install popular packages such as `numpy`, `scipy`, `pandas`, `matplotlib`, and `pyomo`.
-3. Use anaconda3 installed on any ESC-maintained computer.
-
 ## Artificial Intelligence Policy
 
 Please review Notre Dame's current
@@ -285,6 +191,86 @@ The [Collaboration Policy and Honor Code](#collaboration-policy-and-honor-code) 
 permitted. AI assistance does not excuse wholesale copying, replace the required independent attempt, or
 remove your responsibility to understand, verify, and disclose the submitted work.
 
+## Exams
+
+There are **three in-person exams**: two midterms during class and a final exam during the University final
+exam period. Dates are on the [semester calendar](./calendar.md).
+
+| Exam | When | Notes permitted |
+| --- | --- | --- |
+| Midterm 1 | Wednesday, September 30, in class | open course pack / open binder |
+| Midterm 2 | Wednesday, November 4, in class | open course pack / open binder |
+| Final | Tuesday, December 15, 7:30--9:30 pm | open course pack / open binder |
+
+All exams are **individual** and **without a computer or internet access**. You may not use a tablet, watch,
+phone, or other device to reach a Python environment, an AI tool, or the internet during an exam.
+
+Students who take notes on a tablet during class should print their notes. This is a new recommendation for
+the college. Allowing tablet access even for notes only causes temptations...
+
+## Pyomo Project
+
+In the [Pyomo Project](../org/project1.md) you choose a paper from the optimization literature, extract its model with the
+help of an AI tool, and then **check that extraction against the paper by hand, on paper, in pencil**. You
+then implement the corrected model and try to
+reproduce one of their results. It is worth 10% of the course grade; see the
+[semester calendar](./calendar.md) for the due date.
+
+Aboute half the grade is the checking and the correcting. Finding a discrepancy between a paper's printed model and
+its own code is a **success**, not a problem with your choice of paper.
+
+```{note}
+**Project 2 has been retired.** In previous years a second, larger project ran through the second half of the
+semester. It is replaced by an extra in-class midterm and the in-person final. With capable AI coding tools
+widely available, an in-person exam is a more honest measure of engagement with the topic.
+```
+
+## Grading Standards
+
+All computer code must be commented. No exceptions.
+
+All graphs must have labeled axes with UNITS. Likewise, all final answers need UNITS and should be rounded to the appropriate number of significant digits. For the projects, please prepare [publication quality graphics](https://ndcbe.github.io/data-and-computing/notebooks/01/Publication-Quality-Figures.html)
+
+Be sure to answer the questions that are asked. When discussing results, only report the appropriate number of significant figures.
+
+**Formatting**: The expectation is that your submission includes neatly written code with extensive comments, well-labeled graphs, and answers to any discussion questions. Your project submissions should be professionally formatted, like a laboratory report. Your response to discussion questions and code comments MUST be written in your own words.
+
+**Pseudocode:** Some assignments require you to write brief pseudocode. Your pseudocode needs to reflect all the main steps and logic of your solution. You do not need to rewrite your pseudocode if your final solution has different main steps or logic. Instead, you should update your pseudocode with a few notes showing the change. In our experience, rewriting the pseudocode is very helpful if you find a mistake in your logic but get stuck making modifications. Prof. Dowling has been programming in Python for 20 years. He writes pseudocode and so do other professional software developers.
+
+See the [Pseudocode Guidelines](https://ndcbe.github.io/data-and-computing/notebooks/01/Pseudocode.html#pseudocode-guidlines) and [Python and Commenting Guidelines](https://ndcbe.github.io/data-and-computing/notebooks/01/Pseudocode.html#python-and-commenting-guidelines) for additional details.
+
+## Assignment Submission
+
+Assignments should be submitted electronically through Canvas in the format stated on each assignment.
+For Jupyter notebooks, upload the `.ipynb` file; handwritten analysis should be scanned into one readable
+PDF unless the assignment specifies a different package.
+
+## Regrade Requests
+
+Mistakes can be made during grading. Regrades to correct these mistakes will be considered for **up to ONE week after assignment grades are posted online**. 
+
+Regrade requests must be submitted in writing via Gradescope. Please include a 1-3 sentence explanation of the grading mistake. We will not consider adjustments to the grading point distribution.
+
+All regrade requests will result in a reevaluation of the entire assignment. For rubric selection mistakes in Gradescope, this means we will recheck all rubric selections. For more substantial requests, the grader may choose to reexamine the entire problem (including all subparts) and possibly the entire assignment.
+
+## Late Policy
+
+**Students are expected to submit work on time.** Late work is accepted at the discretion of the instructor.
+
+If there is an extenuating circumstance, please **email the instructor with 60499 in the subject**, ideally
+at least 24 hours before the deadline. Briefly explain the circumstance and propose an alternate deadline.
+
+Note that the lowest homework score is dropped, which is intended to absorb the ordinary bad week without
+anyone needing to ask.
+
+## Software
+
+We will use Python 3 in this class. You have three options to use Python:
+1. (Recommended for Most People.) Use Google Colab. This allows you to complete all assignments from any internet accessible computer.
+2. (Recommended for Advanced Users.) Install [anaconda3](https://www.anaconda.com/download/) on your own computer. This is a free distribution of Python that includes common packages for data analysis and scientific computing. You will need to install popular packages such as `numpy`, `scipy`, `pandas`, `matplotlib`, and `pyomo`.
+3. Use anaconda3 installed on any ESC-maintained computer.
+
+
 ## Inclusiveness, Mental Health, and Disabilities
 
 The University of Notre Dame is committed to social justice. We share that commitment and strive to maintain a positive learning environment based on open communication, mutual respect, and non-discrimination. In this class we will not discriminate on the basis of race, sex, age, economic class, disability, veteran status, religion, sexual orientation, color, or national origin. Any suggestions as to how to further such a positive and open environment will be appreciated and given serious consideration.
@@ -292,7 +278,3 @@ The University of Notre Dame is committed to social justice. We share that commi
 Diminished mental health can interfere with optimal academic performance. The source of symptoms might be related to your course work; if so, please speak with us. However, problems with other parts of your life can also contribute to decreased academic performance. The University Counseling Center (UCC) provides cost-free and confidential mental health services to help you manage personal challenges that threaten your emotional or academic well-being. Remember, getting help is a smart and courageous thing to do — for yourself and for those who care about you. For more resources please see ucc.nd.edu. The UCC is located on the third floor of Saint Liam Hall Phone: 574-631-7336. Hours: Monday-Friday 8:30am – 5:00pm. Urgent Crisis Line 24/7. 
 
 Any student who has a documented disability and is registered with Disability Services should speak with the professor as soon as possible regarding accommodations. Students who are not registered should contact the [Office of Disability Services](https://sarabeadisabilityservices.nd.edu/). 
-
-
-
-

@@ -206,8 +206,8 @@ exam period. Dates are on the [semester calendar](./calendar.md).
 | Midterm 2 | Wednesday, November 4, in class | open course pack / open binder |
 | Final | Tuesday, December 15, 7:30--9:30 pm | open course pack / open binder |
 
-All exams are **individual**. The only electronic device permitted is a scientifi or graphing calculator (no network access 
-or communication). No laptops, tablets, phones, smart watches, e-readers, or
+All exams are **individual**. The only electronic device permitted is a scientific or graphing calculator
+(no network access or communication). No laptops, tablets, phones, smart watches, e-readers, or
 any other electronic device may be out during an exam.
 
 **Your notes must be on paper.** Students who take notes on a tablet during class should print them before

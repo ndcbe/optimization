@@ -1,3 +1,3 @@
 # Archive
 
-This is a list of assingments and material from prior semesters.
+This is a list of assignments and material from prior semesters.

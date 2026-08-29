@@ -6,7 +6,7 @@ It is kept for the record, and because the list of topic ideas below is still us
 
 In previous years a second, larger project ran through the second half of the semester. It is replaced by
 the two in-class midterms and the in-person final --- see the
-[syllabus](./syllabus.md#pyomo-mini-project). With capable AI coding tools widely available, an
+[syllabus](./syllabus.md#pyomo-project). With capable AI coding tools widely available, an
 invigilated exam is a more honest measure of what you personally understand.
 
 The one project this semester is the [](./project1.md).

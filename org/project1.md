@@ -14,9 +14,9 @@ or the same model from a book or report.
 ## This is an AI-forward assignment
 
 The previous version of this project asked you to build a Pyomo model of a problem you chose. That was
-mainly a programming assignment. Arguably, with modern AI tools, mastering programming aspects are
-less important, and instead this assignment can focus on promiting curiosity and practicing critical 
-assessment skils.
+mainly a programming assignment. Arguably, with modern AI tools, mastering the programming aspects is
+less important, and instead this assignment can focus on promoting curiosity and practicing critical
+assessment skills.
 
 This assignment focuses on verification of AI modeling output. You will:
 
@@ -54,8 +54,8 @@ report --- that **contains a complete optimization model and numerical results y
 course notebook, blog post, or undocumented code repository is not a published model for this purpose.
 Moreover, if a paper, report, or book includes a computer implementation of the model (e.g., as supporting 
 information), you are not allowed to use that until the final verification step, after you have done
-extensive \emph{manual/human guided} verification. The purpose of this assignment is to practice 
-reproducing someoneelse's results when you are not given the code.
+extensive *manual, human-guided* verification. The purpose of this assignment is to practice 
+reproducing someone else's results when you are not given the code.
 
 ### The test your source must pass
 
@@ -70,16 +70,16 @@ Before you commit to a literature source, confirm:
    equations, and the formulation fits on two pages in your own notation.
 
 **Do not choose a literature source** that is:
-* a review and survey papers without a complete model
-* a source where the optimization is done inside a commercial black box with accessible model
-* a sources reporting only qualitative results
-* a sources whose model is stated only as "we solved the standard formulation, see reference..."
+* a review or survey paper without a complete model
+* a source where the optimization is done inside a commercial black box with no accessible model
+* a source reporting only qualitative results
+* a source whose model is stated only as "we solved the standard formulation, see reference..."
 
-Note: Some dynamic optimization papers rely on sequential optimization methods, such as multiple shooting. while
+Note: Some dynamic optimization papers rely on sequential optimization methods, such as multiple shooting. While
 this is a valid optimization approach and perhaps the best choice for certain classes of problems, we will not
 cover the basics of these modeling methods: sensitivity or adjoint equations, dynamic modeling environments such as 
 CasADi or Modelica. For this assignment, we recommend choosing a dynamic optimization problem that was successfully solved
-with a simultanous method, such as orthagonal collocation on finite elements.
+with a simultaneous method, such as orthogonal collocation on finite elements.
 
 ```{tip}
 Small and specific beats important and vague. A three-set, six-constraint scheduling model from a solid but niche
@@ -123,7 +123,7 @@ Keep the proposal to less than one page and answer these four questions concisel
 2. Why did *you* choose this model?
 3. Do you have all necessary input data? If not, how will you obtain it quickly? List likely sources and
    any assumptions you expect to make.
-4. What do you hope to learn by completing this mini project?
+4. What do you hope to learn by completing this project?
 
 A bulleted response to each question is welcome. A few sentences or a short paragraph per question is
 also fine.
@@ -186,9 +186,7 @@ the form we use in class:**
 
 Use **symbols, not numbers**. For example, $|\mathcal{T}|$ periods, not 168 periods.
 
-Then perform a **degree-of-freedom analysis** with the six-row table, counted in symbols:
-
-% TODO: Update this to count variables with bounds. See Lecture 2.
+Then perform a **degree-of-freedom analysis** with the nine-row table, counted in symbols:
 
 | Count | Number |
 | --- | --- |
@@ -198,6 +196,14 @@ Then perform a **degree-of-freedom analysis** with the six-row table, counted in
 | nonlinear equality constraints | |
 | linear inequality constraints | |
 | nonlinear inequality constraints | |
+| variable bounds --- lower only | |
+| variable bounds --- upper only | |
+| variable bounds --- both | |
+
+Count the bounds rows the way we do in Lecture 2: a simple bound on a variable is
+recorded as a bound, not as an inequality constraint, so a variable declared with
+`bounds=(0, None)` contributes to *lower only* and not to *linear inequality
+constraints*. A variable that is bounded on both sides is counted once, in *both*.
 
 
 
@@ -224,7 +230,7 @@ You are checking, line by line:
 * Are the inequality directions right? Are any $\le$ and $\ge$ swapped?
 * Are the sums over the right index sets?
 * Are the units consistent, and do they match the source's?
-* Are the six counts right? Recount them yourself.
+* Are the nine counts right? Recount them yourself.
 * Did the tool invent a constraint the source does not have, or quietly drop one it does?
 
 Mark every correction on the printout. Then **scan or photograph the annotated pages and submit them.**
@@ -265,7 +271,7 @@ The implementation follows [](pyomo-style-guide.md): built in a function, a term
 words**.
 
 If the source distributes code, wait until your own model is implemented. Then, try to reproduce the
-published result without using the published code. After try this by yourself, without sharing the published code
+published result without using the published code. After trying this yourself, without sharing the published
 code with the AI tool, use it as an independent validation source: run it if practical, compare its
 equations, data, assumptions, and results with yours, and document any discrepancy. Cite the code and
 respect its license.
@@ -302,7 +308,7 @@ Include:
   model/DOF report, in readable PDF, HTML, Markdown, or text form;
 * one PDF containing the scanned handwritten/annotated work; and
 * any input data files needed to run the notebook
-* text file named README.md or README.txt that described each file in the submitted zip archive
+* a text file named `README.md` or `README.txt` describing each file in the submitted ZIP archive
 
 Use descriptive filenames, and do not include environments, caches, solver scratch files, or unrelated
 downloads. Published source code is not a required submission; include it only when redistribution is
@@ -334,8 +340,8 @@ Every submission ends with a section titled **AI Disclosure**, reporting:
 * **What it got wrong** --- across the whole project, not just Step 5
 * **How you knew** --- this is the graded part
 
-Even if you submitting full transcript(s) or by writing a detailed,
-accurate report of your AI sessions, you should still describe in a few sentences here the overall trajectory of
+Even if you submit full transcript(s) or a detailed, accurate report of your AI
+sessions, you should still describe in a few sentences here the overall trajectory of
 your use of AI for this assignment. Raw prompts and transcripts are not required when the report provides enough detail to
 understand how the work developed.
 
@@ -389,7 +395,7 @@ Work down this list before you submit.
 - [ ] Corrected model typeset in LaTeX, in symbols, units on every parameter and variable
 - [ ] Constraints named for what they mean
 - [ ] No screenshots of mathematics anywhere
-- [ ] Six-row degree-of-freedom table, in symbols, with no total row
+- [ ] Nine-row degree-of-freedom table, in symbols, with no total row
 - [ ] Problem classified, with a reason
 - [ ] Change list, with a source citation for every correction
 - [ ] Pyomo implementation of the **corrected** model built from the published document

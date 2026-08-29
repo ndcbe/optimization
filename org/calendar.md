@@ -11,7 +11,7 @@ This page is generated from the instructor's master calendar. If it disagrees wi
 | Friday, September 4, 2026 | [](../notebooks/assignments/Pyomo1.ipynb) |
 | Friday, September 11, 2026 | [](../notebooks/assignments/Pyomo2.ipynb) |
 | Friday, September 18, 2026 | [](../notebooks/assignments/Pyomo3.ipynb) |
-| Monday, September 21, 2026 | [Pyomo Mini Project proposal](./project1.md#proposal-due-monday-september-21-2026), posted in the Canvas Discussion |
+| Monday, September 21, 2026 | [Pyomo Project proposal](./project1.md#proposal-due-monday-september-21-2026), posted in the Canvas Discussion |
 | Friday, September 25, 2026 | Pyomo 4 |
 | Friday, October 16, 2026 | [](../org/project1.md) |
 | Friday, October 23, 2026 | [](../notebooks/assignments/Algorithms1.ipynb) |
@@ -19,7 +19,7 @@ This page is generated from the instructor's master calendar. If it disagrees wi
 | Friday, November 13, 2026 | [](../notebooks/assignments/Algorithms3.ipynb) |
 | Friday, November 20, 2026 | [](../notebooks/assignments/Algorithms4.ipynb) |
 | Wednesday, December 2, 2026 | [](../notebooks/assignments/Algorithms5-SQP.ipynb) |
-| Wednesday, December 9, 2026 | Algorithms 6 |
+| Wednesday, December 9, 2026 | [](../notebooks/assignments/Algorithms6-MINLP.ipynb) |
 
 All assignments are due at 5pm unless otherwise noted.
 
@@ -38,8 +38,7 @@ All three are in person, individual, and open course pack. No computer or intern
 
 ## Class Meetings
 
-Mondays and Wednesdays, 12:30 -- 1:45 pm, 303 Cushing Hall. *(A room change request is pending --- check
-Canvas.)*
+Mondays and Wednesdays, 12:30 -- 1:45 pm, 184 Nieuwland Science Hall.
 
 | Day | Topic(s) |
 | ----------- | ----------- |

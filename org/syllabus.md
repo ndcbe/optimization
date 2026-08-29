@@ -34,17 +34,21 @@ We encourage you to post all your questions including your mathematical models, 
 
 ## Textbook and Reference Materials
 
-% TODO: Plese update against the front matter in the lecture notes.
+This list matches the *Main references* and *Additional recommended references* in the front matter of
+the printed course pack.
 
-Primary References:
-1. *Nonlinear Programming: Concepts, Algorithms, and Applications to Chemical Processes* by Lorenz T. Biegler [Chapter PDFs are available on SIAM website for free (on campus)](https://epubs.siam.org/doi/book/10.1137/1.9780898719383)
-2. *Pyomo - Optimization Modeling in Python* by William E. Hart, Carl D. Laird, Jean-Paul Watson, David L. Woodruff, Gabriel A. Hackebeil, Bethany L. Nicholson, John D. Siirola. [A PDF is available via the campus library.](https://link-springer-com.proxy.library.nd.edu/book/10.1007%2F978-3-319-58821-6)
+Main References:
+1. *Nonlinear Programming: Concepts, Algorithms, and Applications to Chemical Processes* by Lorenz T. Biegler, SIAM (2010). The primary reference for most of the course. [Chapter PDFs are free from SIAM on campus.](https://epubs.siam.org/doi/book/10.1137/1.9780898719383)
+2. *Numerical Optimization* by Jorge Nocedal and Stephen J. Wright, 2nd edition, Springer (2006). A phenomenal reference on optimization algorithms and theory. [A digital copy is available via the campus library.](https://link.springer.com/book/10.1007/978-0-387-40065-5)
+3. *Hands-On Mathematical Optimization with Python* by Krzysztof Postek, Alessandro Zocca, Joaquim Gromicho, and Jeffrey Kantor, Cambridge University Press (2025). Introduces optimization modeling and theory with extensive Pyomo examples. If you are primarily interested in applications, buy this book. [It has an excellent companion website.](https://mobook.github.io/MO-book/)
 
 Additional References:
-1. *Numeric Optimization* by Jorge Nocedal and Stephen J. Wright, 2nd edition.
-2. *Global Optimization: Theory, Algorithms, and Applications* by Marco Locatelli and Fabio Schoen. [Chapter PDFs are available on SIAM website for free (on campus)](https://epubs-siam-org.proxy.library.nd.edu/doi/book/10.1137/1.9781611972672)
-3. *Systematic Methods of Chemical Process Design* by Lorenz Biegler, Ignacio Grossmann, Arthur Westerberg. (Yes, this has really good sections on modeling applicable outside chemical engineering.)
-5. *Lectures on Stochastic Programming: Modeling and Theory* by Alexander Shapiro, Darinka Dentcheva, Andrzej Ruszczynski. [Chapter PDFs are available on SIAM website for free (on campus)](https://epubs.siam.org/doi/book/10.1137/1.9780898718751)
+1. *Pyomo --- Optimization Modeling in Python* by Michael L. Bynum, Gabriel A. Hackebeil, William E. Hart, Carl D. Laird, Bethany L. Nicholson, John D. Siirola, Jean-Paul Watson, and David L. Woodruff, 3rd edition, Springer (2021). [A PDF is available via the campus library.](https://link.springer.com/book/10.1007/978-3-030-68928-5)
+2. *Introduction to Stochastic Programming* by John R. Birge and François Louveaux, 2nd edition, Springer (2011). [A PDF is available via the campus library.](https://link.springer.com/book/10.1007/978-1-4614-0237-4)
+3. *Global Optimization: Theory, Algorithms, and Applications* by Marco Locatelli and Fabio Schoen, SIAM (2013). [Chapter PDFs are free from SIAM on campus.](https://epubs.siam.org/doi/book/10.1137/1.9781611972672)
+4. *Systematic Methods of Chemical Process Design* by Lorenz Biegler, Ignacio Grossmann, and Arthur Westerberg, Prentice Hall (1997). (Yes, this has really good sections on modeling applicable outside chemical engineering, including a great chapter on logical modeling.)
+5. *Nonlinear Multiobjective Optimization* by Kaisa Miettinen, Springer (1998). [A PDF is available via the campus library.](https://link.springer.com/book/10.1007/978-1-4615-5563-6)
+6. *Decision Making in Systems Engineering and Management* edited by Patrick J. Driscoll, Gregory S. Parnell, and Dale L. Henderson, 3rd edition, Wiley (2023). Broader framing for *decision science* beyond optimization. [Available digitally via the campus library.](https://findit.library.nd.edu/EdsRecord/cat10922a,und.ebs102843868e)
 
 ## Classroom Meetings
 
@@ -67,7 +71,7 @@ Final grades will be determined as follows:
 | Category    | Weight |
 | ------ | ----- |
 | Homework (best 9 of 10, completion based) | 15% |
-| Pyomo Mini Project | 10% |
+| Pyomo Project | 10% |
 | Midterm 1 | 22.5% |
 | Midterm 2 | 22.5% |
 | Final exam | 30% |
@@ -215,7 +219,7 @@ then implement the corrected model and try to
 reproduce one of their results. It is worth 10% of the course grade; see the
 [semester calendar](./calendar.md) for the due date.
 
-Aboute half the grade is the checking and the correcting. Finding a discrepancy between a paper's printed model and
+About half the grade is the checking and the correcting. Finding a discrepancy between a paper's printed model and
 its own code is a **success**, not a problem with your choice of paper.
 
 ```{note}

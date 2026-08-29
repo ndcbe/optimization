@@ -1,7 +1,7 @@
 # Pyomo Style Guide
 
 This is the house style for every notebook on this website — the ones Prof. Dowling writes, the ones
-you write for the [Pyomo Mini Project](project1.md), and the ones you
+you write for the [Pyomo Project](project1.md), and the ones you
 [contribute to the class repository](contribute.md).
 
 It exists so that a reader who has seen one notebook can read any other one without relearning

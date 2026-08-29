@@ -285,12 +285,52 @@ def install_highs(verbose=False):
         print("highspy was successfully installed")
 
 
+def install_casadi(verbose=False):
+    """Installs CasADi via pip
+
+    CasADi is the ONLY DAE-capable integrator available to this course.
+    `pyomo.dae.Simulator` accepts package='scipy' or package='casadi', and only
+    the CasADi path builds the algebraic part of the system -- scipy's
+    integrators solve y' = f(t, y) and nothing else, so a model with an
+    algebraic equation raises
+
+        DAE_Error: Model contains an algebraic equation ... you must use
+        CasADi as the integration package.
+
+    It is a conda dependency in environment.yml, so local installs already have
+    it, but stock Colab does not ship it and it is only an optional Pyomo extra.
+    Without this, `Simulator(m, package="casadi")` fails on Colab.
+
+    Argument:
+        verbose: bool, if True, display console output from pip install
+
+    """
+
+    try:
+        import casadi
+
+        print("casadi was found! No need to install.")
+    except ImportError:
+        print("Installing casadi via pip...")
+        v = subprocess.run(
+            [sys.executable, "-m", "pip", "install", "-q", "casadi"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        if verbose:
+            print(v.stdout)
+            print(v.stderr)
+        print("casadi was successfully installed")
+
+
 def easy_install(verbose=False):
     """Install IDAES and solvers in one step"""
 
     install_idaes(verbose=verbose)
     install_ipopt(verbose=verbose, try_conda_as_backup=True)
     install_highs(verbose=verbose)
+    install_casadi(verbose=verbose)
 
 def _update_path():
     """Add idaes executables to PATH"""

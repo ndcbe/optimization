@@ -16,7 +16,6 @@ A background in linear algebra and numericalmethods is strongly recommended but 
 
 **Prof. Alexander (Alex) Dowling** --- office hours 30 minutes after class in 256 Nieuwland Science Hall.
 
-
 To schedule a meeting with Prof. Dowling:
 * Check his availability on [Google calendar](https://calendar.google.com/calendar/u/0?cid=YWRvd2xpbmdAbmQuZWR1)
 * Send him an email with ~3 proposed times (that work for both you and his Google calendar)

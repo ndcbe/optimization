@@ -151,6 +151,11 @@ def _origin_inset(ax):
     axins.set_ylim(-0.8, y_hi)
     axins.tick_params(labelsize=11)
     axins.set_xticks([0, 1])
+    # The inset sits over the parent panel's x axis.  Its left-hand ``0``
+    # label landed directly on the parent's ``10`` tick when the figure was
+    # reduced to lecture-note width.  Keep the origin tick (and the two jump
+    # markers that identify x=0), but suppress that redundant text label.
+    axins.set_xticklabels(["", "1"])
     axins.set_yticks([0, 5, 10, 15])
     ax.indicate_inset_zoom(axins, edgecolor="black", linewidth=0.9, alpha=0.9)
     return axins

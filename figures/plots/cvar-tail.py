@@ -6,9 +6,9 @@ Drawn for lectures/stochastic-programming-advanced.tex, section "Conditional
 value at risk", which states three things in prose that a picture settles at
 once:
 
-  1. "CVaR at level alpha is the expected cost CONDITIONAL on being in the
-     worst alpha fraction of outcomes";
-  2. "the optimal nu is the (1-alpha)-quantile of the loss" -- i.e. the
+  1. "CVaR at confidence level alpha is the expected cost CONDITIONAL on being
+     in the worst (1-alpha) fraction of outcomes";
+  2. "the optimal nu is the alpha-quantile of the loss" -- i.e. the
      auxiliary variable of (eq:cvar) is not an artefact, it IS the VaR;
   3. the epigraph reformulation (eq:cvar-lp): gamma_j >= phi(pi,xi_j) - nu and
      gamma_j >= 0 together reproduce [.]_+, and at the optimum gamma_j equals
@@ -29,26 +29,26 @@ CVaR sit almost on top of each other and the figure says nothing.
 Closed forms for the lognormal, both checked against 1-d quadrature in
 _verify():
 
-    VaR_alpha  = exp(mu + sigma z_{1-alpha})
-    CVaR_alpha = E[phi | phi > VaR] = exp(mu + sigma^2/2) Phi(sigma - z_{1-alpha}) / alpha
+    VaR_alpha  = exp(mu + sigma z_alpha)
+    CVaR_alpha = E[phi | phi > VaR] = exp(mu + sigma^2/2) Phi(sigma - z_alpha) / (1-alpha)
 
-With alpha = 0.20:  E[phi] = 1.000, VaR = 1.344, CVaR = 1.832.  So the ordering
+With alpha = 0.80:  E[phi] = 1.000, VaR = 1.344, CVaR = 1.832.  So the ordering
 E <= VaR <= CVaR is visible, and the gap CVaR - VaR is the part of the tail
 that VaR alone cannot see -- the standard reason VaR is not a coherent risk
 measure and CVaR is.
 
-Phi and z_{1-alpha} are computed from math.erf and a bisection, so this script
+Phi and z_alpha are computed from math.erf and a bisection, so this script
 needs no scipy (nothing else in figures/plots/ imports it).
 
 PANEL (b) -- the same statement on a finite scenario set, which is (eq:cvar-lp)
 ------------------------------------------------------------------------------
 20 i.i.d. draws from the same distribution, seeded, sorted, plotted as points.
 For a finite sample the CVaR linear program's optimum is attained at an order
-statistic: with N = 20 and alpha = 0.2 the minimiser of
+statistic: with N = 20 and alpha = 0.8 the minimiser of
 
-    F(nu) = nu + (1/(alpha N)) sum_j [phi_j - nu]_+
+    F(nu) = nu + (1/((1-alpha) N)) sum_j [phi_j - nu]_+
 
-is nu* = phi_(16) (the ceil((1-alpha)N)-th smallest), and then
+is nu* = phi_(16) (the ceil(alpha N)-th smallest), and then
 
     CVaR = phi_(16) + (1/4) sum_{j=17}^{20} (phi_j - phi_(16))
          = mean(phi_(17), ..., phi_(20)),
@@ -59,7 +59,8 @@ so the identity is checked numerically rather than asserted.
 
 The vertical stubs above nu* are the gamma_j of (eq:cvar-lp) -- one per tail
 scenario, zero for every other scenario.  That is the figure's real payload:
-students can see which gamma_j are nonzero, and the count is exactly alpha N.
+students can see which gamma_j are nonzero, and the count is exactly
+(1-alpha) N.
 
 NOTATION.  The loss is written f(pi,xi), matching \obj in the course pack --
 NOT phi.  The pack renders \obj as f, and a figure that said phi beside a
@@ -81,7 +82,8 @@ import matplotlib.pyplot as plt
 
 from _house import HATCH_CYCLE, SHADE_ALPHA
 
-ALPHA = 0.20            # risk level: the worst 20% of outcomes
+ALPHA = 0.80            # confidence level: the worst 20% are the tail
+TAIL_PROB = 1.0 - ALPHA
 SIGMA = 0.5
 MU = -0.5 * SIGMA**2    # so that E[phi] = exp(mu + sigma^2/2) = 1
 N_SCEN = 20
@@ -107,9 +109,9 @@ def _z(p, lo=-10.0, hi=10.0):
     return 0.5 * (lo + hi)
 
 
-Z_1MA = _z(1.0 - ALPHA)
-VAR = math.exp(MU + SIGMA * Z_1MA)
-CVAR = math.exp(MU + 0.5 * SIGMA**2) * _Phi(SIGMA - Z_1MA) / ALPHA
+Z_ALPHA = _z(ALPHA)
+VAR = math.exp(MU + SIGMA * Z_ALPHA)
+CVAR = math.exp(MU + 0.5 * SIGMA**2) * _Phi(SIGMA - Z_ALPHA) / TAIL_PROB
 MEAN = math.exp(MU + 0.5 * SIGMA**2)
 
 
@@ -146,7 +148,7 @@ def _verify():
     tgrid = np.concatenate(([VAR], grid[grid > VAR]))
     tdens = _pdf(tgrid)
     mass = _trapz(tdens, tgrid)
-    assert abs(mass - ALPHA) < 1e-5, f"tail mass {mass}, expected {ALPHA}"
+    assert abs(mass - TAIL_PROB) < 1e-5, f"tail mass {mass}, expected {TAIL_PROB}"
     cond_mean = _trapz(tgrid * tdens, tgrid) / mass
     assert abs(cond_mean - CVAR) < 1e-4, f"CVaR {CVAR} vs quadrature {cond_mean}"
 
@@ -156,17 +158,17 @@ def _verify():
     phi = _scenarios()
 
     def F(nu):
-        return nu + np.maximum(phi - nu, 0.0).sum() / (ALPHA * N_SCEN)
+        return nu + np.maximum(phi - nu, 0.0).sum() / (TAIL_PROB * N_SCEN)
 
     nu_grid = np.linspace(phi.min() - 0.5, phi.max() + 0.5, 20001)
     vals = np.array([F(nu) for nu in nu_grid])
-    nu_star = phi[int(math.ceil((1 - ALPHA) * N_SCEN)) - 1]      # phi_(16)
+    nu_star = phi[int(math.ceil(ALPHA * N_SCEN)) - 1]            # phi_(16)
     assert abs(nu_grid[vals.argmin()] - nu_star) < 5e-3, "argmin is not phi_(16)"
 
-    k = int(round(ALPHA * N_SCEN))                                # 4 tail scenarios
+    k = int(round(TAIL_PROB * N_SCEN))                            # 4 tail scenarios
     assert k == 4
     assert abs(F(nu_star) - phi[-k:].mean()) < 1e-12, \
-        "discrete CVaR is not the mean of the worst alpha*N scenarios"
+        "discrete CVaR is not the mean of the worst (1-alpha)*N scenarios"
 
 
 _verify()
@@ -210,7 +212,7 @@ def _panel_a(ax):
         )
 
     ax.annotate(
-        f"worst {ALPHA:.0%} of outcomes\n(area $=\\alpha$)",
+        f"worst {TAIL_PROB:.0%} of outcomes\n(area $=1-\\alpha$)",
         xy=(2.20, 0.085),
         xytext=(3.05, 0.34),
         fontsize=11,
@@ -231,7 +233,7 @@ def _panel_a(ax):
 def _panel_b(ax):
     phi = _scenarios()
     j = np.arange(1, N_SCEN + 1)
-    k = int(round(ALPHA * N_SCEN))
+    k = int(round(TAIL_PROB * N_SCEN))
     nu_star = phi[N_SCEN - k - 1]                 # phi_(16) with N=20, k=4
     cvar = phi[-k:].mean()
 

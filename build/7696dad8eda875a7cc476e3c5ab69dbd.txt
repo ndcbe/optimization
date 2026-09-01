@@ -1,0 +1,270 @@
+2 Set Declarations
+    CROPS : Size=1, Index=None, Ordered=Insertion
+        Key  : Dimen : Domain : Size : Members
+        None :     1 :    Any :    3 : {'Wheat', 'Corn', 'Beets'}
+    SCENARIOS : Size=1, Index=None, Ordered=Insertion
+        Key  : Dimen : Domain : Size : Members
+        None :     1 :    Any :    3 : {'BELOW', 'AVERAGE', 'ABOVE'}
+
+1 Objective Declarations
+    obj : Size=1, Index=None, Active=True
+        Key  : Active : Sense    : Expression
+        None :   True : maximize : ((- (planning_scenarios[BELOW].cost[Wheat]*planning_scenarios[BELOW].plant[Wheat] + planning_scenarios[BELOW].cost[Corn]*planning_scenarios[BELOW].plant[Corn] + planning_scenarios[BELOW].cost[Beets]*planning_scenarios[BELOW].plant[Beets]) - (planning_scenarios[BELOW].purchase_price[Wheat]*planning_scenarios[BELOW].buy[Wheat] + planning_scenarios[BELOW].purchase_price[Corn]*planning_scenarios[BELOW].buy[Corn] + planning_scenarios[BELOW].purchase_price[Beets]*planning_scenarios[BELOW].buy[Beets]) + (planning_scenarios[BELOW].sell_price_favorable[Wheat]*planning_scenarios[BELOW].sell_favorable[Wheat] + planning_scenarios[BELOW].sell_price_unfavorable[Wheat]*planning_scenarios[BELOW].sell_unfavorable[Wheat] + planning_scenarios[BELOW].sell_price_favorable[Corn]*planning_scenarios[BELOW].sell_favorable[Corn] + planning_scenarios[BELOW].sell_price_unfavorable[Corn]*planning_scenarios[BELOW].sell_unfavorable[Corn] + planning_scenarios[BELOW].sell_price_favorable[Beets]*planning_scenarios[BELOW].sell_favorable[Beets] + planning_scenarios[BELOW].sell_price_unfavorable[Beets]*planning_scenarios[BELOW].sell_unfavorable[Beets])) + (- (planning_scenarios[AVERAGE].cost[Wheat]*planning_scenarios[AVERAGE].plant[Wheat] + planning_scenarios[AVERAGE].cost[Corn]*planning_scenarios[AVERAGE].plant[Corn] + planning_scenarios[AVERAGE].cost[Beets]*planning_scenarios[AVERAGE].plant[Beets]) - (planning_scenarios[AVERAGE].purchase_price[Wheat]*planning_scenarios[AVERAGE].buy[Wheat] + planning_scenarios[AVERAGE].purchase_price[Corn]*planning_scenarios[AVERAGE].buy[Corn] + planning_scenarios[AVERAGE].purchase_price[Beets]*planning_scenarios[AVERAGE].buy[Beets]) + (planning_scenarios[AVERAGE].sell_price_favorable[Wheat]*planning_scenarios[AVERAGE].sell_favorable[Wheat] + planning_scenarios[AVERAGE].sell_price_unfavorable[Wheat]*planning_scenarios[AVERAGE].sell_unfavorable[Wheat] + planning_scenarios[AVERAGE].sell_price_favorable[Corn]*planning_scenarios[AVERAGE].sell_favorable[Corn] + planning_scenarios[AVERAGE].sell_price_unfavorable[Corn]*planning_scenarios[AVERAGE].sell_unfavorable[Corn] + planning_scenarios[AVERAGE].sell_price_favorable[Beets]*planning_scenarios[AVERAGE].sell_favorable[Beets] + planning_scenarios[AVERAGE].sell_price_unfavorable[Beets]*planning_scenarios[AVERAGE].sell_unfavorable[Beets])) + (- (planning_scenarios[ABOVE].cost[Wheat]*planning_scenarios[ABOVE].plant[Wheat] + planning_scenarios[ABOVE].cost[Corn]*planning_scenarios[ABOVE].plant[Corn] + planning_scenarios[ABOVE].cost[Beets]*planning_scenarios[ABOVE].plant[Beets]) - (planning_scenarios[ABOVE].purchase_price[Wheat]*planning_scenarios[ABOVE].buy[Wheat] + planning_scenarios[ABOVE].purchase_price[Corn]*planning_scenarios[ABOVE].buy[Corn] + planning_scenarios[ABOVE].purchase_price[Beets]*planning_scenarios[ABOVE].buy[Beets]) + (planning_scenarios[ABOVE].sell_price_favorable[Wheat]*planning_scenarios[ABOVE].sell_favorable[Wheat] + planning_scenarios[ABOVE].sell_price_unfavorable[Wheat]*planning_scenarios[ABOVE].sell_unfavorable[Wheat] + planning_scenarios[ABOVE].sell_price_favorable[Corn]*planning_scenarios[ABOVE].sell_favorable[Corn] + planning_scenarios[ABOVE].sell_price_unfavorable[Corn]*planning_scenarios[ABOVE].sell_unfavorable[Corn] + planning_scenarios[ABOVE].sell_price_favorable[Beets]*planning_scenarios[ABOVE].sell_favorable[Beets] + planning_scenarios[ABOVE].sell_price_unfavorable[Beets]*planning_scenarios[ABOVE].sell_unfavorable[Beets])))/3
+
+1 Constraint Declarations
+    enforce_same_planting : Size=6, Index=SCENARIOS*CROPS, Active=True
+        Key                : Lower : Body                                                                              : Upper : Active
+        ('ABOVE', 'Beets') :   0.0 : planning_scenarios[ABOVE].plant[Beets] - planning_scenarios[AVERAGE].plant[Beets] :   0.0 :   True
+         ('ABOVE', 'Corn') :   0.0 :   planning_scenarios[ABOVE].plant[Corn] - planning_scenarios[AVERAGE].plant[Corn] :   0.0 :   True
+        ('ABOVE', 'Wheat') :   0.0 : planning_scenarios[ABOVE].plant[Wheat] - planning_scenarios[AVERAGE].plant[Wheat] :   0.0 :   True
+        ('BELOW', 'Beets') :   0.0 : planning_scenarios[BELOW].plant[Beets] - planning_scenarios[AVERAGE].plant[Beets] :   0.0 :   True
+         ('BELOW', 'Corn') :   0.0 :   planning_scenarios[BELOW].plant[Corn] - planning_scenarios[AVERAGE].plant[Corn] :   0.0 :   True
+        ('BELOW', 'Wheat') :   0.0 : planning_scenarios[BELOW].plant[Wheat] - planning_scenarios[AVERAGE].plant[Wheat] :   0.0 :   True
+
+1 Block Declarations
+    planning_scenarios : Size=3, Index={BELOW, ABOVE, AVERAGE}, Active=True
+        planning_scenarios[ABOVE] : Active=True
+            1 Set Declarations
+                CROPS : Size=1, Index=None, Ordered=Insertion
+                    Key  : Dimen : Domain : Size : Members
+                    None :     1 :    Any :    3 : {'Wheat', 'Corn', 'Beets'}
+
+            7 Param Declarations
+                cost : Size=3, Index=planning_scenarios[ABOVE].CROPS, Domain=NonNegativeReals, Default=None, Mutable=True, Units=USD/acre
+                    Key   : Value
+                    Beets :   260
+                     Corn :   230
+                    Wheat :   150
+                crop_yield : Size=3, Index=planning_scenarios[ABOVE].CROPS, Domain=NonNegativeReals, Default=None, Mutable=True, Units=t/acre
+                    Key   : Value
+                    Beets :               24.0
+                     Corn : 3.5999999999999996
+                    Wheat :                3.0
+                max_possible : Size=3, Index=planning_scenarios[ABOVE].CROPS, Domain=NonNegativeReals, Default=None, Mutable=True, Units=t
+                    Key   : Value
+                    Beets : 6000.0
+                     Corn :    inf
+                    Wheat :    inf
+                min_required : Size=3, Index=planning_scenarios[ABOVE].CROPS, Domain=NonNegativeReals, Default=None, Mutable=True, Units=t
+                    Key   : Value
+                    Beets :   0.0
+                     Corn : 240.0
+                    Wheat : 200.0
+                purchase_price : Size=3, Index=planning_scenarios[ABOVE].CROPS, Domain=NonNegativeReals, Default=None, Mutable=True, Units=USD/t
+                    Key   : Value
+                    Beets :   0.0
+                     Corn : 210.0
+                    Wheat : 238.0
+                sell_price_favorable : Size=3, Index=planning_scenarios[ABOVE].CROPS, Domain=NonNegativeReals, Default=None, Mutable=True, Units=USD/t
+                    Key   : Value
+                    Beets :    36
+                     Corn :   150
+                    Wheat :   170
+                sell_price_unfavorable : Size=3, Index=planning_scenarios[ABOVE].CROPS, Domain=NonNegativeReals, Default=None, Mutable=True, Units=USD/t
+                    Key   : Value
+                    Beets :  10.0
+                     Corn :   0.0
+                    Wheat :   0.0
+
+            4 Var Declarations
+                buy : Size=3, Index=planning_scenarios[ABOVE].CROPS, Units=t
+                    Key   : Lower : Value : Upper : Fixed : Stale : Domain
+                    Beets :     0 :     0 :  None :  True : False : NonNegativeReals
+                     Corn :     0 :  None :  None : False :  True : NonNegativeReals
+                    Wheat :     0 :  None :  None : False :  True : NonNegativeReals
+                plant : Size=3, Index=planning_scenarios[ABOVE].CROPS, Units=acre
+                    Key   : Lower : Value : Upper : Fixed : Stale : Domain
+                    Beets :     0 :  None :  None : False :  True : NonNegativeReals
+                     Corn :     0 :  None :  None : False :  True : NonNegativeReals
+                    Wheat :     0 :  None :  None : False :  True : NonNegativeReals
+                sell_favorable : Size=3, Index=planning_scenarios[ABOVE].CROPS, Units=t
+                    Key   : Lower : Value : Upper  : Fixed : Stale : Domain
+                    Beets :     0 :  None : 6000.0 : False :  True : NonNegativeReals
+                     Corn :     0 :  None :   None : False :  True : NonNegativeReals
+                    Wheat :     0 :  None :   None : False :  True : NonNegativeReals
+                sell_unfavorable : Size=3, Index=planning_scenarios[ABOVE].CROPS, Units=t
+                    Key   : Lower : Value : Upper : Fixed : Stale : Domain
+                    Beets :     0 :  None :  None : False :  True : NonNegativeReals
+                     Corn :     0 :  None :  None : False :  True : NonNegativeReals
+                    Wheat :     0 :  None :  None : False :  True : NonNegativeReals
+
+            1 Expression Declarations
+                net_profit : Size=1, Index=None
+                    Key  : Expression
+                    None : - (planning_scenarios[ABOVE].cost[Wheat]*planning_scenarios[ABOVE].plant[Wheat] + planning_scenarios[ABOVE].cost[Corn]*planning_scenarios[ABOVE].plant[Corn] + planning_scenarios[ABOVE].cost[Beets]*planning_scenarios[ABOVE].plant[Beets]) - (planning_scenarios[ABOVE].purchase_price[Wheat]*planning_scenarios[ABOVE].buy[Wheat] + planning_scenarios[ABOVE].purchase_price[Corn]*planning_scenarios[ABOVE].buy[Corn] + planning_scenarios[ABOVE].purchase_price[Beets]*planning_scenarios[ABOVE].buy[Beets]) + (planning_scenarios[ABOVE].sell_price_favorable[Wheat]*planning_scenarios[ABOVE].sell_favorable[Wheat] + planning_scenarios[ABOVE].sell_price_unfavorable[Wheat]*planning_scenarios[ABOVE].sell_unfavorable[Wheat] + planning_scenarios[ABOVE].sell_price_favorable[Corn]*planning_scenarios[ABOVE].sell_favorable[Corn] + planning_scenarios[ABOVE].sell_price_unfavorable[Corn]*planning_scenarios[ABOVE].sell_unfavorable[Corn] + planning_scenarios[ABOVE].sell_price_favorable[Beets]*planning_scenarios[ABOVE].sell_favorable[Beets] + planning_scenarios[ABOVE].sell_price_unfavorable[Beets]*planning_scenarios[ABOVE].sell_unfavorable[Beets])
+
+            2 Constraint Declarations
+                crop_min_constraint : Size=3, Index=planning_scenarios[ABOVE].CROPS, Active=True
+                    Key   : Lower                                         : Body                                                                                                                                                                                                                            : Upper : Active
+                    Beets :                                           0*t : planning_scenarios[ABOVE].crop_yield[Beets]*planning_scenarios[ABOVE].plant[Beets] + planning_scenarios[ABOVE].buy[Beets] - planning_scenarios[ABOVE].sell_unfavorable[Beets] - planning_scenarios[ABOVE].sell_favorable[Beets] :  +Inf :   True
+                     Corn :  planning_scenarios[ABOVE].min_required[Corn] :      planning_scenarios[ABOVE].crop_yield[Corn]*planning_scenarios[ABOVE].plant[Corn] + planning_scenarios[ABOVE].buy[Corn] - planning_scenarios[ABOVE].sell_unfavorable[Corn] - planning_scenarios[ABOVE].sell_favorable[Corn] :  +Inf :   True
+                    Wheat : planning_scenarios[ABOVE].min_required[Wheat] : planning_scenarios[ABOVE].crop_yield[Wheat]*planning_scenarios[ABOVE].plant[Wheat] + planning_scenarios[ABOVE].buy[Wheat] - planning_scenarios[ABOVE].sell_unfavorable[Wheat] - planning_scenarios[ABOVE].sell_favorable[Wheat] :  +Inf :   True
+                total_area : Size=1, Index=None, Active=True
+                    Key  : Lower : Body                                                                                                                    : Upper    : Active
+                    None :  -Inf : planning_scenarios[ABOVE].plant[Wheat] + planning_scenarios[ABOVE].plant[Corn] + planning_scenarios[ABOVE].plant[Beets] : 500*acre :   True
+
+            15 Declarations: CROPS cost sell_price_favorable sell_price_unfavorable purchase_price crop_yield min_required max_possible plant buy sell_favorable sell_unfavorable total_area crop_min_constraint net_profit
+        planning_scenarios[AVERAGE] : Active=True
+            1 Set Declarations
+                CROPS : Size=1, Index=None, Ordered=Insertion
+                    Key  : Dimen : Domain : Size : Members
+                    None :     1 :    Any :    3 : {'Wheat', 'Corn', 'Beets'}
+
+            7 Param Declarations
+                cost : Size=3, Index=planning_scenarios[AVERAGE].CROPS, Domain=NonNegativeReals, Default=None, Mutable=True, Units=USD/acre
+                    Key   : Value
+                    Beets :   260
+                     Corn :   230
+                    Wheat :   150
+                crop_yield : Size=3, Index=planning_scenarios[AVERAGE].CROPS, Domain=NonNegativeReals, Default=None, Mutable=True, Units=t/acre
+                    Key   : Value
+                    Beets :  20.0
+                     Corn :   3.0
+                    Wheat :   2.5
+                max_possible : Size=3, Index=planning_scenarios[AVERAGE].CROPS, Domain=NonNegativeReals, Default=None, Mutable=True, Units=t
+                    Key   : Value
+                    Beets : 6000.0
+                     Corn :    inf
+                    Wheat :    inf
+                min_required : Size=3, Index=planning_scenarios[AVERAGE].CROPS, Domain=NonNegativeReals, Default=None, Mutable=True, Units=t
+                    Key   : Value
+                    Beets :   0.0
+                     Corn : 240.0
+                    Wheat : 200.0
+                purchase_price : Size=3, Index=planning_scenarios[AVERAGE].CROPS, Domain=NonNegativeReals, Default=None, Mutable=True, Units=USD/t
+                    Key   : Value
+                    Beets :   0.0
+                     Corn : 210.0
+                    Wheat : 238.0
+                sell_price_favorable : Size=3, Index=planning_scenarios[AVERAGE].CROPS, Domain=NonNegativeReals, Default=None, Mutable=True, Units=USD/t
+                    Key   : Value
+                    Beets :    36
+                     Corn :   150
+                    Wheat :   170
+                sell_price_unfavorable : Size=3, Index=planning_scenarios[AVERAGE].CROPS, Domain=NonNegativeReals, Default=None, Mutable=True, Units=USD/t
+                    Key   : Value
+                    Beets :  10.0
+                     Corn :   0.0
+                    Wheat :   0.0
+
+            4 Var Declarations
+                buy : Size=3, Index=planning_scenarios[AVERAGE].CROPS, Units=t
+                    Key   : Lower : Value : Upper : Fixed : Stale : Domain
+                    Beets :     0 :     0 :  None :  True : False : NonNegativeReals
+                     Corn :     0 :  None :  None : False :  True : NonNegativeReals
+                    Wheat :     0 :  None :  None : False :  True : NonNegativeReals
+                plant : Size=3, Index=planning_scenarios[AVERAGE].CROPS, Units=acre
+                    Key   : Lower : Value : Upper : Fixed : Stale : Domain
+                    Beets :     0 :  None :  None : False :  True : NonNegativeReals
+                     Corn :     0 :  None :  None : False :  True : NonNegativeReals
+                    Wheat :     0 :  None :  None : False :  True : NonNegativeReals
+                sell_favorable : Size=3, Index=planning_scenarios[AVERAGE].CROPS, Units=t
+                    Key   : Lower : Value : Upper  : Fixed : Stale : Domain
+                    Beets :     0 :  None : 6000.0 : False :  True : NonNegativeReals
+                     Corn :     0 :  None :   None : False :  True : NonNegativeReals
+                    Wheat :     0 :  None :   None : False :  True : NonNegativeReals
+                sell_unfavorable : Size=3, Index=planning_scenarios[AVERAGE].CROPS, Units=t
+                    Key   : Lower : Value : Upper : Fixed : Stale : Domain
+                    Beets :     0 :  None :  None : False :  True : NonNegativeReals
+                     Corn :     0 :  None :  None : False :  True : NonNegativeReals
+                    Wheat :     0 :  None :  None : False :  True : NonNegativeReals
+
+            1 Expression Declarations
+                net_profit : Size=1, Index=None
+                    Key  : Expression
+                    None : - (planning_scenarios[AVERAGE].cost[Wheat]*planning_scenarios[AVERAGE].plant[Wheat] + planning_scenarios[AVERAGE].cost[Corn]*planning_scenarios[AVERAGE].plant[Corn] + planning_scenarios[AVERAGE].cost[Beets]*planning_scenarios[AVERAGE].plant[Beets]) - (planning_scenarios[AVERAGE].purchase_price[Wheat]*planning_scenarios[AVERAGE].buy[Wheat] + planning_scenarios[AVERAGE].purchase_price[Corn]*planning_scenarios[AVERAGE].buy[Corn] + planning_scenarios[AVERAGE].purchase_price[Beets]*planning_scenarios[AVERAGE].buy[Beets]) + (planning_scenarios[AVERAGE].sell_price_favorable[Wheat]*planning_scenarios[AVERAGE].sell_favorable[Wheat] + planning_scenarios[AVERAGE].sell_price_unfavorable[Wheat]*planning_scenarios[AVERAGE].sell_unfavorable[Wheat] + planning_scenarios[AVERAGE].sell_price_favorable[Corn]*planning_scenarios[AVERAGE].sell_favorable[Corn] + planning_scenarios[AVERAGE].sell_price_unfavorable[Corn]*planning_scenarios[AVERAGE].sell_unfavorable[Corn] + planning_scenarios[AVERAGE].sell_price_favorable[Beets]*planning_scenarios[AVERAGE].sell_favorable[Beets] + planning_scenarios[AVERAGE].sell_price_unfavorable[Beets]*planning_scenarios[AVERAGE].sell_unfavorable[Beets])
+
+            2 Constraint Declarations
+                crop_min_constraint : Size=3, Index=planning_scenarios[AVERAGE].CROPS, Active=True
+                    Key   : Lower                                           : Body                                                                                                                                                                                                                                      : Upper : Active
+                    Beets :                                             0*t : planning_scenarios[AVERAGE].crop_yield[Beets]*planning_scenarios[AVERAGE].plant[Beets] + planning_scenarios[AVERAGE].buy[Beets] - planning_scenarios[AVERAGE].sell_unfavorable[Beets] - planning_scenarios[AVERAGE].sell_favorable[Beets] :  +Inf :   True
+                     Corn :  planning_scenarios[AVERAGE].min_required[Corn] :      planning_scenarios[AVERAGE].crop_yield[Corn]*planning_scenarios[AVERAGE].plant[Corn] + planning_scenarios[AVERAGE].buy[Corn] - planning_scenarios[AVERAGE].sell_unfavorable[Corn] - planning_scenarios[AVERAGE].sell_favorable[Corn] :  +Inf :   True
+                    Wheat : planning_scenarios[AVERAGE].min_required[Wheat] : planning_scenarios[AVERAGE].crop_yield[Wheat]*planning_scenarios[AVERAGE].plant[Wheat] + planning_scenarios[AVERAGE].buy[Wheat] - planning_scenarios[AVERAGE].sell_unfavorable[Wheat] - planning_scenarios[AVERAGE].sell_favorable[Wheat] :  +Inf :   True
+                total_area : Size=1, Index=None, Active=True
+                    Key  : Lower : Body                                                                                                                          : Upper    : Active
+                    None :  -Inf : planning_scenarios[AVERAGE].plant[Wheat] + planning_scenarios[AVERAGE].plant[Corn] + planning_scenarios[AVERAGE].plant[Beets] : 500*acre :   True
+
+            15 Declarations: CROPS cost sell_price_favorable sell_price_unfavorable purchase_price crop_yield min_required max_possible plant buy sell_favorable sell_unfavorable total_area crop_min_constraint net_profit
+        planning_scenarios[BELOW] : Active=True
+            1 Set Declarations
+                CROPS : Size=1, Index=None, Ordered=Insertion
+                    Key  : Dimen : Domain : Size : Members
+                    None :     1 :    Any :    3 : {'Wheat', 'Corn', 'Beets'}
+
+            7 Param Declarations
+                cost : Size=3, Index=planning_scenarios[BELOW].CROPS, Domain=NonNegativeReals, Default=None, Mutable=True, Units=USD/acre
+                    Key   : Value
+                    Beets :   260
+                     Corn :   230
+                    Wheat :   150
+                crop_yield : Size=3, Index=planning_scenarios[BELOW].CROPS, Domain=NonNegativeReals, Default=None, Mutable=True, Units=t/acre
+                    Key   : Value
+                    Beets :               16.0
+                     Corn : 2.4000000000000004
+                    Wheat :                2.0
+                max_possible : Size=3, Index=planning_scenarios[BELOW].CROPS, Domain=NonNegativeReals, Default=None, Mutable=True, Units=t
+                    Key   : Value
+                    Beets : 6000.0
+                     Corn :    inf
+                    Wheat :    inf
+                min_required : Size=3, Index=planning_scenarios[BELOW].CROPS, Domain=NonNegativeReals, Default=None, Mutable=True, Units=t
+                    Key   : Value
+                    Beets :   0.0
+                     Corn : 240.0
+                    Wheat : 200.0
+                purchase_price : Size=3, Index=planning_scenarios[BELOW].CROPS, Domain=NonNegativeReals, Default=None, Mutable=True, Units=USD/t
+                    Key   : Value
+                    Beets :   0.0
+                     Corn : 210.0
+                    Wheat : 238.0
+                sell_price_favorable : Size=3, Index=planning_scenarios[BELOW].CROPS, Domain=NonNegativeReals, Default=None, Mutable=True, Units=USD/t
+                    Key   : Value
+                    Beets :    36
+                     Corn :   150
+                    Wheat :   170
+                sell_price_unfavorable : Size=3, Index=planning_scenarios[BELOW].CROPS, Domain=NonNegativeReals, Default=None, Mutable=True, Units=USD/t
+                    Key   : Value
+                    Beets :  10.0
+                     Corn :   0.0
+                    Wheat :   0.0
+
+            4 Var Declarations
+                buy : Size=3, Index=planning_scenarios[BELOW].CROPS, Units=t
+                    Key   : Lower : Value : Upper : Fixed : Stale : Domain
+                    Beets :     0 :     0 :  None :  True : False : NonNegativeReals
+                     Corn :     0 :  None :  None : False :  True : NonNegativeReals
+                    Wheat :     0 :  None :  None : False :  True : NonNegativeReals
+                plant : Size=3, Index=planning_scenarios[BELOW].CROPS, Units=acre
+                    Key   : Lower : Value : Upper : Fixed : Stale : Domain
+                    Beets :     0 :  None :  None : False :  True : NonNegativeReals
+                     Corn :     0 :  None :  None : False :  True : NonNegativeReals
+                    Wheat :     0 :  None :  None : False :  True : NonNegativeReals
+                sell_favorable : Size=3, Index=planning_scenarios[BELOW].CROPS, Units=t
+                    Key   : Lower : Value : Upper  : Fixed : Stale : Domain
+                    Beets :     0 :  None : 6000.0 : False :  True : NonNegativeReals
+                     Corn :     0 :  None :   None : False :  True : NonNegativeReals
+                    Wheat :     0 :  None :   None : False :  True : NonNegativeReals
+                sell_unfavorable : Size=3, Index=planning_scenarios[BELOW].CROPS, Units=t
+                    Key   : Lower : Value : Upper : Fixed : Stale : Domain
+                    Beets :     0 :  None :  None : False :  True : NonNegativeReals
+                     Corn :     0 :  None :  None : False :  True : NonNegativeReals
+                    Wheat :     0 :  None :  None : False :  True : NonNegativeReals
+
+            1 Expression Declarations
+                net_profit : Size=1, Index=None
+                    Key  : Expression
+                    None : - (planning_scenarios[BELOW].cost[Wheat]*planning_scenarios[BELOW].plant[Wheat] + planning_scenarios[BELOW].cost[Corn]*planning_scenarios[BELOW].plant[Corn] + planning_scenarios[BELOW].cost[Beets]*planning_scenarios[BELOW].plant[Beets]) - (planning_scenarios[BELOW].purchase_price[Wheat]*planning_scenarios[BELOW].buy[Wheat] + planning_scenarios[BELOW].purchase_price[Corn]*planning_scenarios[BELOW].buy[Corn] + planning_scenarios[BELOW].purchase_price[Beets]*planning_scenarios[BELOW].buy[Beets]) + (planning_scenarios[BELOW].sell_price_favorable[Wheat]*planning_scenarios[BELOW].sell_favorable[Wheat] + planning_scenarios[BELOW].sell_price_unfavorable[Wheat]*planning_scenarios[BELOW].sell_unfavorable[Wheat] + planning_scenarios[BELOW].sell_price_favorable[Corn]*planning_scenarios[BELOW].sell_favorable[Corn] + planning_scenarios[BELOW].sell_price_unfavorable[Corn]*planning_scenarios[BELOW].sell_unfavorable[Corn] + planning_scenarios[BELOW].sell_price_favorable[Beets]*planning_scenarios[BELOW].sell_favorable[Beets] + planning_scenarios[BELOW].sell_price_unfavorable[Beets]*planning_scenarios[BELOW].sell_unfavorable[Beets])
+
+            2 Constraint Declarations
+                crop_min_constraint : Size=3, Index=planning_scenarios[BELOW].CROPS, Active=True
+                    Key   : Lower                                         : Body                                                                                                                                                                                                                            : Upper : Active
+                    Beets :                                           0*t : planning_scenarios[BELOW].crop_yield[Beets]*planning_scenarios[BELOW].plant[Beets] + planning_scenarios[BELOW].buy[Beets] - planning_scenarios[BELOW].sell_unfavorable[Beets] - planning_scenarios[BELOW].sell_favorable[Beets] :  +Inf :   True
+                     Corn :  planning_scenarios[BELOW].min_required[Corn] :      planning_scenarios[BELOW].crop_yield[Corn]*planning_scenarios[BELOW].plant[Corn] + planning_scenarios[BELOW].buy[Corn] - planning_scenarios[BELOW].sell_unfavorable[Corn] - planning_scenarios[BELOW].sell_favorable[Corn] :  +Inf :   True
+                    Wheat : planning_scenarios[BELOW].min_required[Wheat] : planning_scenarios[BELOW].crop_yield[Wheat]*planning_scenarios[BELOW].plant[Wheat] + planning_scenarios[BELOW].buy[Wheat] - planning_scenarios[BELOW].sell_unfavorable[Wheat] - planning_scenarios[BELOW].sell_favorable[Wheat] :  +Inf :   True
+                total_area : Size=1, Index=None, Active=True
+                    Key  : Lower : Body                                                                                                                    : Upper    : Active
+                    None :  -Inf : planning_scenarios[BELOW].plant[Wheat] + planning_scenarios[BELOW].plant[Corn] + planning_scenarios[BELOW].plant[Beets] : 500*acre :   True
+
+            15 Declarations: CROPS cost sell_price_favorable sell_price_unfavorable purchase_price crop_yield min_required max_possible plant buy sell_favorable sell_unfavorable total_area crop_min_constraint net_profit
+
+5 Declarations: planning_scenarios SCENARIOS CROPS enforce_same_planting obj

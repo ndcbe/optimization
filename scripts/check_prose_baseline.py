@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Freeze the notebooks' PROSE and detect drift, so AI voice cannot displace human voice.
+r"""Freeze the notebooks' PROSE and detect drift, so AI voice cannot displace human voice.
 
 WHY THIS EXISTS
 ---------------

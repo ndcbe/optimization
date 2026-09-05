@@ -368,18 +368,18 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
             print("\t",count," cells processed")
     
     # Process Home Activity Boxes
-    replace_markdown('style=\"background-color: rgba\(0,255,0,0.05\) ; padding: 10px; border: 1px solid darkgreen;\"',
+    replace_markdown(r'style=\"background-color: rgba\(0,255,0,0.05\) ; padding: 10px; border: 1px solid darkgreen;\"',
                      'class=\"admonition seealso\"')
     replace_markdown('<b>Home Activity</b>:', '<p class=\"title\"><b>Home Activity</b></p>\n')
     replace_markdown('<b>Optional Home Activity</b>:', '<p class=\"title\"><b>Optional Home Activity</b></p>\n')
     
     # Process Tutorial Activity Boxes
-    replace_markdown('style=\"background-color: rgba\(255,0,0,0.05\) ; padding: 10px; border: 1px solid darkred;\"',
+    replace_markdown(r'style=\"background-color: rgba\(255,0,0,0.05\) ; padding: 10px; border: 1px solid darkred;\"',
                      'class=\"admonition danger\"')
     replace_markdown('<b>Tutorial Activity</b>:', '<p class=\"title\"><b>Tutorial Activity</b></p>\n')
     
     # Process Class Activity Boxes
-    replace_markdown('style=\"background-color: rgba\(0,0,255,0.05\) ; padding: 10px; border: 1px solid darkblue;\"',
+    replace_markdown(r'style=\"background-color: rgba\(0,0,255,0.05\) ; padding: 10px; border: 1px solid darkblue;\"',
                      'class=\"admonition note\"')
     replace_markdown('<b>Class Activity</b>:', '<p class=\"title\"><b>Class Activity</b></p>\n')
     
@@ -387,14 +387,14 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
     replace_markdown('<b>Activity</b>:', '<p class=\"title\"><b>Activity</b></p>\n')
     
     # Process Note Boxes
-    replace_markdown('style=\"background-color: rgba\(255,255,0,0.05\) ; padding: 10px; border: 1px solid black;\"',
+    replace_markdown(r'style=\"background-color: rgba\(255,255,0,0.05\) ; padding: 10px; border: 1px solid black;\"',
                      'class=\"admonition tip\"')
     replace_markdown('<b>Note</b>:', '<p class=\"title\"><b>Note</b></p>\n')
     
     # replace links to media with urls
     # 2022-09-21: removed "!" from the beginning both of these expressions to also work on handouts (pdf) in media folder
     # 2022-09-21: the use case is the error propagation handout
-    '''
+    r'''
     MEDIA_LINK = '\[(.*)\]\(\.\./\.\./media/(.*\..*)\)'
     IMAGE_LINK = r'[\1](https://ndcbe.github.io/optimization/_images/\2)'
     
@@ -415,7 +415,7 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
 
     '''
 
-    replace_markdown('.\./.\./media/',
+    replace_markdown(r'.\./.\./media/',
                      'https://raw.githubusercontent.com/ndcbe/optimization/main/media/')
     
     ## AI-review banner -- last, so it is not disturbed by the rewrites above

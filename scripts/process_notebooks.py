@@ -1,5 +1,6 @@
 import nbformat
 from nbformat.v4.nbbase import new_code_cell, new_markdown_cell, new_notebook
+import hashlib
 import re
 import os
 import shutil
@@ -131,6 +132,35 @@ def insert_ai_banner(nb, source_rel, published_rel, verbose=1):
         print(f"  AI-review banner inserted at cell {at} ({status}: "
               f"{changed} changed, {added} added)")
     return True
+
+
+def assign_stable_myst_ids(nb, source_rel):
+    """Give every published cell a deterministic, project-unique MyST ID.
+
+    MyST uses ``cell.metadata.id`` rather than the top-level nbformat cell ID.
+    When that metadata is absent it derives an identifier from cell content.
+    Copied setup or example cells therefore produce duplicate identifiers both
+    within one page and across pages. Namespace the published metadata IDs by
+    source path while leaving the authored notebooks untouched.
+
+    The content digest keeps an ID stable when unrelated cells are inserted;
+    the occurrence suffix distinguishes intentionally repeated cells.
+    """
+    namespace = hashlib.sha256(source_rel.encode("utf-8")).hexdigest()[:12]
+    occurrences = {}
+    for cell in nb.cells:
+        authored_id = cell.metadata.get("id")
+        if authored_id:
+            stem = re.sub(r"[^A-Za-z0-9_-]", "-", authored_id)[:36]
+        else:
+            payload = f"{cell.cell_type}\0{cell.source}".encode("utf-8")
+            stem = hashlib.sha256(payload).hexdigest()[:20]
+        key = f"{namespace}-{stem}"
+        occurrence = occurrences.get(key, 0)
+        occurrences[key] = occurrence + 1
+        cell.metadata["id"] = (
+            key if occurrence == 0 else f"{key}-{occurrence + 1}"
+        )
 
 # ---------------------------------------------------------------------------
 # Deliberately published answers
@@ -396,8 +426,15 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
                                           filename)),
                      published_rel="/".join(("notebooks",
                                              os.path.basename(folder_new.rstrip("/")),
-                                             filename)),
+                     filename)),
                      verbose=verbose)
+
+    # MyST identifiers must be unique across the project. Do this after every
+    # generated insertion so the banner is covered as well.
+    source_rel = "/".join(("notebooks",
+                           os.path.basename(folder_original.rstrip("/")),
+                           filename))
+    assign_stable_myst_ids(nb, source_rel)
 
     ## Verify the published answers actually survived.
     #
@@ -545,6 +582,25 @@ def selftest():
         with open(os.path.join(out_dir, "t.ipynb")) as fp:
             pub = json.load(fp)["cells"]
 
+        published_ids = [cell.get("metadata", {}).get("id") for cell in pub]
+        check("published cells have MyST IDs",
+              all(published_ids), str(published_ids))
+        check("published MyST IDs are unique within a notebook",
+              len(published_ids) == len(set(published_ids)),
+              str(published_ids))
+
+        # Identical cells in another source notebook must not collide at the
+        # project level. This is the pattern behind MyST's former duplicate-ID
+        # warnings for copied setup cells.
+        write("t-copy.ipynb", _selftest_nb([
+            _sc(SELFTEST_SOLUTION, outputs=[_so("cost = 2.28\n")]),
+        ]))
+        process_notebook(src_dir, out_dir, "t-copy.ipynb", verbose=0)
+        with open(os.path.join(out_dir, "t-copy.ipynb")) as fp:
+            copy_id = json.load(fp)["cells"][0]["metadata"]["id"]
+        check("published MyST IDs are namespaced by source notebook",
+              copy_id != published_ids[0], copy_id)
+
         s0 = "".join(pub[0]["source"])
         check("solution block stripped from source",
               "BEGIN SOLUTION" not in s0 and "cost = 2.28" not in s0, s0)
@@ -587,15 +643,15 @@ def selftest():
             with open(os.path.join(out_dir, "banner.ipynb")) as fp:
                 bcells = json.load(fp)["cells"]
             banner = any(c["metadata"].get("ai_review_banner") for c in bcells)
-            banner_ids = [c.get("id") for c in bcells
+            banner_ids = [c.get("metadata", {}).get("id") for c in bcells
                           if c["metadata"].get("ai_review_banner")]
             answer = any("".join(c["source"]) == SELFTEST_ANSWER_CODE
                          for c in bcells)
             check("banner insertion does not trip the pass-through guard",
                   banner and answer,
                   f"banner={banner} answer_survived={answer}")
-            check("generated banner has a deterministic cell ID",
-                  banner_ids == ["ai-review-banner"],
+            check("generated banner has a deterministic MyST ID",
+                  len(banner_ids) == 1 and bool(banner_ids[0]),
                   repr(banner_ids))
         finally:
             AI_STATUS.clear()

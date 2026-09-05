@@ -124,6 +124,7 @@ Most problems include *pencil and paper analysis* (derive a model, count degrees
 pseudocode, complete a proof), a computational part, and interpretation of the results. The analysis and
 interpretation parts are the best available practice for the exams.
 
+(collaboration-policy-and-honor-code)=
 ## Collaboration Policy and Honor Code
 
 You are permitted and encouraged to discuss solution approaches, debug together, compare numerical
@@ -153,6 +154,7 @@ The following is a non-exhaustive list of collaborative scenarios that are PROHI
 * It is late at night, you are frustrated with syntax errors, and you just cannot get one of the homework problems to work. You find a screenshot on Canvas of code from a classmate and an associated discussion. Desperate to finish the assignment, you start adapting your code to follow the screenshot. To keep it simple, you copy line-by-line, do not change variable names, and copy some comments but skip others. You end up submitted code that looks almost identical to your classmate. You remember the instructor keeps emphasizing the comments should be in our own words to show that you understand the solution. You decide to go to bed and add those comments in the morning. You oversleep and submit code without any comments or acknowledgments of your classmates. This is prohibited by the collaboration policy because you submitted work that is not your own. You did not acknowledge sources, and you can not explain with confidence the solution procedure to the instructor.
 * You have no prior programming experience and feel like you are falling behind. You feel like the homework takes you three times as long as your classmates. You conclude the only way you can keep up is to do the homework with a partner. They do half the assignment and you do the other half. You then exchange solutions. The person who completed each problem then explains the solution to the partner. Each person changes the comments, adds some extra white spaces, and changes a few variable names to ensure the solutions are not identical. This is prohibited by the collaboration policy because each person did not make an honest effort to solve every problem on their own. Although each person either explained or had the solutions explained to them, they likely cannot defend all of their solutions on their own to the instructor. 
 
+(artificial-intelligence-policy)=
 ## Artificial Intelligence Policy
 
 Please review Notre Dame's current
@@ -195,6 +197,7 @@ The [Collaboration Policy and Honor Code](#collaboration-policy-and-honor-code) 
 permitted. AI assistance does not excuse wholesale copying, replace the required independent attempt, or
 remove your responsibility to understand, verify, and disclose the submitted work.
 
+(exams)=
 ## Exams
 
 There are **three in-person exams**: two midterms during class and a final exam during the University final

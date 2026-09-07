@@ -19,11 +19,33 @@
 # casadi 3.7.2 added.
 #
 # NOTE ON PATH. Pyomo locates solvers as executables on PATH, so running the
-# notebooks needs BOTH directories visible:
-#     export PATH="$CONDA_PREFIX/bin:$HOME/.idaes/bin:$PATH"
-# Activating the environment covers the first; the second is never automatic.
+# notebooks needs BOTH directories visible, and 🔴 ~/.idaes/bin must come FIRST:
+#     export PATH="$HOME/.idaes/bin:$CONDA_PREFIX/bin:$PATH"
+# Activating the environment covers the second; the first is never automatic.
 # Calling the interpreter by absolute path covers NEITHER -- SolverFactory
 # ('glpk').available() returns False even though glpsol is installed.
+#
+# ⚠ THE ORDER MATTERS AND USED TO BE WRONG HERE (corrected 2026-09-07). With
+# $CONDA_PREFIX/bin first, conda-forge's ipopt 3.14.19 -- pulled in as a
+# transitive dependency of idaes-pse, never requested below -- SHADOWS the IDAES
+# one, and it has NO HSL: linear_solver=ma27/ma57/ma97 all die with
+# "dlopen(libhsl.dylib): no such file". The IDAES binaries (extensions v3.4.2,
+# Ipopt 3.13.2) are statically linked against HSL, and are also what students get
+# on Colab via `idaes get-extensions` -- so this order is what makes local runs
+# reproduce the student environment. It is also what the "Ipopt 3.13.2" in the
+# verification note above actually refers to.
+#
+# Blast radius of putting IDAES first is exactly TWO binaries: `ipopt` and
+# `ipopt_sens` are the only names present in both directories. glpsol stays
+# conda's; cbc, bonmin, couenne, clp, k_aug and dot_sens exist only in
+# ~/.idaes/bin either way.
+#
+# To make it automatic for a local dev environment, drop a script in
+# $CONDA_PREFIX/etc/conda/activate.d/ that prepends ~/.idaes/bin, with a matching
+# deactivate.d that strips that one entry back off. Do NOT save and restore the
+# whole PATH in the deactivate hook -- the saved copy is captured after conda has
+# already added the env bin, so restoring it leaks the env bin into the
+# deactivated shell.
 
 name: optimization_fall2026
 

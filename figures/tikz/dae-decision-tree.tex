@@ -1,0 +1,154 @@
+% From a physical model to a dynamic optimization problem: the decisions.
+%
+% AUTHORED 2026-09-07 to replace the closing class activity "Synthesis --- From
+% a physical model to collocation" in
+% ../../optimization-private/lecture-notes/lectures/dae-background.tex. The
+% activity asked students to SKETCH these decisions in prose; Prof. Dowling's
+% own note in that file reads "Instead of making this a class activity, I think
+% we should include a figure in the notes that shows the decision tree".
+%
+% EVERY LABEL COMES FROM THAT LECTURE, and the five steps of the activity's
+% answer are the five rows of the spine:
+%
+%   1. "Select differential states from accumulation laws and identify
+%       algebraic variables fixed by constitutive or equilibrium relations."
+%          -> the edge label onto the semi-explicit form
+%   2. "Count equations and unknowns; check dimensions, units, and degrees of
+%       freedom before discretizing."                     -> row 3
+%   3. "Construct consistent initial values, estimate the index, and verify
+%       that dg/dy remains nonsingular along the expected trajectory."
+%          -> the index test (row 4) and the regularity check (row 6)
+%   4. "Scale states, equations, controls, parameters, and time."   -> row 7
+%   5. "Choose simulation-based optimization or direct transcription; for the
+%       latter, select a finite-element mesh and collocation formula."
+%          -> the second decision and the two branches below it
+%
+% The index threshold is the lecture's own: "General-purpose DAE integrators
+% normally expect index 0 or 1", and section I is titled "Semi-explicit DAEs
+% and index". The three reformulation options are the lecture's three attempts
+% on the pendulum, with their trade-offs taken verbatim from its summary table
+% ("Original DAE / Pure ODE / Reduced DAE" against "Main risk") plus the
+% stabilization sentence, "Stabilization makes the constraint manifold
+% attracting" (Baumgarte, 1972). Stabilization is the ONE option the lecture
+% names in a single line rather than working through, so it is drawn as a peer
+% of the other two and given no more emphasis than they have.
+%
+% The two lower branches are named as the companion figure
+% dae-optimization-strategies.tex names them -- "Sequential (single shooting)",
+% "Multiple shooting", "Direct transcription (collocation)" -- so the two
+% diagrams in this lecture use one vocabulary. The arrow labels are that
+% figure's too: "discretize controls" and "discretize all variables".
+%
+% GREYSCALE. Colour is redundant everywhere. The two decision points are told
+% apart from the process steps by their DIAMOND SHAPE as well as by their tint;
+% the three reformulation options carry a DASHED rule and a grey tint and are
+% reached by a DASHED arrow; the terminal NLP box carries a VERY THICK rule.
+% Nothing in the figure is distinguished by hue alone, so it survives a mono
+% laser printer, which is the floor figures/README.md sets.
+%
+% NO \ref/\eqref anywhere: this file is rendered standalone by figures/Makefile
+% AND \input by the handout, where a cross-reference would print "??".
+
+% Okabe-Ito blue at low saturation -- the same tint optimization-problem-classes
+% uses, so the two diagrams in Part I share one palette.
+\definecolor{daeblue}{HTML}{C7E0EE}
+
+\begin{tikzpicture}[
+  every node/.style = {font=\small},
+  box/.style   = {draw, rectangle, rounded corners=1.5pt, align=center,
+                  fill=white, inner sep=4pt, minimum height=8mm},
+  start/.style = {box, very thick},
+  term/.style  = {box, very thick},
+  % A decision is a DIAMOND, never merely a tinted rectangle: shape is what a
+  % photocopy reads.
+  dec/.style   = {draw, thick, diamond, aspect=2.4, align=center,
+                  fill=daeblue, inner sep=2pt},
+  % Reformulation options: dashed rule + grey tint + reached by a dashed arrow.
+  opt/.style   = {box, densely dashed, fill=black!7, text width=3.3cm,
+                  inner sep=4pt},
+  go/.style    = {->, >=stealth, thick},
+  alt/.style   = {->, >=stealth, thick, densely dashed},
+  bus/.style   = {thick},
+  busd/.style  = {thick, densely dashed},
+  lbl/.style   = {font=\scriptsize\itshape, align=center, inner sep=2pt},
+]
+
+% =========================================================================
+% THE SPINE -- modeling decisions, top to bottom.
+% =========================================================================
+\node[start] (phys) at (0,0) {Physical model};
+
+\node[box] (semi) at (0,-2.3)
+  {Semi-explicit DAE\\[1pt]
+   $\dot z = f(z,y,u,p), \qquad 0 = g(z,y,u,p)$};
+\draw[go] (phys) -- node[lbl, right]
+  {states from accumulation laws;\\ algebraic variables from\\ constitutive relations}
+  (semi);
+
+\node[box] (dof) at (0,-4.3) {Equations, unknowns, units,\\ degrees of freedom};
+\draw[go] (semi) -- (dof);
+
+\node[dec] (idx) at (0,-6.3) {Index?};
+\draw[go] (dof) -- (idx);
+
+% =========================================================================
+% HIGHER INDEX -- the reformulation options, as a fan on the left.
+%
+% Drawn as a FAN from ONE bus, not as a chain: the three are alternatives, and
+% a vertical chain of arrows would read as a sequence of steps. The bus leaves
+% the decision node itself rather than the first option box, for the same
+% reason -- a line emerging from a box implies that box came first.
+% =========================================================================
+\node[opt] (red) at (-6.1,-7.4)
+  {Index reduction\\ to pure ODE\\[1pt] {\scriptsize\itshape constraint drift}};
+\node[opt] (stab) at (-6.1,-9.1)
+  {Stabilization\\[1pt] {\scriptsize\itshape manifold made attracting}};
+\node[opt] (i1) at (-6.1,-10.8)
+  {Index-1 reformulation\\[1pt] {\scriptsize\itshape keeps the constraints;\\ point singularity}};
+
+\draw[busd] (idx.west) -- node[lbl, above] {index $\geq 2$} (-8.5,-6.3);
+\draw[busd] (-8.5,-6.3) -- (-8.5,-10.8);
+\draw[alt]  (-8.5,-7.4)  -- (red);
+\draw[alt]  (-8.5,-9.1)  -- (stab);
+\draw[alt]  (-8.5,-10.8) -- (i1);
+
+% The three options rejoin the spine ONCE, at the regularity check -- which is
+% the point of the lecture's section "Where the index-1 reformulation can
+% fail": a reformulated model is not finished, it still has to be checked.
+\draw[bus] (red.east)  -- (-3.9,-7.4);
+\draw[bus] (stab.east) -- (-3.9,-9.1);
+\draw[bus] (i1.east)   -- (-3.9,-10.8);
+\draw[bus] (-3.9,-7.4) -- (-3.9,-12.4);
+\draw[go]  (-3.9,-12.4) -- node[lbl, above] {index 1} (-2.7,-12.4);
+
+% =========================================================================
+% INDEX 0 OR 1 -- straight down the spine.
+% =========================================================================
+\node[box, minimum width=5.4cm] (reg) at (0,-12.4)
+  {Consistent initial conditions;\\ $\partial g / \partial y$ nonsingular};
+\draw[go] (idx) -- node[lbl, right] {index 0 or 1} (reg);
+
+\node[box] (scale) at (0,-14.3) {Scale states, equations,\\ controls, parameters, time};
+\draw[go] (reg) -- (scale);
+
+% =========================================================================
+% THE SECOND DECISION -- the one the next two lectures turn on.
+% =========================================================================
+\node[dec] (how) at (0,-16.2) {Solution strategy?};
+\draw[go] (scale) -- (how);
+
+\node[box] (sim) at (-4.2,-18.4) {Sequential or\\ multiple shooting\\[1pt]
+  {\scriptsize\itshape integrate repeatedly}};
+\node[box] (dt) at (4.2,-18.4) {Direct transcription\\ (collocation)};
+
+\draw[go] (how) -| node[lbl, above, pos=0.25] {discretize\\ controls} (sim);
+\draw[go] (how) -| node[lbl, above, pos=0.25] {discretize\\ all variables} (dt);
+
+\node[box] (mesh) at (4.2,-20.4) {Finite-element mesh\\ and collocation formula};
+\draw[go] (dt) -- (mesh);
+
+\node[term] (nlp) at (0,-22.3) {Nonlinear program (NLP)};
+\draw[go] (sim)  |- (nlp);
+\draw[go] (mesh) |- (nlp);
+
+\end{tikzpicture}

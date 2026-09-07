@@ -6,8 +6,10 @@ r"""Order of accuracy: global error vs step size for forward and backward Euler.
 z' = -z, z(0) = 1 to t = 2 with both Euler methods over six halvings of the
 step and plots the error on log-log axes. That cell *prints* the two fitted
 slopes underneath the plot; a printed handout has no "underneath", so the
-slopes are annotated ON the axes here, which is the whole reason this figure
-exists separately from the notebook's live cell.
+per-curve labels are annotated ON the axes here, which is the whole reason this
+figure exists separately from the notebook's live cell.
+⚠ The summary annotation "both are order 1: global error O(h)" was removed
+2026-09-07 because the handout turned that conclusion into a Class Activity.
 
 WHY THIS FIGURE IS LOAD-BEARING. It is the empirical settlement of the
 local-vs-global error question that section VI of the numeric-integration
@@ -131,9 +133,15 @@ def make_figure():
     label_curve(ax, 0.030, 0.30,
                 rf"backward Euler: slope $= {_slope(STEPS, err_b):.2f}$",
                 ha="left", va="center", fontsize=12)
-    label_curve(ax, 0.030, 0.145,
-                r"both are order 1: global error $O(h)$",
-                ha="left", va="center", fontsize=12, color="0.35")
+    # REMOVED 2026-09-07, Alex: 'remove "both are order 1: global error O(h)"
+    # annotation from the figure. It overlaps with the figure elements. It also
+    # gives away the activity.'  The handout now asks students to estimate the
+    # slopes as a Class Activity, so the conclusion must not be printed here.
+    #
+    # ⚠ FLAGGED, NOT CHANGED: the two labels above still print the FITTED SLOPE
+    # VALUES (1.02 and 0.99), which give away that same activity just as
+    # directly. Only the third label was named, so only it was removed. Drop the
+    # `: slope = ...` from each and they become plain curve identifiers.
 
     ax.set_xlabel(r"step size $h$")
     ax.set_ylabel(r"global error $\|z_i - z(t_i)\|/\sqrt{N}$")

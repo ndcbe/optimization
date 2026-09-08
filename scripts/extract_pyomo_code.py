@@ -181,6 +181,14 @@ OUTPUT_SUBDIR = "output"
 #                  "handout_output": {"head": 40, "tail": 15}}
 OUTPUT_META_KEY = "handout_output"
 OUTPUT_DEFAULTS = {
+    # Lines to DROP from the front before head/tail are applied. Added
+    # 2026-09-08: a second solve of the same model repeats Ipopt's ~30-line
+    # licence banner verbatim, which is pure noise the second time, but `head`
+    # alone cannot skip it -- head counts from line 1, so trimming the banner
+    # also trims the problem-size block that Prof. Dowling explicitly asked to
+    # keep ("I want you to also show the Ipopt problem size statements").
+    # `skip` removes the banner and LEAVES the statistics.
+    "skip": 0,
     # Enough head to clear the Ipopt banner AND the problem-size block --
     # "I want you to also show the Ipopt problem size statements" -- and still
     # reach the first iterations. Measured on a real Ipopt 3.13.2 log: banner
@@ -606,7 +614,7 @@ def output_config(meta: dict) -> dict:
                          f"{', '.join(sorted(unknown))}; known keys are "
                          f"{', '.join(sorted(OUTPUT_DEFAULTS))}")
     cfg.update(raw)
-    for k in ("head", "tail", "width"):
+    for k in ("skip", "head", "tail", "width"):
         if not isinstance(cfg[k], int) or cfg[k] < 0:
             raise ValueError(f"{OUTPUT_META_KEY}.{k} must be a non-negative "
                              f"integer, got {cfg[k]!r}")
@@ -749,8 +757,12 @@ def sanitize_output(text: str, width: int = 0) -> tuple[str, list[str]]:
     return "\n".join(lines), notes
 
 
-def elide(text: str, head: int, tail: int) -> tuple[str, int]:
-    """Keep the first ``head`` and last ``tail`` lines. Returns (text, dropped).
+def elide(text: str, head: int, tail: int, skip: int = 0) -> tuple[str, int]:
+    """Drop ``skip`` leading lines, then keep the first ``head`` and last ``tail``.
+
+    Returns (text, dropped), where ``dropped`` counts the skipped lines too --
+    the marker must account for every line the reader is not being shown, or it
+    understates the cut.
 
     The marker names the number of dropped lines rather than saying "...", so a
     reader can tell a 6-line cut from a 600-line one, and so nobody mistakes the
@@ -761,10 +773,19 @@ def elide(text: str, head: int, tail: int) -> tuple[str, int]:
     barely happened is misleading.
     """
     lines = text.split("\n")
+    if skip:
+        skipped, lines = lines[:skip], lines[skip:]
+    else:
+        skipped = []
     if head + tail >= len(lines):
-        return text, 0
-    dropped = len(lines) - head - tail
-    kept = lines[:head] + [ELISION.format(n=dropped)]
+        if not skipped:
+            return text, 0
+        # Nothing to elide in the middle, but the skipped head still has to be
+        # declared -- silently dropping it would misreport the log.
+        return "\n".join([ELISION.format(n=len(skipped))] + lines), len(skipped)
+    dropped = len(lines) - head - tail + len(skipped)
+    kept = ([ELISION.format(n=len(skipped))] if skipped else []) \
+        + lines[:head] + [ELISION.format(n=len(lines) - head - tail)]
     if tail:
         kept += lines[-tail:]
     return "\n".join(kept), dropped
@@ -877,7 +898,7 @@ def render_output(snip: OutputSnippet) -> str:
     cfg = snip.config
     clean, notes = sanitize_output(snip.text, cfg["width"])
     total = len(clean.split("\n"))
-    body, dropped = elide(clean, cfg["head"], cfg["tail"])
+    body, dropped = elide(clean, cfg["head"], cfg["tail"], cfg["skip"])
 
     lines = [
         BANNER,
@@ -1046,7 +1067,8 @@ def main(argv=None) -> int:
             for s in outsnips:
                 clean, _ = sanitize_output(s.text, s.config["width"])
                 total = len(clean.split("\n"))
-                _, dropped = elide(clean, s.config["head"], s.config["tail"])
+                _, dropped = elide(clean, s.config["head"], s.config["tail"],
+                                   s.config["skip"])
                 print(f"  {s.tag:<28} {s.rel} cell {s.index}   "
                       f"{total:>4} -> {total - dropped:>4} lines"
                       f"{f'   (elided {dropped})' if dropped else ''}")
@@ -1348,6 +1370,20 @@ def selftest() -> int:
     check("a short log is NOT elided", (got, dropped), ("a\nb\nc", 0))
     got, dropped = elide(body, 100, 0)
     check("head covering everything is not elided", dropped, 0)
+
+    # elide: the skip option (added 2026-09-08)
+    got, dropped = elide(body, 10, 5, skip=20)
+    lines = got.split("\n")
+    check("skip drops the leading lines", lines[1], "L20")
+    check("...declares them in a marker", lines[0], ELISION.format(n=20))
+    check("...and counts them in dropped", dropped, 85)
+    check("...still keeps the tail", lines[-1], "L99")
+    got, dropped = elide(body, 100, 0, skip=20)
+    check("skip is declared even when nothing else is elided",
+          got.split("\n")[0], ELISION.format(n=20))
+    check("...and reports exactly the skipped count", dropped, 20)
+    check("skip=0 is identical to no skip",
+          elide(body, 10, 5, skip=0), elide(body, 10, 5))
 
     # output_config: defaults, overrides, and typos
     check("defaults apply", output_config({})["head"], OUTPUT_DEFAULTS["head"])

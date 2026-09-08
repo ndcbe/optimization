@@ -697,6 +697,31 @@ def sanitize_output(text: str, width: int = 0) -> tuple[str, list[str]]:
                      + " ".join(f"U+{ord(c):04X}" for c in stray))
 
     text = text.replace("\r\n", "\n").replace("\r", "\n")
+
+    # BACKSPACES ARE APPLIED, not replaced. Ipopt's ASL driver ends its run by
+    # backspacing over the "Ipopt 3.13.2: " it printed before the log, so the
+    # captured stdout of a tee=True solve really does contain a run of \x08.
+    # Replacing them with spaces (which the control sweep below would do) puts
+    # fourteen leading blanks in front of the last line of every solver log;
+    # applying them is both correct and what the reader saw on screen.
+    if "\x08" in text:
+        out = []
+        for line in text.split("\n"):
+            if "\x08" not in line:
+                out.append(line)
+                continue
+            buf: list[str] = []
+            for ch in line:
+                if ch == "\x08":
+                    if buf:
+                        buf.pop()
+                else:
+                    buf.append(ch)
+            out.append("".join(buf))
+        text = "\n".join(out)
+        notes.append("backspace characters applied (the ASL driver backspaces "
+                     "over its own banner at the end of a solve)")
+
     text = text.expandtabs(8)
     # Remaining control characters (form feed, bell, NUL) have no verbatim
     # meaning and at least one of them is fatal.
@@ -1290,6 +1315,12 @@ def selftest() -> int:
     check("tabs are expanded", "\t" in clean, False)
     clean, notes = sanitize_output("a\x0cb\n")
     check("control characters removed", "\x0c" in clean, False)
+    clean, notes = sanitize_output("Ipopt 3.13.2: \x08\x08final\n")
+    check("backspaces are APPLIED, not blanked", clean, "Ipopt 3.13.2final")
+    check("...and reported", any("backspace" in n for n in notes), True)
+    check("a leading backspace run just disappears",
+          sanitize_output("x\n\x08\x08final time = 1\n")[0],
+          "x\nfinal time = 1")
 
     clean, notes = sanitize_output("x" * 200 + "\n", width=50)
     check("an over-wide line is truncated", len(clean), 50)

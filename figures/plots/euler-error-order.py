@@ -127,21 +127,39 @@ def make_figure():
     # the information cell 16 prints to stdout and the handout otherwise loses.
     # Both labels sit above their curve in the upper-left half of the axes,
     # which is empty because the data run bottom-left to top-right.
-    label_curve(ax, 0.030, 0.62,
-                rf"forward Euler: slope $= {_slope(STEPS, err_f):.2f}$",
-                ha="left", va="center", fontsize=12)
-    label_curve(ax, 0.030, 0.30,
-                rf"backward Euler: slope $= {_slope(STEPS, err_b):.2f}$",
-                ha="left", va="center", fontsize=12)
+    # 🔴 FIXED 2026-09-08. These printed the FITTED SLOPES (1.02, 0.99) on the
+    # curves, and the Class Activity directly beneath the figure asks students
+    # to "estimate each log-log slope", answer "both are approximately 1". The
+    # figure was handing over the answer. The comment below flagged exactly this
+    # on 2026-09-07 and left it in place; the handout has since been PRINTED and
+    # given to students, so the answer leaked for this cohort.
+    # ⚠ check_leaks.py cannot see this: the text is inside a figure PDF, not in
+    # the LaTeX source. A leak checker that reads only .tex is blind to it.
+    # The labels are now plain curve identifiers, which is all they need to be.
+    # ⚠ Removing the slope text left the two labels with NOTHING tying them to
+    # their curves -- the numbers had been doing that work by accident. Each
+    # label now carries a short sample of its own line, drawn in the SAME
+    # linestyle, colour and marker, so the pairing survives greyscale (the
+    # curves differ by marker and dash pattern, not only by hue).
+    for (fx, fy, line, text) in (
+        (0.030, 0.62, ax.lines[0], "forward Euler"),
+        (0.030, 0.30, ax.lines[1], "backward Euler"),
+    ):
+        ax.plot([fx, fx * 1.9], [fy, fy],
+                color=line.get_color(), linestyle=line.get_linestyle(),
+                linewidth=line.get_linewidth(), marker=line.get_marker(),
+                markersize=line.get_markersize(), clip_on=False, zorder=5)
+        label_curve(ax, fx * 2.2, fy, text,
+                    ha="left", va="center", fontsize=12)
     # REMOVED 2026-09-07, Alex: 'remove "both are order 1: global error O(h)"
     # annotation from the figure. It overlaps with the figure elements. It also
     # gives away the activity.'  The handout now asks students to estimate the
     # slopes as a Class Activity, so the conclusion must not be printed here.
     #
-    # ⚠ FLAGGED, NOT CHANGED: the two labels above still print the FITTED SLOPE
-    # VALUES (1.02 and 0.99), which give away that same activity just as
-    # directly. Only the third label was named, so only it was removed. Drop the
-    # `: slope = ...` from each and they become plain curve identifiers.
+    # ✅ THAT FLAG IS NOW DISCHARGED (2026-09-08) -- the fix it prescribed,
+    # dropping `: slope = ...`, is applied above. Recorded rather than deleted:
+    # the flag was written, correctly, and then sat unactioned while the
+    # handout went to print.
 
     ax.set_xlabel(r"step size $h$")
     ax.set_ylabel(r"global error $\|z_i - z(t_i)\|/\sqrt{N}$")

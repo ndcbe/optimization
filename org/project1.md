@@ -93,6 +93,10 @@ Published code is permitted and useful for validation, but it does not replace y
 the published document first. Only after your implementation is complete and you have done some 
 validation by yourself may you inspect and run the published code to validate your model and investigate discrepancies.
 
+This restriction is specific to Project 1 because the goal is an independent reproduction from the
+paper. An assignment that explicitly asks you to audit generated code against a reference, such as
+Pyomo Homework 3 Problem 3, will state a different source-use policy.
+
 ### Where to look
 
 Search the literature in your own area first; a source you have a reason to care about is easier to read

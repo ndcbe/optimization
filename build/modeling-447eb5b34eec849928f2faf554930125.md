@@ -1,0 +1,6 @@
+# Modeling Paradigms
+
+**Sections**
+
+```{tableofcontents}
+```

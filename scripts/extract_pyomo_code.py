@@ -35,22 +35,44 @@ beyond the tag::
 
 TWO TRANSFORMATIONS, BOTH REQUESTED
 -----------------------------------
-1. **Comments are stripped -- except units.**
+1. **Comments are KEPT. Reversed 2026-09-14 -- read both instructions.**
+
+   🔴 The current instruction, after teaching Lecture 7:
+
+       "We have bullet points after the code block to explain what is
+       happening. Instead, I think we should move these into comments in the
+       code excerpt. This will require changing how we import code examples
+       from the class website. But I think this is a good change that we
+       should propagate to all lectures, including ones before Lecture 7."
+
+   So the handout now keeps every notebook comment, and the explanation lives
+   *inside* the listing instead of in a bullet list underneath it. Confirmed
+   2026-09-14 when the alternatives were put to him: he chose "keep all
+   notebook comments" over a two-density marker convention, so there is
+   exactly one comment text and both the website and the handout show it.
+
+   ⚠ **This reverses the 2026-08-19 instruction this script was built on**,
+   kept here because a reversed decision with its reasoning deleted reads as
+   an accident to the next person:
 
        "We might decide to strip out comments from the notebook cells into the
        lecture notes. This way, the website has more extensive comments, and
        the code in the course pack/lecture notes take up less space."
        ... "We should keep units."
 
-   So the website keeps the teaching commentary and the handout keeps the
-   dimensional information, which is the part a student cannot reconstruct by
-   reading the code. ``# Charging rate [MW]`` survives; ``# define a function
-   to build model`` does not. See ``is_unit_comment``.
+   The consequence he accepted: notebook comments are now written for two
+   audiences at once, and a listing grows by however many comments it carries.
+   ``--strip-comments`` restores the old behaviour; ``is_unit_comment`` is
+   still used by that path and by ``normalise``.
 
-   Docstrings go too, by default (``--keep-docstrings`` to keep them). A
+   Docstrings still go, by default (``--keep-docstrings`` to keep them). A
    nine-line Args/Returns block is the most extensive comment in the cell and
-   the clearest case of what he asked to move to the website. This is the one
-   place the script goes beyond the literal instruction, so it is a flag.
+   the clearest case of what he asked to move to the website. That half of the
+   2026-08-19 instruction was reasoned separately and was **not** reversed.
+
+   ⚠ ``normalise`` is deliberately untouched: it strips comments from *both*
+   sides before comparing, so ``check_code_sync`` compares models, not prose,
+   and this change cannot make it noisy.
 
 2. **Model formulation only.**
 
@@ -388,10 +410,33 @@ def tidy(code: str) -> str:
     return "\n".join(out)
 
 
-def transform(code: str, keep_docstrings: bool = False) -> str:
-    """Notebook cell source -> the code that goes in the handout."""
+# ``process_notebooks.py`` scaffolding. These are pipeline markers, never
+# teaching content, and they must go even in keep-comments mode -- printing
+# "### BEGIN SOLUTION" in a lecture handout is nonsense. The CODE they wrap is
+# kept: the handout is meant to show the finished model.
+SCAFFOLD_MARKER = re.compile(
+    r"^\s*###\s*(BEGIN|END)\s+(SOLUTION|HIDDEN TESTS)\s*$", re.I
+)
+
+
+def drop_scaffold_markers(code: str) -> str:
+    return "\n".join(
+        l for l in code.splitlines() if not SCAFFOLD_MARKER.match(l)
+    )
+
+
+def transform(
+    code: str, keep_docstrings: bool = False, keep_comments: bool = True
+) -> str:
+    """Notebook cell source -> the code that goes in the handout.
+
+    ``keep_comments`` defaults True as of 2026-09-14; see the module docstring
+    for the instruction that reversed it and the one it reversed.
+    """
     if not keep_docstrings:
         code = strip_docstrings(code)
+    if keep_comments:
+        return tidy(drop_scaffold_markers(code))
     return tidy(strip_comments(code, keep_units=True))
 
 
@@ -517,9 +562,13 @@ def find_snippets(patterns: list[str]) -> tuple[list[Snippet], list[str]]:
 BANNER = "% " + "-" * 74
 
 
-def render(snip: Snippet, keep_docstrings: bool = False) -> str:
+def render(
+    snip: Snippet, keep_docstrings: bool = False, keep_comments: bool = True
+) -> str:
     """The full text of ``lecture-notes/code/<tag>.tex``."""
-    code = transform(snip.source, keep_docstrings=keep_docstrings)
+    code = transform(
+        snip.source, keep_docstrings=keep_docstrings, keep_comments=keep_comments
+    )
     lines = [
         BANNER,
         "% GENERATED FILE -- DO NOT EDIT.",
@@ -529,8 +578,9 @@ def render(snip: Snippet, keep_docstrings: bool = False) -> str:
         f"% generator : {GENERATOR}",
         f"% normhash  : {digest(snip.source)}",
         "%",
-        "% The notebook cell above is the golden copy. Comments are stripped on",
-        "% extraction except unit annotations; docstrings are dropped. Regenerate",
+        "% The notebook cell above is the golden copy, COMMENTS INCLUDED --",
+        "% write the explanation there, not in a bullet list under the box",
+        "% (2026-09-14). Docstrings are still dropped. Regenerate",
         f"% with:  python3 {GENERATOR} --tag {snip.tag}",
         "% Verify with: lecture-notes/check_code_sync.py",
         BANNER,
@@ -1012,6 +1062,9 @@ def main(argv=None) -> int:
     ap.add_argument("--no-outputs", action="store_true",
                     help=f"skip '{OUTPUT_TAG_PREFIX}<tag>' cells; extract only "
                          "the model listings")
+    ap.add_argument("--strip-comments", action="store_true",
+                    help="drop non-unit comments, the pre-2026-09-14 behaviour "
+                         "(see the module docstring for both instructions)")
     ap.add_argument("--keep-docstrings", action="store_true",
                     help="keep function docstrings (dropped by default)")
     ap.add_argument("--selftest", action="store_true",
@@ -1056,7 +1109,8 @@ def main(argv=None) -> int:
     if args.list:
         print(f"{len(snippets)} tagged code cell(s):\n")
         for s in snippets:
-            code = transform(s.source, keep_docstrings=args.keep_docstrings)
+            code = transform(s.source, keep_docstrings=args.keep_docstrings,
+                             keep_comments=not args.strip_comments)
             v = scope_violations(s.source)
             print(f"  {s.tag:<28} {s.rel} cell {s.index}   "
                   f"{len(s.source.splitlines()):>3} -> "
@@ -1088,7 +1142,8 @@ def main(argv=None) -> int:
                 failed.append(s.tag)
                 continue
 
-        text = render(s, keep_docstrings=args.keep_docstrings)
+        text = render(s, keep_docstrings=args.keep_docstrings,
+                      keep_comments=not args.strip_comments)
         path = os.path.join(args.out, f"{s.tag}.tex")
         old = open(path, encoding="utf-8").read() if os.path.exists(path) else None
         if old == text:
@@ -1103,7 +1158,7 @@ def main(argv=None) -> int:
             fh.write(text)
         written.append(s.tag)
         print(f"  wrote {s.tag:<28} {os.path.relpath(path)}  "
-              f"({len(transform(s.source, args.keep_docstrings).splitlines())} lines)")
+              f"({len(transform(s.source, args.keep_docstrings, not args.strip_comments).splitlines())} lines)")
 
     outwritten, outchanged = process_outputs(outsnips, args.out, args.check)
     written += outwritten
@@ -1184,8 +1239,22 @@ def selftest() -> int:
         "    return m",
     ])
     out = transform(cell)
-    check("prose comment dropped", "define a function" in out, False)
+    # 2026-09-14: comments are KEPT by default now. Both directions are
+    # asserted, so neither the new behaviour nor the retained --strip-comments
+    # path can rot silently.
+    check("prose comment KEPT by default", "define a function" in out, True)
     check("unit comment kept", "# Charging rate [MW]" in out, True)
+    scaffolded = "### BEGIN SOLUTION\nm.z = pyo.Var()\n### END SOLUTION\n"
+    out_sc = transform(scaffolded)
+    check("scaffold markers dropped even when comments are kept",
+          "BEGIN SOLUTION" in out_sc, False)
+    check("...but the code they wrap is kept",
+          "m.z = pyo.Var()" in out_sc, True)
+    stripped = transform(cell, keep_comments=False)
+    check("--strip-comments still drops prose",
+          "define a function" in stripped, False)
+    check("--strip-comments still keeps units",
+          "# Charging rate [MW]" in stripped, True)
     check("docstring dropped", "Arguments:" in out, False)
     check("hash-in-string survives", '"#not-a-comment"' in out, True)
     check("inline unit comment kept", out.count("[MW]") == 2, True)

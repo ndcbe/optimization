@@ -263,16 +263,16 @@ def _panel_a(ax):
 
     ax.plot([0.0], [0.0], marker="*", markersize=16, color=BLACK,
             linestyle="none", zorder=8)
-    ax.annotate(r"$\hat{\theta}$", xy=(0.12, -0.34), fontsize=14, zorder=8,
+    ax.annotate(r"$\hat{\boldsymbol{\theta}}$", xy=(0.12, -0.34), fontsize=14, zorder=8,
                 bbox=dict(facecolor="white", edgecolor="none", pad=1.0))
 
     ax.annotate(
         "\n".join(
             [
-                r"$\mathbf{D}$:  area $=\pi\chi^2/\sqrt{\det M}$",
+                r"$\mathbf{D}$:  area $=\pi\chi^2/\sqrt{\det \mathbf{M}}$",
                 r"$\mathbf{E}$:  the long semi-axis $a_{\max}$",
-                r"$\mathbf{A}$:  $a_{\max}^2+a_{\min}^2=\chi^2\,\mathrm{tr}(M^{-1})$",
-                r"$\mathbf{ME}$: $a_{\max}/a_{\min}=\sqrt{\mathrm{cond}\,M}$",
+                r"$\mathbf{A}$:  $a_{\max}^2+a_{\min}^2=\chi^2\,\mathrm{tr}(\mathbf{M}^{-1})$",
+                r"$\mathbf{ME}$: $a_{\max}/a_{\min}=\sqrt{\mathrm{cond}\,\mathbf{M}}$",
             ]
         ),
         xy=(-2.80, -3.80),

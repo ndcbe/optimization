@@ -1,25 +1,23 @@
-% Model building, repeated experiments, then decisions with remaining uncertainty.
+% Model calibration, uncertainty checks, and sequential design.
+% Route branches through open gutters; keep labels off arrows and boxes.
 \begin{tikzpicture}[>=stealth,font=\small,
-box/.style={draw,rounded corners,align=center,text width=3.2cm,minimum height=0.8cm},
-lab/.style={font=\scriptsize,align=center,fill=white,inner sep=2pt}]
+box/.style={draw,rounded corners,align=center,text width=3.3cm,minimum height=0.95cm},
+lab/.style={font=\scriptsize,align=center,fill=white,inner sep=3pt}]
 \node[box] (model) at (0,0) {Mathematical model};
-\node[box] (data) at (-4,-1.5) {Experiment\\measure data $y$};
-\node[box] (fit) at (0,-1.5) {Parameter estimation\\estimate $\hat\theta$};
-\node[box] (assess) at (4,-1.5) {Check predictions\\quantify uncertainty};
-\node[box] (design) at (0,-3.2) {Model-based design\\choose next experiment};
-\node[box,text width=5cm] (decision) at (0,-5.5) {Optimization under uncertainty\\Lectures 9 and 10};
+\node[box] (data) at (-4.6,-1.9) {Experiment\\measure data $y$};
+\node[box] (fit) at (0,-1.9) {Parameter estimation\\estimate $\hat\theta$};
+\node[box] (assess) at (4.6,-1.9) {Check predictions\\quantify uncertainty};
+\node[box] (design) at (0,-4.1) {Model-based design\\choose next experiment};
+\node[box,text width=5.2cm] (decision) at (0,-6.5) {Optimization under uncertainty\\Lectures 9 and 10};
 \draw[->,thick] (model)--(fit);
 \draw[->,thick] (data)--(fit);
 \draw[->,thick] (fit)--(assess);
-\draw[->,thick] (assess.south)|-(design.east)
-;
-\node[lab,text width=2.8cm] at (3.4,-3.2) {more data needed;\\budget remains};
+\draw[->,thick] (assess.north)|-(model.east);
+\node[lab] at (3.7,0.5) {revise model if needed};
+\draw[->,thick] (assess.south)|-(design.east);
+\node[lab,text width=2.4cm] at (3.1,-3.05) {more data needed;\\budget remains};
 \draw[->,thick] (design.west)-|(data.south);
-\draw[->,thick] (assess.north)|-(model.east)
-node[lab,pos=0.65] {revise model if needed};
-\draw[->,thick] (assess.east)--++(0.7,0)|-(decision.east);
-\node[lab,text width=2.6cm] at (5.3,-4.6)
-{adequate predictions\\or budget exhausted};
-\node[lab,text width=2.8cm] at (-4,-5.5)
-{Carry forward parameter uncertainty\\to evaluate decisions and risk.};
+\draw[->,thick] (assess.east)--++(1.0,0)|-(decision.east);
+\node[lab,text width=2.6cm] at (5.25,-5.35) {adequate predictions\\or budget exhausted};
+\node[lab,text width=3.2cm] at (-4.5,-6.45) {Carry uncertainty\\into decisions and risk.};
 \end{tikzpicture}

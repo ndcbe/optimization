@@ -239,7 +239,7 @@ def _panel_b(ax):
     ax.set_ylabel("profit (thousand \\$)")
     ax.set_ylim(0, 205)
     ax.legend(loc="upper left", fontsize=11, handlelength=1.6)
-    ax.set_title("(b) the gap is bought in the bad years", fontsize=13)
+    ax.set_title("(b) scenario profit differences", fontsize=13)
 
 
 def make_figure():

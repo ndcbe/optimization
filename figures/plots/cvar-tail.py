@@ -9,7 +9,7 @@ once:
   1. "CVaR at confidence level alpha is the expected cost CONDITIONAL on being
      in the worst (1-alpha) fraction of outcomes";
   2. "the optimal nu is the alpha-quantile of the loss" -- i.e. the
-     auxiliary variable of (eq:cvar) is not an artefact, it IS the VaR;
+     lower endpoint of the optimal-threshold interval is VaR;
   3. the epigraph reformulation (eq:cvar-lp): gamma_j >= phi(pi,xi_j) - nu and
      gamma_j >= 0 together reproduce [.]_+, and at the optimum gamma_j equals
      the positive part exactly.
@@ -34,8 +34,7 @@ _verify():
 
 With alpha = 0.80:  E[phi] = 1.000, VaR = 1.344, CVaR = 1.832.  So the ordering
 E <= VaR <= CVaR is visible, and the gap CVaR - VaR is the part of the tail
-that VaR alone cannot see -- the standard reason VaR is not a coherent risk
-measure and CVaR is.
+that VaR alone cannot see -- a limitation of a quantile alone; this picture does not prove coherence.
 
 Phi and z_alpha are computed from math.erf and a bisection, so this script
 needs no scipy (nothing else in figures/plots/ imports it).
@@ -163,7 +162,8 @@ def _verify():
     nu_grid = np.linspace(phi.min() - 0.5, phi.max() + 0.5, 20001)
     vals = np.array([F(nu) for nu in nu_grid])
     nu_star = phi[int(math.ceil(ALPHA * N_SCEN)) - 1]            # phi_(16)
-    assert abs(nu_grid[vals.argmin()] - nu_star) < 5e-3, "argmin is not phi_(16)"
+    assert abs(vals.min() - F(nu_star)) < 1e-10, "wrong minimum CVaR value"
+    assert abs(F((phi[15] + phi[16]) / 2) - F(nu_star)) < 1e-12
 
     k = int(round(TAIL_PROB * N_SCEN))                            # 4 tail scenarios
     assert k == 4
@@ -225,7 +225,7 @@ def _panel_a(ax):
 
     ax.set_xlim(0.0, 4.0)
     ax.set_ylim(0.0, 1.10 * ymax)
-    ax.set_xlabel(r"loss $f(\pi,\xi)$")
+    ax.set_xlabel(r"loss $f(\mathbf{x},\boldsymbol{\xi})$")
     ax.set_ylabel("probability density")
     ax.set_title("(a) VaR sees the threshold, CVaR sees the tail", fontsize=13)
 
@@ -291,9 +291,9 @@ def _panel_b(ax):
     ax.set_xlim(0.0, N_SCEN + 1.0)
     ax.set_ylim(0.0, 1.15 * phi.max())
     ax.set_xlabel(r"scenario $j$, sorted by loss")
-    ax.set_ylabel(r"loss $f(\pi,\xi_j)$")
+    ax.set_ylabel(r"loss $f(\mathbf{x},\boldsymbol{\xi}_j)$")
     ax.set_xticks([1, 5, 10, 15, 20])
-    ax.set_title(r"(b) the same thing as the LP (eq. cvar-lp)", fontsize=13)
+    ax.set_title(r"(b) excess losses for 20 scenarios", fontsize=13)
 
 
 def make_figure():

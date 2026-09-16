@@ -21,6 +21,10 @@ Add an ``nbformat`` cell tag of the form ``handout:<tag>``::
 
     "metadata": {"tags": ["handout:battery-model"]}
 
+Add the companion tag ``handout-keep-docstrings`` when a listing should retain
+NumPy-style documentation (Lecture 8, September 16, 2026). This preference
+lives with the golden notebook and survives default regeneration.
+
 In JupyterLab that is the Property Inspector's "Cell Tags" field; no notebook
 extension and no magic comment. Tags were chosen over a marker comment for two
 reasons: they survive ``black``/``nbformat`` normalisation untouched, and
@@ -550,6 +554,7 @@ def find_snippets(patterns: list[str]) -> tuple[list[Snippet], list[str]]:
                             f"{rel} cell {i}")
                         continue
                     s = Snippet(name, path, i, src)
+                    s.keep_docstrings = "handout-keep-docstrings" in tags
                     seen[name] = s
                     snippets.append(s)
     snippets.sort(key=lambda s: s.tag)
@@ -566,6 +571,7 @@ def render(
     snip: Snippet, keep_docstrings: bool = False, keep_comments: bool = True
 ) -> str:
     """The full text of ``lecture-notes/code/<tag>.tex``."""
+    keep_docstrings = keep_docstrings or getattr(snip, "keep_docstrings", False)
     code = transform(
         snip.source, keep_docstrings=keep_docstrings, keep_comments=keep_comments
     )
@@ -580,8 +586,10 @@ def render(
         "%",
         "% The notebook cell above is the golden copy, COMMENTS INCLUDED --",
         "% write the explanation there, not in a bullet list under the box",
-        "% (2026-09-14). Docstrings are still dropped. Regenerate",
-        f"% with:  python3 {GENERATOR} --tag {snip.tag}",
+        ("% Docstrings are retained for this listing. Regenerate" if keep_docstrings
+         else "% (2026-09-14). Docstrings are still dropped. Regenerate"),
+        f"% with:  python3 {GENERATOR} --tag {snip.tag}"
+        + (" --keep-docstrings" if keep_docstrings else ""),
         "% Verify with: lecture-notes/check_code_sync.py",
         BANNER,
         r"\begin{lstlisting}[style=pyomohandout]",
@@ -1109,7 +1117,7 @@ def main(argv=None) -> int:
     if args.list:
         print(f"{len(snippets)} tagged code cell(s):\n")
         for s in snippets:
-            code = transform(s.source, keep_docstrings=args.keep_docstrings,
+            code = transform(s.source, keep_docstrings=args.keep_docstrings or getattr(s, "keep_docstrings", False),
                              keep_comments=not args.strip_comments)
             v = scope_violations(s.source)
             print(f"  {s.tag:<28} {s.rel} cell {s.index}   "
@@ -1142,7 +1150,7 @@ def main(argv=None) -> int:
                 failed.append(s.tag)
                 continue
 
-        text = render(s, keep_docstrings=args.keep_docstrings,
+        text = render(s, keep_docstrings=args.keep_docstrings or getattr(s, "keep_docstrings", False),
                       keep_comments=not args.strip_comments)
         path = os.path.join(args.out, f"{s.tag}.tex")
         old = open(path, encoding="utf-8").read() if os.path.exists(path) else None
@@ -1158,7 +1166,7 @@ def main(argv=None) -> int:
             fh.write(text)
         written.append(s.tag)
         print(f"  wrote {s.tag:<28} {os.path.relpath(path)}  "
-              f"({len(transform(s.source, args.keep_docstrings, not args.strip_comments).splitlines())} lines)")
+              f"({len(transform(s.source, args.keep_docstrings or getattr(s, "keep_docstrings", False), not args.strip_comments).splitlines())} lines)")
 
     outwritten, outchanged = process_outputs(outsnips, args.out, args.check)
     written += outwritten
@@ -1330,6 +1338,19 @@ def selftest() -> int:
         snips, probs = find_snippets([nbpath])
         check("finds the tagged code cells", sorted(s.tag for s in snips),
               ["fixture", "has-solve"])
+        docs_path = os.path.join(nbdir, "Docs.ipynb")
+        docs_source = 'def f():\n    """Explain units and arguments."""\n    return 1\n'
+        docs_nb = {"cells": [{"cell_type": "code", "metadata": {
+            "tags": ["handout:documented", "handout-keep-docstrings"]},
+            "source": docs_source, "outputs": [], "execution_count": None}],
+            "metadata": {}, "nbformat": 4, "nbformat_minor": 5}
+        json.dump(docs_nb, open(docs_path, "w"))
+        docs_snips, _ = find_snippets([docs_path])
+        check("notebook preference retains docstrings by default",
+              '"""Explain units and arguments."""' in render(docs_snips[0]), True)
+        check("unmarked listings still drop docstrings",
+              '"""Explain units and arguments."""' in
+              render(Snippet("plain", docs_path, 0, docs_source)), False)
         _, probs = find_snippets([badpath])
         check("rejects a tag on a markdown cell",
               any("markdown" in p for p in probs), True)

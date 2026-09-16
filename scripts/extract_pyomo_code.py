@@ -1166,7 +1166,7 @@ def main(argv=None) -> int:
             fh.write(text)
         written.append(s.tag)
         print(f"  wrote {s.tag:<28} {os.path.relpath(path)}  "
-              f"({len(transform(s.source, args.keep_docstrings or getattr(s, "keep_docstrings", False), not args.strip_comments).splitlines())} lines)")
+              f"({len(transform(s.source, args.keep_docstrings or getattr(s, 'keep_docstrings', False), not args.strip_comments).splitlines())} lines)")
 
     outwritten, outchanged = process_outputs(outsnips, args.out, args.check)
     written += outwritten

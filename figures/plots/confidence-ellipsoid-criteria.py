@@ -314,24 +314,7 @@ def _panel_b(ax):
         zorder=9,
     )
 
-    ax.annotate(
-        "\n".join(
-            [
-                r"$\mathbf{D}$   $\det M$: 16 vs 12  $\Rightarrow$ A",
-                r"$\mathbf{pA}$  $\mathrm{tr}\,M$: 17 vs 7  $\Rightarrow$ A",
-                r"$\mathbf{A}$   $\mathrm{tr}\,M^{-1}$: 1.06 vs 0.58 $\Rightarrow$ B",
-                r"$\mathbf{E}$   $\lambda_{\min}$: 1 vs 3  $\Rightarrow$ B",
-                r"$\mathbf{ME}$  $\mathrm{cond}$: 16 vs 1.3  $\Rightarrow$ B",
-            ]
-        ),
-        xy=(-2.80, -3.80),
-        fontsize=10.5,
-        ha="left",
-        va="bottom",
-        linespacing=1.5,
-        bbox=dict(facecolor="white", edgecolor="0.6", pad=3.5),
-        zorder=9,
-    )
+    # Criteria are computed by students in the handout; do not print answers here.
 
     ax.set_title("(b) the criteria disagree", fontsize=13)
 

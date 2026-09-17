@@ -35,7 +35,8 @@ All assignments are due at 5pm unless otherwise noted.
 | Final | Tuesday, December 15, 2026, 7:30--9:30 pm |
 
 All three are in person, individual, and open course pack. Notes must be on paper, and the only
-electronic device permitted is a simple calculator --- see the [syllabus](./syllabus.md#exams).
+electronic device permitted is a scientific or graphing calculator --- see the
+[syllabus](./syllabus.md#exams).
 
 ## Class Meetings
 

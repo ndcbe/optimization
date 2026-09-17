@@ -39,10 +39,18 @@ do not edit either to match the other.**
 > **Do not delete `_build/`.** The MyST site theme is fetched at build time and a GitHub rate-limit response
 > (HTTP 429) fails the build with *no diagnostics at all*. An incremental rebuild is also far faster.
 
-A clean build emits **~115 warnings and 0 errors**. That is the status quo, not damage you caused. 98 of them
-are one mechanical class — `Duplicate identifier in project`, meaning two notebook cells share an id — and 87
-of those sit in four notebooks (`PyomoDAE_car`, `Logical_Modeling_GDP`, `RiskMeasures`,
-`Stochastic-Gradient-Descent-1`).
+🔴 **A clean build now emits ZERO warnings and zero errors, across 103 pages.** Measured 2026-09-17.
+**So a warning is news — do not wave one away.**
+
+⚠ **This paragraph used to read *"A clean build emits ~115 warnings and 0 errors. That is the status quo,
+not damage you caused"*, and that advice is now actively harmful** — it trains the reader to ignore exactly
+the signal that has become meaningful. 98 of the ~115 were one mechanical class, `Duplicate identifier in
+project` (two notebook cells sharing an `id`), 87 of them in four notebooks (`PyomoDAE_car`,
+`Logical_Modeling_GDP`, `RiskMeasures`, `Stochastic-Gradient-Descent-1`). That class is now **resolved at
+source** — duplicate-cell-id excess across `notebooks/**/*.ipynb` is 0 — and the remainder went with it.
+
+Check the count is a real zero and not a skipped build: the log must end with `📚 Built 103 pages for
+project`, one `📖 Built …` line per page.
 
 ---
 
@@ -243,14 +251,24 @@ correctly carry none.
 `main`: Node 22, `npm install -g mystmd`, `myst build --html`, then `scripts/make_redirects.py`, then
 `ghp-import` to `gh-pages`.
 
-**No CI change was needed for the theme.** The packaged artifact is committed and `myst build` installs its
-`node_modules` itself; the theme declares `node >= 16` and ships a committed `package-lock.json`, so CI's
-Node 22 is fine.
+✅ **CI DOES rebuild the theme**, in a `Build packaged custom theme` step running
+`scripts/build_theme_dist.sh` before `myst build --html` — see the workflow, lines 52–63.
+`vendor/myst-theme` is the single source of truth and the packaged `build/` is regenerated on every run, so
+there is no committed artifact that can go stale. `myst build` installs the theme's `node_modules` itself;
+the theme declares `node >= 16` and ships a `package-lock.json`, so CI's Node 22 is fine.
+
+⚠ **CORRECTED 2026-09-17.** This section used to say *"No CI change was needed for the theme. The packaged
+artifact is committed…"* and *"⚠ CI does not rebuild the theme either. `pyomo-doe`'s CI does, which is why
+its workflow has an extra step. Here the committed artifact is the deployed artifact — which is exactly why
+step 5 above insists both layers are committed together."* **Both were false, and had been since
+2026-08-24**, when the *Architecture* section above was corrected to say precisely the opposite: `build/` is
+**not** committed, CI builds it, and step 5 was rewritten at the same time to stop insisting that both layers
+be committed together. **The same file asserted a claim and its negation, three sections apart, for three and
+a half weeks.** The pattern is the one `CLAUDE.md` warns about — whoever lands a fix edits the section the
+fix lives in, and the "here is why it works the old way" paragraph somewhere else is never retracted.
 
 ⚠ **CI does not run `scripts/process_notebooks.py`** — it cannot, because that script reads assignment
 notebooks from `../optimization-private`, a private repo CI cannot see. **Run it locally and commit the
-result before pushing**, or the published notebooks go stale silently.
-
-⚠ **CI does not rebuild the theme either.** `pyomo-doe`'s CI does, which is why its workflow has an extra
-step. Here the committed artifact is the deployed artifact — which is exactly why step 5 above insists both
-layers are committed together.
+result before pushing**, or the published notebooks go stale silently. Not hypothetical: on 2026-09-17 four
+assignments (`Algorithms3`, `Algorithms4`, `Pyomo4`, `Pyomo-Mini-Project`) had been edited in the private
+repo while the public copies were still the old ones, with nothing anywhere to signal it.

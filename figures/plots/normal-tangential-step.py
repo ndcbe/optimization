@@ -139,10 +139,16 @@ def _report(s):
     print(f"    h(x^k) = {s['hk']:.6f}   J_h = {s['jh'][0]}   Z^T W Z = {s['ztwz']:.4f}")
     print(f"    |Y p_Y| = {ln:.4f}   |Y^c p_Yc| = {lc:.4f}   ratio = {lc/ln:.4f}")
     print(f"    ||A||/|A_1| = {np.linalg.norm(s['a'])/s['a'][0]:.4f}   |Z p_Z| = {lt:.4f}")
+    # `jh` is (1, 2) and each step is (2,), so `jh @ step` is a ONE-ELEMENT
+    # ARRAY, not a scalar. NumPy 2 removed float()-on-a-one-element-array, so
+    # `float(...)` raised TypeError here and this figure could not be rendered
+    # in the course environment at all (numpy 2.5.2) although it still
+    # rendered under numpy 1.26. `.item()` is the version-independent spelling
+    # and says what is meant. Fixed 2026-09-17, figures audit.
     for name in ("normal", "normal_c", "dx"):
-        resid = float(s["jh"] @ s[name]) + s["hk"]
+        resid = (s["jh"] @ s[name]).item() + s["hk"]
         assert abs(resid) < 1e-12, (name, resid)
-    assert abs(s["jh"] @ s["tangential"]) < 1e-12
+    assert abs((s["jh"] @ s["tangential"]).item()) < 1e-12
     assert s["ztwz"] > 0
 
 

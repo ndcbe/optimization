@@ -33,14 +33,53 @@
 % so numbers are derived from position in the pack and any number printed inside
 % a figure would be stale the first time a lecture moves. The bottom row
 % therefore names lectures by title, exactly as the coda's own cross-references
-% do. Titles verified against \lecture{}{} in each source file on 2026-08-19:
+% do.
+%
+% ⚠ RE-VERIFIED 2026-09-17 against \lecture{}{} in each source file, and FOUR OF
+% THE FIVE ENTRIES HAD DRIFTED. The list now reads:
 %   introduction.tex               "Introduction: Why and How We Optimize"
-%   kkt-multipliers.tex            "KKT Multipliers and Constraint Qualifications"
-%   parameter-estimation-doe.tex   "Parameter Estimation and Optimal Experimental Design"
-%   stochastic-programming-intro.tex      "Introduction to Stochastic Programming"
-%   stochastic-programming-advanced.tex   "Stochastic Programming II: Information and Risk"
+%   kkt-conditions.tex             "KKT Conditions, Multipliers, and Sensitivity"
+%   parameter-estimation-doe.tex   "Parameter Estimation and Experimental Design"
+%   stochastic-programming-intro.tex      "Stochastic Programming: Introduction"
+%   stochastic-programming-advanced.tex   "Stochastic Programming: Information and Risk"
 % Shortened here for width; every short form is a prefix or an obvious contraction
 % of the real title.
+%
+% WHAT THE OLD LIST CLAIMED, AND WHY IT IS RECORDED RATHER THAN QUIETLY
+% OVERWRITTEN. Its second line read
+%
+%   kkt-multipliers.tex            "KKT Multipliers and Constraint Qualifications"
+%
+% and BOTH HALVES of that were wrong, in different ways and at different times:
+%
+%   * THE TITLE WAS NEVER RIGHT. The file did exist on 2026-08-19, the date the
+%     old comment gives for the verification, but its own header read
+%     \lecture{19}{KKT Multipliers and Sensitivity} -- checked with
+%     `git show 8383c43^:lecture-notes/lectures/kkt-multipliers.tex'. So the
+%     quoted title belonged to no lecture on the day it was "verified"; it looks
+%     like a conflation with constraint-qualifications.tex, which is the NEXT
+%     lecture and a separate file. A verification claim that was false when it
+%     was written is the more useful half of this note: it is the reason to
+%     re-read the source rather than trust the list.
+%   * THE FILE IS NOW GONE. kkt-multipliers.tex was merged IN FULL into
+%     lectures/kkt-conditions.tex on 2026-08-21 with Prof. Dowling's approval,
+%     and deleted; optimization-private/lecture-notes/main-body.tex carries the
+%     merge header and the recovery command.
+%
+% THE PICTURE'S CLAIM ITSELF STILL HOLDS, which is why this is repointed and not
+% withdrawn: the lecture that now teaches rung 2 is kkt-conditions.tex, whose
+% \goal IS the sensitivity derivation -- "Derive the sensitivity interpretation
+% d obj(x*)/d eps = mult*_ihat" -- so "explore" is still a response the student
+% has sat through, in one lecture, under a title that names it.
+%
+% ⚠ THE DRAWN LABEL ON RUNG 2 STILL READS "KKT Multipliers", which is no longer
+% a prefix or a contraction of the real title -- it is the old lecture's name.
+% Deliberately NOT changed here: the label is rendered output
+% (../media/figures/uncertainty-responses.{png,svg} would have to be rebuilt,
+% and figures/Makefile rebuilds everything), and it is already tracked as a
+% \fixnote in Lecture 27 by the L26/L27 audit of 2026-09-17, which proposes
+% "KKT Conditions \& Sensitivity". This comment fixes the AUDIT TRAIL; the label
+% is Prof. Dowling's call and is flagged where he will see it, in the PDF.
 %
 % GREYSCALE. Nothing is encoded by hue -- the file contains no colour at all.
 % The five taught responses are SOLID black boxes; the untaught sixth is DASHED

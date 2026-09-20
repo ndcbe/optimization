@@ -107,8 +107,11 @@ because the two are not the same kind of thing:
   * A ``handout-output:`` listing is a SOLVER LOG. It is a trace of one run on
     one machine with one solver build.
 
-🔴 WHY OUTPUTS ARE NOT PINNED
------------------------------
+🔴 WHY OUTPUTS ARE NOT PINNED **FOR STABILITY** -- BUT ARE NOW PINNED FOR STALENESS
+-----------------------------------------------------------------------------------
+⚠ **Heading and second bullet REVISED 2026-09-21. Everything else below is kept
+verbatim, because it is still correct: only the "advisory" trade changed.**
+
 ``check_code_sync.py`` opens with a rule that must not be quietly repealed here:
 
     "Do not extend this to a solver trace, an iteration table, or any printed
@@ -119,16 +122,53 @@ because the two are not the same kind of thing:
 
 That rule is about *pinning*, not about *printing*, and this half does not pin
 anything. The output is copied out of the notebook the notebook's author
-executed, with provenance recorded in the file header, and nothing asserts that
-re-running produces it again. Two consequences worth stating out loud:
+executed, with provenance recorded in the file header, and **nothing here
+asserts that re-running produces it again. That has not changed and must not.**
 
   * ``code/output/`` is OUTSIDE the directory ``check_code_sync.py`` scans, so a
-    log can never make ``verify_all.sh`` red.
-  * That also means nothing warns you when the notebook is re-executed and the
-    handout keeps last month's log. ``--check`` is the tool for that, and it is
-    the author's job to run it after re-executing a notebook. This is a
-    deliberate trade: an advisory staleness check you can run, rather than a
-    mandatory one that would eventually be switched off.
+    log can never make ``verify_all.sh`` red *through that checker*. Still true,
+    and still the reason for the subdirectory.
+  * ⚠ **The second consequence used to read:** "That also means nothing warns
+    you when the notebook is re-executed and the handout keeps last month's log.
+    ``--check`` is the tool for that, and it is the author's job to run it after
+    re-executing a notebook. This is a deliberate trade: an advisory staleness
+    check you can run, rather than a mandatory one that would eventually be
+    switched off." 🔴 **THAT TRADE FAILED IN PRACTICE AND IS WITHDRAWN.**
+    ``lecture-notes/check_pyomooutput.py`` in the private repo -- picked up
+    automatically by ``verify_all.sh``, which globs ``check_*.py`` -- now makes
+    the staleness half MANDATORY. It imports THIS module
+    (``find_output_snippets``, ``render_output``, ``parse_generated_output``),
+    so the two cannot disagree about the file format or about elision.
+
+**STALENESS IS NOT STABILITY, and that distinction is the whole justification:**
+
+  * STABILITY -- "re-running the notebook reproduces this trace." FALSE for a
+    solver log. Never asserted, here or there.
+  * STALENESS -- "the artifact matches the output CURRENTLY STORED in the cell
+    it names." Requires no reproducibility at all: both sides are the same
+    stored bytes of the same ``.ipynb``, and the checker never executes
+    anything. A failure means the notebook was re-executed and the handout kept
+    the old log, which is a real defect every time.
+
+**Why the advisory trade failed, concretely.** 2026-09-20:
+``\pyomooutput{l10-production-risk}`` was found printing per-scenario costs read
+off a pure-CVaR solve in which only one of three scenarios is priced. The
+printed 3655.00 was correct only by the solver's choice of vertex; a
+lexicographic probe found an equally optimal solution giving 4735.00 -- a $1,080
+swing at an identical plan and an identical objective, in a lecture taught this
+term. **No automated check in either repository could see it**; an agent diffing
+outputs by hand was the only check. ``CLAUDE.md`` records this shape repeatedly
+(the bare ``git commit`` rule; the ``check_bib.py`` named in a comment and never
+written, while 1281 raw citekeys reached 84 PDFs): the lesson is not "remember
+harder."
+
+🔴 **THE INTERIOR-POINT RULE STANDS, AND THE GATE MOVED TO TAGGING TIME.**
+``notebooks/7-dev/Interior-Point1.ipynb`` cell 27 changes its limit point under
+a **1e-12** perturbation of the starting point. **A genuinely irreproducible
+trace must never be registered as a ``handout-output:`` tag in the first
+place.** Tagging it would not make the checker wrong -- it would make the
+HANDOUT wrong, by printing a trace no reader can reproduce, and the checker
+would then faithfully pin that mistake.
 
 ELISION
 -------
@@ -973,10 +1013,22 @@ def render_output(snip: OutputSnippet) -> str:
     for n in notes:
         lines.append(f"% sanitised : {n}")
     lines += [
-        "% This is a SOLVER LOG, not a model. It is a record of one run and is",
-        "% NOT pinned by check_code_sync.py -- see 'WHY OUTPUTS ARE NOT PINNED'",
-        f"% in {GENERATOR}. Re-executing the notebook changes it; regenerate",
-        f"% with:  python3 {GENERATOR} --tag {snip.tag}",
+        # ⚠ This header is ADVISORY PROSE, and check_pyomooutput.py compares
+        # only the '% tag' and '% source' lines above it. That is deliberate:
+        # rewording this block is an edit to the toolchain, not to the pack, and
+        # it must not be able to turn fifteen current artifacts red.
+        "% This is a SOLVER LOG, not a model. It is a record of ONE run, and",
+        "% nothing asserts that re-running the notebook reproduces it --",
+        "% see 'WHY OUTPUTS ARE NOT PINNED FOR STABILITY' in",
+        f"% {GENERATOR}.",
+        "%",
+        "% It IS checked for STALENESS, and that check is mandatory: "
+        "lecture-notes/",
+        "% check_pyomooutput.py (run by verify_all.sh) fails if this file stops",
+        "% matching the output CURRENTLY STORED in the cell named above. So",
+        "% re-executing the notebook makes this file STALE rather than merely",
+        f"% out of date; regenerate with:  python3 {GENERATOR} --tag {snip.tag}",
+        "% Do NOT re-execute a notebook in order to make the checker pass.",
         BANNER,
         r"\begin{lstlisting}[style=pyomooutput]",
         body,
@@ -1562,8 +1614,14 @@ def selftest() -> int:
               "style=pyomooutput" in gen, True)
         check("generated output records its source cell",
               "cell 0 OUTPUT" in gen, True)
-        check("generated output says it is not pinned",
-              "NOT pinned" in gen, True)
+        # ⚠ Updated 2026-09-21 with the header itself. The old assertion was
+        # `"NOT pinned" in gen`; the header no longer says that flatly, because
+        # it is now half true -- not pinned for STABILITY, mandatory for
+        # STALENESS. Assert BOTH halves, so neither can be dropped silently.
+        check("generated output disclaims reproducibility",
+              "nothing asserts that re-running" in gen, True)
+        check("generated output says staleness IS checked, and by what",
+              "check_pyomooutput.py" in gen and "mandatory" in gen, True)
         parsed = parse_generated_output(gen)
         check("parse_generated_output round-trips the cell index",
               parsed["cell"], 0)

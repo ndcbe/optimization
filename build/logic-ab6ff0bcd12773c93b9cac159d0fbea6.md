@@ -1,0 +1,6 @@
+# Logical Modeling
+
+**Sections**
+
+```{tableofcontents}
+```

@@ -1,64 +1,10 @@
-"""The farmer's problem: four solutions to the same 500 acres.
+"""Compare perfect-information and two-stage farmer solutions.
 
-    figures/plots/farmer-solutions.py -> media/figures/farmer-solutions.{png,pdf}
-
-Birge & Louveaux, *Introduction to Stochastic Programming*, 2nd ed., Ch. 1
-(Tables 2-5, printed pp. 5-8). Three of these four solutions assume the yield
-is KNOWN before the land is planted -- one per scenario -- and the fourth does
-not. The point of the picture is that the two-stage recourse allocation is not
-any of the three, and is not their average either: it hedges, planting more
-wheat than any perfect-information solution would while stopping beets short of
-the 6000 T quota so the quota is still reachable in a good year.
-
-Everything here is RE-SOLVED, not transcribed. The linear programs are built
-and solved below with scipy's HiGHS, so the figure cannot drift away from the
-model it illustrates. No Pyomo, no Ipopt: `make` needs no solver binary and
-this finishes in well under a second.
-
-Reproduced exactly (see lecture-notes/verification/stochastic-programming-
-intro.md): 183.33/66.67/250 -> $167,667; 120/80/300 -> $118,600;
-100/25/375 -> $59,950; recourse 170/80/250 -> $108,390.
-
-Greyscale: four series, and NOTHING here is encoded by hue at all -- see the
-note on FILLS below. Each bar carries a hatch and a step on a luminance ramp,
-and the profit panel is direct-labelled on top of that.
-
-(The "four is the house cap" clause that used to sit in this sentence is gone:
-figures/README.md WITHDREW the four-series cap on 2026-08-21. Four is still the
-right number here, but because four is what the data has, not because a rule
-says so.)
-
-⚠ THE 2026-08-21 NOTE THAT USED TO SIT HERE IS RETRACTED (2026-08-22). It said
-the four bars could not walk HATCH_CYCLE 0 to 3 because in matplotlib 3.5.1 the
-backslash hatch leaned the same way as the forward slash, making indices 0 and
-1 one texture. That was a real defect, but it is DEAD: it does not reproduce
-under the matplotlib 3.11.1 in optimization_fall2026, where index 0 is +45 deg
-and index 1 is -45 deg -- by the hatch spec the most SEPARATED line pair the
-cycle offers. Do not reintroduce the workaround.
-
-HATCHES below still skips index 1, and the reason is now this figure's own,
-established by rendering the walk-the-cycle version and looking at it:
-
-  ⚠ MIRRORED SLOPES ON BARS THAT TOUCH MERGE INTO A HERRINGBONE. The bars
-  within a group abut, so with index 1 restored the +20% and average bars meet
-  along a shared edge where a +45 texture runs into a -45 one. The rendered
-  result is a single chevron-folded ribbon rather than two categories, most
-  obviously in the sugar-beets group where both bars are tall. On top of that,
-  the legend stacks the two swatches one directly above the other, each only a
-  few lines wide, so the reader is asked to judge the SIGN of a slope on the
-  smallest patch in the figure. Index 4 ("|||") cannot be read as a slash at
-  any size and does not fuse across an edge.
-
-So the hatch that replaced index 1 is kept on its merits, not out of fear of
-the old defect. See plots/evpi-vss-ladder.py, which is the same figure shape and
-reached the same conclusion, and contrast plots/licq-cusp.py, where the regions
-OVERLAP rather than abut and the mirrored pair is therefore exactly right.
-
-`scripts/check_greyscale.py --source` reports this file as
-"2 series, no colour, 0 distinct non-colour encodings". That is a false
-positive: the fill and the hatch are both chosen by subscript rather than by a
-literal, so the AST reader cannot see either (the script says as much under
-HONEST LIMITATIONS). Both channels are present and measured.
+Birge & Louveaux, Introduction to Stochastic Programming, 2nd ed.,
+Chapter 1, Tables 2--5 (pp. 5--8). LPs are re-solved with SciPy/HiGHS.
+The recourse allocation is neither a scenario optimum nor their average.
+Color identifies each plan consistently across both panels; distinct hatches
+and direct profit labels preserve readability in black and white.
 """
 
 import numpy as np
@@ -67,29 +13,9 @@ from scipy.optimize import linprog
 
 from _house import HATCH_CYCLE
 
-# Bars are told apart by HATCH and by a LUMINANCE RAMP, not by hue.
-#
-# This is a deliberate departure from the house colour cycle and it is the
-# right call here. Hatching over a saturated fill antialiases into a family of
-# intermediate colours -- a green fill under black hatch lines reads to
-# scripts/check_greyscale.py as four separate greens, several of which collapse
-# into the same grey. Measured: the Okabe-Ito version of this figure produced
-# EIGHT data colours and SIX failing pairs, none of which a reader would ever
-# have perceived as series. A grey ramp has no such blend problem, the four
-# steps are far enough apart to survive any printer, and the hatch carries the
-# identity independently. Greyscale is a pass/fail FLOOR (figures/README.md),
-# and for a four-category bar chart this is simply the correct encoding.
-FILLS = ("0.94", "0.80", "0.62", "0.42")
-
-# ⚠ NOT a straight walk down HATCH_CYCLE, and NOT because of the matplotlib
-# 3.5.1 same-slope defect that used to be cited here -- that defect is dead
-# under 3.11.1, where "///" (+45) and "\\\" (-45) are the most separated line
-# pair in the cycle. See the retraction in the module docstring.
-#
-# Index 1 is skipped because the bars within a group ABUT: rendered, a +45
-# texture running into a -45 one across a shared edge fuses into a herringbone,
-# and the stacked legend swatches ask the reader to judge the sign of a slope on
-# a patch a few lines wide. "|||" cannot be read as a slash at any size.
+# Color first, with redundant textures for monochrome printing.
+FILLS = ("#0072B2", "#E69F00", "#009E73", "#CC79A7")
+# Vertical lines distinguish adjacent bars more clearly than mirrored slashes.
 HATCHES = (HATCH_CYCLE[0], HATCH_CYCLE[4], HATCH_CYCLE[2], HATCH_CYCLE[3])
 
 CROPS = ("wheat", "corn", "sugar beets")
@@ -165,7 +91,7 @@ def make_figure():
     data = solutions()
     n = len(data)
     fig, (ax_a, ax_p) = plt.subplots(
-        1, 2, figsize=(9.6, 3.9), gridspec_kw={"width_ratios": [1.85, 1.0]}
+        1, 2, figsize=(9.6, 4.3), gridspec_kw={"width_ratios": [1.85, 1.0]}
     )
 
     # ---- left: acres per crop, grouped by crop, one bar per solution
@@ -179,7 +105,6 @@ def make_figure():
     ax_a.set_xticklabels(CROPS)
     ax_a.set_ylabel("acres planted")
     ax_a.set_ylim(0, 430)
-    ax_a.legend(fontsize=9.5, ncol=2, loc="upper center", frameon=False)
 
     # 300 acres is where 20 T/acre x 300 = 6000 T, i.e. the quota at average
     # yield. Every beet decision in the problem is really about this line.
@@ -206,5 +131,8 @@ def make_figure():
     for ax in (ax_a, ax_p):
         ax.tick_params(top=False, right=False)
 
-    fig.tight_layout()
+    handles, labels = ax_a.get_legend_handles_labels()
+    fig.legend(handles, labels, fontsize=10, ncol=2, loc="upper center",
+               bbox_to_anchor=(0.5, 1.0), frameon=False)
+    fig.tight_layout(rect=(0, 0, 1, 0.84))
     return fig

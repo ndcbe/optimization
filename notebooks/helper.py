@@ -71,6 +71,7 @@ nothing.
 __version__ = "2026.08.25"
 
 import datetime as _dt
+import hashlib as _hashlib
 import importlib.util as _ilu
 import json
 import re
@@ -629,6 +630,8 @@ def save_results(
     source_tag=None,
     description="",
     solver=None,
+    source_files=(),
+    source_cells=(),
     quiet=False,
 ):
     """Write ``figures/results/<name>.json``. Prints what it wrote; returns nothing.
@@ -652,6 +655,10 @@ def save_results(
             staleness detectable: change the model and the checker says so.
         solver: solver name and version. Recorded, never compared; solver
             versions move and that is not a defect.
+        source_files: additional repo-relative implementation/data files whose
+            full contents determine the result (for example farmer.py).
+        source_cells: pairs of (repo-relative notebook, unique cell tag) for
+            experiment settings that affect a result but are not handout code.
     """
     d = results_dir()
     if d is None:
@@ -674,6 +681,7 @@ def save_results(
             "generator": f"helper {__version__}",
             "source_tag": source_tag,
             "source_digest": digest_of_tag(source_tag) if source_tag else None,
+            "dependencies": dependency_digests(source_files, source_cells),
             "solver": solver or "",
         },
         "data": _jsonable(data),
@@ -685,6 +693,30 @@ def save_results(
         fh.write("\n")
     if not quiet:
         print(f"[helper] wrote {os.path.relpath(path, _REPO)}")
+
+
+def dependency_digests(source_files=(), source_cells=()):
+    """Pin local source files and uniquely tagged code cells used by a result."""
+    if not have_repo():
+        return {}
+    out = {}
+    for relative in source_files:
+        path = os.path.abspath(os.path.join(_REPO, relative))
+        if os.path.commonpath((_REPO, path)) != _REPO:
+            raise ValueError(f"Dependency leaves repository: {relative}")
+        out[f"file:{relative}"] = _hashlib.sha256(open(path, "rb").read()).hexdigest()
+    for relative, tag in source_cells:
+        path = os.path.abspath(os.path.join(_REPO, relative))
+        if os.path.commonpath((_REPO, path)) != _REPO:
+            raise ValueError(f"Dependency leaves repository: {relative}")
+        notebook = json.load(open(path, encoding="utf-8"))
+        matches = [cell for cell in notebook["cells"]
+                   if tag in cell.get("metadata", {}).get("tags", [])]
+        if len(matches) != 1:
+            raise ValueError(f"Expected one cell tagged {tag} in {relative}; found {len(matches)}")
+        source = "".join(matches[0]["source"]).replace("\r\n", "\n")
+        out[f"cell:{relative}#{tag}"] = _hashlib.sha256(source.encode("utf-8")).hexdigest()
+    return out
 
 
 def load_results(name):

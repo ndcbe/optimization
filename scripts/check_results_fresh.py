@@ -33,35 +33,21 @@ means comments and docstrings gone, so improving the commentary on the website
 -- which should happen often -- does not make the archive stale. Changing a
 bound, a set, a constraint or a name does.
 
-🔴 WHAT THIS CANNOT SEE, AND WHY THAT IS ACCEPTED
---------------------------------------------------
-The digest covers the MODEL cell, not the SOLVE. Edit the sweep range, the
-solver options, or the input data file and the digest is unchanged while the
-archived numbers are wrong. Two reasons not to widen it:
+New farmer archives also record the imported farmer module and uniquely tagged
+experiment cells as SHA256 dependencies. This catches changes to the synthetic
+generator, sampling settings, or alpha sweep that the model-cell digest misses.
 
-  * The model cell is the one thing that is already tagged, already
-    single-sourced, and already stable enough to pin -- ``check_code_sync.py``'s
-    own warning is that pinning anything unstable produces a checker that fails
-    for reasons unrelated to the pack, and whoever silences it silences the real
-    failures with it.
-  * A change to the sweep or the data is a change someone is making ON PURPOSE
-    to the figure, and they are looking at the figure while they do it. A change
-    to the model is made for a different reason entirely -- fixing the handout
-    listing, say -- with no thought of the figure at all. That is the case that
-    needs a machine to notice.
-
-So: this catches the silent class and says nothing about the loud one. Widening
-it would mean digesting the whole notebook, which fails on every prose edit.
+Older archives without explicit dependencies retain the narrower model-cell
+guarantee. A full notebook hash is deliberately avoided: prose edits do not
+change solved results.
 
 THE VERDICTS
 ------------
-  OK           the archive matches the model cell it names.
-  STALE        the model cell changed after the archive was written. Re-run the
+  OK           the archive matches its model cell and declared dependencies.
+  STALE        a pinned source changed after archiving. Re-run the
                notebook and commit the new JSON and figures.
-  UNVERIFIED   the archive names no ``source_tag``, or its digest is null (it
-               was written on Colab, where the repo is not on disk). A WARNING,
-               not a failure -- a data figure with no Pyomo model legitimately
-               has no model cell to pin.
+  UNVERIFIED   no model tag or dependencies pin the computation. A WARNING,
+               not a failure for older data figures with no Pyomo model.
   ORPHAN       an archive whose ``source_tag`` exists in no notebook any more,
                or whose ``figure:`` cell has gone. Something still reads it.
   MISSING      a cell tagged ``figure:<name>`` with no ``results/<name>.json``.
@@ -71,6 +57,7 @@ THE VERDICTS
 USAGE
 -----
     python3 scripts/check_results_fresh.py
+    python3 scripts/check_results_fresh.py --prefix farmer-
     python3 scripts/check_results_fresh.py --selftest   # prove it can FAIL
 
 Exit status 0 when nothing fails, 1 on any failure, 2 when the repo layout is
@@ -96,6 +83,11 @@ sys.path.insert(0, os.path.join(REPO, "figures"))
 
 FAIL_VERDICTS = {"STALE", "ORPHAN", "MISSING", "MALFORMED"}
 WARN_VERDICTS = {"UNVERIFIED"}
+FARMER_ARCHIVES = {
+    "farmer-synthetic-distribution", "farmer-saa-convergence",
+    "farmer-fresh-samples", "farmer-cvar-twenty",
+    "farmer-alpha-acreage-production", "farmer-information-values",
+}
 
 
 def _load_deps():
@@ -115,7 +107,7 @@ def _load_deps():
 # ---------------------------------------------------------------------------
 # The core assertion, factored out so --selftest can drive it with fixtures.
 # ---------------------------------------------------------------------------
-def compare(archives, figure_cells, digests, required_meta):
+def compare(archives, figure_cells, digests, required_meta, dependency_hashes=None):
     """Classify every figure. Returns (rows, problems).
 
     ``archives``      {name: parsed JSON payload, or None if unparseable}
@@ -148,9 +140,33 @@ def compare(archives, figure_cells, digests, required_meta):
             )
             continue
 
+        dependencies = meta.get("dependencies", {})
+        if name in FARMER_ARCHIVES and not dependencies:
+            rows.append((name, "UNVERIFIED", "farmer model/generator dependencies not pinned"))
+            continue
+        if not isinstance(dependencies, dict) or any(
+            not isinstance(key, str) or not isinstance(value, str)
+            for key, value in dependencies.items()
+        ):
+            rows.append((name, "MALFORMED", "dependency digests are not a string mapping"))
+            continue
+        if dependency_hashes is not None:
+            stale_dependency = None
+            for key, stored_hash in dependencies.items():
+                current_hash = dependency_hashes.get(key)
+                if current_hash != stored_hash:
+                    stale_dependency = f"dependency {key}: current {current_hash}; archived {stored_hash}"
+                    break
+            if stale_dependency:
+                rows.append((name, "STALE", stale_dependency))
+                continue
+
         tag = meta.get("source_tag")
         stored = meta.get("source_digest")
         if not tag or not stored:
+            if dependencies and dependency_hashes is not None:
+                rows.append((name, "OK", "file/cell dependencies match"))
+                continue
             rows.append(
                 (name, "UNVERIFIED", "no source_tag/source_digest to compare against")
             )
@@ -194,6 +210,31 @@ def current_digests(ex, nb_glob=NB_GLOB):
     return {s.tag: ex.digest(s.source) for s in snippets}
 
 
+def current_dependency_hashes(helper, archives):
+    """Recompute exactly the dependencies named in committed archives."""
+    files, cells = set(), set()
+    for payload in archives.values():
+        if not payload or not isinstance(payload.get("meta"), dict):
+            continue
+        for key in payload["meta"].get("dependencies", {}):
+            if key.startswith("file:"):
+                files.add(key[5:])
+            elif key.startswith("cell:") and "#" in key:
+                cells.add(tuple(key[5:].rsplit("#", 1)))
+    result = {}
+    for relative in files:
+        try:
+            result.update(helper.dependency_digests(source_files=[relative]))
+        except (OSError, ValueError, KeyError):
+            pass
+    for relative, tag in cells:
+        try:
+            result.update(helper.dependency_digests(source_cells=[(relative, tag)]))
+        except (OSError, ValueError, KeyError):
+            pass
+    return result
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(
         description="Check archived figure results against their notebook cells.",
@@ -202,6 +243,7 @@ def main(argv=None) -> int:
     )
     ap.add_argument("--strict", action="store_true", help="warnings fail too")
     ap.add_argument("--selftest", action="store_true", help="prove this can FAIL")
+    ap.add_argument("--prefix", help="check only figure names beginning with this prefix")
     args = ap.parse_args(argv)
 
     if args.selftest:
@@ -224,7 +266,11 @@ def main(argv=None) -> int:
 
     archives = read_archives()
     cells = {n: (p, i) for n, (p, i, _) in rfn.find_figure_cells().items()}
-    rows, _ = compare(archives, cells, current_digests(ex), helper.REQUIRED_META)
+    if args.prefix:
+        archives = {n: v for n, v in archives.items() if n.startswith(args.prefix)}
+        cells = {n: v for n, v in cells.items() if n.startswith(args.prefix)}
+    rows, _ = compare(archives, cells, current_digests(ex), helper.REQUIRED_META,
+                      current_dependency_hashes(helper, archives))
 
     print("Figure results freshness  --  the notebook is the golden copy\n")
     if not rows:
@@ -286,6 +332,15 @@ def selftest() -> int:
 
     rows, _ = compare({"f": archive()}, cells, {"m": "aaaa"}, required)
     expect("archive matches the model cell", rows, "f", "OK")
+
+    pinned = archive(digest=None, tag=None,
+                     dependencies={"file:notebooks/farmer.py": "abc"})
+    rows, _ = compare({"f": pinned}, cells, {}, required,
+                      {"file:notebooks/farmer.py": "abc"})
+    expect("imported module matches", rows, "f", "OK")
+    rows, _ = compare({"f": pinned}, cells, {}, required,
+                      {"file:notebooks/farmer.py": "def"})
+    expect("imported module changed", rows, "f", "STALE")
 
     rows, _ = compare({"f": archive()}, cells, {"m": "bbbb"}, required)
     expect("model cell edited after archiving", rows, "f", "STALE")

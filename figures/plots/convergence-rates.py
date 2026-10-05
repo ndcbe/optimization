@@ -56,7 +56,7 @@ def make_figure():
                 color="0.2", va="center")
     label_curve(ax, 6.0, 3e-11, "superlinear (○)\n" r"$e^{k+1} = (e^k)^{3/2}$",
                 color="0.2", va="top")
-    label_curve(ax, 3.2, 1e-11, "quadratic (△)\n" r"$e^{k+1} = (e^k)^2$",
+    label_curve(ax, 0.3, 1e-11, "quadratic (△)\n" r"$e^{k+1} = (e^k)^2$",
                 color="0.2", va="top")
     label_curve(ax, 0.0, 1.6e-17, r"unit roundoff $u$", color="0.4",
                 va="bottom", fontsize=11)

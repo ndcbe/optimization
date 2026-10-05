@@ -1,0 +1,85 @@
+% The shape of A = P L U: a permutation, a lower triangle and an upper triangle.
+%
+%   figures/tikz/la-plu-structure.tex
+%       -> media/figures/la-plu-structure.{png,svg}
+%
+% Lecture 12 (Linear Algebra Review), LU decomposition with partial pivoting,
+% under eq. (12-11) A = P L U. Drawn for Alex's decision D13 (basic
+% linear-algebra ideas get a TikZ figure).
+%
+% GEOMETRY. Four 4 x 4 blocks of side s = 1.5 cm joined by "=" and dots.
+%   A  an unstructured full square (all entries may be non-zero).
+%   P  a permutation matrix: exactly one 1 in every row and every column,
+%      here at (row, col) = (1,2), (2,4), (3,1), (4,3), drawn as dots on a
+%      4 x 4 grid.
+%   L  lower triangle (including the diagonal) filled and marked *, upper
+%      triangle empty and marked 0; the diagonal entries are 1 (unit lower).
+%   U  upper triangle (including the diagonal) filled and marked *, lower
+%      triangle empty and marked 0.
+%
+% GREYSCALE. L and U are told apart by WHERE the triangle is and by the printed
+% 0 / * marks, plus different hatching (horizontal vs vertical lines), never by
+% colour alone. One blue plus black.
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    font=\small,
+    sq/.style={draw=black, line width=0.8pt},
+    lab/.style={font=\normalsize, inner sep=2pt},
+    bcap/.style={font=\footnotesize, align=center, text width=28mm, anchor=north},
+    ent/.style={font=\footnotesize, inner sep=0pt},
+  ]
+\def\s{1.5}
+\def\g{3.1}   % spacing between block origins
+
+% ---------- A --------------------------------------------------------
+\begin{scope}[xshift=0cm]
+  \fill[black!8] (0,0) rectangle (\s,\s);
+  \draw[sq] (0,0) rectangle (\s,\s);
+  \node[ent] at (0.5*\s,0.5*\s) {$*$};
+  \node[lab, above] at (0.5*\s,\s) {$\mathbf{A}$};
+  \node[bcap] at (0.5*\s,-0.15) {full matrix};
+\end{scope}
+\node[lab] at (\g-0.8,0.5*\s) {$=$};
+
+% ---------- P --------------------------------------------------------
+\begin{scope}[xshift=\g cm]
+  \draw[sq] (0,0) rectangle (\s,\s);
+  \foreach \k in {1,2,3} {
+    \draw[black!35, line width=0.3pt] (\k*\s/4,0) -- (\k*\s/4,\s);
+    \draw[black!35, line width=0.3pt] (0,\k*\s/4) -- (\s,\k*\s/4);
+  }
+  % one 1 per row and column: (row,col) = (1,2),(2,4),(3,1),(4,3); row 1 on top
+  \foreach \r/\c in {1/2, 2/4, 3/1, 4/3} {
+    \fill[okabeblue] ({(\c-0.5)*\s/4},{\s-(\r-0.5)*\s/4}) circle (0.08);
+  }
+  \node[lab, above] at (0.5*\s,\s) {$\mathbf{P}$};
+  \node[bcap] at (0.5*\s,-0.15) {permutation:\\one $1$ in each\\row and column};
+\end{scope}
+\node[lab] at (2*\g-0.8,0.5*\s) {$\cdot$};
+
+% ---------- L --------------------------------------------------------
+\begin{scope}[xshift={2*\g cm}]
+  \fill[okabeblue!15] (0,\s) -- (0,0) -- (\s,0) -- cycle;
+  \fill[pattern=horizontal lines, pattern color=okabeblue!70] (0,\s) -- (0,0) -- (\s,0) -- cycle;
+  \draw[sq] (0,0) rectangle (\s,\s);
+  \draw[sq] (0,\s) -- (\s,0);
+  \node[ent] at (0.28*\s,0.28*\s) {$*$};
+  \node[ent] at (0.72*\s,0.72*\s) {$0$};
+  \node[lab, above] at (0.5*\s,\s) {$\mathbf{L}$};
+  \node[bcap] at (0.5*\s,-0.15) {lower triangular,\\unit diagonal};
+\end{scope}
+\node[lab] at (3*\g-0.8,0.5*\s) {$\cdot$};
+
+% ---------- U --------------------------------------------------------
+\begin{scope}[xshift={3*\g cm}]
+  \fill[okabeblue!15] (0,\s) -- (\s,\s) -- (\s,0) -- cycle;
+  \fill[pattern=vertical lines, pattern color=okabeblue!70] (0,\s) -- (\s,\s) -- (\s,0) -- cycle;
+  \draw[sq] (0,0) rectangle (\s,\s);
+  \draw[sq] (0,\s) -- (\s,0);
+  \node[ent] at (0.72*\s,0.72*\s) {$*$};
+  \node[ent] at (0.28*\s,0.28*\s) {$0$};
+  \node[lab, above] at (0.5*\s,\s) {$\mathbf{U}$};
+  \node[bcap] at (0.5*\s,-0.15) {upper triangular};
+\end{scope}
+\end{tikzpicture}

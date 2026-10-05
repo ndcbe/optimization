@@ -1,0 +1,68 @@
+% Eigenvectors are the directions a symmetric matrix only stretches.
+%
+%   figures/tikz/la-eigen-directions.tex
+%       -> media/figures/la-eigen-directions.{png,svg}
+%
+% Lecture 12 (Linear Algebra Review), Eigenvalues and eigenvectors, under the
+% definition A v = lambda v. Drawn for Alex's decision D13 (basic linear-algebra
+% ideas get a TikZ figure).
+%
+% GEOMETRY (2 x 2 symmetric A = V diag(1.6, 0.5) V^T, V = [v1 v2]).
+%   v1 at 30 deg, v2 at 120 deg (orthonormal, as for any symmetric A).
+%   Left panel   the unit circle (drawn with unit length 0.8 cm), with v1
+%                (solid), v2 (dashed) and a generic x at 75 deg (dotted).
+%   Right panel  the image A(circle): an ellipse with semi-axes 1.6 along v1
+%                and 0.5 along v2. A v1 = 1.6 v1 and A v2 = 0.5 v2 stay on
+%                their own lines (solid, dashed). The generic x is 45 deg from
+%                both eigenvectors, so its coordinates in the (v1, v2) frame
+%                are (cos45, sin45) = (0.7071, 0.7071) and
+%                A x = (1.6 * 0.7071, 0.5 * 0.7071) = (1.1314, 0.3536) in that
+%                frame: length 1.185, direction 30 + 17.35 = 47.35 deg. It has
+%                turned from 75 deg to 47.35 deg, so x is NOT an eigenvector.
+%
+% GREYSCALE. v1, v2 and x differ by line style (solid, dashed, dotted) and by
+% label, never by colour alone. One blue plus black.
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    >={Latex[length=1.8mm]},
+    font=\small,
+    ax/.style={draw=black!35, line width=0.4pt},
+    blobsty/.style={draw=okabeblue, line width=1.1pt, fill=okabeblue!12},
+    vsolid/.style={draw=black, line width=1.2pt, ->},
+    vdash/.style={draw=black, line width=1.2pt, dashed, ->},
+    vdot/.style={draw=black!70, line width=1.2pt, densely dotted, ->},
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+    panelcap/.style={font=\small, align=center, text width=48mm, anchor=north},
+  ]
+\def\r{0.8}    % length of "1" in cm
+\def\la{1.6}   % lambda_1
+\def\lb{0.5}   % lambda_2
+
+% ---------- left: unit circle, eigenvectors and a generic x ------------
+\begin{scope}
+  \draw[ax] (-1.5,0) -- (1.5,0); \draw[ax] (0,-1.5) -- (0,1.5);
+  \draw[blobsty] (0,0) circle (\r);
+  \draw[vsolid] (0,0) -- (30:\r)  node[lab, right] {$\mathbf{v}_1$};
+  \draw[vdash]  (0,0) -- (120:\r) node[lab, above left] {$\mathbf{v}_2$};
+  \draw[vdot]   (0,0) -- (75:\r)  node[lab, above] {$\mathbf{x}$};
+  \node[panelcap] at (0,-1.75) {\textbf{unit circle}\\[-1pt] $\|\mathbf{x}\|_2 = 1$};
+\end{scope}
+\draw[->, line width=0.9pt] (1.75,0) -- (3.05,0) node[midway, above] {$\mathbf{A}$};
+
+% ---------- right: image of the circle ---------------------------------
+\begin{scope}[xshift=5.0cm]
+  \draw[ax] (-1.5,0) -- (1.5,0); \draw[ax] (0,-1.5) -- (0,1.5);
+  \begin{scope}[rotate=30]
+    \draw[blobsty] (0,0) ellipse ({\la*\r} and {\lb*\r});
+    \draw[vsolid] (0,0) -- ({\la*\r},0)
+      node[lab, below right, inner sep=1pt] {$\mathbf{A}\mathbf{v}_1 = \lambda_1 \mathbf{v}_1$};
+    \draw[vdash] (0,0) -- (0,{\lb*\r})
+      node[lab, above left] {$\mathbf{A}\mathbf{v}_2 = \lambda_2 \mathbf{v}_2$};
+    \draw[vdot] (0,0) -- ({1.1314*\r},{0.3536*\r})
+      node[lab, above right, inner sep=1pt] {$\mathbf{A}\mathbf{x}$};
+  \end{scope}
+  \node[panelcap] at (0,-1.75) {\textbf{image of the circle}\\[-1pt]
+    eigenvectors only stretch; $\mathbf{x}$ turns};
+\end{scope}
+\end{tikzpicture}

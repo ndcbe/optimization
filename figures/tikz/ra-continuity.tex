@@ -1,0 +1,41 @@
+% The epsilon-delta definition of continuity, drawn.
+%
+%   figures/tikz/ra-continuity.tex
+%       -> media/figures/ra-continuity.{png,svg}
+%
+% Lecture 13 (Real Analysis Review), Continuity.
+%
+% GEOMETRY (x unit 1.6 cm, y unit 3.0 cm). phi(x) = 1.2 + 0.5 sin(1.1 x),
+% xbar = 1.0, phi(xbar) = 1.2 + 0.5 sin(1.1) = 1.6456. epsilon = 0.3,
+% delta = 0.5. |phi'(x)| = |0.55 cos(1.1 x)| <= 0.55, so for |x - xbar| < 0.5,
+% |phi(x) - phi(xbar)| <= 0.55 (0.5) = 0.275 < 0.3: the graph over the window of
+% half-width delta stays inside the band of half-height epsilon.
+%
+% GREYSCALE: band edges are dashed, window edges dotted, graph solid; labelled.
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    x=1.6cm, y=3.0cm,
+    >={Latex[length=2.0mm]},
+    font=\small,
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+  ]
+  \def\fb{1.6456}
+  \fill[okabeblue!10] (0.5,\fb-0.3) rectangle (1.5,\fb+0.3);
+  \draw[->, black!55] (-0.2,0.9) -- (2.4,0.9) node[right, lab] {$\mathbf{x}$};
+  \draw[->, black!55] (0,0.9) -- (0,2.05);
+  \draw[very thick, domain=0:2.2, smooth, samples=60, variable=\t]
+    plot ({\t},{1.2+0.5*sin(deg(1.1*\t))});
+  \draw[okabeblue, dashed, thick] (0,\fb+0.3) -- (2.2,\fb+0.3);
+  \draw[okabeblue, dashed, thick] (0,\fb-0.3) -- (2.2,\fb-0.3);
+  \draw[densely dotted, thick] (0.5,0.9) -- (0.5,\fb+0.3);
+  \draw[densely dotted, thick] (1.5,0.9) -- (1.5,\fb+0.3);
+  \filldraw (1.0,\fb) circle (1.8pt);
+  \draw[densely dotted] (1.0,0.9) -- (1.0,\fb);
+  \node[lab, anchor=north] at (1.0,0.9) {$\bar{\mathbf{x}}$};
+  \node[lab, anchor=north] at (0.5,0.9) {$\bar{\mathbf{x}} - \delta$};
+  \node[lab, anchor=north] at (1.5,0.9) {$\bar{\mathbf{x}} + \delta$};
+  \node[lab, anchor=east] at (-0.02,\fb) {$\phi(\bar{\mathbf{x}})$};
+  \node[lab, anchor=west, okabeblue] at (2.22,\fb+0.3) {$\phi(\bar{\mathbf{x}}) + \epsilon$};
+  \node[lab, anchor=west, okabeblue] at (2.22,\fb-0.3) {$\phi(\bar{\mathbf{x}}) - \epsilon$};
+\end{tikzpicture}

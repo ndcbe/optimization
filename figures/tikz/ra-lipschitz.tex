@@ -1,0 +1,43 @@
+% Lipschitz continuity: the graph stays inside a double cone at every point.
+%
+%   figures/tikz/ra-lipschitz.tex
+%       -> media/figures/ra-lipschitz.{png,svg}
+%
+% Lecture 13 (Real Analysis Review), Lipschitz continuity.
+%
+% GEOMETRY (x unit 1.3 cm, y unit 1.2 cm). phi(x) = 0.6 sin(1.5 x) + 0.15 x on
+% [-2.2,2.2]. phi'(x) = 0.9 cos(1.5 x) + 0.15, max |phi'| = 1.05 (numerical), so
+% L = 1.1 works. At (x, phi(x)) the lines y = phi(x) +- L (t - x) bound the graph
+% for every t. Drawn at x = -1.0 (phi = -0.748) and x = 1.2 (phi = 0.764).
+%
+% GREYSCALE: graph solid thick; the cones are dashed (one point) and dotted
+% (the other) lines, each tagged with its point.
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    x=1.3cm, y=1.1cm,
+    >={Latex[length=2.0mm]},
+    font=\small,
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+  ]
+  \draw[->, black!55] (-2.4,0) -- (2.5,0) node[right, lab] {$x$};
+  \draw[->, black!55] (0,-2.2) -- (0,2.2);
+  \begin{scope}
+    \clip (-2.3,-2.2) rectangle (2.3,2.2);
+    % cone at x = -1.0, phi = -0.748
+    \draw[okabeblue, dashed, thick, domain=-2.3:0.4, variable=\t]
+      plot ({\t},{-0.748+1.1*(\t+1.0)});
+    \draw[okabeblue, dashed, thick, domain=-2.3:0.4, variable=\t]
+      plot ({\t},{-0.748-1.1*(\t+1.0)});
+    % cone at x = 1.2, phi = 0.764
+    \draw[densely dotted, thick, domain=-0.1:2.3, variable=\t]
+      plot ({\t},{0.764+1.1*(\t-1.2)});
+    \draw[densely dotted, thick, domain=-0.1:2.3, variable=\t]
+      plot ({\t},{0.764-1.1*(\t-1.2)});
+    \draw[very thick, domain=-2.2:2.2, smooth, samples=80, variable=\t]
+      plot ({\t},{0.6*sin(deg(1.5*\t))+0.15*\t});
+  \end{scope}
+  \filldraw[okabeblue] (-1.0,-0.748) circle (1.8pt);
+  \filldraw (1.2,0.764) circle (1.8pt);
+  \node[lab, anchor=west] at (1.7,-0.5) {$\phi$};
+\end{tikzpicture}

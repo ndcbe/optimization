@@ -518,6 +518,17 @@ either a red or a green result. A checker that cannot fail is indistinguishable 
 
 ---
 
+## Vectors and matrices in labels (decided 2026-10-05)
+
+Course convention: vectors and matrices are **bold** everywhere, figure labels included. In a
+matplotlib label write `\mathbf{x}`, `\mathbf{p}^k`, `\mathbf{A}`, `\hat{\mathbf{p}}`; in a TikZ node write the
+same. Scalars stay plain: components (`x_1`, `x_2` axis labels), scalar-valued functions (`f`, `g_1(\mathbf{x})`)
+and one-variable figures (`barrier-scalar-central-path`, McCormick, finite-difference, Euler, spatial B&B).
+matplotlib's mathtext has `\mathbf` but **no `\boldsymbol`**, so a bold *Greek* vector cannot be set in a
+plot label; use a scalar component label or move the symbol into the caption. Re-render only the figure
+you changed (`python render.py plots/<name>.py ../media/figures`, or `make ../media/figures/<name>.png ...`
+for TikZ) -- a bare `make` rebuilds everything and churns bytes. Full rule: `optimization-private/claude/BOLD_NOTATION_CONVENTION.md`.
+
 ## Style details
 
 ### Shaded regions need hatching

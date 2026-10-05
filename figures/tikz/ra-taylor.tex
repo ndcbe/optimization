@@ -1,0 +1,55 @@
+% Taylor models: the tangent line and the parabola near a point.
+%
+%   figures/tikz/ra-taylor.tex
+%       -> media/figures/ra-taylor.{png,svg}
+%
+% Lecture 13 (Real Analysis Review), Part 5, beside Taylor's theorem. One idea:
+% near x the function is close to its first-order model f(x) + f'(x) p and
+% closer to its second-order model; the gaps shrink like p^2 and p^3.
+%
+% GEOMETRY (x unit 1.5 cm, y unit 1.0 cm). f(t) = exp(t) expanded about x = 0,
+%   f(0) = 1, f'(0) = 1, f''(0) = 1.
+%   first-order model   m1(p) = 1 + p
+%   second-order model  m2(p) = 1 + p + p^2/2
+% At p = 1: f = 2.718, m1 = 2.000 (gap 0.718, order p^2), m2 = 2.500 (gap 0.218,
+% order p^3). Domain -1.6 .. 1.4: f(1.4) = 4.06, m2(1.4) = 3.38, m1(1.4) = 2.4.
+%
+% GREYSCALE (scripts/check_greyscale.py): the three curves differ by dash
+% pattern and by direct labels, never by colour alone; blue repeats what the
+% dash pattern and the label already say.
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    x=1.5cm, y=1.0cm,
+    >={Latex[length=2.0mm]},
+    font=\small,
+  ]
+  \draw[->, black!55] (-1.8,0) -- (1.9,0);
+  \draw[->, black!55] (-1.7,-0.3) -- (-1.7,5.1);
+  % f, first- and second-order models
+  \draw[very thick, domain=-1.6:1.4, smooth, samples=50, variable=\t]
+    plot ({\t}, {exp(\t)});
+  \draw[thick, dashed, okabeblue, domain=-1.6:1.4, smooth, variable=\t]
+    plot ({\t}, {1+\t});
+  \draw[thick, densely dotted, domain=-1.6:1.4, smooth, samples=50, variable=\t]
+    plot ({\t}, {1+\t+\t*\t/2});
+  % the expansion point
+  \filldraw (0,1) circle (1.8pt);
+  \node[below] at (0,0) {$x$};
+  \draw[black!40, densely dotted] (0,0) -- (0,1);
+  % the evaluation point x + p = 1
+  \draw[black!40, densely dotted] (1,0) -- (1,2.718);
+  \node[below] at (1,0) {$x + p$};
+  % gaps at p = 1
+  \draw[<->] (1.12,2.0) -- (1.12,2.5);
+  \draw[<->] (1.12,2.5) -- (1.12,2.718);
+  \node[anchor=west, font=\footnotesize] at (1.17,2.2) {$O(p^2)$};
+  \node[anchor=west, font=\footnotesize] at (1.17,2.95) {$O(p^3)$};
+  % legend, upper left
+  \draw[very thick] (-1.55,4.7) -- (-1.1,4.7);
+  \node[anchor=west] at (-1.05,4.7) {$f(x+p)$};
+  \draw[thick, densely dotted] (-1.55,4.1) -- (-1.1,4.1);
+  \node[anchor=west] at (-1.05,4.1) {second-order model};
+  \draw[thick, dashed, okabeblue] (-1.55,3.5) -- (-1.1,3.5);
+  \node[anchor=west, okabeblue] at (-1.05,3.5) {first-order model};
+\end{tikzpicture}

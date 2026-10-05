@@ -1,0 +1,87 @@
+% The inverse as "undo the map": invertible versus singular.
+%
+%   figures/tikz/la-inverse-map.tex
+%       -> media/figures/la-inverse-map.{png,svg}
+%
+% Lecture 12 (Linear Algebra Review), Matrix inverse section. Alex's request,
+% 2026-10-05: a PICTURE of the inverse in the handout in place of a pointer to a
+% video. A static figure carries the idea: an invertible map sends each point to
+% exactly one image and A^{-1} walks the arrow back; a singular map folds the
+% plane onto a line, so different inputs land on the same output and no map can
+% walk back.
+%
+% GEOMETRY (units of 1.4 cm; origin at the lower left of each window).
+%   Panel 1  A = [1.5 0.5; 0.5 1.0], det = 1.25 != 0 (the same A as the left
+%            panel of la-matrix-map). The unit square goes to the parallelogram
+%            (0,0),(1.5,0.5),(2.0,1.5),(0.5,1.0). x = (0.5,0.5) maps to
+%            b = A x = (1.5*0.5+0.5*0.5, 0.5*0.5+1.0*0.5) = (1.00, 0.75), which
+%            lies inside the parallelogram. The solid arrow is A, the dashed
+%            arrow is A^{-1}.
+%   Panel 2  A = [1 1; 1 1], det = 0. The unit square goes to the segment from
+%            (0,0) to (2,2). x1 = (0.2,0.8) and x2 = (0.8,0.2) both map to
+%            b = (1,1): A x1 = (0.2+0.8, 0.2+0.8) = (1,1) = A x2. One output,
+%            two inputs, so no function can undo A.
+%
+% GREYSCALE (scripts/check_greyscale.py). Invertible vs singular is carried by the
+% words, by solid vs dashed arrows, and by a filled region vs a bare thick line;
+% the one hue (blue) only repeats what those already say.
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    x=1.4cm, y=1.4cm,
+    >={Latex[length=2.0mm]},
+    font=\small,
+    win/.style={draw=black!35, line width=0.4pt},
+    ax/.style={draw=black!35, line width=0.4pt},
+    sq/.style={draw=black!55, line width=0.6pt, dashed},
+    img/.style={draw=okabeblue, line width=1.1pt},
+    fwd/.style={draw=black, line width=1.2pt, ->},
+    back/.style={draw=black, line width=1.2pt, dashed, ->},
+    pt/.style={circle, fill=black, inner sep=1.4pt},
+    lab/.style={font=\small, inner sep=1.5pt},
+    panelcap/.style={font=\small, align=center, text width=58mm, anchor=north},
+  ]
+
+% =====================================================================
+% Panel 1 -- invertible: A^{-1} undoes A
+% =====================================================================
+\begin{scope}
+  \draw[win] (-0.3,-0.3) rectangle (2.4,2.45);
+  \draw[ax] (-0.3,0) -- (2.4,0);
+  \draw[ax] (0,-0.3) -- (0,2.45);
+  \fill[okabeblue!14] (0,0) -- (1.5,0.5) -- (2.0,1.5) -- (0.5,1.0) -- cycle;
+  \draw[img] (0,0) -- (1.5,0.5) -- (2.0,1.5) -- (0.5,1.0) -- cycle;
+  \draw[sq] (0,0) rectangle (1,1);
+  \node[pt] (x) at (0.5,0.5) {};
+  \node[pt] (b) at (1.0,0.75) {};
+  \node[lab, anchor=north east] at (x.south west) {$\mathbf{x}$};
+  \node[lab, anchor=south west] at (b.north east) {$\mathbf{b}=\mathbf{A}\mathbf{x}$};
+  \draw[fwd]  (x) to[bend left=40] node[lab, above left, pos=0.5] {$\mathbf{A}$} (b);
+  \draw[back] (b) to[bend left=40] node[lab, below right, pos=0.5] {$\mathbf{A}^{-1}$} (x);
+  \node[panelcap] at (1.05,-0.4) {\textbf{invertible}, $\det\mathbf{A}\neq 0$\\[-1pt]
+        each $\mathbf{b}$ has one $\mathbf{x}$;\\[-1pt] $\mathbf{A}^{-1}$ undoes $\mathbf{A}$};
+\end{scope}
+
+% =====================================================================
+% Panel 2 -- singular: the plane is folded onto a line
+% =====================================================================
+\begin{scope}[xshift=4.2cm]
+  \draw[win] (-0.3,-0.3) rectangle (2.4,2.45);
+  \draw[ax] (-0.3,0) -- (2.4,0);
+  \draw[ax] (0,-0.3) -- (0,2.45);
+  \draw[sq] (0,0) rectangle (1,1);
+  \draw[img, line width=3pt, draw=okabeblue!60] (0,0) -- (2.0,2.0);
+  \node[pt] (x1) at (0.2,0.8) {};
+  \node[pt] (x2) at (0.8,0.2) {};
+  \node[pt] (b2) at (1.0,1.0) {};
+  \node[lab, anchor=south east] at (x1.north west) {$\mathbf{x}_1$};
+  \node[lab, anchor=north west] at (x2.south east) {$\mathbf{x}_2$};
+  \node[lab, anchor=south east, fill=white, inner sep=1pt] at (b2.north west) {$\mathbf{b}$};
+  \draw[fwd] (x1) -- (b2);
+  \draw[fwd] (x2) -- (b2);
+  \node[lab, anchor=west, text width=2.2cm, align=left] at (1.35,0.55) {no map\\sends $\mathbf{b}$ back};
+  \node[panelcap] at (1.05,-0.4) {\textbf{singular}, $\det\mathbf{A}=0$\\[-1pt]
+        $\mathbf{A}\mathbf{x}_1=\mathbf{A}\mathbf{x}_2=\mathbf{b}$;\\[-1pt] no $\mathbf{A}^{-1}$ exists};
+\end{scope}
+
+\end{tikzpicture}

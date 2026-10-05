@@ -3,8 +3,9 @@
     figures/plots/quadratic-form-level-sets.py
         ->  media/figures/quadratic-form-level-sets.{png,pdf}
 
-Authored for `lecture-notes/lectures/linear-algebra.tex` (Part II, L11). That
-lecture defines eigenvalues, eigenvectors, positive definiteness and the
+Authored for `lecture-notes/lectures/linear-algebra.tex` (Lecture 12). The
+panel titles print K(A), the lecture's symbol for the condition number that
+the text below calls kappa(A). That lecture defines eigenvalues, eigenvectors, positive definiteness and the
 condition number and draws NONE of them; `notebooks/6-dev/Math-Primer` has no
 executable plot to migrate, so this figure is new rather than a conversion.
 
@@ -67,7 +68,10 @@ LEVELS = [0.25, 0.75, 4.0, 6.5, 9.5]
 
 PANELS = [
     ((1.0, 4.0), "well conditioned", [(0.45, -0.30), (-0.50, 0.30)]),
-    ((0.25, 25.0), "ill conditioned", [(0.10, -0.62), (-0.62, 0.20)]),
+    # Right panel: v_1 sits just BEYOND its arrow tip along the axis, clear of
+    # the heavy contour; v_2 is a 0.4-unit arrow, so it gets a short head (see
+    # _panel) and a label off its tip.
+    ((0.25, 25.0), "ill conditioned", [(0.55, 0.32), (-0.62, 0.20)]),
 ]
 
 
@@ -101,13 +105,17 @@ def _panel(ax, lam, label, offsets):
     for i, offset in enumerate(offsets):
         v = V[:, i]
         r = np.sqrt(2.0 * CSTAR / lam[i])
+        # A fixed 16 pt head is longer than the 0.4-unit v_2 arrow in the ill-
+        # conditioned panel, so its head was overdrawn by the heavy contour.
+        # Scale the head down for short arrows.
+        head = 16 if r >= 1.0 else 9
         ax.annotate(
             "",
             xy=(r * v[0], r * v[1]),
             xytext=(0.0, 0.0),
             arrowprops=dict(arrowstyle="-|>", color="black", linewidth=1.8,
-                            mutation_scale=16, shrinkA=0, shrinkB=0),
-            zorder=6,
+                            mutation_scale=head, shrinkA=0, shrinkB=0),
+            zorder=8,
         )
         ax.annotate(
             r"$v_%d$" % (i + 1),
@@ -119,11 +127,11 @@ def _panel(ax, lam, label, offsets):
             bbox=dict(facecolor="white", edgecolor="none", pad=1.0),
         )
 
-    kappa = max(lam) / min(lam)
+    cond = max(lam) / min(lam)  # K(A), the lecture's symbol for kappa(A)
     ax.set_title(
         "%s\n" % label
-        + r"$\lambda_1=%s,\ \lambda_2=%s,\ \kappa(A)=%g$"
-        % (_fmt(lam[0]), _fmt(lam[1]), kappa),
+        + r"$\lambda_1=%s,\ \lambda_2=%s,\ K(A)=%g$"
+        % (_fmt(lam[0]), _fmt(lam[1]), cond),
         fontsize=12,
     )
     ax.set_xlim(-LIM, LIM)

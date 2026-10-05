@@ -1,0 +1,42 @@
+% Unit balls {x in R^2 : ||x||_p <= 1} of the 1-, 2- and infinity-norms.
+%
+%   figures/tikz/la-norm-balls.tex
+%       -> media/figures/la-norm-balls.{png,svg}
+%
+% Lecture 12 (Linear Algebra Review), Norms. Alex's decision D13.
+%
+% GEOMETRY (radius 1.4 cm = "1"). 1-norm: the diamond |x1| + |x2| = 1 with
+% corners on the axes. 2-norm: the circle. Infinity-norm: the square
+% max(|x1|, |x2|) = 1 with sides at +-1. They nest: diamond inside circle
+% inside square (||x||_inf <= ||x||_2 <= ||x||_1 gives B_1 inside B_2 inside
+% B_inf). The point (1,0) lies on all three; (1/sqrt 2, 1/sqrt 2) is on the
+% circle, inside the square corner, and outside the diamond.
+%
+% GREYSCALE. The three curves differ by line style: diamond dash-dotted, circle
+% solid, square dashed, and each is labelled directly. Colour is a single blue.
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    >={Latex[length=1.8mm]},
+    font=\small,
+    ax/.style={draw=black!45, line width=0.4pt, ->},
+    one/.style={draw=okabeblue, line width=1.2pt, dash pattern=on 5pt off 2pt on 1pt off 2pt},
+    two/.style={draw=okabeblue, line width=1.2pt},
+    inf/.style={draw=okabeblue, line width=1.2pt, dash pattern=on 4pt off 3pt},
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+  ]
+\def\r{1.4}
+\draw[ax] (-1.9,0) -- (1.9,0) node[right, lab] {$x_1$};
+\draw[ax] (0,-1.9) -- (0,1.9) node[above, lab] {$x_2$};
+\draw[inf] (-\r,-\r) rectangle (\r,\r);
+\draw[two] (0,0) circle (\r);
+\draw[one] (\r,0) -- (0,\r) -- (-\r,0) -- (0,-\r) -- cycle;
+\node[lab, below right] at (\r,0) {$1$};
+\node[lab, above right] at (0,\r) {$1$};
+% legend
+\begin{scope}[xshift=3.1cm, yshift=0.9cm]
+  \draw[one] (0,0) -- (0.9,0)    node[right, lab, black] {$\|\mathbf{x}\|_1 = |x_1| + |x_2| \le 1$};
+  \draw[two] (0,-0.55) -- (0.9,-0.55) node[right, lab, black] {$\|\mathbf{x}\|_2 = \sqrt{x_1^2 + x_2^2} \le 1$};
+  \draw[inf] (0,-1.10) -- (0.9,-1.10) node[right, lab, black] {$\|\mathbf{x}\|_\infty = \max(|x_1|, |x_2|) \le 1$};
+\end{scope}
+\end{tikzpicture}

@@ -1,0 +1,82 @@
+% The SVD as rotate, stretch, rotate: A = U Sigma V^T acting on the unit circle.
+%
+%   figures/tikz/la-svd-geometry.tex
+%       -> media/figures/la-svd-geometry.{png,svg}
+%
+% Lecture 12 (Linear Algebra Review), under the SVD display. Drawn for Alex's
+% decision D13 (basic linear-algebra ideas get a TikZ figure).
+%
+% GEOMETRY (2 x 2, so every panel is a plane picture; the same three factors
+% act for any m x n matrix).
+%   Panel 1  the unit circle with the right singular vectors v1 (solid) and
+%            v2 (dashed), orthonormal, at 30 deg and 120 deg.
+%   Panel 2  V^T rotates them onto the coordinate axes: the circle is unchanged,
+%            v1 -> e1, v2 -> e2.
+%   Panel 3  Sigma stretches the axes: e1 by sigma1 = 1.6, e2 by sigma2 = 0.5
+%            (drawn with unit length 0.75 cm, so semi-axes 1.2 cm and 0.375 cm).
+%            The circle becomes an ellipse.
+%   Panel 4  U rotates the ellipse by 20 deg: the semi-axes are sigma1 u1 and
+%            sigma2 u2. This is the image of the unit circle under A.
+%
+% GREYSCALE. v1 and v2 differ by line style (solid vs dashed) and by label, not
+% by colour. Everything is one blue plus black.
+\usetikzlibrary{patterns}
+
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    >={Latex[length=1.8mm]},
+    font=\small,
+    ax/.style={draw=black!35, line width=0.4pt},
+    blobsty/.style={draw=okabeblue, line width=1.1pt, fill=okabeblue!12},
+    vsolid/.style={draw=black, line width=1.2pt, ->},
+    vdash/.style={draw=black, line width=1.2pt, dashed, ->},
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+    steplab/.style={font=\small, inner sep=1pt, midway, above},
+    panelcap/.style={font=\small, align=center, text width=34mm, anchor=north},
+  ]
+\def\r{0.75}   % length of "1" in cm
+\def\sa{1.6}   % sigma_1
+\def\sb{0.5}   % sigma_2
+
+% ---------- panel 1: x on the unit circle, with v1, v2 -----------------
+\begin{scope}[xshift=0cm]
+  \draw[ax] (-1.3,0) -- (1.3,0); \draw[ax] (0,-1.3) -- (0,1.3);
+  \draw[blobsty] (0,0) circle (\r);
+  \draw[vsolid] (0,0) -- (30:\r)  node[lab, above right] {$\mathbf{v}_1$};
+  \draw[vdash]  (0,0) -- (120:\r) node[lab, above left]  {$\mathbf{v}_2$};
+  \node[panelcap] at (0,-1.6) {\textbf{unit circle}\\[-1pt] $\|\mathbf{x}\|_2 = 1$};
+\end{scope}
+\draw[->, line width=0.9pt] (1.45,0) -- (2.55,0) node[steplab] {$\mathbf{V}^{\top}$};
+
+% ---------- panel 2: V^T x, rotate -------------------------------------
+\begin{scope}[xshift=4.0cm]
+  \draw[ax] (-1.3,0) -- (1.3,0); \draw[ax] (0,-1.3) -- (0,1.3);
+  \draw[blobsty] (0,0) circle (\r);
+  \draw[vsolid] (0,0) -- (0:\r)  node[lab, above right] {$\mathbf{e}_1$};
+  \draw[vdash]  (0,0) -- (90:\r) node[lab, above left]  {$\mathbf{e}_2$};
+  \node[panelcap] at (0,-1.6) {\textbf{rotate}\\[-1pt] $\mathbf{V}^{\top}\mathbf{x}$};
+\end{scope}
+\draw[->, line width=0.9pt] (5.45,0) -- (6.55,0) node[steplab] {$\boldsymbol{\Sigma}$};
+
+% ---------- panel 3: Sigma V^T x, stretch ------------------------------
+\begin{scope}[xshift=8.0cm]
+  \draw[ax] (-1.3,0) -- (1.3,0); \draw[ax] (0,-1.3) -- (0,1.3);
+  \draw[blobsty] (0,0) ellipse ({\sa*\r} and {\sb*\r});
+  \draw[vsolid] (0,0) -- ({\sa*\r},0) node[lab, below, pos=0.6, inner sep=1pt] {$\sigma_1\mathbf{e}_1$};
+  \draw[vdash]  (0,0) -- (0,{\sb*\r}) node[lab, above left]  {$\sigma_2\mathbf{e}_2$};
+  \node[panelcap] at (0,-1.6) {\textbf{stretch}\\[-1pt] $\boldsymbol{\Sigma}\mathbf{V}^{\top}\mathbf{x}$};
+\end{scope}
+\draw[->, line width=0.9pt] (9.45,0) -- (10.55,0) node[steplab] {$\mathbf{U}$};
+
+% ---------- panel 4: U Sigma V^T x, rotate -----------------------------
+\begin{scope}[xshift=12.0cm]
+  \draw[ax] (-1.3,0) -- (1.3,0); \draw[ax] (0,-1.3) -- (0,1.3);
+  \begin{scope}[rotate=20]
+    \draw[blobsty] (0,0) ellipse ({\sa*\r} and {\sb*\r});
+    \draw[vsolid] (0,0) -- ({\sa*\r},0) node[lab, above right] {$\sigma_1\mathbf{u}_1$};
+    \draw[vdash]  (0,0) -- (0,{\sb*\r}) node[lab, above left]  {$\sigma_2\mathbf{u}_2$};
+  \end{scope}
+  \node[panelcap] at (0,-1.6) {\textbf{rotate}\\[-1pt] $\mathbf{A}\mathbf{x} = \mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^{\top}\mathbf{x}$};
+\end{scope}
+\end{tikzpicture}

@@ -1,0 +1,84 @@
+% A matrix as a linear map: the unit square becomes a parallelogram, and the
+% determinant is its signed area.
+%
+%   figures/tikz/la-matrix-map.tex
+%       -> media/figures/la-matrix-map.{png,svg}
+%
+% Lecture 12 (Linear Algebra Review), Determinant section. Alex's decision D13.
+%
+% GEOMETRY (unit = 1.4 cm in both directions). A maps e1 to its first column
+% and e2 to its second column, so the unit square (area 1) maps to the
+% parallelogram spanned by the columns, whose area is |det A|.
+%   Panel 1  A = [1.5 0.5; 0.5 1.0], columns (1.5,0.5) and (0.5,1.0).
+%            det A = 1.5*1.0 - 0.5*0.5 = 1.25 > 0. Vertices of the image:
+%            (0,0), (1.5,0.5), (1.5+0.5, 0.5+1.0) = (2.0,1.5), (0.5,1.0).
+%            Going e1 -> e2 is counter-clockwise, and so is A e1 -> A e2:
+%            orientation is kept.
+%   Panel 2  A = [0.5 1.5; 1.0 0.5], the same two columns in the OTHER order:
+%            columns (0.5,1.0) and (1.5,0.5). det A = 0.5*0.5 - 1.5*1.0 = -1.25.
+%            The image is the same parallelogram, vertices (0,0), (0.5,1.0),
+%            (2.0,1.5), (1.5,0.5), but A e1 -> A e2 is now clockwise:
+%            orientation is flipped, which the negative sign records.
+%
+% GREYSCALE (scripts/check_greyscale.py). Positive and negative determinant are
+% told apart by fill (solid light fill versus hatching), by arrow style (A e1
+% solid, A e2 dashed, in both panels) and by the printed value of det A; none
+% depends on hue alone.
+\usetikzlibrary{patterns}
+
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    x=1.4cm, y=1.4cm,
+    >={Latex[length=2.0mm]},
+    font=\small,
+    win/.style={draw=black!35, line width=0.4pt},
+    ax/.style={draw=black!35, line width=0.4pt},
+    sq/.style={draw=black!55, line width=0.6pt, dashed},
+    img/.style={draw=okabeblue, line width=1.1pt},
+    vsolid/.style={draw=black, line width=1.3pt, ->},
+    vdash/.style={draw=black, line width=1.3pt, dashed, ->},
+    lab/.style={font=\small, inner sep=1.5pt},
+    panelcap/.style={font=\small, align=center, text width=55mm, anchor=north},
+  ]
+
+% =====================================================================
+% Panel 1 -- det A > 0: orientation kept
+% =====================================================================
+\begin{scope}
+  \draw[win] (-0.3,-0.3) rectangle (2.4,2.45);
+  \draw[ax] (-0.3,0) -- (2.4,0);
+  \draw[ax] (0,-0.3) -- (0,2.45);
+  \fill[okabeblue!14] (0,0) -- (1.5,0.5) -- (2.0,1.5) -- (0.5,1.0) -- cycle;
+  \draw[img] (0,0) -- (1.5,0.5) -- (2.0,1.5) -- (0.5,1.0) -- cycle;
+  \draw[sq] (0,0) rectangle (1,1);
+  \draw[vsolid] (0,0) -- (1.5,0.5) node[lab, below right] {$\mathbf{A}\mathbf{e}_1$};
+  \draw[vdash]  (0,0) -- (0.5,1.0) node[lab, above left] {$\mathbf{A}\mathbf{e}_2$};
+  \node[lab, anchor=north] at (0.5,-0.02) {$\mathbf{e}_1$};
+  \node[lab, anchor=east] at (-0.02,0.5) {$\mathbf{e}_2$};
+  \node[lab, text=okabeblue, align=center, inner sep=0pt] at (1.4,0.95) {area\\$1.25$};
+  \node[lab, anchor=west] at (-0.2,2.05) {$\mathbf{A} = \begin{bmatrix} 1.5 & 0.5 \\ 0.5 & 1 \end{bmatrix}$};
+  \node[panelcap] at (1.05,-0.4) {$\det \mathbf{A} = 1.25 > 0$\\[-1pt] orientation kept};
+\end{scope}
+
+% =====================================================================
+% Panel 2 -- det A < 0: orientation flipped
+% =====================================================================
+\begin{scope}[xshift=4.2cm]
+  \draw[win] (-0.3,-0.3) rectangle (2.4,2.45);
+  \draw[ax] (-0.3,0) -- (2.4,0);
+  \draw[ax] (0,-0.3) -- (0,2.45);
+  \path[pattern=north east lines, pattern color=okabeblue!55]
+        (0,0) -- (0.5,1.0) -- (2.0,1.5) -- (1.5,0.5) -- cycle;
+  \draw[img] (0,0) -- (0.5,1.0) -- (2.0,1.5) -- (1.5,0.5) -- cycle;
+  \draw[sq] (0,0) rectangle (1,1);
+  \draw[vsolid] (0,0) -- (0.5,1.0) node[lab, above left] {$\mathbf{A}\mathbf{e}_1$};
+  \draw[vdash]  (0,0) -- (1.5,0.5) node[lab, below right] {$\mathbf{A}\mathbf{e}_2$};
+  \node[lab, anchor=north] at (0.5,-0.02) {$\mathbf{e}_1$};
+  \node[lab, anchor=east] at (-0.02,0.5) {$\mathbf{e}_2$};
+  \node[lab, text=okabeblue, align=center, fill=white, inner sep=1pt] at (1.4,0.95) {area\\$1.25$};
+  \node[lab, anchor=west] at (-0.2,2.05) {$\mathbf{A} = \begin{bmatrix} 0.5 & 1.5 \\ 1 & 0.5 \end{bmatrix}$};
+  \node[panelcap] at (1.05,-0.4) {$\det \mathbf{A} = -1.25 < 0$\\[-1pt] orientation flipped};
+\end{scope}
+
+\end{tikzpicture}

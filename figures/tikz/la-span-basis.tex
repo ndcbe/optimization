@@ -1,0 +1,88 @@
+% Span, basis and subspace in R^2: independent versus dependent vectors.
+%
+%   figures/tikz/la-span-basis.tex
+%       -> media/figures/la-span-basis.{png,svg}
+%
+% Lecture 12 (Linear Algebra Review), Rank section, right after the vocabulary
+% list (linear combination, linearly independent, span, subspace, basis,
+% dimension). Alex's decision D13: basic linear-algebra ideas get a TikZ figure.
+%
+% GEOMETRY (cm; each panel is a 4.4 x 4.4 window with the origin at its centre,
+% so a vector with coordinates (x,y) is drawn x cm right and y cm up of the
+% centre).
+%   Panel 1  b1 = (1.6, 0.4) and b2 = (0.5, 1.3) are linearly independent
+%            (det = 1.6*1.3 - 0.4*0.5 = 1.88 != 0). The combination
+%            v = 1.0 b1 + 0.8 b2 = (1.6 + 0.4, 0.4 + 1.04) = (2.0, 1.44) is drawn
+%            as the diagonal of the dotted parallelogram, and lies inside the
+%            window. Every point of the plane is such a combination, so the
+%            span is all of R^2 (shaded and hatched), b1, b2 is a basis and the
+%            dimension is 2.
+%   Panel 2  a1 = (1.5, 0.6) and a2 = -0.5 a1 = (-0.75, -0.30) are linearly
+%            dependent. All combinations lie on the line through the origin in
+%            the direction (1.5, 0.6); it is drawn from (-2.0, -0.8) to
+%            (2.0, 0.8), i.e. y = 0.4 x. The span is that line, a subspace of
+%            dimension 1; the point p = (-1.5, 1.5) is off the line (0.4*(-1.5) =
+%            -0.6 != 1.5), so it is NOT in the span.
+%
+% GREYSCALE (scripts/check_greyscale.py). No distinction is carried by colour
+% alone. Basis vectors are solid black with bold labels; the dependent vector
+% a2 is dashed; the span is a hatched region in panel 1 and a thick line with a
+% label in panel 2; the point outside the span is a hollow marker with a label.
+\usetikzlibrary{patterns}
+
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    >={Latex[length=2.0mm]},
+    font=\small,
+    win/.style={draw=black!35, line width=0.4pt},
+    ax/.style={draw=black!35, line width=0.4pt},
+    vsolid/.style={draw=black, line width=1.3pt, ->},
+    vdash/.style={draw=black, line width=1.3pt, dashed, ->},
+    comb/.style={draw=okabeblue, line width=1.3pt, ->},
+    para/.style={draw=black!60, line width=0.6pt, dotted},
+    lab/.style={font=\small, inner sep=1.5pt},
+    panelcap/.style={font=\small, align=center, text width=44mm, anchor=north},
+  ]
+
+% =====================================================================
+% Panel 1 -- two independent vectors span the plane
+% =====================================================================
+\begin{scope}[xshift=2.2cm, yshift=2.2cm]
+  \fill[okabeblue!10] (-2.2,-2.2) rectangle (2.2,2.2);
+  \path[pattern=north east lines, pattern color=okabeblue!35] (-2.2,-2.2) rectangle (2.2,2.2);
+  \draw[win] (-2.2,-2.2) rectangle (2.2,2.2);
+  \draw[ax] (-2.2,0) -- (2.2,0);
+  \draw[ax] (0,-2.2) -- (0,2.2);
+  % the dotted parallelogram of v = 1.0 b1 + 0.8 b2
+  \draw[para] (1.6,0.4) -- (2.0,1.44);
+  \draw[para] (0.4,1.04) -- (2.0,1.44);
+  \draw[vsolid] (0,0) -- (1.6,0.4) node[lab, below right] {$\mathbf{b}_1$};
+  \draw[vsolid] (0,0) -- (0.5,1.3) node[lab, above left] {$\mathbf{b}_2$};
+  \draw[comb] (0,0) -- (2.0,1.44) node[lab, above, text=okabeblue] {$\mathbf{v}$};
+  \node[lab, anchor=north west, fill=white, inner sep=1pt] at (-2.15,-1.55)
+        {$\mathbf{v} = \alpha_1\mathbf{b}_1 + \alpha_2\mathbf{b}_2$};
+  \node[panelcap] at (0,-2.5) {\textbf{independent}\\[-1pt]
+        span $=$ all of $\mathbb{R}^2$\\[-1pt]basis, dimension 2};
+\end{scope}
+
+% =====================================================================
+% Panel 2 -- two dependent vectors span only a line
+% =====================================================================
+\begin{scope}[xshift=7.4cm, yshift=2.2cm]
+  \draw[win] (-2.2,-2.2) rectangle (2.2,2.2);
+  \draw[ax] (-2.2,0) -- (2.2,0);
+  \draw[ax] (0,-2.2) -- (0,2.2);
+  % the span: the line y = 0.4 x through the origin
+  \draw[draw=okabeblue!55, line width=3.2pt] (-2.0,-0.8) -- (2.0,0.8);
+  \draw[vsolid] (0,0) -- (1.5,0.6) node[lab, above left] {$\mathbf{a}_1$};
+  \draw[vdash]  (0,0) -- (-0.75,-0.30) node[lab, below] {$\mathbf{a}_2$};
+  \node[lab, text=okabeblue, anchor=south east, fill=white, inner sep=1pt] at (2.1,-1.0) {span};
+  % a point NOT in the span
+  \node[draw=black, circle, inner sep=1.6pt, fill=white] (p) at (-1.5,1.5) {};
+  \node[lab, anchor=west] at (p.east) {not in the span};
+  \node[panelcap] at (0,-2.5) {\textbf{dependent}\\[-1pt]
+        $\mathbf{a}_2 = -\tfrac12 \mathbf{a}_1$: span is a line\\[-1pt]a subspace, dimension 1};
+\end{scope}
+
+\end{tikzpicture}

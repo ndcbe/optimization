@@ -1,0 +1,72 @@
+% The two convexity inequalities, drawn on the same parabola.
+%
+%   figures/tikz/ra-convexity.tex
+%       -> media/figures/ra-convexity.{png,svg}
+%
+% Lecture 13 (Real Analysis Review), Convexity. Left: inequality (13-1), the
+% chord lies above the graph (Alex's own scan picture, relabelled as in the
+% previous inline figure). Right: inequality (13-2), the tangent line lies
+% below the graph.
+%
+% GEOMETRY (x unit 1.0 cm, y unit 0.9 cm). phi(x) = 0.8 x^2, domain -1.7..1.7.
+%  Left: x_a = -1.5, x_b = 1.0, theta = 1/2, so x_c = -0.25.
+%   phi(x_a) = 1.8, phi(x_b) = 0.8, chord value at x_c = 1.3, phi(x_c) = 0.05.
+%  Right: expansion point x = -0.5: phi(x) = 0.2, phi'(x) = 1.6 x = -0.8, so the
+%   tangent is T(t) = 0.2 - 0.8 (t + 0.5). At x + p = 1.0 (p = 1.5):
+%   T = -1.0, phi = 0.8, gap = 1.8 = 0.8 p^2 (= phi''/2 p^2 exactly, a parabola).
+%
+% GREYSCALE: chord, tangent and graph differ by dash pattern and direct labels.
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    x=1.0cm, y=0.9cm,
+    >={Latex[length=2.0mm]},
+    font=\small,
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+    panelcap/.style={font=\small, align=center, text width=56mm, anchor=north},
+  ]
+% ------------------------------------------------------------- left: chord
+\begin{scope}
+  \draw[->, black!55] (-2.1,0) -- (2.2,0);
+  \draw[->, black!55] (0,-0.25) -- (0,2.25);
+  \node[lab, right] at (2.2,0) {$\mathbf{x}$};
+  \draw[very thick, domain=-1.7:1.7, smooth, samples=50, variable=\t]
+    plot ({\t},{0.8*\t*\t});
+  \draw[okabeblue, thick] (-1.5,1.8) -- (1.0,0.8);
+  \filldraw[okabeblue] (-1.5,1.8) circle (1.6pt);
+  \filldraw[okabeblue] (1.0,0.8) circle (1.6pt);
+  \draw[densely dotted] (-1.5,0) -- (-1.5,1.8);
+  \draw[densely dotted] (1.0,0) -- (1.0,0.8);
+  \node[lab, below] at (-1.5,0) {$\mathbf{x}_a$};
+  \node[lab, below] at (1.0,0) {$\mathbf{x}_b$};
+  \node[lab, below] at (-0.25,0) {$\mathbf{x}_c$};
+  \draw[dashed] (-0.25,0) -- (-0.25,1.3);
+  \filldraw (-0.25,1.3) circle (1.6pt);
+  \filldraw (-0.25,0.05) circle (1.6pt);
+  \node[lab, anchor=west] at (-0.1,0.45) {$\phi(\mathbf{x}_c)$};
+  \node[lab, okabeblue, anchor=south west] at (-2.0,2.4)
+    {chord value $\theta\phi(\mathbf{x}_a)+(1-\theta)\phi(\mathbf{x}_b)$};
+  \node[panelcap] at (0,-0.5) {\textbf{chord above the graph}\\[-1pt] inequality \textcircled{\footnotesize 1}};
+\end{scope}
+% ------------------------------------------------------------- right: tangent
+\begin{scope}[xshift=5.8cm]
+  \draw[->, black!55] (-2.1,0) -- (2.2,0);
+  \draw[->, black!55] (0,-0.4) -- (0,2.4);
+  \node[lab, right] at (2.2,0) {$\mathbf{x}$};
+  \draw[very thick, domain=-1.7:1.7, smooth, samples=50, variable=\t]
+    plot ({\t},{0.8*\t*\t});
+  % tangent at x = -0.5: T(t) = 0.2 - 0.8 (t + 0.5)
+  \draw[okabeblue, thick, dashed, domain=-1.7:1.75, variable=\t]
+    plot ({\t},{0.2-0.8*(\t+0.5)});
+  \filldraw (-0.5,0.2) circle (1.6pt);
+  \node[lab, below left] at (-0.5,0.2) {$\mathbf{x}$};
+  \draw[densely dotted] (1.0,0.8) -- (1.0,-1.0);
+  \filldraw (1.0,0.8) circle (1.6pt);
+  \filldraw[okabeblue] (1.0,-1.0) circle (1.6pt);
+  \draw[<->] (1.18,-1.0) -- (1.18,0.8);
+  \node[lab, anchor=west] at (1.22,-0.55) {gap $\ge 0$};
+    \node[lab, okabeblue, anchor=north east] at (1.0,-1.1) {$\phi(\mathbf{x}) + \nabla\phi(\mathbf{x})^{\top}\mathbf{p}$};
+  \node[lab, anchor=south] at (1.0,0.95) {$\phi(\mathbf{x}+\mathbf{p})$};
+  \node[panelcap] at (0,-1.75) {\textbf{tangent line below the graph}\\[-1pt] inequality \textcircled{\footnotesize 2}};
+\end{scope}
+\end{tikzpicture}

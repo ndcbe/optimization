@@ -1,0 +1,67 @@
+% Convex combination (a segment) and convex hull (the rubber-band set).
+%
+%   figures/tikz/ra-convex-combination.tex
+%       -> media/figures/ra-convex-combination.{png,svg}
+%
+% Lecture 13 (Real Analysis Review), convexity. Revisits the convex hull used in
+% Lectures 4 and 5 (logical modelling, integer programming) with a definition.
+%
+% GEOMETRY (1 unit = 1 cm).
+%  Left: x_a = (0.3,0.5), x_b = (3.0,1.7). The point theta x_a + (1-theta) x_b
+%   is marked for theta = 1, 3/4, 1/2, 1/4, 0:
+%     theta = 3/4 -> (0.975,0.800);  1/2 -> (1.650,1.100);
+%     1/4 -> (2.325,1.400);          0 -> (3.000,1.700).
+%  Right: S = {(0.3,0.3),(2.8,0.1),(3.4,1.4),(2.2,2.7),(0.5,2.2)} are the
+%   vertices of the hull (convex pentagon, checked by cross products);
+%   (1.5,1.2),(2.0,0.7),(1.0,1.7) are strictly inside, so they add nothing to
+%   the hull.
+%
+% GREYSCALE: points differ by filled vs open marker and by label; the hull is
+% hatched AND bounded by a solid line.
+\usetikzlibrary{patterns}
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    >={Latex[length=2.0mm]},
+    font=\small,
+    pt/.style={fill=black, draw=black, circle, inner sep=0pt, minimum size=3.6pt},
+    hpt/.style={fill=white, draw=black, circle, inner sep=0pt, minimum size=3.6pt},
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+    panelcap/.style={font=\small, align=center, text width=52mm, anchor=north},
+  ]
+% ---------------------------------------------------------- left: segment
+\begin{scope}
+  \draw[okabeblue, line width=1.3pt] (0.3,0.5) -- (3.0,1.7);
+  \node[pt] (xa) at (0.3,0.5) {};
+  \node[pt] (xb) at (3.0,1.7) {};
+  \node[lab, below right] at (xa) {$\mathbf{x}_a$};
+  \node[lab, above left] at (xb) {$\mathbf{x}_b$};
+  \node[lab, above left] at (xa) {$\theta = 1$};
+  \node[lab, below right] at (xb) {$\theta = 0$};
+  \foreach \th/\px/\py in {0.75/0.975/0.800, 0.5/1.650/1.100, 0.25/2.325/1.400} {
+    \node[hpt] at (\px,\py) {};
+  }
+  \node[lab, above left] at (0.975,0.800) {$\tfrac34$};
+  \node[lab, above left] at (1.650,1.100) {$\tfrac12$};
+  \node[lab, above left] at (2.325,1.400) {$\tfrac14$};
+  \node[panelcap] at (1.65,-0.15) {\textbf{convex combinations}\\[-1pt]
+        $\theta\mathbf{x}_a + (1-\theta)\mathbf{x}_b$, $0 \le \theta \le 1$,\\[-1pt]
+        fill the segment};
+\end{scope}
+% ---------------------------------------------------------- right: hull
+\begin{scope}[xshift=5.4cm]
+  \path[pattern=north east lines, pattern color=okabeblue!55]
+     (0.3,0.3) -- (2.8,0.1) -- (3.4,1.4) -- (2.2,2.7) -- (0.5,2.2) -- cycle;
+  \draw[okabeblue, line width=1.2pt]
+     (0.3,0.3) -- (2.8,0.1) -- (3.4,1.4) -- (2.2,2.7) -- (0.5,2.2) -- cycle;
+  \foreach \px/\py in {0.3/0.3, 2.8/0.1, 3.4/1.4, 2.2/2.7, 0.5/2.2} {
+    \node[pt] at (\px,\py) {};
+  }
+  \foreach \px/\py in {1.5/1.2, 2.0/0.7, 1.0/1.7} {
+    \node[hpt] at (\px,\py) {};
+  }
+  \node[lab, anchor=west, fill=white, inner sep=1pt] at (2.15,1.55) {$\operatorname{conv}(S)$};
+  \node[panelcap] at (1.85,-0.15) {\textbf{convex hull} $\operatorname{conv}(S)$\\[-1pt]
+        the smallest convex set\\[-1pt] containing $S$};
+\end{scope}
+\end{tikzpicture}

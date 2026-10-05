@@ -164,7 +164,7 @@ def make_figure():
 
     # --- C_1: the wedge ---------------------------------------------------
     ax = axes[0]
-    _frame(ax, r"$\mathcal{C}_1(x^*)$")
+    _frame(ax, r"$\mathcal{C}_1(\mathbf{x}^*)$")
     ax.fill(
         [-LIM, 0, 0, -LIM],
         [-LIM, -LIM, 0, 0],
@@ -188,7 +188,7 @@ def make_figure():
 
     # --- C_2: the ray -----------------------------------------------------
     ax = axes[1]
-    _frame(ax, r"$\mathcal{C}_2(x^*,u^*)$")
+    _frame(ax, r"$\mathcal{C}_2(\mathbf{x}^*,\mathbf{u}^*)$")
     ax.plot([0, 0], [-LIM, 0], color=SET, linestyle="-", linewidth=4.5,
             zorder=4)
     ax.plot(0, 0, marker="o", markersize=7, markerfacecolor="white",
@@ -199,7 +199,7 @@ def make_figure():
 
     # --- C_3: the origin --------------------------------------------------
     ax = axes[2]
-    _frame(ax, r"$\mathcal{C}_3(x^*)$")
+    _frame(ax, r"$\mathcal{C}_3(\mathbf{x}^*)$")
     ax.plot(0, 0, marker="o", markersize=11, color=SET, markeredgecolor=SET,
             zorder=7, linestyle="none")
     ax.annotate(r"$\{0\}$" + "\n(a subspace)", xy=(0.16, -1.22), fontsize=11.5,
@@ -208,7 +208,7 @@ def make_figure():
 
     # --- C_4: the line ----------------------------------------------------
     ax = axes[3]
-    _frame(ax, r"$\mathcal{C}_4(x^*,u^*)$")
+    _frame(ax, r"$\mathcal{C}_4(\mathbf{x}^*,\mathbf{u}^*)$")
     ax.plot([0, 0], [-LIM, LIM], color=SET, linestyle="-", linewidth=4.5,
             zorder=4)
     ax.plot(0, 0, marker="o", markersize=7, markerfacecolor="white",

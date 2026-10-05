@@ -220,10 +220,10 @@ def make_figure():
     axL.plot(*saddle, marker="X", markersize=13, color="#0072B2",
              linestyle="none", zorder=6)
 
-    _tag(axL, 0.745, 0.215, "$x^*$")
+    _tag(axL, 0.745, 0.215, "$\\mathbf{x}^*$")
     _tag(axL, 1.093, 0.955, "saddle")
-    _lead(axL, near_x[0], 0.672, 0.415, "$x^0=(0.8,0.3)$")
-    _lead(axL, far_x[0], 1.238, 0.330, "$x^0=(1.0,0.5)$", ha="right")
+    _lead(axL, near_x[0], 0.672, 0.415, "$\\mathbf{x}^0=(0.8,0.3)$")
+    _lead(axL, far_x[0], 1.238, 0.330, "$\\mathbf{x}^0=(1.0,0.5)$", ha="right")
     _tag(axL, 0.855, 0.755, r"$\nabla^2 f \not\succeq 0$", size=13)
 
     axL.set_xlim(X1LO, X1HI)
@@ -241,7 +241,7 @@ def make_figure():
     axR.semilogy(kf, np.maximum(far_g, floor), color="#0072B2", linestyle="--",
                  linewidth=2.0, marker="s", markersize=6)
 
-    axR.annotate("to $x^*$\n(4 iterations)", xy=(0.95, 2e-9), fontsize=13,
+    axR.annotate("to $\\mathbf{x}^*$\n(4 iterations)", xy=(0.95, 2e-9), fontsize=13,
                  color="black", ha="left", va="center",
                  bbox=dict(facecolor="white", edgecolor="none", pad=1.0))
     axR.annotate("to the saddle\n(8 iterations)", xy=(3.35, 2.0), fontsize=13,
@@ -251,7 +251,7 @@ def make_figure():
     axR.set_xlim(-0.3, 8.5)
     axR.set_ylim(1e-16, 3e2)
     axR.set_xlabel("iteration $k$")
-    axR.set_ylabel(r"$\|\nabla f(x^k)\|$")
+    axR.set_ylabel(r"$\|\nabla f(\mathbf{x}^k)\|$")
     axR.set_title("both runs end quadratically", fontsize=14)
     axR.set_xticks(range(0, 9))
     axR.grid(True, which="major", axis="y", color="0.85", linewidth=0.6)

@@ -118,7 +118,7 @@ def _panel(ax, lam, label, offsets):
             zorder=8,
         )
         ax.annotate(
-            r"$v_%d$" % (i + 1),
+            r"$\mathbf{v}_%d$" % (i + 1),
             xy=(r * v[0] + offset[0], r * v[1] + offset[1]),
             fontsize=14,
             ha="center",
@@ -130,7 +130,7 @@ def _panel(ax, lam, label, offsets):
     cond = max(lam) / min(lam)  # K(A), the lecture's symbol for kappa(A)
     ax.set_title(
         "%s\n" % label
-        + r"$\lambda_1=%s,\ \lambda_2=%s,\ K(A)=%g$"
+        + r"$\lambda_1=%s,\ \lambda_2=%s,\ K(\mathbf{A})=%g$"
         % (_fmt(lam[0]), _fmt(lam[1]), cond),
         fontsize=12,
     )
@@ -155,7 +155,7 @@ def make_figure():
     # One shared statement of what is being plotted, placed where it cannot
     # collide with either ellipse.
     axes[0].annotate(
-        r"$q(x)=\frac{1}{2}x^{\mathsf{T}}Ax = 2$",
+        r"$q(\mathbf{x})=\frac{1}{2}\mathbf{x}^{\mathsf{T}}\mathbf{A}\mathbf{x} = 2$",
         xy=(-4.25, -4.25),
         fontsize=12,
         bbox=dict(facecolor="white", edgecolor="0.7", pad=2.5),

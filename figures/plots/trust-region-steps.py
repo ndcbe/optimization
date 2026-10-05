@@ -162,15 +162,15 @@ def make_figure():
     ax.plot([0], [0], marker="o", ms=4, color="black", zorder=5)
 
     box = dict(facecolor="white", edgecolor="none", pad=1.5)
-    ax.annotate(r"$x^k$", xy=(-0.28, -0.13), fontsize=13, bbox=box, zorder=6)
+    ax.annotate(r"$\mathbf{x}^k$", xy=(-0.28, -0.13), fontsize=13, bbox=box, zorder=6)
     ax.annotate(
-        r"$p^N$", xy=(pN[0] + 0.09, pN[1] - 0.04), fontsize=13, bbox=box, zorder=6
+        r"$\mathbf{p}^N$", xy=(pN[0] + 0.09, pN[1] - 0.04), fontsize=13, bbox=box, zorder=6
     )
     ax.annotate(
-        r"$p^C$", xy=(pC[0] - 0.34, pC[1] - 0.05), fontsize=13, bbox=box, zorder=6
+        r"$\mathbf{p}^C$", xy=(pC[0] - 0.34, pC[1] - 0.05), fontsize=13, bbox=box, zorder=6
     )
     ax.annotate(
-        r"$p^k$",
+        r"$\mathbf{p}^k$",
         xy=(pD[0] + 0.02, pD[1] - 0.36),
         ha="center",
         fontsize=13,
@@ -178,7 +178,7 @@ def make_figure():
         zorder=6,
     )
     ax.annotate(
-        r"$p(\delta)$ arc",
+        r"$\mathbf{p}(\delta)$ arc",
         xy=(0.667, 0.500),          # p(delta) at delta = 2, an exact arc point
         xytext=(0.30, 1.22),
         fontsize=12,
@@ -198,7 +198,7 @@ def make_figure():
         arrowprops=dict(arrowstyle="-", lw=0.9, color=cyc[1]),
     )
     ax.annotate(
-        r"$-\nabla f(x^k)$",
+        r"$-\nabla f(\mathbf{x}^k)$",
         xy=(ray[0] + 0.07, ray[1] - 0.16),
         ha="left",
         va="top",

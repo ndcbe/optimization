@@ -98,7 +98,7 @@ def make_figure():
     # The curve is labelled on the right, where it is the only thing in that
     # part of the axes; a leader keeps the association unambiguous.
     ax.annotate(
-        r"$f(x^k + \alpha^k p^k)$",
+        r"$f(\mathbf{x}^k + \alpha^k \mathbf{p}^k)$",
         xy=(0.0430, -4.9),
         xytext=(0.0445, 2.0),
         ha="right",
@@ -140,7 +140,7 @@ def make_figure():
         )
 
     ax.set_xlabel(r"$\alpha^k$")
-    ax.set_ylabel(r"$f(x^k + \alpha^k p^k)$")
+    ax.set_ylabel(r"$f(\mathbf{x}^k + \alpha^k \mathbf{p}^k)$")
     ax.set_xlim(0, ALPHA_MAX)
     ax.set_ylim(ylo, yhi)
     fig.tight_layout()

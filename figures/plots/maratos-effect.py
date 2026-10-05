@@ -128,16 +128,16 @@ def make_figure():
     ax0.plot(*xsoc, marker="^", color="#0072B2", ms=10, ls="none")
     ax0.plot(*XSTAR, marker="*", color="black", ms=17, ls="none")
 
-    ax0.annotate("$x^k$", xy=(xk[0] - 0.10, xk[1] + 0.10), fontsize=13,
+    ax0.annotate("$\\mathbf{x}^k$", xy=(xk[0] - 0.10, xk[1] + 0.10), fontsize=13,
                  ha="right", va="bottom")
-    ax0.annotate("$x^k + p^k$\noff the circle,\nand $f$ has risen",
+    ax0.annotate("$\\mathbf{x}^k + \\mathbf{p}^k$\noff the circle,\nand $f$ has risen",
                  xy=(xtrial[0] + 0.10, xtrial[1] + 0.16), fontsize=11,
                  ha="left", va="bottom")
     ax0.annotate("second-order\ncorrection", xy=xsoc,
                  xytext=(1.42, -0.78), fontsize=11, ha="left", va="center",
                  color="#0072B2",
                  arrowprops=dict(arrowstyle="->", color="#0072B2", lw=1.2))
-    ax0.annotate("$x^{*}$", xy=(XSTAR[0] - 0.12, XSTAR[1] - 0.14), fontsize=14,
+    ax0.annotate("$\\mathbf{x}^{*}$", xy=(XSTAR[0] - 0.12, XSTAR[1] - 0.14), fontsize=14,
                  ha="right", va="top")
     ax0.annotate("constraint $x_1^2+x_2^2=1$", xy=(-1.42, 1.34), fontsize=11,
                  ha="left", va="top")
@@ -167,11 +167,11 @@ def make_figure():
     ax1.plot([1.0], [corrected[-1]], marker="^", color="#0072B2", ms=11,
              ls="none")
 
-    ax1.annotate(r"along the SQP step $x^k + \alpha p^k$",
+    ax1.annotate(r"along the SQP step $\mathbf{x}^k + \alpha \mathbf{p}^k$",
                  xy=(0.30, plain[60] + 0.045), fontsize=11, ha="left",
                  va="bottom")
     ax1.annotate("with the second-order correction,\n"
-                 r"$x^k + \alpha p^k + \alpha^2 \hat{p}$",
+                 r"$\mathbf{x}^k + \alpha \mathbf{p}^k + \alpha^2 \hat{\mathbf{p}}$",
                  xy=(0.045, -1.02), fontsize=11, ha="left",
                  va="top", color="#0072B2")
     ax1.annotate(r"$\phi(0)$", xy=(0.015, plain[0] + 0.02), fontsize=11,

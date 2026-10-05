@@ -217,15 +217,15 @@ def make_figure():
     # Both labels stay BLACK. The comparison is symmetric, and orange text at
     # L* = 70.6 is not readable at 15 pt on white -- colouring only one of the
     # pair would make the figure look like it was claiming something about it.
-    _text(ax, (0.648, 0.985), r"$Y p_Y$", size=15)
-    _text(ax, (0.470, 1.093), r"$Y^{c} p_{Y^c}$", ha="center", size=15)
-    _text(ax, (0.775, 0.780), r"$Z p_Z$", size=15)
-    _text(ax, (0.885, 0.885), r"$d_x$", size=15)
-    _text(ax, tuple(xk + np.array([0.030, 0.026])), r"$x^k$", size=15, box=False)
-    _text(ax, (0.995, 0.660), r"$x^k + d_x$", size=13, box=False)
-    _text(ax, (0.155, 0.905), r"$h(x)=0$", va="top", size=14, rot=-13.0)
+    _text(ax, (0.648, 0.985), r"$\mathbf{Y} \mathbf{p}_Y$", size=15)
+    _text(ax, (0.470, 1.093), r"$\mathbf{Y}^{c} \mathbf{p}_{Y^c}$", ha="center", size=15)
+    _text(ax, (0.775, 0.780), r"$\mathbf{Z} \mathbf{p}_Z$", size=15)
+    _text(ax, (0.885, 0.885), r"$\mathbf{d}_x$", size=15)
+    _text(ax, tuple(xk + np.array([0.030, 0.026])), r"$\mathbf{x}^k$", size=15, box=False)
+    _text(ax, (0.995, 0.660), r"$\mathbf{x}^k + \mathbf{d}_x$", size=13, box=False)
+    _text(ax, (0.155, 0.905), r"$h(\mathbf{x})=0$", va="top", size=14, rot=-13.0)
     ax.annotate(
-        "linearized constraint\n" r"$h(x^k) + J_h(x^k)(x - x^k) = 0$",
+        "linearized constraint\n" r"$h(\mathbf{x}^k) + \mathbf{J}_h(\mathbf{x}^k)(\mathbf{x} - \mathbf{x}^k) = 0$",
         xy=(1.152, 0.449), xytext=(1.045, 1.16), fontsize=12, ha="left", va="center",
         arrowprops=dict(arrowstyle="-", lw=0.9, color="black"), zorder=9,
         bbox=dict(boxstyle="round,pad=0.16", fc="white", ec="0.55", lw=0.8),

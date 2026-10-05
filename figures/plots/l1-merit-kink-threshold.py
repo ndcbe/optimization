@@ -107,7 +107,7 @@ def make_figure():
     axL.plot([1.0], [-2.0], marker="o", markersize=9, color="black", linestyle="none",
              zorder=6)
     axL.annotate(
-        r"kink at $x^*$" "\n" r"($\|h\|_1$ not differentiable)",
+        r"kink at $\mathbf{x}^*$" "\n" r"($\|h\|_1$ not differentiable)",
         xy=(1.0, -2.0),
         xytext=(0.655, -1.62),
         fontsize=12,
@@ -117,7 +117,7 @@ def make_figure():
                         shrinkA=2, shrinkB=6),
     )
 
-    axL.set_xlabel(r"$c$   along   $x = c\,(-1,-1)^{\mathsf{T}}$")
+    axL.set_xlabel(r"$c$   along   $\mathbf{x} = c\,(-1,-1)^{\mathsf{T}}$")
     axL.set_ylabel(r"$\varphi_1(x;\rho) = f + \rho\,|h|$")
     axL.set_xlim(CLO, CHI)
     axL.set_ylim(-2.45, 0.32)

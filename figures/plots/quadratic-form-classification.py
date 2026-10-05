@@ -91,10 +91,10 @@ _VIRIDIS = cm.get_cmap("viridis") if hasattr(cm, "get_cmap") else plt.get_cmap("
 CMAP = ListedColormap(_VIRIDIS(np.linspace(0.0, 0.82, 256)))
 
 PANELS = [
-    ((3.0, 1.0), "positive definite", r"$x^*$ is the unique minimum"),
-    ((-3.0, -1.0), "negative definite", r"$x^*$ is the unique maximum"),
-    ((3.0, -1.0), "indefinite", r"$x^*$ is a saddle point"),
-    ((2.0, 0.0), "positive semidefinite", r"$x^*$ is one of a line of minima"),
+    ((3.0, 1.0), "positive definite", r"$\mathbf{x}^*$ is the unique minimum"),
+    ((-3.0, -1.0), "negative definite", r"$\mathbf{x}^*$ is the unique maximum"),
+    ((3.0, -1.0), "indefinite", r"$\mathbf{x}^*$ is a saddle point"),
+    ((2.0, 0.0), "positive semidefinite", r"$\mathbf{x}^*$ is one of a line of minima"),
 ]
 
 
@@ -138,11 +138,11 @@ def make_figure():
         # v_1 carries lambda_1, v_2 carries lambda_2. In the degenerate panel
         # lambda_2 = 0, so the v_2 line IS the set of minimizers; it is drawn
         # solid and named as such rather than as a bare eigenvector.
-        _eigenvector_line(ax, 0, r"$v_1$", (0, (6, 4)))
+        _eigenvector_line(ax, 0, r"$\mathbf{v}_1$", (0, (6, 4)))
         if degenerate:
-            _eigenvector_line(ax, 1, r"$v_2$: $f$ is flat", "-")
+            _eigenvector_line(ax, 1, r"$\mathbf{v}_2$: $f$ is flat", "-")
         else:
-            _eigenvector_line(ax, 1, r"$v_2$", (0, (1.5, 2.5)))
+            _eigenvector_line(ax, 1, r"$\mathbf{v}_2$", (0, (1.5, 2.5)))
 
         # The stationary point. White-edged so it reads against any level.
         ax.plot(0, 0, marker="*", markersize=20, color="white",

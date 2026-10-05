@@ -147,7 +147,7 @@ def _surface_panel(ax, xstar, fstar):
 
     ax.set_xlabel("$x_1$", labelpad=-4)
     ax.set_ylabel("$x_2$", labelpad=-4)
-    ax.set_zlabel("$f(x)$", labelpad=-6)
+    ax.set_zlabel("$f(\\mathbf{x})$", labelpad=-6)
     ax.tick_params(labelsize=9, pad=-1)
     ax.set_title("the whole basin", fontsize=13)
 
@@ -194,7 +194,7 @@ def _contour_panel(ax, xstar, H, eigvals, eigvecs):
         )
 
     ax.annotate(
-        r"$\nabla f(x^*) = 0$",
+        r"$\nabla f(\mathbf{x}^*) = \mathbf{0}$",
         xy=(xstar[0] - HALF + 0.012, xstar[1] + HALF - 0.028),
         fontsize=12,
         bbox=dict(facecolor="white", edgecolor="none", pad=1.0),
@@ -204,7 +204,7 @@ def _contour_panel(ax, xstar, H, eigvals, eigvecs):
     ax.set_aspect("equal", adjustable="box")
     ax.set_xlabel("$x_1$")
     ax.set_ylabel("$x_2$")
-    ax.set_title("zoomed on $x^*$", fontsize=13)
+    ax.set_title("zoomed on $\\mathbf{x}^*$", fontsize=13)
 
 
 def make_figure():

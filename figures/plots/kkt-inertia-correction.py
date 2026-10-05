@@ -189,7 +189,7 @@ def make_figure():
                 va="center", zorder=8, bbox=box)
     ax.annotate("inertia $(2,2,0)$\nWRONG", xy=(0.62, 5.30), fontsize=13, ha="center",
                 va="center", zorder=8, bbox=box, color=WRONG)
-    ax.annotate(r"$\delta_W^{\,*} = -\lambda_{\min}(Z^{T} W^k Z) = %.4f$" % dstar,
+    ax.annotate(r"$\delta_W^{\,*} = -\lambda_{\min}(\mathbf{Z}^{T} \mathbf{W}^k \mathbf{Z}) = %.4f$" % dstar,
                 xy=(dstar, 0.0), xytext=(0.13, 1.05), fontsize=11.5,
                 ha="left", va="center", zorder=8,
                 bbox=dict(boxstyle="round,pad=0.16", fc="white", ec="0.55", lw=0.8),

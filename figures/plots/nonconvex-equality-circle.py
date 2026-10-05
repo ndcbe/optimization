@@ -114,7 +114,7 @@ def _name_constraint(ax, on_curve, text_at):
     label with no referent is worse than no label, so it now points.
     """
     ax.annotate(
-        "$h(x) = 0$",
+        "$h(\\mathbf{x}) = 0$",
         xy=on_curve,
         xytext=text_at,
         fontsize=13,
@@ -137,7 +137,7 @@ def _chord(ax, a, b, mid, *, feasible):
         color="#E69F00",
         zorder=3,
     )
-    for pt, name in ((a, "$x^{(1)}$"), (b, "$x^{(2)}$")):
+    for pt, name in ((a, "$\\mathbf{x}^{(1)}$"), (b, "$\\mathbf{x}^{(2)}$")):
         ax.plot(*pt, marker="o", markersize=9, color="black", linestyle="none", zorder=5)
         ax.annotate(
             name,

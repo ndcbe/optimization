@@ -165,7 +165,7 @@ def make_figure():
     ax.plot(len(sr1) - 1, sr1[-1], marker="X", markersize=13,
             color=ax.lines[3].get_color(), linestyle="none", zorder=6)
     ax.annotate(
-        "SR1 breaks down: $B^k$ indefinite,\nso $p^k$ is an ascent direction",
+        "SR1 breaks down: $\\mathbf{B}^k$ indefinite,\nso $\\mathbf{p}^k$ is an ascent direction",
         xy=(len(sr1) - 1, sr1[-1] * 1.6),
         xytext=(6.5, 5.0e5),
         fontsize=12.5,
@@ -176,7 +176,7 @@ def make_figure():
     )
 
     ax.set_xlabel("iteration $k$")
-    ax.set_ylabel(r"$\|\nabla f(x^k)\|$")
+    ax.set_ylabel(r"$\|\nabla f(\mathbf{x}^k)\|$")
     ax.set_xlim(0, NMAX)
     ax.set_ylim(1e-12, 1e6)
     ax.set_yticks([1e-12, 1e-9, 1e-6, 1e-3, 1e0, 1e3])

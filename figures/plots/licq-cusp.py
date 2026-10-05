@@ -156,14 +156,14 @@ def make_figure():
     ax.plot(x1, lower, color="#E69F00", linestyle="--", linewidth=2.5, zorder=3)
 
     ax.annotate(
-        "$g_1(x) = x_2 - x_1^3 \\leq 0$",
+        "$g_1(\\mathbf{x}) = x_2 - x_1^3 \\leq 0$",
         xy=(-1.15, -1.22),
         fontsize=12,
         bbox=dict(facecolor="white", edgecolor="none", pad=1.0),
         zorder=4,
     )
     ax.annotate(
-        "$g_2(x) = -x_1^3 - x_2 \\leq 0$",
+        "$g_2(\\mathbf{x}) = -x_1^3 - x_2 \\leq 0$",
         xy=(-1.15, 1.10),
         fontsize=12,
         bbox=dict(facecolor="white", edgecolor="none", pad=1.0),
@@ -186,7 +186,7 @@ def make_figure():
     # x* = (0,0): the cusp.
     ax.plot([0.0], [0.0], marker="*", markersize=18, color="black", linestyle="none", zorder=8)
     ax.annotate(
-        "$x^*$",
+        "$\\mathbf{x}^*$",
         xy=(0.09, -0.17),
         fontsize=14,
         bbox=dict(facecolor="white", edgecolor="none", pad=1.0),
@@ -199,7 +199,7 @@ def make_figure():
         ax,
         (0.0, 0.0),
         (0.0, 1.0),
-        "$\\nabla g_1(x^*)$\n$= (0,\\, 1)^{T}$",
+        "$\\nabla g_1(\\mathbf{x}^*)$\n$= (0,\\, 1)^{T}$",
         color="#0072B2",
         offset=(-0.10, -0.02),
         ha="right",
@@ -208,7 +208,7 @@ def make_figure():
         ax,
         (0.0, 0.0),
         (0.0, -1.0),
-        "$\\nabla g_2(x^*)$\n$= (0,\\, -1)^{T}$",
+        "$\\nabla g_2(\\mathbf{x}^*)$\n$= (0,\\, -1)^{T}$",
         color="#E69F00",
         offset=(-0.10, 0.02),
         ha="right",

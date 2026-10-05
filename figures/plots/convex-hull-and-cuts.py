@@ -205,7 +205,7 @@ def make_figure():
 
     ax.annotate("LP relaxation $P$", xy=(3.02, 3.30), fontsize=12.5,
                 ha="center", color="black")
-    ax.annotate(r"$\bar{z}$ here: $x=(20/7,\,3)$",
+    ax.annotate(r"$\bar{z}$ here: $\mathbf{x}=(20/7,\,3)$",
                 xy=(x_lp[0] - 0.14, x_lp[1] - 0.02), xytext=(1.32, 2.42),
                 fontsize=12.5, ha="left", va="center",
                 arrowprops=dict(arrowstyle="->", color="0.35", lw=1.3))
@@ -249,7 +249,7 @@ def make_figure():
     ax.annotate("cut off", xy=(x_lp[0], x_lp[1]), xytext=(2.32, 2.62),
                 fontsize=12, ha="right", va="center", color="0.35",
                 arrowprops=dict(arrowstyle="->", color="0.55", lw=1.2))
-    ax.annotate(r"now integral: $x=(2,1)$", xy=(2.0, 1.0), xytext=(0.18, -0.28),
+    ax.annotate(r"now integral: $\mathbf{x}=(2,1)$", xy=(2.0, 1.0), xytext=(0.18, -0.28),
                 fontsize=12.5, ha="left", va="center",
                 arrowprops=dict(arrowstyle="->", color="0.35", lw=1.3),
                 bbox=dict(facecolor="white", edgecolor="none", pad=1.0))

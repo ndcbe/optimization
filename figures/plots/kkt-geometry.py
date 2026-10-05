@@ -137,14 +137,14 @@ def make_figure():
             zorder=0,
         )
         ax.annotate(
-            "$g(x) \\leq 0$",
+            "$g(\\mathbf{x}) \\leq 0$",
             xy=(2.55, 0.72),
             fontsize=13,
             bbox=dict(facecolor="white", edgecolor="none", pad=1.0),
         )
 
     axes[1].plot(*x_b, marker="*", markersize=18, color="black", linestyle="none")
-    axes[1].set_title(r"2. add $g(x) \leq 0$", fontsize=14)
+    axes[1].set_title(r"2. add $g(\mathbf{x}) \leq 0$", fontsize=14)
     _arrow(axes[1], x_b, grad_f(x_b), r"$\nabla f$", scale=SCALE, color="black")
     _arrow(
         axes[1],
@@ -159,13 +159,13 @@ def make_figure():
     # --- Take 3: the full KKT picture -------------------------------------
     axes[2].plot(x1, 2 * x1, color="#E69F00", linestyle="-.", linewidth=2.5)
     axes[2].annotate(
-        "$h(x) = 0$",
+        "$h(\\mathbf{x}) = 0$",
         xy=(2.52, 4.52),
         fontsize=13,
         bbox=dict(facecolor="white", edgecolor="none", pad=1.0),
     )
     axes[2].plot(*x_c, marker="*", markersize=18, color="black", linestyle="none")
-    axes[2].set_title(r"3. add $h(x) = 0$", fontsize=14)
+    axes[2].set_title(r"3. add $h(\mathbf{x}) = 0$", fontsize=14)
     _arrow(axes[2], x_c, grad_f(x_c), r"$\nabla f$", scale=SCALE, color="black")
     _arrow(
         axes[2],

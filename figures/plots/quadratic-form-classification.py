@@ -4,7 +4,10 @@ r"""The eigenvalue signature classifies the stationary point.
         ->  media/figures/quadratic-form-classification.{png,pdf}
 
 `notebooks/6-dev/Math-Primer-2.ipynb` cell 6 defines ``quad_analyze(c, a, B)``,
-which builds B from prescribed eigenvalues, locates z*, and draws ONE surface.
+which takes B AS GIVEN, eigendecomposes it with ``linalg.eig``, locates z*, and
+draws ONE surface (it does not build B from prescribed eigenvalues; corrected
+2026-10-05 -- this header used to say it did). Cell numbers are 6-dev indices;
+the published page has an AI-review banner at cell 1, so they shift by one.
 Cells 8, 10 and 13 call it three separate times on three separate matrices, so
 the notebook never puts the cases side by side -- and side by side is the whole
 lesson. This figure is the assembly the notebook does not do: one panel per
@@ -29,7 +32,7 @@ and x2, and a panel drawn with V = I would hide that.
 
 Not the same figure as `quadratic-form-level-sets.py`
 -----------------------------------------------------
-That one is for L11 (linear-algebra.tex) and varies the CONDITION NUMBER at
+That one is for Lecture 12 (linear-algebra.tex) and varies the CONDITION NUMBER at
 fixed sign -- both panels are positive definite and it is about the axis ratio
 sqrt(kappa). This one holds the spread roughly fixed and varies the SIGNS. They
 answer different questions and neither replaces the other.

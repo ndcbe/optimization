@@ -27,7 +27,8 @@ What the picture has to show, because the handout's Part 6 asserts all of it:
     the step, and the handout says so.
   * the valley: forward and backward bottom out near epsilon = sqrt(u) ~ 1e-8
     at an error ~ 1e-8; central bottoms out near u^(1/3) ~ 1e-5.3 at an error
-    ~ u^(2/3) ~ 1e-11. Three more correct digits, which is the trade the
+    ~ u^(2/3) ~ 1e-10.7 predicted; measured on this grid, 1e-5.5 at 1e-10.5.
+    Between two and three more correct digits, which is the trade the
     handout quotes.
 
 Deliberate departures from the notebook
@@ -54,7 +55,9 @@ from _house import label_curve
 A = 1.0
 EXACT = np.exp(A)
 
-# Cell 19's sweep exactly: 10^(-16) to 10^0, four points per decade.
+# The notebook's sweep (6-dev cell 19, `np.arange(-16, 1, 0.25)`) cut off at
+# 10^0: 10^(-16) to 10^0, four points per decade. The notebook runs on to
+# 10^0.75; every minimum and fitted slope below lies inside this range.
 EPS = np.power(10.0, np.arange(-16, 0.25, 0.25))
 
 # Where each branch is fitted. The truncation branch has to stay well away from

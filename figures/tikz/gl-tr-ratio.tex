@@ -1,0 +1,55 @@
+% The ratio test of the basic trust region method, drawn on the rho axis.
+%
+%   figures/tikz/gl-tr-ratio.tex
+%       -> media/figures/gl-tr-ratio.{png,svg}
+%
+% Lecture 17 (Line Search and Trust Regions), the basic trust region algorithm
+% (Biegler Alg. 3.3, p. 53). rho^k = ared / pred.
+%
+% GEOMETRY (x unit 5.2 cm). The axis runs rho = -0.25 .. 1.25. Biegler's typical
+% values kappa_1 = 1/4 and kappa_2 = 3/4 are drawn at their positions; gamma is any
+% value in (0, 1/4) and is drawn at 0.10, labelled only by its symbol.
+%   Upper bar (radius):  rho < kappa_1 shrink | kappa_1..kappa_2 keep | > kappa_2 expand
+%                        (expand only if ||p^k|| = Delta^k, so that bar says so).
+%   Lower bar (iterate): rho <= gamma reject (x^{k+1} = x^k) | rho > gamma accept.
+%   rho = 1: the model predicted the actual reduction exactly.
+%
+% GREYSCALE: shrink is hatched (north east lines), keep is empty, expand is dotted;
+% reject is hatched (north west lines), accept is empty. Every region is labelled.
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    x=5.2cm, y=1cm,
+    >={Latex[length=2.0mm]},
+    font=\small,
+    lab/.style={font=\scriptsize, inner sep=1.5pt, align=center},
+  ]
+  % ---------------- upper bar: the radius update ----------------
+  \node[lab, anchor=east] at (-0.27,1.55) {radius};
+  \draw[pattern=north east lines, pattern color=black!45] (-0.25,1.2) rectangle (0.25,1.9);
+  \draw (0.25,1.2) rectangle (0.75,1.9);
+  \draw[pattern=dots, pattern color=okabeblue!80] (0.75,1.2) rectangle (1.25,1.9);
+  \node[lab, fill=white, rounded corners=1pt] at (0.0,1.55) {shrink\\$\Delta^{k+1} = \kappa_1 \|\mathbf{p}^k\|$};
+  \node[lab] at (0.5,1.55) {keep\\$\Delta^{k+1} = \Delta^k$};
+  \node[lab, fill=white, rounded corners=1pt] at (1.0,1.55) {expand if\\$\|\mathbf{p}^k\| = \Delta^k$};
+  % ---------------- the rho axis ----------------
+  \draw[->, thick] (-0.25,0.6) -- (1.32,0.6) node[right] {$\rho^k$};
+  \foreach \x/\t in {0/0, 0.25/\kappa_1, 0.75/\kappa_2, 1/1} {
+    \draw (\x,0.5) -- (\x,0.7);
+  }
+  \node[lab, anchor=south] at (0,0.7) {$0$};
+  \node[lab, anchor=south] at (0.25,0.7) {$\kappa_1$};
+  \node[lab, anchor=south] at (0.75,0.7) {$\kappa_2$};
+  \node[lab, anchor=south] at (1,0.7) {$1$};
+  \draw (0.10,0.5) -- (0.10,0.7);
+  \node[lab, anchor=south] at (0.10,0.7) {$\gamma$};
+  % ---------------- lower bar: the iterate update ----------------
+  \node[lab, anchor=east] at (-0.27,-0.05) {iterate};
+  \draw[pattern=north west lines, pattern color=black!45] (-0.25,-0.4) rectangle (0.10,0.3);
+  \draw (0.10,-0.4) rectangle (1.25,0.3);
+  \node[lab, fill=white, rounded corners=1pt] at (-0.075,-0.05) {reject\\$\mathbf{x}^{k+1} = \mathbf{x}^k$};
+  \node[lab] at (0.675,-0.05) {accept: $\mathbf{x}^{k+1} = \mathbf{x}^k + \mathbf{p}^k$};
+  % ---------------- rho = 1 ----------------
+  \draw[densely dashed, okabeblue] (1,-0.55) -- (1,0.5);
+  \node[lab, anchor=north, okabeblue] at (1,-0.55) {model exact};
+\end{tikzpicture}

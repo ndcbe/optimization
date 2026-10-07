@@ -1,0 +1,54 @@
+% The secant relationship in one variable: B^{k+1} is the slope of the secant of f'.
+%
+%   figures/tikz/qn-secant.tex
+%       -> media/figures/qn-secant.{png,svg}
+%
+% Lecture 16 (Quasi-Newton Methods), Section IV.A, beside Eq. (secant).
+%
+% GEOMETRY (x: 1 unit = 2.4 cm, y: 1 unit = 1.9 cm). One variable, so x, s, y and
+% B are scalars and are set plain. f'(x) = 0.3 x^2 + 0.2 (f = 0.1 x^3 + 0.2 x).
+%   x^k = 0.6:     f'(0.6) = 0.308
+%   x^{k+1} = 2.0: f'(2.0) = 1.400
+%   s = 1.4, y = 1.092, secant slope B^{k+1} = y/s = 0.78
+%   tangent slope at x^{k+1}: f''(2.0) = 0.6 * 2.0 = 1.2
+% Secant drawn x in [0.3, 2.3]: y = 0.308 + 0.78 (x - 0.6) -> 0.074 .. 1.634.
+% Tangent drawn x in [1.45, 2.3]: y = 1.4 + 1.2 (x - 2) -> 0.74 .. 1.76.
+% Computed by hand and checked in Python, 2026-10-07.
+%
+% GREYSCALE: f' is a thick curve, the secant solid black, the tangent dashed, the
+% legs s and y dotted; every line is labelled, no distinction by colour alone.
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    x=2.4cm, y=1.9cm,
+    >={Latex[length=2.0mm]},
+    font=\small,
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+  ]
+  \draw[black!40, ->] (0,0) -- (2.5,0) node[right, lab] {$x$};
+  \draw[black!40, ->] (0,0) -- (0,1.95);
+  % f'(x) = 0.3 x^2 + 0.2
+  \draw[okabeblue, line width=1.2pt, domain=0:2.3, samples=60, variable=\t]
+    plot ({\t},{0.3*\t*\t+0.2});
+  \node[lab, okabeblue, anchor=south east] at (2.28,1.80) {$f'(x)$};
+  % secant through the two points
+  \draw[thick] (0.3,0.074) -- (2.3,1.634);
+  % tangent at x^{k+1}
+  \draw[thick, dashed] (1.45,0.74) -- (2.3,1.76);
+  % legs s (horizontal) and y (vertical)
+  \draw[densely dotted, thick] (0.6,0.308) -- (2.0,0.308);
+  \draw[densely dotted, thick] (2.0,0.308) -- (2.0,1.4);
+  \node[lab, below] at (1.3,0.308) {$s = x^{k+1} - x^{k}$};
+  \node[lab, right, align=left] at (2.02,0.80) {$y = f'(x^{k+1})$\\$\phantom{y = {}} - f'(x^{k})$};
+  % points
+  \filldraw (0.6,0.308) circle (1.5pt);
+  \filldraw (2.0,1.4) circle (1.5pt);
+  \draw[densely dotted] (0.6,0) -- (0.6,0.308);
+  \draw[densely dotted] (2.0,0) -- (2.0,0.308);
+  \node[lab, below] at (0.6,0) {$x^{k}$};
+  \node[lab, below] at (2.0,0) {$x^{k+1}$};
+  % line labels
+  \node[lab, anchor=south east, align=right] at (0.85,0.56) {secant (solid), slope\\$B^{k+1} = y/s$};
+  \draw[black!60] (1.18,1.42) -- (1.7,1.04);
+  \node[lab, anchor=south east, align=right] at (1.2,1.40) {tangent (dashed), slope\\$f''(x^{k+1})$};
+\end{tikzpicture}

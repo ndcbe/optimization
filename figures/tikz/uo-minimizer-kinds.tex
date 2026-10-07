@@ -1,0 +1,43 @@
+% Four kinds of minimizer on one curve (Biegler Def. 2.15, p. 28).
+%
+%   figures/tikz/uo-minimizer-kinds.tex
+%       -> media/figures/uo-minimizer-kinds.{png,svg}
+%
+% Lecture 14 (Unconstrained Optimality Conditions), Section II, after Definition 14.1.
+%
+% GEOMETRY (1 unit = 0.75 cm in x, 0.9 cm in y). The curve is built from arcs with
+% horizontal tangents at every extremum, so each marked point is a true extremum of the
+% drawn curve:
+%   (0, 3.0) -> local min (1.6, 1.4) -> local max (3.2, 2.6) -> flat segment
+%   [4.6, 6.0] at height 1.8 -> local max (7.2, 2.8) -> global min (8.8, 0.8) -> (10, 2.4).
+% (1) = (8.8, 0.8): global, strict, isolated.  (2) = (1.6, 1.4): local, strict, isolated, not
+% global (1.4 > 0.8).  (3) = the flat segment: every point is a local minimizer (1.8 < 2.6 and
+% 1.8 < 2.8 on both sides), none is strict, none is isolated.
+%
+% GREYSCALE: the curve is solid black; the flat segment is a thick blue bar AND labelled (3);
+% the two points are filled circles labelled (1), (2). No distinction by colour alone.
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    x=0.75cm, y=0.9cm,
+    >={Latex[length=2.0mm]},
+    font=\small,
+    lab/.style={font=\small, inner sep=1.5pt},
+  ]
+  \draw[->, black!55] (-0.2,0) -- (10.4,0) node[right, font=\scriptsize] {$x$};
+  \draw[->, black!55] (0,-0.2) -- (0,3.4) node[above, font=\scriptsize] {$f(x)$};
+  \draw[thick]
+    (0.3,3.0) to[out=-70, in=180] (1.6,1.4)
+              to[out=0, in=180]   (3.2,2.6)
+              to[out=0, in=180]   (4.6,1.8)
+              -- (6.0,1.8)
+              to[out=0, in=180]   (7.2,2.8)
+              to[out=0, in=180]   (8.8,0.8)
+              to[out=0, in=-110]  (10.0,2.4);
+  \draw[okabeblue, line width=3.0pt] (4.6,1.8) -- (6.0,1.8);
+  \fill (8.8,0.8) circle (2.2pt);
+  \fill (1.6,1.4) circle (2.2pt);
+  \node[lab, below] at (8.8,0.75) {(1)};
+  \node[lab, below] at (1.6,1.35) {(2)};
+  \node[lab, below] at (5.3,1.70) {(3)};
+\end{tikzpicture}

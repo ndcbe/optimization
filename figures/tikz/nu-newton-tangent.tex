@@ -5,7 +5,7 @@
 %
 % Lecture 15 (Newton Methods for Unconstrained Optimization), Section IV.A.
 %
-% GEOMETRY (x: 1 unit = 2.3 cm, y: 1 unit = 1.0 cm). f(x) = x^2/2 - 1, f'(x) = x,
+% GEOMETRY (x: 1 unit = 2.9 cm, y: 1 unit = 1.25 cm). f(x) = x^2/2 - 1, f'(x) = x,
 % root x* = sqrt(2) = 1.4142. Newton from x^k = 2.6:
 %   f(2.6) = 2.38,             tangent zero x^{k+1} = 2.6 - 2.38/2.6 = 1.6846
 %   f(1.6846) = 0.4190,        tangent zero x^{k+2} = 1.6846 - 0.4190/1.6846 = 1.4359
@@ -16,7 +16,7 @@
 \definecolor{okabeblue}{HTML}{0072B2}
 
 \begin{tikzpicture}[
-    x=2.3cm, y=1.0cm,
+    x=2.9cm, y=1.25cm,
     >={Latex[length=2.0mm]},
     font=\small,
     lab/.style={font=\scriptsize, inner sep=1.5pt},
@@ -27,7 +27,7 @@
   \draw[okabeblue, line width=1.2pt, domain=1.0:2.72, samples=60, variable=\t]
     plot ({\t},{\t*\t/2-1});
   % tangent at x^k = 2.6: y = 2.38 + 2.6 (x - 2.6), zero at 1.6846
-  \draw[thick] (1.62,-0.1636) -- (2.72,2.692);
+  \draw[thick] (1.62,-0.1636) -- node[pos=0.3, below right, lab] {tangent at $x^{k}$} (2.72,2.692);
   % tangent at x^{k+1} = 1.6846: y = 0.4190 + 1.6846 (x - 1.6846), zero at 1.4359
   \draw[thick, dashed] (1.38,-0.0941) -- (1.84,0.6807);
   % vertical guides from the axis to the curve
@@ -40,9 +40,8 @@
   \filldraw[fill=white] (1.4359,0) circle (1.4pt);
   \filldraw (1.4142,0) circle (1.2pt);
   \node[lab, below] at (2.6,0) {$x^{k}$};
-  \node[lab, below] at (1.70,-0.02) {$x^{k+1}$};
+  \node[lab, below right] at (1.69,-0.01) {$x^{k+1}$};
   \node[lab, above left] at (1.44,0.02) {$x^{k+2}$};
-  \node[lab, below left] at (1.40,-0.05) {$x^{*}$};
-  \node[lab, anchor=west] at (2.05,0.75) {tangent at $x^{k}$};
+  \draw[black!60, line width=0.4pt] (1.4142,-0.04) -- (1.30,-0.42) node[below, lab] {$x^{*}$};
   \node[lab, okabeblue, anchor=east] at (2.15,1.95) {$f(x)$};
 \end{tikzpicture}

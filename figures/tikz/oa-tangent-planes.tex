@@ -1,0 +1,77 @@
+% Outer approximation: linearizations of convex functions underestimate them, and
+% linearized convex constraints contain the feasible set.
+%
+%   figures/tikz/oa-tangent-planes.tex
+%       -> media/figures/oa-tangent-planes.{png,svg}
+%
+% Lecture 25 (Integer Programming Algorithms), section VI "Outer approximation",
+% subsection "Relaxation (linearization)", read by the activity "Why is z^L a lower
+% bound, and what has to be true of f and g for that to hold?".
+%
+% PANEL (1), 1 unit = 1 cm. f(x) = 0.25 x^2 + 0.4 on [-2.6, 2.6], convex.
+%   Tangent at x^1 = -1.6: f = 1.04, f' = -0.8, t1(x) = 1.04 - 0.8 (x + 1.6).
+%   Tangent at x^2 =  1.2: f = 0.76, f' =  0.6, t2(x) = 0.76 + 0.6 (x - 1.2).
+%   They cross at x = -0.2, y = -0.08. The thick dashed line is max(t1, t2), the
+%   accumulated linearization, which lies below f everywhere (f convex).
+% PANEL (2). Feasible set g(x) <= 0 is the ellipse (x1/1.6)^2 + (x2/1.0)^2 <= 1,
+%   convex. Linearized at four boundary points theta = 30, 135, 215, 300 deg:
+%   touch points (1.386, 0.5), (-1.131, 0.707), (-1.311, -0.574), (0.8, -0.866);
+%   tangent half-planes x1 cos(theta)/1.6 + x2 sin(theta)/1.0 <= 1. Their
+%   intersection is the quadrilateral with vertices (0.343, 1.629),
+%   (-2.081, 0.114), (-0.470, -1.324), (2.186, -0.366) (computed, consecutive
+%   tangent lines intersected). It contains the ellipse: the outer approximation.
+%
+% GREYSCALE: the outer approximation is a grey fill, the feasible set is hatched,
+% the tangent lines are thin black, f is thick black and the envelope is thick
+% dashed. No distinction relies on colour; the one colour (blue hatch) is labelled.
+\usetikzlibrary{patterns}
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    >={Latex[length=2.0mm]},
+    font=\small,
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+  ]
+% ---------------------------------------------------------------- panel (1)
+\begin{scope}
+  \draw[->, black!60] (-2.7,-0.4) -- (2.9,-0.4) node[right] {$x$};
+  \begin{scope}
+    \clip (-2.7,-0.4) rectangle (2.7,2.5);
+    % tangent lines (thin)
+    \draw[black!60, line width=0.5pt, domain=-2.7:2.7] plot (\x, {1.04 - 0.8*(\x + 1.6)});
+    \draw[black!60, line width=0.5pt, domain=-2.7:2.7] plot (\x, {0.76 + 0.6*(\x - 1.2)});
+    % accumulated linearization max(t1, t2) (thick dashed)
+    \draw[line width=1.1pt, dashed] (-2.7, {1.04 - 0.8*(-2.7 + 1.6)}) -- (-0.2,-0.08)
+                                     -- (2.7, {0.76 + 0.6*(2.7 - 1.2)});
+    % the convex function (thick)
+    \draw[line width=1.3pt, domain=-2.6:2.6, samples=60] plot (\x, {0.25*\x*\x + 0.4});
+  \end{scope}
+  \fill (-1.6,1.04) circle (1.6pt);
+  \fill (1.2,0.76) circle (1.6pt);
+  \draw[black!40, densely dotted] (-1.6,1.04) -- (-1.6,-0.4);
+  \draw[black!40, densely dotted] (1.2,0.76) -- (1.2,-0.4);
+  \node[below] at (-1.6,-0.4) {$x^1$};
+  \node[below] at (1.2,-0.4) {$x^2$};
+  \node[lab, anchor=south east] at (-2.0,2.05) {$f(x)$};
+  \draw[black!60] (-0.2,-0.12) -- (-0.2,-0.95);
+  \node[lab, anchor=north] at (-0.2,-0.95) {max of the tangents};
+  \node[font=\small] at (0,-1.75) {(1)};
+\end{scope}
+% ---------------------------------------------------------------- panel (2)
+\begin{scope}[xshift=6.4cm, yshift=0.8cm]
+  % outer approximation: intersection of the four tangent half-planes
+  \fill[black!15] (0.343,1.629) -- (-2.081,0.114) -- (-0.470,-1.324) -- (2.186,-0.366) -- cycle;
+  \draw[black!70, line width=0.5pt] (0.343,1.629) -- (-2.081,0.114) -- (-0.470,-1.324) -- (2.186,-0.366) -- cycle;
+  % feasible set g(x) <= 0 (hatched)
+  \fill[white] (0,0) ellipse [x radius=1.6, y radius=1.0];
+  \fill[pattern=north east lines, pattern color=okabeblue!70] (0,0) ellipse [x radius=1.6, y radius=1.0];
+  \draw[line width=1.3pt] (0,0) ellipse [x radius=1.6, y radius=1.0];
+  % linearization points
+  \foreach \p in {(1.386,0.5), (-1.131,0.707), (-1.311,-0.574), (0.8,-0.866)}
+    \fill \p circle (1.6pt);
+  \node[lab, fill=white, rounded corners=1pt] at (0,0) {$g(\mathbf{x}) \le 0$};
+  \draw[black!60] (1.55,1.15) -- (1.15,0.75);
+  \node[lab, anchor=south west, align=left] at (1.45,1.1) {linearized\\ constraints};
+  \node[font=\small] at (0,-2.55) {(2)};
+\end{scope}
+\end{tikzpicture}

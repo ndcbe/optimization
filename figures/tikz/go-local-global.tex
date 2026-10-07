@@ -1,0 +1,56 @@
+% A local certificate covers a neighbourhood; a global proof needs a bound over the whole region.
+%
+%   figures/tikz/go-local-global.tex
+%       -> media/figures/go-local-global.{png,svg}
+%
+% Lecture 26 (Deterministic Global Optimization), section I "Local is not global",
+% read by the activity "A local NLP solver has returned a point x-tilde ...
+% What would it take to prove x-tilde is the global minimum?".
+%
+% f(x) = 0.12 x^4 - 0.9 x^2 + 0.35 x + 2.2 on the region [-2.85, 2.7], nonconvex.
+%   f'(x) = 0.48 x^3 - 1.8 x + 0.35 = 0 at x = -2.0272, 0.1965, 1.8308 (scipy brentq):
+%   global minimum  x* = -2.0272, f = -0.1815
+%   local maximum        0.1965, f =  2.2342
+%   local minimum   xt =  1.8308, f =  1.1723   (the point a local solver returned)
+%   endpoints f(-2.85) = 1.810, f(2.7) = 2.963.
+% Drawn with yscale 0.8; the x axis sits at f = -0.95, the lower bound l at f = -0.55
+% (any value at or below f(x*) is a valid bound; this one is below it, so it proves
+% nothing about xt, which is the point of the activity).
+%
+% GREYSCALE: one colour-free drawing. f is thick black, the region bounds are dashed,
+% the neighbourhood of xt is a light grey band with a brace, the lower bound is a thick
+% dashed line. Every distinction is carried by line style and labels.
+
+\usetikzlibrary{decorations.pathreplacing}
+
+\begin{tikzpicture}[
+    yscale=0.8,
+    >={Latex[length=2.0mm]},
+    font=\small,
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+  ]
+  % neighbourhood of the local solution (light band)
+  \fill[black!10] (1.33,-0.95) rectangle (2.33,3.3);
+  % axis
+  \draw[->, black!60] (-3.2,-0.95) -- (3.25,-0.95) node[right] {$x$};
+  % region bounds
+  \draw[dashed, black!50] (-2.85,-0.95) -- (-2.85,3.3);
+  \draw[dashed, black!50] (2.7,-0.95) -- (2.7,3.3);
+  % objective
+  \draw[line width=1.3pt, domain=-2.85:2.7, samples=90, smooth]
+    plot (\x, {0.12*\x*\x*\x*\x - 0.9*\x*\x + 0.35*\x + 2.2});
+  \node[lab, anchor=south west] at (-2.80,2.0) {$f(x)$};
+  % lower bound valid on the whole region
+  \draw[line width=1.0pt, dashed] (-2.85,-0.55) -- (2.7,-0.55);
+  \node[lab, anchor=south west] at (-1.30,-0.53) {lower bound $l$ on the whole region};
+  % points
+  \fill (1.8308,1.1723) circle (1.8pt);
+  \node[lab, anchor=south] at (1.8308,1.25) {$\tilde{x}$};
+  \fill (-2.0272,-0.1815) circle (1.8pt);
+  \node[lab, anchor=south] at (-2.0272,-0.10) {$x^{*}$};
+  % brace under the neighbourhood
+  \draw[decorate, decoration={brace, amplitude=4pt, mirror}] (1.33,-1.10) -- (2.33,-1.10);
+  \node[lab, anchor=north, align=center] at (1.83,-1.35) {local conditions\\ checked here};
+  \node[lab, anchor=north] at (-2.85,-1.05) {$a$};
+  \node[lab, anchor=north] at (2.7,-1.05) {$b$};
+\end{tikzpicture}

@@ -1,0 +1,66 @@
+% Active and inactive inequality constraints at a constrained minimum.
+%
+%   figures/tikz/kkt-active-set.tex
+%       -> media/figures/kkt-active-set.{png,svg}
+%
+% Lecture 19 (KKT Conditions, Multipliers, and Sensitivity), section IV
+% "Active constraints and multipliers": "Is the ball against fence i?"
+%
+% GEOMETRY (1 unit = 1 cm), n = 2.
+%   f(x) = (x1 - 3)^2 + (x2 - 3)^2, unconstrained minimum c = (3,3) (open circle).
+%   g1(x) = x1 + x2 - 4 <= 0   (fence 1, the line from (0,4) to (4,0)).
+%   g2(x) = x1 - 3.2   <= 0    (fence 2, the vertical line x1 = 3.2).
+%   c is infeasible for g1 (3 + 3 - 4 = 2 > 0). The constrained minimum is the
+%   projection of c onto x1 + x2 = 4: x* = (2,2). There g1(x*) = 0 (ACTIVE) and
+%   g2(x*) = 2 - 3.2 = -1.2 < 0 (INACTIVE).
+%   grad f(x*) = 2(x* - c) = (-2,-2); grad g1 = (1,1). Stationarity
+%   grad f + u1 grad g1 = 0 gives u1* = 2 > 0; complementarity gives u2* = 0.
+%   Both arrows are drawn at the same scale, 0.35 cm per unit: grad f(x*) ->
+%   (-0.70,-0.70), u1* grad g1 = (2,2) -> (+0.70,+0.70). Equal length, opposite.
+%   Contours: circles about c of radius 0.6, 1.0, sqrt(2) = 1.414 (through x*,
+%   tangent to fence 1) and 1.9, clipped to the window [0,4.4] x [0,4.2].
+%
+% GREYSCALE: the two fences are told apart by their labels and by hatch direction
+% (north east for fence 1, north west for fence 2), not by colour. The arrows are
+% labelled. The active/inactive verdicts are NOT printed: the activity beside the
+% figure asks for them.
+\usetikzlibrary{patterns}
+\definecolor{okabeblue}{HTML}{0072B2}
+\definecolor{okabever}{HTML}{D55E00}
+
+\begin{tikzpicture}[
+    >={Latex[length=2.0mm]},
+    font=\small,
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+  ]
+\def\wx{4.4}\def\wy{4.2}
+\begin{scope}
+  \clip (0,0) rectangle (\wx,\wy);
+  % infeasible side of fence 1 (x1 + x2 > 4): hatched
+  \path[pattern=north east lines, pattern color=okabeblue!45]
+     (0,4) -- (4,0) -- (\wx,0) -- (\wx,\wy) -- (0,\wy) -- cycle;
+  % infeasible side of fence 2 (x1 > 3.2): hatched the other way
+  \path[pattern=north west lines, pattern color=black!35]
+     (3.2,0) rectangle (\wx,\wy);
+  % contours of f about c = (3,3)
+  \foreach \r in {0.6,1.0,1.414,1.9}
+    \draw[black!35, line width=0.5pt] (3,3) circle (\r);
+  % the fences
+  \draw[okabeblue, line width=1.3pt] (0,4) -- (4,0);
+  \draw[black!75, line width=1.3pt] (3.2,0) -- (3.2,\wy);
+\end{scope}
+\draw[black!40, line width=0.4pt] (0,0) rectangle (\wx,\wy);
+% unconstrained minimum c (open circle, named in the lecture text) and the
+% constrained minimum x* (the ball)
+\draw[line width=0.6pt, fill=white] (3,3) circle (1.8pt);
+% arrows at x* = (2,2)
+\draw[->, line width=0.9pt] (2,2) -- (1.30,1.30);
+\node[lab, anchor=north east] at (1.32,1.32) {$\nabla f(\mathbf{x}^*)$};
+\draw[->, line width=0.9pt, okabever] (2,2) -- (2.70,2.70);
+\node[lab, anchor=south east, text=okabever, fill=white, inner sep=1pt] at (2.75,2.76) {$u_1^*\,\nabla g_1(\mathbf{x}^*)$};
+\filldraw (2,2) circle (2.4pt);
+\node[lab, anchor=north west] at (2.06,1.94) {$\mathbf{x}^*$};
+% fence labels
+\node[lab, anchor=center, rotate=-45, inner sep=1pt] at (0.75,2.75) {$g_1(\mathbf{x}) = 0$};
+\node[lab, anchor=north, rotate=90, fill=white, inner sep=1pt] at (3.27,2.0) {$g_2(\mathbf{x}) = 0$};
+\end{tikzpicture}

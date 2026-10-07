@@ -1,0 +1,58 @@
+% The composite (Byrd--Omojokun) trust-region step: normal step, then tangential step.
+%
+%   figures/tikz/sqp-composite-step.tex
+%       -> media/figures/sqp-composite-step.{png,svg}
+%
+% Lecture 23 (Sequential Quadratic Programming), section "Trust region SQP",
+% subsection "Three families", (a) relaxation. Biegler (6.43)-(6.45), p. 150;
+% Nocedal & Wright Alg. 18.4, p. 549.
+%
+% GEOMETRY (1 unit = 1 cm), n = 2, m = 1, iterate x^k at the origin.
+%   Linearization (same as sqp-tr-infeasible): d1 + d2 = 2.6, distance 1.838 from x^k.
+%   Trust region Delta_k = 1.5 (outer circle); the normal step is limited to
+%   xi_N Delta_k = 0.8 * 1.5 = 1.2 (inner dashed circle), so it cannot reach the line.
+%   Normal step Y p_Y: along the constraint normal (1,1)/sqrt(2), length 1.2,
+%     ending at N = (0.8485, 0.8485). It reduces the linearized infeasibility from
+%     2.6 to 2.6 - 1.2 sqrt(2) = 0.903.
+%   Tangential step Z p_Z: along the null-space direction (1,-1)/sqrt(2), parallel to
+%     the line, length 0.75, ending at x^k + d_x = (1.3788, 0.3182). It leaves
+%     d1 + d2 (the infeasibility) unchanged. |d_x| = sqrt(1.2^2 + 0.75^2) = 1.415 <= 1.5.
+%
+% GREYSCALE: the two step arrows differ by colour AND line style (solid blue normal,
+% dashed vermillion tangential) and are labelled; the total step is thin black.
+\definecolor{okabeblue}{HTML}{0072B2}
+\definecolor{okabever}{HTML}{D55E00}
+
+\begin{tikzpicture}[
+    scale=1.0,
+    >={Latex[length=2.0mm]},
+    font=\small,
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+  ]
+\begin{scope}
+  \clip (-1.7,-1.7) rectangle (3.1,3.1);
+  \draw[black!80, line width=0.9pt] (0,0) circle (1.5);
+  \draw[black!55, line width=0.7pt, dash pattern=on 2pt off 2pt] (0,0) circle (1.2);
+  % linearization d1 + d2 = 2.6
+  \draw[black!60, line width=1.1pt] (-0.5,3.1) -- (3.1,-0.5);
+\end{scope}
+\draw[black!40, line width=0.4pt] (-1.7,-1.7) rectangle (3.1,3.1);
+% total step (thin)
+\draw[->, line width=0.6pt, black!70] (0,0) -- (1.3788,0.3182);
+\node[lab, anchor=north west] at (0.55,0.10) {$\mathbf{d}_x$};
+% normal step
+\draw[->, okabeblue, line width=1.3pt] (0,0) -- (0.8485,0.8485);
+\node[lab, text=okabeblue, anchor=south east, fill=white, inner sep=1pt] at (0.40,0.50) {$\mathbf{Y}^k\mathbf{p}_Y$};
+% tangential step
+\draw[->, okabever, line width=1.3pt, dashed] (0.8485,0.8485) -- (1.3788,0.3182);
+\node[lab, text=okabever, anchor=south west, fill=white, inner sep=1pt] at (1.12,0.66) {$\mathbf{Z}^k\mathbf{p}_Z$};
+% iterate
+\filldraw (0,0) circle (2.2pt);
+\node[lab, anchor=east] at (-0.08,0.06) {$\mathbf{x}^k$};
+% radii labels
+\node[lab, anchor=south east] at (-1.10,1.00) {$\Delta_k$};
+\draw[->, line width=0.5pt, black!60] (0,0) -- (-0.849,-0.849);
+\node[lab, anchor=north west] at (-0.36,-0.46) {$0.8\,\Delta_k$};
+\node[lab, rotate=-45, fill=white, inner sep=1pt] at (1.05,1.85)
+  {$\mathbf{h}(\mathbf{x}^k) + \mathbf{J}_{\mathbf{h}}^k\,\mathbf{d}_x = \mathbf{0}$};
+\end{tikzpicture}

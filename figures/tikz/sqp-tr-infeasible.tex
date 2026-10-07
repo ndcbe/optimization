@@ -1,0 +1,55 @@
+% A trust region that the linearized equality constraint misses.
+%
+%   figures/tikz/sqp-tr-infeasible.tex
+%       -> media/figures/sqp-tr-infeasible.{png,svg}
+%
+% Lecture 23 (Sequential Quadratic Programming), section "Trust region SQP",
+% activity "What goes wrong that did not go wrong in the unconstrained case?"
+% (Nocedal & Wright, Fig. 18.1, p. 547, draws the same situation.)
+%
+% GEOMETRY (1 unit = 1 cm), n = 2, iterate x^k at the origin.
+%   Constraint  h(x) = (x1 - 3)^2 + (x2 - 3)^2 - 2.4^2 = 0  (one equality, m = 1): the
+%   circle of radius 2.4 about (3,3). It is NONEMPTY; its nearest point to x^k is
+%   (1.303, 1.303), at distance 3 sqrt(2) - 2.4 = 1.843.
+%   At x^k = 0: h = 18 - 5.76 = 12.24, grad h = (-6, -6), so the linearization
+%   h(x^k) + J_h d = 0 reads 12.24 - 6 d1 - 6 d2 = 0, the LINE d1 + d2 = 2.04: an affine
+%   set (one hyperplane, since m = 1), at distance 2.04/sqrt(2) = 1.443 from x^k.
+%   Trust region radius Delta_k = 1.0 < 1.443: the line does not meet the disc, so the
+%   trust-region subproblem has no feasible point although h(x) = 0 has many.
+% GREYSCALE: the curve (solid grey), the linearization (dashed blue) and the trust
+% region (hatched disc with a solid outline) differ by line style and hatching; all
+% three are labelled. The verdict "no intersection" is NOT printed: the activity asks.
+\usetikzlibrary{patterns}
+\definecolor{okabeblue}{HTML}{0072B2}
+\definecolor{okabever}{HTML}{D55E00}
+
+\begin{tikzpicture}[
+    scale=1.0,
+    >={Latex[length=2.0mm]},
+    font=\small,
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+  ]
+\begin{scope}
+  \clip (-1.6,-1.6) rectangle (3.1,3.1);
+  % trust region: hatched disc of radius Delta_k = 1.0 around x^k
+  \path[pattern=north east lines, pattern color=black!30] (0,0) circle (1.0);
+  \draw[black!80, line width=0.9pt] (0,0) circle (1.0);
+  % nonlinear constraint h(x) = 0: circle of radius 2.4 about (3,3)
+  \draw[black!45, line width=1.1pt] (3,3) circle (2.4);
+  % linearization at x^k: d1 + d2 = 2.04
+  \draw[okabeblue, line width=1.3pt, dashed] (-1.06,3.1) -- (3.1,-1.06);
+\end{scope}
+\draw[black!40, line width=0.4pt] (-1.6,-1.6) rectangle (3.1,3.1);
+% radius
+\draw[->, line width=0.7pt] (0,0) -- (-0.707,-0.707);
+\node[lab, anchor=south east] at (-0.33,-0.40) {$\Delta_k$};
+% iterate
+\filldraw (0,0) circle (2.2pt);
+\node[lab, anchor=south west] at (0.04,0.04) {$\mathbf{x}^k$};
+% labels
+\node[lab, text=okabeblue, rotate=-45, fill=white, inner sep=1pt] at (1.95,0.09)
+  {$\mathbf{h}(\mathbf{x}^k) + \mathbf{J}_{\mathbf{h}}^k\,\mathbf{d}_x = \mathbf{0}$};
+\node[lab, text=black!70, fill=white, inner sep=1pt] at (2.25,1.45)
+  {$\mathbf{h}(\mathbf{x}) = \mathbf{0}$};
+\node[lab, fill=white, inner sep=1pt] at (-0.55,1.25) {trust region};
+\end{tikzpicture}

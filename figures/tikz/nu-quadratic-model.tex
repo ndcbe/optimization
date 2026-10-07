@@ -1,0 +1,51 @@
+% Newton's method for minimization: the step goes to the minimizer of the quadratic
+% Taylor model, not of f.
+%
+%   figures/tikz/nu-quadratic-model.tex
+%       -> media/figures/nu-quadratic-model.{png,svg}
+%
+% Lecture 15 (Newton Methods for Unconstrained Optimization), Section IV.B.
+%
+% GEOMETRY (x: 1 unit = 2.2 cm, y: 1 unit = 0.75 cm). f(x) = e^x - 2x,
+% f' = e^x - 2, f'' = e^x, minimizer x* = ln 2 = 0.6931, f(x*) = 0.6137.
+% At x^k = 1.8: f = 2.4496, f' = 4.0496, f'' = 6.0496.
+% Model m(x) = 2.4496 + 4.0496 (x - 1.8) + 3.0248 (x - 1.8)^2.
+% Newton step p = -f'/f'' = -0.6694, so x^{k+1} = 1.1306;
+% m(x^{k+1}) = 1.0942 (model minimum), f(x^{k+1}) = 0.8363 (computed in Python,
+% 2026-10-07).
+%
+% GREYSCALE: f is a thick solid curve, the model a dashed curve; the two points at
+% x^{k+1} are a filled dot (on f) and an open dot (on the model), both labelled.
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    x=2.2cm, y=0.75cm,
+    >={Latex[length=2.0mm]},
+    font=\small,
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+  ]
+  \draw[black!40, ->] (-0.15,0) -- (2.4,0) node[right, lab] {$x$};
+  \draw[black!40, ->] (-0.1,-0.2) -- (-0.1,4.9);
+  % f(x) = e^x - 2x
+  \draw[okabeblue, line width=1.2pt, domain=-0.05:2.22, samples=80, variable=\t]
+    plot ({\t},{exp(\t)-2*\t});
+  % quadratic model at x^k = 1.8
+  \draw[thick, dashed, domain=0.56:2.24, samples=60, variable=\t]
+    plot ({\t},{2.4496+4.0496*(\t-1.8)+3.0248*(\t-1.8)*(\t-1.8)});
+  % guides
+  \draw[densely dotted] (1.8,0) -- (1.8,2.4496);
+  \draw[densely dotted] (1.1306,0) -- (1.1306,1.0942);
+  \draw[densely dotted] (0.6931,0) -- (0.6931,0.6137);
+  \filldraw (1.8,2.4496) circle (1.5pt);
+  \filldraw[fill=white] (1.1306,1.0942) circle (1.6pt);
+  \filldraw (1.1306,0.8363) circle (1.5pt);
+  \filldraw (0.6931,0.6137) circle (1.5pt);
+  % the step
+  \draw[->, thick] (1.8,0.32) -- (1.1306,0.32);
+  \node[lab, above] at (1.465,0.32) {$p$};
+  \node[lab, below] at (1.8,0) {$x^{k}$};
+  \node[lab, below] at (1.1306,0) {$x^{k+1}$};
+  \node[lab, below] at (0.6931,0) {$x^{*}$};
+  \node[lab, okabeblue, anchor=south west] at (0.02,1.02) {$f(x)$};
+  \node[lab, anchor=west] at (0.62,2.55) {model};
+\end{tikzpicture}

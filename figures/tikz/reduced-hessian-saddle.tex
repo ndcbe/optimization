@@ -1,0 +1,72 @@
+% An indefinite Hessian of the Lagrangian with a positive reduced Hessian.
+%
+%   figures/tikz/reduced-hessian-saddle.tex
+%       -> media/figures/reduced-hessian-saddle.{png,svg}
+%
+% Lecture 21 (Second Order Conditions and Equality Constrained NLPs), section V
+% "The reduced Hessian": the observation activity beside the figure.
+%
+% PROBLEM (1 unit = 1 cm before scaling), n = 2, m = 1.
+%   min f(x) = x1^2 - x2^2   s.t.   h(x) = x2 = 0.
+%   grad f = (2 x1, -2 x2), J_h = [0 1]. At x* = (0,0): grad f(x*) = 0, so v* = 0.
+%   W = grad_xx L(x*, v*) = diag(2, -2): eigenvalues 2 and -2, INDEFINITE.
+%   Null space basis of J_h: Z = (1, 0)^T. Reduced Hessian Z^T W Z = 2 > 0, so SOSC holds
+%   and x* is a strict local minimizer: on the constraint, f = x1^2.
+%   The direction e2 = (0,1) has e2^T W e2 = -2 < 0 (f decreases), but J_h e2 = 1 != 0:
+%   it leaves the constraint.
+%
+% CONTOURS of f = c, drawn parametrically, clipped to [-2,2] x [-1.6,1.6]:
+%   c > 0 (solid):  x1 = +-sqrt(c) cosh t, x2 = sqrt(c) sinh t
+%   c < 0 (dashed): x1 = sqrt(-c) sinh t,  x2 = +-sqrt(-c) cosh t
+%   with |c| in {0.5, 1.5, 2.5}. The asymptotes x2 = +-x1 (f = 0) are dotted.
+%
+% GREYSCALE: the sign of f is carried by line style (solid f > 0, dashed f < 0), the
+% constraint is the thick line and is labelled, and both arrows are labelled. No colour
+% carries a distinction. The curvature values are NOT printed: the activity asks for them.
+\definecolor{okabeblue}{HTML}{0072B2}
+\definecolor{okabever}{HTML}{D55E00}
+
+\begin{tikzpicture}[
+    scale=0.95,
+    >={Latex[length=2.0mm]},
+    font=\small,
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+  ]
+\def\wx{2.0}\def\wy{1.6}
+\begin{scope}
+  \clip (-\wx,-\wy) rectangle (\wx,\wy);
+  % f = 0: the asymptotes
+  \draw[black!35, dotted, line width=0.5pt] (-2,-2) -- (2,2);
+  \draw[black!35, dotted, line width=0.5pt] (-2,2) -- (2,-2);
+  \foreach \c in {0.5,1.5,2.5} {
+    % f = +c (solid), two branches
+    \draw[black!45, line width=0.5pt, domain=-1.6:1.6, smooth, samples=40, variable=\t]
+      plot ({sqrt(\c)*cosh(\t)},{sqrt(\c)*sinh(\t)});
+    \draw[black!45, line width=0.5pt, domain=-1.6:1.6, smooth, samples=40, variable=\t]
+      plot ({-sqrt(\c)*cosh(\t)},{sqrt(\c)*sinh(\t)});
+    % f = -c (dashed), two branches
+    \draw[black!45, dashed, line width=0.5pt, domain=-1.6:1.6, smooth, samples=40, variable=\t]
+      plot ({sqrt(\c)*sinh(\t)},{sqrt(\c)*cosh(\t)});
+    \draw[black!45, dashed, line width=0.5pt, domain=-1.6:1.6, smooth, samples=40, variable=\t]
+      plot ({sqrt(\c)*sinh(\t)},{-sqrt(\c)*cosh(\t)});
+  }
+  % the constraint h(x) = x2 = 0
+  \draw[okabeblue, line width=1.6pt] (-\wx,0) -- (\wx,0);
+\end{scope}
+\draw[black!40, line width=0.4pt] (-\wx,-\wy) rectangle (\wx,\wy);
+% axis names
+\node[lab, anchor=north] at (0,-\wy) {$x_1$};
+\node[lab, anchor=east] at (-\wx,1.1) {$x_2$};
+% contour values (one of each sign)
+\node[lab, fill=white, inner sep=0.8pt] at (1.52,0.90) {$f = 1.5$};
+\node[lab, fill=white, inner sep=0.8pt] at (0.55,1.34) {$f = -1.5$};
+% constraint label
+\node[lab, anchor=north, fill=white, inner sep=1pt, text=okabeblue] at (-1.15,-0.08) {$h(\mathbf{x}) = x_2 = 0$};
+% arrows at x* = 0
+\draw[->, line width=1.0pt] (0,0) -- (0.85,0);
+\node[lab, anchor=south, fill=white, inner sep=1pt] at (0.75,0.06) {$\mathbf{Z}$};
+\draw[->, line width=1.0pt, okabever, densely dashed] (0,0) -- (0,0.85);
+\node[lab, anchor=west, fill=white, inner sep=1pt, text=okabever] at (0.05,0.62) {$\mathbf{e}_2$};
+\filldraw (0,0) circle (2.2pt);
+\node[lab, anchor=north west, fill=white, inner sep=1pt] at (0.04,-0.06) {$\mathbf{x}^*$};
+\end{tikzpicture}

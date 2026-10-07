@@ -128,7 +128,7 @@ def _eigenvector_line(ax, column, label, style):
 def make_figure():
     fig, axes = plt.subplots(2, 2, figsize=(8.4, 8.0))
 
-    for ax, (lam, definiteness, verdict) in zip(axes.ravel(), PANELS):
+    for ax, (lam, _definiteness, _verdict) in zip(axes.ravel(), PANELS):
         X1, X2, F = quad(np.array(lam))
         ax.contourf(X1, X2, F, levels=NLEVELS, cmap=CMAP)
         ax.contour(X1, X2, F, levels=NLEVELS, colors="white",
@@ -154,10 +154,12 @@ def make_figure():
         ax.set_aspect("equal", adjustable="box")
         ax.set_xticks([-2, 0, 2])
         ax.set_yticks([-2, 0, 2])
+        # Eigenvalues only (2026-10-06): the handout asks students to classify
+        # each panel (table and observation activity), so the title must not
+        # name the definiteness or the type of x*. PANELS keeps both for the record.
         ax.set_title(
-            rf"$\lambda = ({lam[0]:.0f},\ {lam[1]:.0f})$ — {definiteness}"
-            "\n" f"{verdict}",
-            fontsize=12,
+            rf"$(\lambda_1, \lambda_2) = ({lam[0]:.0f},\ {lam[1]:.0f})$",
+            fontsize=13,
         )
 
     for ax in axes[1, :]:

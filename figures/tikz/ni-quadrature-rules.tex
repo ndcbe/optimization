@@ -1,0 +1,79 @@
+% Three basic quadrature rules on one interval, drawn.
+%
+%   figures/tikz/ni-quadrature-rules.tex
+%       -> media/figures/ni-quadrature-rules.{png,svg}
+%
+% Lecture 6 (Numeric Integration), Quadrature. Added 2026-10-07 (format pass):
+% the lecture had no picture of a quadrature rule. One concept: each rule
+% replaces f by the polynomial through its nodes and integrates that polynomial.
+%
+% GEOMETRY (x unit 1.45 cm, y unit 1.15 cm). f(x) = 1 + 0.8 sin(1.6 x) + 0.3 x
+% on [a, b] = [0, 2], midpoint m = 1.
+%   f(0) = 1, f(1) = 2.09966, f(2) = 1.55330.
+%   (1) midpoint:  constant f(1), area 4.199
+%   (2) trapezoid: chord through f(0), f(2), area 2.553
+%   (3) Simpson:   parabola through all three, p(x) = 1 + 1.92267 x - 0.82301 x^2,
+%                  area (2/6)(f(0) + 4 f(1) + f(2)) = 3.651
+%   exact integral 2 + 0.5 (1 - cos 3.2) + 0.6 = 3.599.
+% The panels show the shape of each approximation; the numbers are not printed.
+%
+% GREYSCALE: f is solid black, the approximating polynomial is dashed, the
+% approximate area is hatched, nodes are filled dots. Colour is redundant.
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    x=1.45cm, y=1.15cm,
+    font=\small,
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+    fcurve/.style={very thick, black},
+    approx/.style={okabeblue, thick, dashed},
+    area/.style={pattern=north east lines, pattern color=okabeblue!70},
+    node dot/.style={circle, fill=black, inner sep=0pt, minimum size=4.2pt},
+  ]
+  \def\fcurvepath{plot[domain=0:2, smooth, samples=60, variable=\t]
+    ({\t},{1+0.8*sin(deg(1.6*\t))+0.3*\t})}
+  \foreach \k/\name in {0/{(1) midpoint}, 1/{(2) trapezoid}, 2/{(3) Simpson}} {
+    \begin{scope}[xshift=\k*4.2cm]
+      % approximate area
+      \ifcase\k
+        \fill[area] (0,0) rectangle (2,2.09966);
+        \draw[approx] (0,2.09966) -- (2,2.09966);
+        \draw[approx] (0,0) -- (0,2.09966);
+        \draw[approx] (2,0) -- (2,2.09966);
+      \or
+        \fill[area] (0,0) -- (0,1) -- (2,1.55330) -- (2,0) -- cycle;
+        \draw[approx] (0,1) -- (2,1.55330);
+        \draw[approx] (2,0) -- (2,1.55330);
+      \or
+        \fill[area] (0,0) -- plot[domain=0:2, smooth, samples=40, variable=\t]
+          ({\t},{1+1.92267*\t-0.82301*\t*\t}) -- (2,0) -- cycle;
+        \draw[approx] plot[domain=0:2, smooth, samples=40, variable=\t]
+          ({\t},{1+1.92267*\t-0.82301*\t*\t});
+        \draw[approx] (2,0) -- (2,1.55330);
+      \fi
+      % axes
+      \draw[->, black!60] (-0.12,0) -- (2.3,0) node[right, lab] {$x$};
+      \draw[->, black!60] (0,0) -- (0,2.6);
+      % the integrand
+      \draw[fcurve] \fcurvepath;
+      \node[lab, anchor=south west] at (1.55,2.0) {$f$};
+      % nodes
+      \ifcase\k
+        \node[node dot] at (1,2.09966) {};
+      \or
+        \node[node dot] at (0,1) {};
+        \node[node dot] at (2,1.55330) {};
+      \or
+        \node[node dot] at (0,1) {};
+        \node[node dot] at (1,2.09966) {};
+        \node[node dot] at (2,1.55330) {};
+      \fi
+      % ticks
+      \foreach \xx/\ll in {0/a, 1/m, 2/b} {
+        \draw[black!60] (\xx,0) -- (\xx,-0.06);
+        \node[lab, anchor=north] at (\xx,-0.06) {$\ll$};
+      }
+      \node[font=\small, anchor=north] at (1,-0.38) {\name};
+    \end{scope}
+  }
+\end{tikzpicture}

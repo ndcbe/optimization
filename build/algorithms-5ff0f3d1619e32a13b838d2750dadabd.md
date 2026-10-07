@@ -1,0 +1,6 @@
+# Global Optimization
+
+**Sections**
+
+```{tableofcontents}
+```

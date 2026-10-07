@@ -1,0 +1,52 @@
+% Compact, bounded but not closed, closed but not bounded.
+%
+%   figures/tikz/ra-compact.tex
+%       -> media/figures/ra-compact.{png,svg}
+%
+% Lecture 13 (Real Analysis Review), Sets and sequences.
+%
+% GEOMETRY (1 unit = 1 cm). A: closed ellipse x1^2/1.4^2 + x2^2/1.0^2 <= 1 (closed
+% and bounded, so compact). B: the open unit disk (bounded, not closed: the
+% sequence x^k = (1 - 1/k, 0) stays in the set but converges to (1,0), which is
+% not in it). C: {x2 >= x1^2} clipped to the window [-1.6,1.6] x [-0.4,2.0]
+% (closed, unbounded: x^k = (0,k) has no limit point).
+%
+% GREYSCALE: hatching for the set, solid boundary = included, dashed = excluded.
+\usetikzlibrary{patterns}
+\definecolor{okabeblue}{HTML}{0072B2}
+\definecolor{okabevermillion}{HTML}{D55E00}
+
+\begin{tikzpicture}[
+    >={Latex[length=2.0mm]},
+    font=\small,
+    pt/.style={fill=black, draw=black, circle, inner sep=0pt, minimum size=3.2pt},
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+    panelcap/.style={font=\small, align=center, text width=44mm, anchor=north},
+  ]
+% ------------------------------------------------------------- A: compact
+\begin{scope}
+  \path[pattern=north east lines, pattern color=okabeblue!55] (0,0) ellipse (1.4 and 1.0);
+  \draw[okabeblue, line width=1.5pt] (0,0) ellipse (1.4 and 1.0);
+  \node[panelcap] at (0,-1.2) {\textbf{compact}\\[-1pt] closed and bounded};
+\end{scope}
+% ------------------------------------------------------------- B: bounded, not closed
+\begin{scope}[xshift=5.0cm]
+  \path[pattern=north east lines, pattern color=okabeblue!55] (0,0) circle (1.0);
+  \draw[okabeblue, line width=1.3pt, dashed] (0,0) circle (1.0);
+  \foreach \k in {2,3,4,6,10} {\node[pt, minimum size=2.4pt] at ({1-1/\k},0) {};}
+  \node[pt, draw=okabevermillion, fill=white, minimum size=3.6pt] at (1,0) {};
+  \node[lab, text=okabevermillion, anchor=south west] at (1.0,0.05) {limit, not in set};
+  \node[panelcap] at (0,-1.2) {\textbf{not compact}\\[-1pt] bounded, not closed};
+\end{scope}
+% ------------------------------------------------------------- C: closed, not bounded
+\begin{scope}[xshift=9.6cm]
+  \begin{scope}
+    \clip (-1.5,-0.4) rectangle (1.5,1.9);
+    \path[pattern=north east lines, pattern color=okabeblue!55]
+       plot[domain=-1.5:1.5, samples=40] (\x,{\x*\x}) -- (1.5,3) -- (-1.5,3) -- cycle;
+    \draw[okabeblue, line width=1.5pt, domain=-1.38:1.38, samples=40, smooth] plot (\x,{\x*\x});
+  \end{scope}
+  \draw[->, line width=1.0pt] (0.0,1.9) -- (0.0,2.25);
+  \node[panelcap] at (0,-0.55) {\textbf{not compact}\\[-1pt] closed, not bounded};
+\end{scope}
+\end{tikzpicture}

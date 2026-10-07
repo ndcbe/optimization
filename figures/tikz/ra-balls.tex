@@ -1,0 +1,62 @@
+% Open ball, closed ball, and a neighborhood of a point.
+%
+%   figures/tikz/ra-balls.tex
+%       -> media/figures/ra-balls.{png,svg}
+%
+% Lecture 13 (Real Analysis Review), Sets and sequences.
+%
+% GEOMETRY (1 unit = 1 cm), n = 2, 2-norm. Center xbar = (0,0), radius r = 1.2 in
+% the first two panels. Third panel: the blob is a closed Catmull-Rom curve
+% through (-1.5,0.2), (-0.8,1.3), (0.6,1.4), (1.6,0.5), (1.4,-0.9), (0.2,-1.4),
+% (-1.2,-1.0); its nearest boundary point to the origin is at distance > 1.2, so
+% the dashed circle of radius delta = 0.6 lies inside it.
+%
+% GREYSCALE: the open ball has a DASHED boundary, the closed ball a SOLID one,
+% both hatched; the difference is also stated in the printed formulas.
+\usetikzlibrary{patterns}
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    >={Latex[length=2.0mm]},
+    font=\small,
+    pt/.style={fill=black, draw=black, circle, inner sep=0pt, minimum size=3.2pt},
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+    panelcap/.style={font=\small, align=center, text width=48mm, anchor=north},
+  ]
+% ------------------------------------------------------------- open ball
+\begin{scope}
+  \path[pattern=north east lines, pattern color=okabeblue!55] (0,0) circle (1.2);
+  \draw[okabeblue, line width=1.2pt, dashed] (0,0) circle (1.2);
+  \node[pt] at (0,0) {};
+  \node[lab, anchor=north east] at (-0.03,-0.04) {$\bar{\mathbf{x}}$};
+  \draw[->, line width=0.7pt] (0,0) -- (0.85,0.85) node[midway, above left, lab] {$r$};
+  \node[panelcap] at (0,-1.4) {\textbf{open ball}\\[-1pt]
+        $\{\mathbf{x} : \lVert \mathbf{x} - \bar{\mathbf{x}} \rVert < r\}$};
+\end{scope}
+% ------------------------------------------------------------- closed ball
+\begin{scope}[xshift=4.6cm]
+  \path[pattern=north east lines, pattern color=okabeblue!55] (0,0) circle (1.2);
+  \draw[okabeblue, line width=1.4pt] (0,0) circle (1.2);
+  \node[pt] at (0,0) {};
+  \node[lab, anchor=north east] at (-0.03,-0.04) {$\bar{\mathbf{x}}$};
+  \draw[->, line width=0.7pt] (0,0) -- (0.85,0.85) node[midway, above left, lab] {$r$};
+  \node[panelcap] at (0,-1.4) {\textbf{closed ball}\\[-1pt]
+        $\{\mathbf{x} : \lVert \mathbf{x} - \bar{\mathbf{x}} \rVert \le r\}$};
+\end{scope}
+% ------------------------------------------------------------- neighborhood
+\begin{scope}[xshift=9.4cm]
+  \path[pattern=north east lines, pattern color=black!30]
+     [smooth cycle, tension=0.8] plot coordinates
+     {(-1.5,0.2) (-0.8,1.3) (0.6,1.4) (1.6,0.5) (1.4,-0.9) (0.2,-1.4) (-1.2,-1.0)};
+  \draw[black!70, line width=0.9pt, dashed]
+     [smooth cycle, tension=0.8] plot coordinates
+     {(-1.5,0.2) (-0.8,1.3) (0.6,1.4) (1.6,0.5) (1.4,-0.9) (0.2,-1.4) (-1.2,-1.0)};
+  \draw[okabeblue, line width=1.2pt, dashed, fill=white] (0,0) circle (0.6);
+  \node[pt] at (0,0) {};
+  \node[lab, anchor=north east] at (-0.03,-0.04) {$\bar{\mathbf{x}}$};
+  \draw[->, line width=0.7pt] (0,0) -- (0.42,0.42) node[midway, above left, lab] {$\delta$};
+  \node[lab, anchor=south west] at (0.85,0.85) {$\mathcal{N}$};
+  \node[panelcap] at (0,-1.55) {\textbf{a neighborhood} $\mathcal{N}$ of $\bar{\mathbf{x}}$\\[-1pt]
+        contains an open ball $\mathcal{B}(\bar{\mathbf{x}},\delta)$};
+\end{scope}
+\end{tikzpicture}

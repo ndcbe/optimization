@@ -1,0 +1,53 @@
+% Level set and sublevel set, in one and two variables.
+%
+%   figures/tikz/ra-sublevel.tex
+%       -> media/figures/ra-sublevel.{png,svg}
+%
+% Lecture 13 (Real Analysis Review), Classifying functions.
+%
+% GEOMETRY. Left (x unit 1.2 cm, y unit 0.8 cm): phi(x) = x^2, alpha = 2. The level
+% set {phi = 2} = {-sqrt 2, sqrt 2} = {-1.414, 1.414}; the sublevel set
+% {phi <= 2} = [-1.414, 1.414] is drawn on the axis. Right (1 unit = 1 cm):
+% phi(x) = (x1^2 + 4 x2^2)/2, alpha = 2, so the level set is x1^2 + 4 x2^2 = 4, an
+% ellipse with semi-axes 2 (x1) and 1 (x2); the sublevel set is the filled ellipse.
+% Check: (2,0): (4+0)/2 = 2; (0,1): (0+4)/2 = 2.
+%
+% GREYSCALE: level set = solid curve, sublevel set = hatched region / thick axis segment.
+\usetikzlibrary{patterns}
+\definecolor{okabeblue}{HTML}{0072B2}
+\definecolor{okabevermillion}{HTML}{D55E00}
+
+\begin{tikzpicture}[
+    >={Latex[length=2.0mm]},
+    font=\small,
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+    panelcap/.style={font=\small, align=center, text width=60mm, anchor=north},
+  ]
+% ------------------------------------------------------------- 1-D
+\begin{scope}[x=1.2cm, y=0.8cm]
+  \draw[->, black!55] (-2.1,0) -- (2.2,0) node[right, lab] {$x$};
+  \draw[->, black!55] (0,-0.2) -- (0,4.2) node[above, lab] {$\phi$};
+  \draw[very thick, domain=-1.95:1.95, smooth, samples=50, variable=\t]
+    plot ({\t},{\t*\t});
+  \draw[okabevermillion, dashed, thick] (-2.1,2) -- (2.1,2);
+  \node[lab, anchor=west, text=okabevermillion] at (2.1,2) {$\alpha = 2$};
+  \draw[densely dotted] (-1.414,0) -- (-1.414,2);
+  \draw[densely dotted] (1.414,0) -- (1.414,2);
+  \draw[okabeblue, line width=3.0pt] (-1.414,0) -- (1.414,0);
+  \node[lab, anchor=north] at (-1.414,-0.05) {$-\sqrt{2}$};
+  \node[lab, anchor=north] at (1.414,-0.05) {$\sqrt{2}$};
+  \node[panelcap] at (0,-0.95) {$\phi(x) = x^2$\\[-1pt]
+     level set $\{-\sqrt{2},\sqrt{2}\}$,\\[-1pt] sublevel set $[-\sqrt{2},\sqrt{2}]$ (thick)};
+\end{scope}
+% ------------------------------------------------------------- 2-D
+\begin{scope}[xshift=8.4cm, yshift=1.0cm]
+  \path[pattern=north east lines, pattern color=okabeblue!55] (0,0) ellipse (2 and 1);
+  \draw[okabeblue, line width=1.5pt] (0,0) ellipse (2 and 1);
+  \draw[->, black!55] (-2.4,0) -- (2.5,0) node[right, lab] {$x_1$};
+  \draw[->, black!55] (0,-1.35) -- (0,1.5) node[above, lab] {$x_2$};
+  \node[lab, anchor=south west, fill=white, inner sep=1pt] at (1.25,0.85) {$\phi = \alpha$};
+  \node[lab, fill=white, inner sep=1pt] at (0.0,-0.45) {$\phi \le \alpha$};
+  \node[panelcap, text width=64mm] at (0,-1.45) {$\phi(\mathbf{x}) = \tfrac{1}{2}(x_1^2 + 4x_2^2)$, $\alpha = 2$\\[-1pt]
+     level set = curve, sublevel set = region};
+\end{scope}
+\end{tikzpicture}

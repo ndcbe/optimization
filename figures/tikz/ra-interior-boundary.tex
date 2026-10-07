@@ -1,0 +1,66 @@
+% Interior, boundary and exterior points; open, closed, and neither.
+%
+%   figures/tikz/ra-interior-boundary.tex
+%       -> media/figures/ra-interior-boundary.{png,svg}
+%
+% Lecture 13 (Real Analysis Review), Sets and sequences.
+%
+% GEOMETRY (1 unit = 1 cm). Panel A: S is the disk of radius 1.2 about the origin,
+% drawn with a solid boundary. Points: p1 = (-0.3,0.2) (interior, ball radius 0.5
+% around it stays inside since |p1| + 0.5 = 0.86 < 1.2), p2 = (1.2,0) (boundary,
+% ball radius 0.4 around it meets S and its complement), p3 = (1.95,0.1) (exterior,
+% ball radius 0.4 around it misses S: distance to the disk 0.75 > 0.4).
+% Panels B, C, D: the unit disk {|x| < 1} (dashed boundary, OPEN), {|x| <= 1}
+% (solid boundary, CLOSED), and the half-open set that contains only the closed
+% upper half of the boundary circle (NEITHER: points just inside the lower
+% boundary are in S, boundary points of the lower half are not).
+%
+% GREYSCALE: boundary included = solid line, excluded = dashed line, interior hatched.
+\usetikzlibrary{patterns}
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    >={Latex[length=2.0mm]},
+    font=\small,
+    pt/.style={fill=black, draw=black, circle, inner sep=0pt, minimum size=3.2pt},
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+    panelcap/.style={font=\small, align=center, text width=34mm, anchor=north},
+  ]
+% ------------------------------------------------------------- A: point types
+\begin{scope}
+  \path[pattern=north east lines, pattern color=okabeblue!55] (0,0) circle (1.2);
+  \draw[okabeblue, line width=1.3pt] (0,0) circle (1.2);
+  \node[lab] at (-0.7,-0.65) {$S$};
+  \node[pt] at (-0.3,0.2) {};
+  \draw[black, dotted, line width=0.7pt, fill=white, fill opacity=0.8] (-0.3,0.2) circle (0.5);
+  \node[pt] at (-0.3,0.2) {};
+  \node[lab, anchor=west] at (-0.2,0.2) {$\mathbf{p}_1$};
+  \node[pt] at (1.2,0) {};
+  \draw[black, dotted, line width=0.7pt] (1.2,0) circle (0.4);
+  \node[lab, anchor=south east] at (1.12,0.04) {$\mathbf{p}_2$};
+  \node[pt] at (1.95,0.1) {};
+  \draw[black, dotted, line width=0.7pt] (1.95,0.1) circle (0.4);
+  \node[lab, anchor=south] at (1.95,0.5) {$\mathbf{p}_3$};
+  \node[panelcap, text width=52mm] at (0.9,-1.4)
+     {$\mathbf{p}_1$ interior, $\mathbf{p}_2$ boundary,\\[-1pt] $\mathbf{p}_3$ exterior};
+\end{scope}
+% ------------------------------------------------------------- B: open
+\begin{scope}[xshift=5.2cm]
+  \path[pattern=north east lines, pattern color=okabeblue!55] (0,0) circle (1.2);
+  \draw[okabeblue, line width=1.3pt, dashed] (0,0) circle (1.2);
+  \node[panelcap] at (0,-1.4) {\textbf{open}\\[-1pt] $\lVert \mathbf{x} \rVert < 1$};
+\end{scope}
+% ------------------------------------------------------------- C: closed
+\begin{scope}[xshift=8.3cm]
+  \path[pattern=north east lines, pattern color=okabeblue!55] (0,0) circle (1.2);
+  \draw[okabeblue, line width=1.5pt] (0,0) circle (1.2);
+  \node[panelcap] at (0,-1.4) {\textbf{closed}\\[-1pt] $\lVert \mathbf{x} \rVert \le 1$};
+\end{scope}
+% ------------------------------------------------------------- D: neither
+\begin{scope}[xshift=11.4cm]
+  \path[pattern=north east lines, pattern color=okabeblue!55] (0,0) circle (1.2);
+  \draw[okabeblue, line width=1.5pt] (1.2,0) arc (0:180:1.2);
+  \draw[okabeblue, line width=1.3pt, dashed] (180:1.2) arc (180:360:1.2);
+  \node[panelcap] at (0,-1.4) {\textbf{neither}\\[-1pt] upper boundary only};
+\end{scope}
+\end{tikzpicture}

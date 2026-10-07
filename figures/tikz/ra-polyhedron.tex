@@ -1,0 +1,55 @@
+% A polyhedron as an intersection of half-spaces.
+%
+%   figures/tikz/ra-polyhedron.tex
+%       -> media/figures/ra-polyhedron.{png,svg}
+%
+% Lecture 13 (Real Analysis Review), Convexity.
+%
+% GEOMETRY (1 unit = 1 cm). P = {x : a_i'x <= b_i, i = 1..4} with
+%   a_1 = (-1,0), b_1 = 0       (x1 >= 0)
+%   a_2 = (0,-1), b_2 = 0       (x2 >= 0)
+%   a_3 = (1,2),  b_3 = 4       (x1 + 2 x2 <= 4)
+%   a_4 = (3,1),  b_4 = 6       (3 x1 + x2 <= 6)
+% Vertices (checked by solving pairs): (0,0); (2,0) = a_2 & a_4 (3*2+0 = 6); (1.6,1.2)
+% = a_3 & a_4 (1.6+2.4 = 4, 4.8+1.2 = 6); (0,2) = a_1 & a_3 (0+4 = 4). Edge midpoints
+% (0,1), (1,0), (0.8,1.6), (1.8,0.6) carry the unit outward normals a_i/|a_i|, drawn at
+% length 0.6 cm; a_3/|a_3| = (0.447,0.894), a_4/|a_4| = (0.949,0.316).
+%
+% GREYSCALE: P is hatched; each boundary line is labeled by its inequality.
+\usetikzlibrary{patterns}
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    >={Latex[length=2.0mm]},
+    font=\small,
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+  ]
+  \begin{scope}
+    \clip (-0.9,-0.9) rectangle (3.6,3.0);
+    % the four lines, extended
+    \draw[black!35, line width=0.5pt] (0,-1) -- (0,3.2);
+    \draw[black!35, line width=0.5pt] (-1,0) -- (3.8,0);
+    \draw[black!35, line width=0.5pt] (-1,2.5) -- (4.2,-0.1);
+    \draw[black!35, line width=0.5pt] (1.0,3.0) -- (2.4,-1.2);
+    \path[pattern=north east lines, pattern color=okabeblue!55]
+       (0,0) -- (2,0) -- (1.6,1.2) -- (0,2) -- cycle;
+    \draw[okabeblue, line width=1.5pt] (0,0) -- (2,0) -- (1.6,1.2) -- (0,2) -- cycle;
+  \end{scope}
+  % outward normals
+  \draw[->, line width=0.8pt] (0,1) -- (-0.6,1);
+  \draw[->, line width=0.8pt] (1,0) -- (1,-0.6);
+  \draw[->, line width=0.8pt] (0.8,1.6) -- ++(0.268,0.536);
+  \draw[->, line width=0.8pt] (1.8,0.6) -- ++(0.569,0.190);
+  \node[lab, anchor=east]  at (-0.62,1.0) {$\mathbf{a}_1$};
+  \node[lab, anchor=north] at (1.0,-0.62) {$\mathbf{a}_2$};
+  \node[lab, anchor=south west] at (1.05,2.1) {$\mathbf{a}_3$};
+  \node[lab, anchor=south west] at (2.40,0.80) {$\mathbf{a}_4$};
+  \node[lab, anchor=west, fill=white, inner sep=1pt] at (0.25,0.8) {$\mathcal{P}$};
+  \node[lab, anchor=north east] at (-0.05,2.95) {$x_1 \ge 0$};
+  \node[lab, anchor=south west] at (2.7,0.0) {$x_2 \ge 0$};
+  \node[lab, anchor=south west] at (1.45,2.45) {$3x_1 + x_2 \le 6$};
+  \node[lab, anchor=south west] at (2.55,1.35) {$x_1 + 2x_2 \le 4$};
+  \node[font=\small, align=center, anchor=north] at (1.4,-1.0)
+     {$\mathcal{P} = \{\mathbf{x} : \mathbf{a}_i^{\top}\mathbf{x} \le b_i,\ i = 1,\dots,4\}$\\[-1pt]
+      an intersection of four half-spaces};
+\end{tikzpicture}

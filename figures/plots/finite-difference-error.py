@@ -37,12 +37,12 @@ Deliberate departures from the notebook
    the classic red-green collapse, and on a mono laser printer three identical
    grey curves. Here each series carries colour AND linestyle (from the house
    cycle) AND a distinct marker AND a direct label written onto the curve.
-2. THE FITTED SLOPES ARE ON THE AXES. The notebook prints its findings in a
-   markdown cell BELOW the plot (cells 27-28). A printed handout has no
-   "below", so the slopes are fitted here and annotated in place -- the same
-   discipline `euler-error-order.py` follows for the same reason.
-3. The measured minima are annotated too, because the handout's answer quotes
-   them as predictions and a prediction is worth more next to its measurement.
+2. NO SLOPES OR MINIMA ON THE AXES (changed 2026-10-06). They used to be
+   annotated in place; Lecture 13 now asks students to read them off the
+   figure (Alex: "instead have an activity asking about this"), so printing
+   them would give the activity away. fitted_slope() is kept so the answers
+   can be re-checked: forward/backward +1.00, central +2.00, round-off -0.92;
+   minima at epsilon = 10^-8.0 (one-sided) and 10^-5.5 (central).
 
 numpy only, no solver.
 """
@@ -101,46 +101,18 @@ def make_figure():
     ax.set_xlim(1e-17, 3e1)
     ax.set_ylim(1e-13, 1e4)
 
-    # --- fitted slopes, annotated ON the axes, each beside its own branch ------
-    # No legend. Forward and backward differ only in the sign of the step, so on
-    # these axes they lie on top of each other: a legend that invited the reader
-    # to tell them apart would be inviting a distinction the data does not make.
-    # They are labelled jointly, with their markers named in the label itself,
-    # which is the colour-free identity README.md requires.
-    s_f = fitted_slope(fwd, FIT_TRUNC)
-    s_b = fitted_slope(bwd, FIT_TRUNC)
-    s_c = fitted_slope(ctr, FIT_TRUNC)
-    s_r = fitted_slope(fwd, FIT_ROUND)
-
-    ax.annotate(
-        "forward (□) and backward (○) coincide\n"
-        rf"slope $= {s_f:.2f}$ and ${s_b:.2f}$",
-        xy=(1.5e1, 3e1), fontsize=12, ha="right", va="bottom", color="0.25",
-    )
-    ax.annotate(rf"central (△), slope $= {s_c:.2f}$",
+    # --- curve names only, ON the axes (2026-10-06) ----------------------------
+    # The slopes and the measured valley floors are the ANSWERS to the handout's
+    # observation activity (Lecture 13, "Read the figure"), so the figure no
+    # longer prints them; fitted_slope() and the measured minima stay in this
+    # file as the check on those answers (printed by `python3 -c` in the log).
+    # No legend: forward and backward coincide on these axes, so they are
+    # labelled jointly with their markers named in the label itself, which is
+    # the colour-free identity README.md requires.
+    ax.annotate("forward (□) and backward (○) coincide",
+                xy=(1.5e1, 3e1), fontsize=12, ha="right", va="bottom", color="0.25")
+    ax.annotate("central (△)",
                 xy=(1.5e1, 1e-6), fontsize=12, ha="right", va="top", color="0.25")
-    ax.annotate(rf"round-off, slope $= {s_r:.2f}$",
-                xy=(1.5e-16, 1e2), fontsize=12, ha="left", va="bottom", color="0.25")
-
-    # --- the two measured valley floors ---------------------------------------
-    floors = (
-        (fwd, "one-sided floor", (2.0e-15, 4e-10)),
-        (ctr, "central floor", (2.0e-14, 1.5e-12)),
-    )
-    for err, name, xytext in floors:
-        i = int(np.argmin(err))
-        ax.annotate(
-            rf"{name}: $\epsilon = 10^{{{np.log10(EPS[i]):.1f}}}$,"
-            rf" error $= 10^{{{np.log10(err[i]):.1f}}}$",
-            xy=(EPS[i], err[i]),
-            xytext=xytext,
-            fontsize=11, color="0.25", ha="left", va="center",
-            # White bbox: these two labels sit in the busiest part of the axes
-            # and would otherwise be crossed by the central curve.
-            bbox=dict(facecolor="white", edgecolor="none", pad=1.5),
-            arrowprops=dict(arrowstyle="->", color="0.45", linewidth=1.2,
-                            shrinkA=6.0, shrinkB=4.0),
-        )
 
     ax.set_xlabel(r"step size $\epsilon$")
     ax.set_ylabel(r"absolute error in $f'(1)$")

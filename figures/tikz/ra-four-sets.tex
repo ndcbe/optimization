@@ -1,0 +1,73 @@
+% The four sets of the open / closed / bounded / compact / convex activity.
+%
+%   figures/tikz/ra-four-sets.tex
+%       -> media/figures/ra-four-sets.{png,svg}
+%
+% Lecture 13 (Real Analysis Review), Sets and sequences. Alex, 2026-10-07: "For the
+% activity on page 7, I would like to show pictures for the four sets we are
+% considering." The panels are numbered (1)-(4) in the order of the activity table;
+% they show the sets and leave the open / closed / bounded / compact / convex
+% answers to the students.
+%
+% GEOMETRY (1 unit = 0.65 cm; each panel is the window [-2.2, 2.2]^2 at its own
+% origin, panels 3.7 cm apart).
+%   (1) {x : ||x|| < 1}      open unit disk, boundary circle dashed (excluded)
+%   (2) {x : ||x|| <= 1}     closed unit disk, boundary circle solid (included)
+%   (3) {x : x1 >= 0, x2 >= 0}   the quadrant, clipped at the window edge; arrows
+%                            show it continues
+%   (4) {x : 1 <= ||x|| <= 2}    annulus, both circles solid; drawn with the even-odd
+%                            rule so the hole is unfilled
+%
+% GREYSCALE (scripts/check_greyscale.py): hatching = in the set; solid boundary =
+% included, dashed = excluded. No distinction rests on colour.
+\usetikzlibrary{patterns}
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    x=0.65cm, y=0.65cm,
+    >={Latex[length=1.8mm]},
+    font=\small,
+    win/.style={draw=black!30, line width=0.4pt},
+    ax/.style={draw=black!30, line width=0.4pt},
+    bd/.style={draw=okabeblue, line width=1.4pt},
+    bdd/.style={draw=okabeblue, line width=1.4pt, dashed},
+    plab/.style={font=\small, anchor=north},
+  ]
+\def\win{\draw[win] (-2.2,-2.2) rectangle (2.2,2.2);
+         \draw[ax] (-2.2,0) -- (2.2,0); \draw[ax] (0,-2.2) -- (0,2.2);}
+% (1) open unit disk
+\begin{scope}
+  \win
+  \path[pattern=north east lines, pattern color=okabeblue!55] (0,0) circle (1);
+  \draw[bdd] (0,0) circle (1);
+  \node[plab] at (0,-2.4) {(1)};
+\end{scope}
+% (2) closed unit disk
+\begin{scope}[xshift=3.7cm]
+  \win
+  \path[pattern=north east lines, pattern color=okabeblue!55] (0,0) circle (1);
+  \draw[bd] (0,0) circle (1);
+  \node[plab] at (0,-2.4) {(2)};
+\end{scope}
+% (3) quadrant
+\begin{scope}[xshift=7.4cm]
+  \win
+  \begin{scope}
+    \clip (-2.2,-2.2) rectangle (2.2,2.2);
+    \path[pattern=north east lines, pattern color=okabeblue!55] (0,0) rectangle (2.2,2.2);
+  \end{scope}
+  \draw[bd] (2.2,0) -- (0,0) -- (0,2.2);
+  \draw[->, okabeblue, line width=1.0pt] (1.7,0) -- (2.35,0);
+  \draw[->, okabeblue, line width=1.0pt] (0,1.7) -- (0,2.35);
+  \node[plab] at (0,-2.4) {(3)};
+\end{scope}
+% (4) annulus
+\begin{scope}[xshift=11.1cm]
+  \win
+  \path[pattern=north east lines, pattern color=okabeblue!55, even odd rule]
+       (0,0) circle (2) (0,0) circle (1);
+  \draw[bd] (0,0) circle (1);
+  \draw[bd] (0,0) circle (2);
+  \node[plab] at (0,-2.4) {(4)};
+\end{scope}
+\end{tikzpicture}

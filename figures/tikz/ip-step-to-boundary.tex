@@ -1,0 +1,62 @@
+% The step-to-the-boundary (fraction-to-the-boundary) rule of an interior point method.
+%
+%   figures/tikz/ip-step-to-boundary.tex
+%       -> media/figures/ip-step-to-boundary.{png,svg}
+%
+% Lecture 24 (Barrier and Interior Point Methods), section "Solution of the
+% primal--dual equations", next to the rule
+%   alpha_max = max{ alpha in (0,1] : x^k + alpha d_x^k >= (1 - tau) x^k }
+% (Biegler (6.61a), p. 155; Nocedal & Wright (19.9), p. 567).
+%
+% GEOMETRY (1 unit = 1 cm before scaling), n = 2, all values exact.
+%   x^k = (2, 1.2), d_x^k = (-3, -0.5). The full Newton step lands at
+%   x^k + d_x^k = (-1, 0.7), outside x >= 0 (open circle, dashed segment).
+%   tau = 0.75, chosen FOR VISIBILITY (Ipopt uses tau >= 0.99, which would put the
+%   dashed lines on top of the axes). (1 - tau) x^k = (0.5, 0.3): the dashed lines
+%   x1 = 0.5 and x2 = 0.3 bound the region the rule allows.
+%   Component 1: 2 - 3 alpha >= 0.5  <=>  alpha <= 0.5.
+%   Component 2: 1.2 - 0.5 alpha >= 0.3  <=>  alpha <= 1.8.
+%   alpha_max = min{1, 0.5, 1.8} = 0.5; x^k + 0.5 d_x^k = (0.5, 0.95) (filled dot),
+%   which sits exactly on the dashed line x1 = 0.5. Component 1 limits the step.
+%   The activity beside the figure asks for alpha_max and the limiting component, so
+%   neither is printed here.
+%
+% GREYSCALE: the accepted step is a solid line and the rejected remainder is dashed;
+% the infeasible region (x1 < 0 or x2 < 0) is hatched; every object is labelled.
+\usetikzlibrary{patterns}
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    scale=1.25,
+    >={Latex[length=2.0mm]},
+    font=\small,
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+  ]
+\def\xlo{-1.4}\def\xhi{2.6}\def\ylo{-0.4}\def\yhi{1.75}
+% infeasible region: x1 < 0 or x2 < 0
+\path[pattern=north east lines, pattern color=black!30]
+   (\xlo,\ylo) rectangle (0,\yhi);
+\path[pattern=north east lines, pattern color=black!30]
+   (0,\ylo) rectangle (\xhi,0);
+% axes
+\draw[->, line width=0.6pt] (\xlo,0) -- (\xhi,0) node[lab, anchor=north east, fill=white, inner sep=1pt] {$x_1$};
+\draw[->, line width=0.6pt] (0,\ylo) -- (0,\yhi) node[lab, anchor=north east] {$x_2$};
+% the region the rule allows: x >= (1 - tau) x^k = (0.5, 0.3)
+\draw[dashed, line width=0.7pt] (0.5,0.3) -- (0.5,\yhi);
+\draw[dashed, line width=0.7pt] (0.5,0.3) -- (\xhi,0.3);
+\node[lab, anchor=south west, fill=white, inner sep=1pt] at (0.55,1.42) {$x_1 = (1-\tau)\,x_1^k$};
+\node[lab, anchor=south east, fill=white, inner sep=1pt] at (2.55,0.33) {$x_2 = (1-\tau)\,x_2^k$};
+% rejected remainder of the full step (dashed) and the full-step point (open circle)
+\draw[dashed, line width=0.9pt, okabeblue] (0.5,0.95) -- (-1,0.7);
+\draw[line width=0.6pt, okabeblue, fill=white] (-1,0.7) circle (1.8pt);
+\node[lab, anchor=south, fill=white, inner sep=1pt] at (-1,0.80) {$\mathbf{x}^k + \mathbf{d}_x^k$};
+% accepted step (solid arrow) to x^k + alpha_max d_x^k
+\draw[->, line width=1.1pt, okabeblue] (2,1.2) -- (0.53,0.955);
+\filldraw (0.5,0.95) circle (2.0pt);
+\node[lab, anchor=north west] at (0.56,0.90) {$\mathbf{x}^k + \alpha_{\max}\,\mathbf{d}_x^k$};
+% the iterate
+\filldraw (2,1.2) circle (2.0pt);
+\node[lab, anchor=west] at (2.07,1.2) {$\mathbf{x}^k$};
+% label the hatched region
+\node[lab, fill=white, inner sep=1pt] at (-0.70,0.20) {$\mathbf{x} \not\ge \mathbf{0}$};
+\end{tikzpicture}

@@ -3,7 +3,8 @@ r"""Linear, superlinear and quadratic convergence on one set of axes.
     figures/plots/convergence-rates.py
         ->  media/figures/convergence-rates.{png,pdf}
 
-Lecture 13 (Real Analysis Review), the rates table. Three synthetic error
+Used in Lecture 16 (Quasi-Newton Methods), after the superlinear definition
+(moved there from the Lecture 13 rates table on 2026-10-06). Three synthetic error
 sequences e^k = ||x^k - x*||, all starting at e^0 = 0.5:
 
     linear       e^{k+1} = 0.5 e^k              ratio e^{k+1}/e^k = 0.5 (fixed r)

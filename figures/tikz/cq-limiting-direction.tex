@@ -1,0 +1,66 @@
+% A feasible sequence and its limiting direction.
+%
+%   figures/tikz/cq-limiting-direction.tex
+%       -> media/figures/cq-limiting-direction.{png,svg}
+%
+% Lecture 20 (Constraint Qualifications), section III.A "Feasible sequences and
+% limiting directions", beside Definition 20.2 (Biegler (4.26), p. 74).
+%
+% GEOMETRY (1 unit = 1 cm before scaling), n = 2, xbar = (0,0).
+%   Feasible set S = {x : x2 >= 0.2 x1^2}; the side below the parabola is hatched.
+%   Feasible sequence x^k = (t_k, 0.6 t_k^2) with t_k = 1.8, 1.25, 0.85, 0.55, 0.32
+%   (the path x2 = 0.6 x1^2 lies inside S since 0.6 >= 0.2):
+%       x^1 = (1.80, 1.944)   angle of x^1 - xbar = atan(0.6*1.80) = 47.2 deg
+%       x^2 = (1.25, 0.9375)                       atan(0.75)       = 36.9 deg
+%       x^3 = (0.85, 0.4335)                       atan(0.51)       = 27.0 deg
+%       x^4 = (0.55, 0.1815)                       atan(0.33)       = 18.3 deg
+%       x^5 = (0.32, 0.0614)                       atan(0.192)      = 10.9 deg
+%   (x^k - xbar)/||x^k - xbar|| = (1, 0.6 t_k)/sqrt(1 + 0.36 t_k^2) -> (1, 0) = d as
+%   t_k -> 0. The dashed chords from xbar to x^1..x^4 point along x^k - xbar, at the
+%   angles above; d is the black arrow at angle 0, length 1 (a unit vector).
+%   (A first draft drew the five unit vectors themselves on a unit arc; they crowded
+%   the path near xbar, so the chords carry the same angles instead.)
+%   d is tangent to the path (slope 1.2 t -> 0) and, in this picture, to the
+%   boundary of S (slope 0.4 t -> 0) at xbar.
+%
+% GREYSCALE: black, grey and hatching only. The activity beside the figure asks
+% what the dashed chords do as k grows, so no verdict is printed on the figure.
+\usetikzlibrary{patterns}
+
+\begin{tikzpicture}[
+    scale=1.25,
+    >={Latex[length=2.0mm]},
+    font=\small,
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+  ]
+\begin{scope}
+  \clip (-0.6,-0.55) rectangle (2.3,2.15);
+  % infeasible side: below x2 = 0.2 x1^2, hatched
+  \path[pattern=north east lines, pattern color=black!35]
+     plot[domain=-0.6:2.3, samples=40] (\x, {0.2*\x*\x}) -- (2.3,-0.55) -- (-0.6,-0.55) -- cycle;
+  \draw[black!70, line width=1.0pt] plot[domain=-0.6:2.3, samples=40] (\x, {0.2*\x*\x});
+\end{scope}
+% the path of the sequence, travelled toward xbar
+\draw[black!55, line width=0.6pt] plot[smooth, domain=0:1.85, samples=30] (\x, {0.6*\x*\x});
+\draw[->, black!55, line width=0.6pt] (1.55,1.4415) -- (1.45,1.2615);
+% chords x^k - xbar, which turn toward d as k grows
+\foreach \p in {(1.80,1.944),(1.25,0.9375),(0.85,0.4335),(0.55,0.1815)}
+  \draw[black!50, dashed, line width=0.6pt] (0,0) -- \p;
+% limiting direction d
+\draw[->, line width=1.3pt] (0,0) -- (1,0);
+\node[lab, anchor=north] at (0.85,-0.02) {$\mathbf{d}$};
+% the sequence
+\foreach \p/\n in {(1.80,1.944)/1,(1.25,0.9375)/2,(0.85,0.4335)/3}
+  \node[lab] at \p {$\times$};
+\node[lab] at (0.55,0.1815) {$\times$};
+\node[lab] at (0.32,0.0614) {$\times$};
+\node[lab, anchor=west] at (1.85,1.944) {$\mathbf{x}^1$};
+\node[lab, anchor=west] at (1.30,0.9375) {$\mathbf{x}^2$};
+\node[lab, anchor=north west, inner sep=1pt] at (0.87,0.43) {$\mathbf{x}^3$};
+% xbar
+\filldraw (0,0) circle (1.6pt);
+\node[lab, anchor=east] at (-0.05,0.05) {$\bar{\mathbf{x}}$};
+% region labels
+\node[lab, anchor=west] at (-0.55,1.85) {feasible set $S$};
+\node[lab, anchor=south east, fill=white, inner sep=1pt] at (2.25,-0.5) {infeasible};
+\end{tikzpicture}

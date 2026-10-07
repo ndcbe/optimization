@@ -1,0 +1,57 @@
+% The Lagrange (state) basis on one finite element, drawn.
+%
+%   figures/tikz/collocation-lagrange-basis.tex
+%       -> media/figures/collocation-lagrange-basis.{png,svg}
+%
+% Lecture 7 (Collocation for Dynamic Optimization), Sec. II.B, Eqs. (10.4) of
+% Biegler p. 289: ell_j(tau) = prod_{k != j} (tau - tau_k)/(tau_j - tau_k).
+% Added 2026-10-07 by the format pass: the Lagrange basis had no picture, and the
+% activity right after it proves ell_j(tau_k) = delta_jk.
+%
+% NODES: K = 3 Radau, tau_0 = 0 plus the three collocation points
+% tau = 0.155051, 0.644949, 1 (Biegler Table 10.1, p. 292). The leading factors
+% 1 / prod_{k != j}(tau_j - tau_k), computed in Python on 2026-10-07:
+%   ell_0: -10.0000   ell_1: 15.5808   ell_2: -8.91411   ell_3: 3.33333
+% Ranges on [0,1] (numpy, 1001 points): ell_0 [-0.374, 1], ell_1 [-0.408, 1.154],
+% ell_2 [-0.050, 1.020], ell_3 [-0.086, 1]. ell_1 overshoots 1 between nodes.
+%
+% GREYSCALE: the four curves differ by line style (solid, dashed, dotted,
+% dash-dot) and each carries its own label; colour is extra.
+\definecolor{okabeblue}{HTML}{0072B2}
+\definecolor{okabeverm}{HTML}{D55E00}
+\definecolor{okabegreen}{HTML}{009E73}
+
+\begin{tikzpicture}[
+    x=9.0cm, y=3.0cm,
+    >={Latex[length=2.0mm]},
+    font=\small,
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+  ]
+  \def\ta{0.155051}
+  \def\tb{0.644949}
+  % axes
+  \draw[->, black!55] (-0.03,0) -- (1.08,0) node[right, lab] {$\tau$};
+  \draw[->, black!55] (0,-0.5) -- (0,1.35);
+  \draw[black!35, dashed] (0,1) -- (1.02,1);
+  \node[lab, anchor=east] at (0,1) {$1$};
+  \node[lab, anchor=east] at (0,0) {$0$};
+  % node lines
+  \foreach \t/\n/\v in {0/0/0, \ta/1/0.155, \tb/2/0.645, 1/3/1} {
+    \draw[black!40, densely dotted] (\t,-0.5) -- (\t,1.25);
+    \node[lab, anchor=north] at (\t,-0.5) {$\tau_{\n} = \v$};
+  }
+  % the four basis polynomials
+  \draw[very thick, black, domain=0:1, samples=80, smooth, variable=\x]
+    plot ({\x},{-10.0*(\x-\ta)*(\x-\tb)*(\x-1)});
+  \draw[very thick, okabeblue, dashed, domain=0:1, samples=80, smooth, variable=\x]
+    plot ({\x},{15.5808*\x*(\x-\tb)*(\x-1)});
+  \draw[very thick, okabeverm, densely dotted, domain=0:1, samples=80, smooth, variable=\x]
+    plot ({\x},{-8.91411*\x*(\x-\ta)*(\x-1)});
+  \draw[very thick, okabegreen, dash dot, domain=0:1, samples=80, smooth, variable=\x]
+    plot ({\x},{3.33333*\x*(\x-\ta)*(\x-\tb)});
+  % labels next to each curve
+  \node[lab, anchor=west] at (0.015,1.12) {$\ell_0$ (solid)};
+  \node[lab, anchor=south, okabeblue] at (0.28,1.17) {$\ell_1$ (dashed)};
+  \node[lab, anchor=south, okabeverm] at (0.56,1.05) {$\ell_2$ (dotted)};
+  \node[lab, anchor=west, okabegreen] at (1.01,1.12) {$\ell_3$ (dash-dot)};
+\end{tikzpicture}

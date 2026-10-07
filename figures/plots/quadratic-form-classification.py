@@ -140,7 +140,7 @@ def make_figure():
         # solid and named as such rather than as a bare eigenvector.
         _eigenvector_line(ax, 0, r"$\mathbf{v}_1$", (0, (6, 4)))
         if degenerate:
-            _eigenvector_line(ax, 1, r"$\mathbf{v}_2$: $f$ is flat", "-")
+            _eigenvector_line(ax, 1, r"$\mathbf{v}_2$", "-")
         else:
             _eigenvector_line(ax, 1, r"$\mathbf{v}_2$", (0, (1.5, 2.5)))
 

@@ -1,0 +1,78 @@
+% The big-M switch x_r <= M y_r and its LP relaxation, for two values of M.
+%
+%   figures/tikz/ip-bigm-relaxation.tex
+%       -> media/figures/ip-bigm-relaxation.{png,svg}
+%
+% Lecture 3 (Integer Programming), section III "Reactor selection: the MILP",
+% subsection "Logical constraints", read by the activity "What happens if we
+% choose M = 20,000? Is the model still correct?" (panels (1)-(2)).
+%
+% The (x_r, y_r) plane with x_r >= 0, for one reactor r of eq:bigM.
+%   Integer-feasible set: y_r = 0 forces x_r = 0 (the point (0,0)), and
+%   y_r = 1 allows 0 <= x_r <= M (a segment on the line y_r = 1).
+%   LP relaxation (y_r in [0,1]): the region 0 <= x_r <= M y_r, 0 <= y_r <= 1,
+%   i.e. the triangle (0,0), (M,1), (0,1).
+% SCALE: x_r in [0, 25] kmol/hr at 0.22 cm per unit (5.5 cm); y_r in [0, 1] at 2.4 cm.
+% PANEL (1), M = 20: triangle vertices (0,0), (20,1), (0,1) -> (0,0), (4.4,2.4), (0,2.4) cm.
+% PANEL (2), M = 20,000: the lower edge y_r = x_r/M rises to 25/20000 = 0.00125
+%   at x_r = 25, i.e. 0.003 cm: drawn on the axis. Inside the window the relaxation
+%   is the whole box except that sliver; the segment y_r = 1 runs off the window
+%   (it ends at x_r = 20,000).
+% The dashed line x_r = 12.5 is the flow of the optimal design. Where it meets the
+%   lower edge (y_r = 0.625 in (1), 6.25e-4 in (2)) is the activity's answer, so the
+%   figure does NOT mark or label that point.
+% GREYSCALE: the relaxation is hatched, the integer-feasible set is thick black
+% (dot and segment), the lower edge is a thin solid line and x_r = 12.5 is dashed.
+% No distinction relies on colour; the one colour (blue hatch) is labelled.
+\usetikzlibrary{patterns}
+\definecolor{okabeblue}{HTML}{0072B2}
+
+\begin{tikzpicture}[
+    >={Latex[length=2.0mm]},
+    font=\small,
+    xs/.style={x=0.22cm, y=2.4cm},
+    pt/.style={fill=black, draw=black, circle, inner sep=0pt, minimum size=4.2pt},
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+    panelcap/.style={font=\small, anchor=north},
+  ]
+% ---------------------------------------------------------------- panel (1)
+\begin{scope}[xs]
+  \path[pattern=north east lines, pattern color=okabeblue!60] (0,0) -- (20,1) -- (0,1) -- cycle;
+  \draw[->, black!70] (0,0) -- (27,0) node[right, lab] {$x_r$};
+  \draw[->, black!70] (0,0) -- (0,1.25) node[above, lab] {$y_r$};
+  \draw (0,1) -- ++(-0.5,0) node[left, lab] {$1$};
+  \node[left, lab] at (-0.3,0) {$0$};
+  \draw (20,0) -- ++(0,-0.04) node[below, lab] {$M = 20$};
+  \draw[thin] (0,0) -- (20,1);
+  \node[lab, rotate=28.6, anchor=north] at (6.5,0.31) {$x_r = M y_r$};
+  \draw[dashed, thick] (12.5,0) -- (12.5,1.08) node[above, lab] {$x_r = 12.5$};
+  \draw[line width=2.4pt] (0,1) -- (20,1);
+  \node[pt] at (0,0) {};
+  \node[lab, fill=white, inner sep=1pt] at (5.2,0.80) {LP relaxation};
+  \node[panelcap] at (12.5,-0.32) {(1) $M = 20$};
+\end{scope}
+% ---------------------------------------------------------------- panel (2)
+\begin{scope}[xs, xshift=7.6cm]
+  \path[pattern=north east lines, pattern color=okabeblue!60] (0,0) -- (25,0) -- (25,1) -- (0,1) -- cycle;
+  \draw[->, black!70] (0,0) -- (27,0) node[right, lab] {$x_r$};
+  \draw[->, black!70] (0,0) -- (0,1.25) node[above, lab] {$y_r$};
+  \draw (0,1) -- ++(-0.5,0) node[left, lab] {$1$};
+  \node[left, lab] at (-0.3,0) {$0$};
+  \draw[dashed, thick] (12.5,0) -- (12.5,1.08) node[above, lab] {$x_r = 12.5$};
+  \draw[line width=2.4pt, ->] (0,1) -- (26.5,1);
+  \node[lab, anchor=south east] at (26.5,1.0) {to $M = 20{,}000$};
+  \node[pt] at (0,0) {};
+  \node[lab, fill=white, inner sep=1pt] at (5.2,0.55) {LP relaxation};
+  \node[lab, anchor=north west, align=left] at (14.0,-0.04) {$x_r = M y_r$ lies\\[-2pt]on the axis};
+  \node[panelcap] at (12.5,-0.32) {(2) $M = 20{,}000$};
+\end{scope}
+% ---------------------------------------------------------------- legend
+\begin{scope}[yshift=-1.55cm]
+  \draw[line width=2.4pt] (0.5,0) -- (1.3,0);
+  \node[pt] at (1.6,0) {};
+  \node[lab, anchor=west] at (1.8,0) {integer feasible ($y_r \in \{0,1\}$)};
+  \path[pattern=north east lines, pattern color=okabeblue!60] (7.6,-0.12) rectangle (8.4,0.12);
+  \draw[black!50] (7.6,-0.12) rectangle (8.4,0.12);
+  \node[lab, anchor=west] at (8.5,0) {LP relaxation ($0 \le y_r \le 1$)};
+\end{scope}
+\end{tikzpicture}

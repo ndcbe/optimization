@@ -11,7 +11,7 @@ def assignment_growth():
     ax.semilogy(t, 2.0**t, color='black', linestyle='-', label=r'$2^t$ bit assignments')
     selected = np.array([10, 20, 25, 30, 35])
     ax.semilogy(selected, 2.0**selected, 's', color='#0072B2', markersize=6)
-    ax.set(xlabel='number of binary variables', ylabel='assignments before constraints',
+    ax.set(xlabel='number of binary variables', ylabel='bit assignments',
            xlim=(0, 40), ylim=(.8, 2e12))
     ax.legend(loc='upper left', fontsize=11)
     fig.tight_layout()
@@ -139,10 +139,10 @@ def surrogate_proof():
     """A domain correction yields a valid reduced cut without exact stationarity."""
     fig, ax = plt.subplots(figsize=(7.6, 2.05))
     ax.axis('off')
-    labels = [r'$C\geq L(x,y;u)$'+'\nfeasible rows,\n'+r'$u\geq0$',
-              'convex tangent\n'+r'$L\geq q(y)+a^T(x-x^k)$',
-              'minimize over X\n'+r'$\delta=\min_X a^T(x-x^k)$',
-              r'$C\geq q(y)+\delta$'+'\nvalid reduced\nobjective cut']
+    labels = [r'$C\geq L(\mathbf{x},\mathbf{y};\mathbf{u})$'+'\nfeasible rows,\n'+r'$\mathbf{u}\geq0$',
+              'convex tangent\n'+r'$L\geq q(\mathbf{y})+\mathbf{a}^{\mathsf{T}}(\mathbf{x}-\mathbf{x}^k)$',
+              'minimize over X\n'+r'$\delta=\min_X\mathbf{a}^{\mathsf{T}}(\mathbf{x}-\mathbf{x}^k)$',
+              r'$C\geq q(\mathbf{y})+\delta$'+'\nvalid reduced\nobjective cut']
     for i,label in enumerate(labels):
         left=.015+.25*i
         ax.add_patch(Rectangle((left,.18),.215,.65,facecolor='#E9F2F7',edgecolor='black'))

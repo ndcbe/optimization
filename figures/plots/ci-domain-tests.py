@@ -7,6 +7,7 @@ from matplotlib.patches import Circle, Rectangle
 def make_figure():
     fig,axs=plt.subplots(1,2,figsize=(7.4,3),layout="constrained")
     x=np.linspace(-.7,1.5,250);axs[0].plot(x,(x*x-1)**2,color="black",linewidth=2)
+    axs[0].plot([-.7,.7],[.2601,.2601],color="#0072B2",linestyle="--",linewidth=1.4,marker="o",ms=4)
     axs[0].set(xlim=(-.8,1.6),ylim=(-.75,1.65),title=r"(a) $(x^2-1)^2$")
     axs[0].plot([-.7,1.5],[-.12,-.12],color="#0072B2",linestyle="--",linewidth=2)
     axs[0].text(.32,-.29,"(i)",fontsize=11)

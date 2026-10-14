@@ -34,7 +34,7 @@ safeguard, and it terminates after three steps. Traced:
           the rank-one update therefore SUBTRACTS curvature, and
           eig(B) becomes (-642, +6)   <- B is now indefinite
     k=3:  grad f^T p = +0.26 > 0      <- the step is an ASCENT direction
-          and a line search on an ascent direction has nothing to find.
+          and this descent-based routine rejects the direction before searching.
 
 That is exactly Nocedal & Wright's account, printed p. 144: SR1 "does not
 guarantee that the updated matrix maintains positive definiteness," and printed

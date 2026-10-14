@@ -44,9 +44,9 @@ picture shows the clean case.
 
 VERIFIED (recomputed by this script every time it runs; see _report())
 ---------------------------------------------------------------------
-  |Y p_Y|    = 0.2482       orthogonal normal step
+  |Y p_Y|    = 0.2483       orthogonal normal step
   |Y^c p_Yc| = 0.4535       coordinate normal step, x1 basic  -- 1.83x LONGER
-  |Z p_Z|    = 0.4970       tangential step
+  |Z p_Z|    = 0.4967       tangential step
   ratio      = ||A|| / |A_1| = 2.5573 / 1.40 = 1.8266, exactly, because with
                Y^c = [1, 0]^T (5.24) gives p_Yc = -h/A_1 while p_Y = -h/||A||.
 

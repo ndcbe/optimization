@@ -25,12 +25,12 @@
     font=\small,
     lab/.style={font=\footnotesize, inner sep=1.5pt},
   ]
-  \draw[black!40, ->] (-0.55,0) -- (2.5,0) node[right, lab] {$x$};
-  \draw[black!40, ->] (-0.55,0) -- (-0.55,1.95);
+  \draw[black, ->] (-0.55,0) -- (2.5,0) node[right, lab] {$x$};
+  \draw[black, ->] (-0.55,0) -- (-0.55,1.95) node[above,lab] {$f'(x)$};
   % f'(x) = 0.3 x^2 + 0.2
   \draw[okabeblue, line width=1.2pt, domain=0:2.3, samples=60, variable=\t]
     plot ({\t},{0.3*\t*\t+0.2});
-  \node[lab, okabeblue, anchor=south east] at (2.28,1.80) {$f'(x)$};
+
   % secant through the two points
   \draw[thick] (0.3,0.074) -- (2.3,1.634);
   % tangent at x^{k+1}
@@ -48,7 +48,11 @@
   \node[lab, below] at (0.6,0) {$x^{k}$};
   \node[lab, below] at (2.0,0) {$x^{k+1}$};
   % line labels
-  \node[lab, anchor=south east, align=right] at (0.85,0.56) {secant (solid), slope\\$B^{k+1} = y/s$};
-  \draw[black!60] (1.25,1.45) -- (1.7,1.04);
-  \node[lab, anchor=south, align=center] at (0.95,1.45) {tangent (dashed), slope\\$f''(x^{k+1})$};
+  % Curve-free legend: the diagram itself shows the displacement legs.
+  \draw[okabeblue,line width=1.2pt] (0,2.35)--(.2,2.35);
+  \node[lab,anchor=west] at (.25,2.35) {$f'(x)$};
+  \draw[thick] (0,2.08)--(.2,2.08);
+  \node[lab,anchor=west] at (.25,2.08) {secant: slope $B^{k+1}=y/s$};
+  \draw[thick,dashed] (1.22,2.35)--(1.42,2.35);
+  \node[lab,anchor=west] at (1.47,2.35) {tangent: slope $f''(x^{k+1})$};
 \end{tikzpicture}

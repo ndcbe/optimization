@@ -7,7 +7,7 @@ def arrow(ax,start,end,label,offset=(0,0),color='black'):
     end=np.asarray(end);ax.text(*(end+offset),label,fontsize=11,color=color)
 
 def axes(ax,lim=(-2,3),ylim=(-2,3)):
-    ax.axhline(0,color='0.7',linewidth=.7);ax.axvline(0,color='0.7',linewidth=.7)
+    ax.axhline(0,color='black',linewidth=.7);ax.axvline(0,color='black',linewidth=.7)
     ax.set(xlim=lim,ylim=ylim,aspect='equal');ax.tick_params(labelsize=10)
 
 def make_figure():

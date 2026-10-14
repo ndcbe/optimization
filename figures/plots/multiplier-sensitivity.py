@@ -18,8 +18,8 @@ the perturbation, and a straight line of slope u* through it.
 
   * the multiplier IS the slope at eps = 0, in both panels;
   * "only a linearization" is the gap between the curve and the line;
-  * "loses meaning when the active set changes" is the kink at eps = -1/2 in
-    the left panel, past which the tangent predicts a NEGATIVE objective while
+  * "loses meaning when the active set changes" is the active-set transition at eps = -1/2 in
+    the left panel, past which the old tangent predicts a NEGATIVE objective while
     the truth is flat at zero;
   * and the asymmetry the handout points out in the weak case -- "the one-sided
     behaviour is invisible to a single number" -- is the right panel, where one
@@ -51,7 +51,7 @@ independent numerical solution that happens to agree with it.
 
     left  V(0) = 0.250000, V'(0+) = V'(0-) = 1.000000 = u*_L     matches p. 74
     right V(0) = 0.000000, V'(0+) = V'(0-) = 0.000000 = u*_L     matches p. 74
-    left  kink at eps = -0.5, where the active set changes; the tangent there
+    left  transition at eps = -0.5, where the active set changes; the tangent there
           predicts -0.25 and the truth is 0.
     right at eps = 0.15 the tangent predicts 0 and the truth is 0.0225 = eps^2.
 
@@ -67,14 +67,14 @@ and the LINEARIZATION the multiplier predicts. So they get the two hues.
     V(eps), the value function   #0072B2 blue   (L* = 46.0)  solid,  lw 3.2
     tangent, slope u*            #E69F00 orange (L* = 70.6)  dashed, lw 2.2
     (0, V(0))                    open circle, blue edge
-    the kink at eps = -1/2       filled black square
+    the active-set transition at eps = -1/2       filled black square
 
 dL* = 24.6 between the two, and each additionally keeps its linestyle (solid vs
 dashed) and its own weight (3.2 vs 2.2 pt), so the pair survives a photocopier
 three separate ways. The tangent is the lighter hue and therefore got 0.6 pt
 heavier than it was, so it does not read fainter in print than the grey axis
-guides it crosses. The kink marker stays black: it is the one point where the
-multiplier's prediction stops meaning anything, and black is the strongest ink
+guides it crosses. The transition marker stays black: it is the one point where the
+multiplier's prediction is no longer a reliable finite-change prediction, and black is the strongest ink
 available for it. Both panels share axes limits, so the difference in slope
 between them is a real visual comparison and not a scale artefact.
 """

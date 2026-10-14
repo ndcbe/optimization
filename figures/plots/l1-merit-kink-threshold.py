@@ -24,23 +24,21 @@ side of the kink.
     D+ = d phi_1 / dc |_{c -> 1+} = -2 + 4 rho
     D- = d phi_1 / dc |_{c -> 1-} = -2 - 4 rho     (negative for every rho > 0)
 
-so c = 1 is a strict local minimiser once rho > 1/2 = |v*|. That is Biegler's
-threshold, verified against the book: the bullet on printed p. 111 reads "for
-rho > rho* = ||v*||_q and 1/p + 1/q = 1, x* is a strict local minimizer for
-phi_p(x, rho)". For p = 1 the dual index is q = infinity and rho* = max_i
-|v*_i|. The condition is STRICT and the figure does not claim more: at
-rho = rho* exactly, D+ = 0 and the minimum is degenerate rather than
-first-order strict -- 400,000 sampled 2-D neighbours at rho = 0.5 put the
-smallest excess at +5e-14, i.e. flat to within round-off. Nocedal & Wright
-state the same threshold as mu* = max{|lambda*_i|} on p. 435 -- with absolute
-values, which is why their opposite sign convention (L = f - lambda^T c) does
-not matter here.
+so c = 1 is a strict local minimiser for rho > 1/2. The general strict
+exactness theorem also needs SOSC; a multiplier threshold alone cannot supply
+strictness along a flat feasible direction. The theorem's strict inequality is
+sufficient, not necessary. Here rho=1/2 is also a strict global minimum:
+phi(c)+2=(c-1)^2 for c>=1 and (1-c)(c+3) for 0<=c<1. Its zero right derivative
+is first-order flatness, not a flat set of minima. Cauchy's inequality extends
+the radial comparison to every point in the plane, with equality only on the
+negative diagonal. See the native Constrained-Globalization reference.
 
 What the two panels are for
 ---------------------------
 LEFT is the mechanism: a kink whose two one-sided slopes disagree is what pins
 the minimiser onto the constraint. A SMOOTH penalty has no kink to hold it
-there, which is Biegler (5.56), p. 110 -- no smooth penalty is exact.
+there, which is Biegler (5.56), p. 110 -- a smooth residual-only penalty cannot be exact when the feasible objective
+gradient is nonzero. Zero-gradient exceptions exist, e.g. f=x^2, h=x.
 
 RIGHT is the threshold itself, and it is the panel that makes eq:cg-threshold a
 picture rather than a formula: D+ is a straight line in rho crossing zero at
@@ -48,12 +46,8 @@ exactly |v*| = 1/2, and D- never crosses at all.
 
 Deliberate departures
 ---------------------
-1. The radial slice is a 1-D slice of a 2-D problem, so the left panel proves
-   less than the lecture claims. It was checked separately, by sampling 200,000
-   random neighbours of x* in the plane: the fraction with lower phi_1 is
-   ~0.47-0.50 for rho < 1/2 and EXACTLY ZERO for rho > 1/2. So the 2-D claim
-   holds; the slice is an honest illustration of it, not a proof. The self-check
-   below re-runs a smaller version of that sampling.
+1. The radial slice illustrates the all-direction Cauchy argument in the
+   reference. Sampling is a visual sanity check, not an exactness proof.
 2. rho = 1/2 exactly is drawn, not just values either side. The boundary case
    (D+ = 0, flat to first order) is the one students ask about.
 """

@@ -130,8 +130,8 @@ def _panel(ax, lower0, mult, title, kink=None):
     v = curve(lower0, eps)
     v0 = value(0.0, lower0)
 
-    ax.axhline(0.0, color="0.7", lw=0.9, zorder=0)
-    ax.axvline(0.0, color="0.7", lw=0.9, zorder=0)
+    ax.axhline(0.0, color="black", lw=0.9, zorder=0)
+    ax.axvline(0.0, color="black", lw=0.9, zorder=0)
 
     # The tangent the multiplier predicts: V(0) + u* eps.
     ax.plot(eps, v0 + mult * eps, color=TANGENT, lw=2.2, ls="--", zorder=3)

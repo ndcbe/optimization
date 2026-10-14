@@ -13,4 +13,7 @@ def make_figure():
     ax.annotate(r"$x^*=1$",xy=(1,f(1)),xytext=(.8,.8),arrowprops=dict(arrowstyle='->'),fontsize=12)
     ax.annotate(r"$x=-1$",xy=(-1,f(-1)),xytext=(-1.5,.5),arrowprops=dict(arrowstyle='->'),fontsize=12)
     ax.set(xlim=(-1.65,1.65),ylim=(-.6,2.9),xlabel="decision x",ylabel="objective f(x)")
+    for ax in [ax]:
+        ax.axhline(0,color="black",lw=.7,zorder=0)
+        ax.axvline(0,color="black",lw=.7,zorder=0)
     return fig

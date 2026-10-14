@@ -11,4 +11,7 @@ def make_figure():
         star=max(a,0);ax.plot(star,(star-a)**2,'o',color="#0072B2",ms=6)
         ax.set(xlim=(-1.4,1.9),ylim=(-.15,4.4),xlabel="x",title=rf"$f=(x-({a}))^2$")
     axs[0].set_ylabel("f(x)")
+    for ax in axs:
+        ax.axhline(0,color="black",lw=.7,zorder=0)
+        ax.axvline(0,color="black",lw=.7,zorder=0)
     return fig

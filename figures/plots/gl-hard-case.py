@@ -28,7 +28,9 @@ def make_figure():
         axs[1].annotate('',xy=p,xytext=base,arrowprops=dict(arrowstyle='->',color='#D55E00',linewidth=2))
         axs[1].plot(*p,'D',color='#D55E00',ms=6)
     axs[1].annotate(r'$\widehat{\mathbf{p}}$',xy=base,xytext=(.2,.12),arrowprops=dict(arrowstyle='->'),fontsize=11)
-    axs[1].text(-1.12,-.93,r'add $\pm\sqrt{8/9}\,\mathbf{e}_1$',fontsize=11,bbox=dict(facecolor='white',edgecolor='none',alpha=.85))
+    axs[1].text(-1.12,-.93,r'add a null-space component',fontsize=11,bbox=dict(facecolor='white',edgecolor='none',alpha=.85))
+    axs[1].axhline(0,color='black',linestyle='-',linewidth=.7)
+    axs[1].axvline(0,color='black',linestyle='-',linewidth=.7)
     axs[1].set(xlim=(-1.2,1.2),ylim=(-1.2,1.2),aspect='equal',xlabel='$p_1$',ylabel='$p_2$')
     axs[1].set_title('Add negative curvature',fontsize=11)
     return fig

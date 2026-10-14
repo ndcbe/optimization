@@ -16,6 +16,8 @@ def make_figure():
     z=2*x+6*y+.5*x*x+5*y*y
     t=np.linspace(0,2*np.pi,200)
     for ax in axs:
+        ax.axhline(0,color='black',linestyle='-',linewidth=.7)
+        ax.axvline(0,color='black',linestyle='-',linewidth=.7)
         ax.contour(x,y,z,levels=[-3.5,-3,-2,-1,0,1],colors='0.65',linewidths=.7)
         ax.plot(0,0,'ko',ms=4);ax.plot(*pN,'ks',ms=5)
         ax.text(pN[0]-.25,pN[1]-.3,r'$\mathbf{p}^N$',fontsize=11)
@@ -24,7 +26,7 @@ def make_figure():
     axs[0].plot(*pL,'o',color='#0072B2',ms=7)
     axs[0].text(pL[0]+.08,pL[1]+.15,r'$\alpha\mathbf{p}^N$',fontsize=11)
     axs[0].set_title('Line search: one fixed ray',fontsize=12)
-    axs[1].fill(D*np.cos(t),D*np.sin(t),facecolor='#56B4E9',alpha=.12)
+    axs[1].fill(D*np.cos(t),D*np.sin(t),facecolor='#56B4E9',alpha=.12,hatch='//')
     axs[1].plot(D*np.cos(t),D*np.sin(t),color='0.35',linestyle='--',linewidth=1.2)
     axs[1].plot(*pT,'D',color='#D55E00',ms=7)
     axs[1].annotate(r'$\mathbf{p}^{TR}$',xy=pT,xytext=(-.75,-1.15),arrowprops=dict(arrowstyle='->'),fontsize=11)

@@ -16,8 +16,8 @@ def make_figure():
     for ax in axs:
         ax.axhline(0,color='black',linewidth=.8);ax.set(xlim=(-.25,8.25),ylim=(-2,2.55),xlabel='iteration $k$',ylabel='$x^k$')
         ax.set_xticks([0,2,4,6,8])
-    axs[0].set_title('Long steps: two limit points',fontsize=12)
-    axs[1].set_title('Short steps: summable movement',fontsize=12)
+    axs[0].set_title('Alternating iterates',fontsize=12)
+    axs[1].set_title('Positive iterates',fontsize=12)
     axs[0].text(.3,2.2,r'$x^k=(-1)^k(1+2^{-k})$',fontsize=11)
     axs[1].text(.3,2.2,r'$x^k=1+2^{-k}$',fontsize=11)
     return fig

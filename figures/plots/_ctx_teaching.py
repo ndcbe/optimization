@@ -38,7 +38,7 @@ def evidence_map():
 def conditioning_bound():
     fig,ax=plt.subplots(figsize=(7.6,2.6));ax.axis('off');ax.set(xlim=(0,1),ylim=(0,1))
     box(ax,.02,.48,.28,.30,'relative RHS change\n'+r'$10^{-16}$')
-    box(ax,.37,.48,.25,.30,r'$\kappa(A)=10^{10}$'+'\nworst-case factor')
+    box(ax,.37,.48,.25,.30,r'$\kappa(\mathbf{A})=10^{10}$'+'\nworst-case factor')
     box(ax,.70,.48,.28,.30,'relative solution error\n'+r'bound $10^{-6}$')
     arrow(ax,(.30,.63),(.37,.63));arrow(ax,(.62,.63),(.70,.63))
     ax.text(.5,.26,'Same induced norm; fixed nonsingular matrix; RHS perturbation.',ha='center',fontsize=11)

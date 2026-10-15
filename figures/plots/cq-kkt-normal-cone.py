@@ -12,4 +12,5 @@ def make_figure():
         ax.annotate('',xy=v,xytext=(0,0),arrowprops=dict(arrowstyle='->',color=col,lw=3))
         ax.text(v[0]+off[0],v[1]+off[1],label,fontsize=11)
     ax.set(xlim=(-1.6,2.7),ylim=(-1.7,1.9),xlabel='$x_1$',ylabel='$x_2$');ax.set_aspect('equal')
+    ax.axhline(0,color='black',lw=.7);ax.axvline(0,color='black',lw=.7)
     ax.text(1,.25,r'$S:\ x_1,x_2\geq0$',fontsize=12);fig.tight_layout();return fig

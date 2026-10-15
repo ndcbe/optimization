@@ -17,5 +17,6 @@ def make_figure():
     ax=axes[1];u=np.linspace(0,1,100);ax.plot(u,(1-u)/2,color='#0072B2',ls='-')
     ax.scatter([0,1],[.5,0],color='black',marker='o',s=40,zorder=4)
     ax.set(xlim=(-.1,1.1),ylim=(-.05,.65),xlabel='$u_1$',ylabel='$u_2$')
+    ax.axhline(0,color='black',lw=.7);ax.axvline(0,color='black',lw=.7)
     ax.set_title(r'$u_1+2u_2=1,\quad u_1,u_2\geq0$',fontsize=11)
     fig.tight_layout();return fig

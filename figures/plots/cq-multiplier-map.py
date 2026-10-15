@@ -11,7 +11,7 @@ def make_figure():
         ax.set_axis_off();ax.set_title(title,fontsize=12)
         # Mathtext has no smallmatrix environment; draw the matrix entries as text.
         mat = '$I_2$' if title.startswith('Independent') else '[[1, 1], [0, 0]]'
-        ax.text(.5,.77,r'$J_{\mathcal{A}}^T=$ '+mat,ha='center',fontsize=13,transform=ax.transAxes)
+        ax.text(.5,.77,r'$\mathbf{J}_{\mathcal{A}}^T=$ '+mat,ha='center',fontsize=13,transform=ax.transAxes)
         ax.text(.12,.42,r'$\boldsymbol{\lambda}$',ha='center',fontsize=17,transform=ax.transAxes)
         ax.annotate('',xy=(.65,.46),xytext=(.28,.46),xycoords='axes fraction',arrowprops=dict(arrowstyle='->',lw=2,color='#0072B2'))
         ax.text(.84,.42,r'$-\nabla f$',ha='center',fontsize=15,transform=ax.transAxes)

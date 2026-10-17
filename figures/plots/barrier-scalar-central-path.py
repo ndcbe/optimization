@@ -57,7 +57,7 @@ YLO, YHI = 0.0, 0.52
 #   (x, y) with an arrow drawn back to the minimum.
 LABEL_PLACEMENT = (
     ("at", 0.012, 0.028),
-    ("at", 0.012, 0.028),
+    ("lead", 0.17, 0.315),
     ("lead", 0.058, 0.070),
     ("lead", 0.058, 0.018),
 )
@@ -123,17 +123,13 @@ def make_figure():
     )
     ax.plot([0.0], [0.0], marker="*", markersize=17, color="black",
             linestyle="none", zorder=7, clip_on=False)
-    ax.annotate(
-        r"$x^{*} = 0$",
-        xy=(0.001, 0.004), xytext=(0.020, 0.118),
-        fontsize=12.5, ha="left", va="center", zorder=7,
-        arrowprops=dict(arrowstyle="-|>", color="black", linewidth=1.5,
-                        shrinkA=2, shrinkB=4),
-        bbox=dict(facecolor="white", edgecolor="none", pad=1.0),
-    )
+    from matplotlib.lines import Line2D
+    ax.legend(handles=[Line2D([], [], marker="*", markersize=11, color="black",
+                              linestyle="none", label=r"original $x^*=0$")],
+              loc="upper right", fontsize=11)
     # No leader: the text sits immediately to the LEFT of the dotted path in
     # the empty band between the mu = 0.05 and mu = 0.1 curves, which reads as
-    # labelling it. A leader here would land its head next to the x* leader's.
+    # labelling it without another crossing leader.
     ax.annotate(
         r"$x(\mu) = \mu$",
         xy=(0.012, 0.298),

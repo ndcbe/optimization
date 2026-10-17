@@ -1,0 +1,26 @@
+% Left phi(s)=s^2 on[0,2], secant slope2 equals tangent slope at xi=1.
+% Right h(z,t)=z^2+t-1=0, two branches, locally unique near(t,z)=(0,1).
+\begin{tikzpicture}[font=\small,>={Latex[length=2mm]}]
+ \begin{scope}[x=1.55cm,y=.7cm]
+  \draw[->,black] (-.2,0)--(2.4,0) node[right] {$s$};
+  \draw[->,black] (0,-1)--(0,4.8) node[left] {$\phi$};
+  \draw[thick,domain=0:2.05,samples=40] plot(\x,{\x*\x});
+  \draw[dashed,thick] (0,0)--(2,4);
+  \draw[blue!70!black,thick,domain=.1:2.05] plot(\x,{2*\x-1});
+  \fill (1,1) circle(1.4pt);\draw[dotted] (1,0)--(1,1);
+  \node[below] at (1,0) {$\xi$};\node[above left] at (1,1) {parallel};
+  \node at (1,5.2) {mean value theorem};
+  \node[align=center] at (1,-2) {$\phi(s)=s^2$\\secant and tangent have equal slope};
+ \end{scope}
+ \begin{scope}[xshift=8cm,x=1.6cm,y=1.6cm]
+  \draw[->,black] (-.6,0)--(1.65,0) node[right] {$t$};
+  \draw[->,black] (0,-1.4)--(0,1.5) node[above] {$z$};
+  \draw[blue!70!black,thick,domain=-.4:.999,samples=80] plot(\x,{sqrt(1-\x)});
+  \draw[dashed,thick,domain=-.4:.999,samples=80] plot(\x,{-sqrt(1-\x)});
+  \draw[dotted,thick] (0,1) circle(.25);
+  \fill (0,1) circle(1.4pt);\node[anchor=west] at (.3,1.2) {local branch};
+  \fill (1,0) circle(1.4pt) node[below right] {$(1,0)$};
+  \node at (.4,2.25) {implicit function theorem};
+  \node[align=center] at (.4,-1.95) {$h(z,t)=z^2+t-1=0$\\uniqueness is local near $(0,1)$};
+ \end{scope}
+\end{tikzpicture}

@@ -1,0 +1,19 @@
+% phi=.8 x^2, xa=-1.5,xb=1,theta=.5,xc=-.25.
+% Tangent at xc is T(x)=-.4x-.05; weighted endpoint displacements cancel.
+\begin{tikzpicture}[font=\small,>={Latex[length=2mm]},x=1.5cm,y=1.1cm]
+ \draw[->,black] (-2,0)--(1.7,0) node[right] {$x$};
+ \draw[->,black] (0,-.75)--(0,2.6) node[above] {$\phi$};
+ \draw[thick,domain=-1.7:1.5,samples=50] plot(\x,{.8*\x*\x});
+ \draw[blue!70!black,dashed,thick,domain=-1.8:1.5] plot(\x,{-.4*\x-.05});
+ \draw[dash dot] (-1.5,1.8)--(1,.8);
+ \foreach \x/\y/\n in {-1.5/1.8/a,1/.8/b,-.25/.05/c}{
+  \fill (\x,\y) circle(1.3pt);\draw[dotted] (\x,-.05)--(\x,\y);\node[below] at (\x,-.05) {$x_\n$};}
+ \draw[dotted] (-1.5,.55)--(-1.5,1.8) (1,-.45)--(1,.8);
+ \draw[->,thick] (-.25,-1.1)--(-.875,-1.1);
+ \draw[->,thick] (-.25,-1.1)--(.375,-1.1);
+ \node[align=center] at (-.25,-1.7) {weighted displacements\\have equal and opposite lengths};
+ \node[align=left,anchor=west,text width=62mm] at (2.3,1.15)
+  {Use the same tangent at $\mathbf x_c$\\for both endpoints.\\[5pt]
+   $\theta(\mathbf x_a-\mathbf x_c)$\\$\quad+(1-\theta)(\mathbf x_b-\mathbf x_c)=\mathbf0$.\\[5pt]
+   The weighted gradient terms cancel.};
+\end{tikzpicture}

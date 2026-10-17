@@ -1,0 +1,13 @@
+% Prepared estimation/design mechanism; one shared source for print and web.
+\begin{tikzpicture}[>=stealth,x=1cm,y=1cm,every node/.style={font=\small}]
+\draw[->] (0,0)--(8,0) node[right]{Prediction 1};\draw[->] (0,0)--(0,3.1) node[above]{Prediction 2};
+\draw[very thick,blue] plot[domain=.6:7.3,samples=80] (\x,{.7+.035*(\x-1)*(\x-1)});
+\coordinate (f) at (3, .84);\coordinate (y) at (5.7,2.8);\coordinate (p) at (5.974696,1.256457);
+\draw[thick,dashed] (1,.56)--(7.4,1.456) node[right]{Tangent};
+\draw[->,thick,orange!80!black] (f)--node[left]{$\mathbf r^k$}(y);
+\draw[->,thick] (f)--node[below]{$\mathbf Q^k\mathbf s$}(p);
+\draw[densely dotted,thick] (p)--node[pos=.6,right=5mm,fill=white,inner sep=1pt]{$\mathbf r^k-\mathbf Q^k\mathbf s$}(y);
+\fill (f) circle(2pt) node[below]{$\hat{\mathbf y}(\boldsymbol\theta^k)$};
+\fill (y) circle(2pt) node[above] {Observed $\mathbf y$};
+\node[blue] at (2.2,1.8) {Model curve};
+\end{tikzpicture}

@@ -26,8 +26,8 @@ integer point in it, and conv(S), the convex hull of those points. The LP
 optimum over P is FRACTIONAL, at (20/7, 3) ~ (2.857, 3). Optimising the same
 linear objective over conv(S) instead lands on (2, 1), an integer point -- and
 that is the content of the handout's claim that if we had the hull we would be
-done in one LP. Every vertex of conv(S) is an integer point, so an LP over it
-cannot return anything else.
+done in one LP. Every vertex of conv(S) is an integer point, so an integer optimal
+vertex exists. A solver may instead return a fractional point on a tied face.
 
 Panel 2, "what we do instead": the same polytope with two valid inequalities
 added, x1 <= 2 and x1 - x2 <= 1. Each is a FACET of conv(S), so neither removes
@@ -188,7 +188,7 @@ def make_figure():
 
     # ---------------- Panel 1: the hull ---------------------------------
     ax = axes[0]
-    ax.set_title("1. the hull we cannot afford", fontsize=14)
+    ax.set_title("1. Integer hull", fontsize=14)
     ax.plot(np.append(P[:, 0], P[0, 0]), np.append(P[:, 1], P[0, 1]),
             color="black", linestyle="-", linewidth=2.2, zorder=3)
     ax.fill(hull_v[:, 0], hull_v[:, 1], facecolor="0.55", alpha=SHADE_ALPHA,
@@ -203,23 +203,23 @@ def make_figure():
             markeredgecolor="black", markeredgewidth=1.6, linestyle="none",
             zorder=7)
 
-    ax.annotate("LP relaxation $P$", xy=(3.02, 3.30), fontsize=12.5,
+    ax.annotate("LP relaxation $P$", xy=(2.8, 3.43), fontsize=12.5,
                 ha="center", color="black")
-    ax.annotate(r"$\bar{z}$ here: $\mathbf{x}=(20/7,\,3)$",
-                xy=(x_lp[0] - 0.14, x_lp[1] - 0.02), xytext=(1.32, 2.42),
-                fontsize=12.5, ha="left", va="center",
+    ax.annotate(r"$(20/7,\,3)$",
+                xy=(x_lp[0] - 0.14, x_lp[1] - 0.02), xytext=(.65, 3.43),
+                fontsize=12.5, ha="center", va="center",
                 arrowprops=dict(arrowstyle="->", color="0.35", lw=1.3))
     ax.annotate(r"$\mathrm{conv}(S)$", xy=(0.22, 1.52), fontsize=13,
                 color="#0072B2",
                 bbox=dict(facecolor="white", edgecolor="none", pad=1.0))
     ax.annotate("every vertex\nis integral", xy=(2.0, 1.0),
-                xytext=(2.28, 0.10), fontsize=12, ha="left", va="bottom",
+                xytext=(2.65, 0.02), fontsize=12, ha="center", va="bottom",
                 color="#0072B2",
                 arrowprops=dict(arrowstyle="->", color="#0072B2", lw=1.3))
 
     # ---------------- Panel 2: two cuts ---------------------------------
     ax = axes[1]
-    ax.set_title("2. two cuts, added on demand", fontsize=14)
+    ax.set_title("2. Two valid cuts", fontsize=14)
     ax.plot(np.append(P[:, 0], P[0, 0]), np.append(P[:, 1], P[0, 1]),
             color="0.62", linestyle="-", linewidth=1.6, zorder=2)
     ax.fill(P_cut[:, 0], P_cut[:, 1], facecolor="0.55", alpha=SHADE_ALPHA,
@@ -246,10 +246,10 @@ def make_figure():
     ax.annotate(CUTS[1][2], xy=(3.50, 1.12), fontsize=12.5, color="#E69F00",
                 ha="right", va="center",
                 bbox=dict(facecolor="white", edgecolor="none", pad=1.0))
-    ax.annotate("cut off", xy=(x_lp[0], x_lp[1]), xytext=(2.32, 2.62),
-                fontsize=12, ha="right", va="center", color="0.35",
+    ax.annotate("cut off", xy=(x_lp[0], x_lp[1]), xytext=(2.65, 2.1),
+                fontsize=12, ha="center", va="center", color="0.35",
                 arrowprops=dict(arrowstyle="->", color="0.55", lw=1.2))
-    ax.annotate(r"now integral: $\mathbf{x}=(2,1)$", xy=(2.0, 1.0), xytext=(0.18, -0.28),
+    ax.annotate(r"$(2,1)$", xy=(2.0, 1.0), xytext=(.85, 1.40),
                 fontsize=12.5, ha="left", va="center",
                 arrowprops=dict(arrowstyle="->", color="0.35", lw=1.3),
                 bbox=dict(facecolor="white", edgecolor="none", pad=1.0))

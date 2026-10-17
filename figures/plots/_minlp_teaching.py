@@ -30,8 +30,6 @@ def bound_inclusion():
         ax.plot([lo, hi], [level, level], marker=marker, color=color, linewidth=2)
         ax.text(hi+.05, level, label, fontsize=11, va='center')
         ax.scatter([point], [value], marker=marker, color=color, s=55, zorder=4)
-    ax.text(-1.85, 4.5, r'$\min_R f=0\ \leq\ \min_S f=.25\ \leq\ \min_T f=1$', fontsize=12,
-            bbox={'facecolor':'white','edgecolor':'none','pad':2})
     ax.text(.98, .96, r'$f(x)=(x-1.5)^2$', transform=ax.transAxes,
             ha='right', va='top', fontsize=11)
     ax.set(xlabel='coordinate x', ylabel='objective value',
@@ -73,7 +71,7 @@ def pure_mixed_cut():
                 arrowprops={'arrowstyle':'->'}, fontsize=11)
     ax.set(xlabel=r'nonbasic coordinate $x_N$', ylabel=r'basic coordinate $x_B$',
            xlim=(-.03, 1.15), ylim=(-.08, 1.65))
-    ax.legend(loc='upper right', fontsize=10)
+    ax.legend(loc='upper center', bbox_to_anchor=(.52, 1.0), fontsize=10)
     fig.tight_layout()
     return fig
 
@@ -92,8 +90,6 @@ def phase_one():
         ax.axhline(0, color='black', linewidth=.8)
         ax.scatter([point], [value], marker='s', color='black', s=45, zorder=4)
         ax.set(xlabel='continuous x', title=f'fixed y = {y}', xlim=(0, 2), ylim=(-1.5, 1.8))
-        ax.text(.10, -1.2, rf'$\eta^*={value:g}$: '+('feasible' if y == 0 else 'infeasible'), fontsize=11,
-                bbox={'facecolor':'white','edgecolor':'none','pad':2})
     axes[0].set_ylabel('normalized violation')
     axes[0].legend(loc='upper left', fontsize=10)
     fig.tight_layout(w_pad=2.0)
@@ -139,8 +135,8 @@ def surrogate_proof():
     """A domain correction yields a valid reduced cut without exact stationarity."""
     fig, ax = plt.subplots(figsize=(7.6, 2.05))
     ax.axis('off')
-    labels = [r'$C\geq L(\mathbf{x},\mathbf{y};\mathbf{u})$'+'\nfeasible rows,\n'+r'$\mathbf{u}\geq0$',
-              'convex tangent\n'+r'$L\geq q(\mathbf{y})+\mathbf{a}^{\mathsf{T}}(\mathbf{x}-\mathbf{x}^k)$',
+    labels = [r'$C\geq L(\mathbf{x},\mathbf{y};\mathbf{u})$'+'\nfeasible rows,\n'+r'$\mathbf{u}\geq\mathbf{0}$',
+              'convex tangent\n'+r'$L\geq q(\mathbf{y})$'+'\n'+r'$+\mathbf{a}^{\mathsf{T}}(\mathbf{x}-\mathbf{x}^k)$',
               'minimize over X\n'+r'$\delta=\min_X\mathbf{a}^{\mathsf{T}}(\mathbf{x}-\mathbf{x}^k)$',
               r'$C\geq q(\mathbf{y})+\delta$'+'\nvalid reduced\nobjective cut']
     for i,label in enumerate(labels):

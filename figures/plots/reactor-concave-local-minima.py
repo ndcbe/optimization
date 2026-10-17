@@ -18,10 +18,12 @@ problem is a function of x2 alone on 0 <= x2 <= 10/(2/3) = 15:
 
     x1(x2) = (10 - (2/3) x2) / 0.8
 
-C is concave (each x^0.6 term has second derivative 0.6(-0.4)x^-1.4 < 0), so on
-a segment its minima sit at the two ENDPOINTS and its maximum in the interior.
-That is the whole content of the lecture's "Is the problem convex? No." answer,
-and the reason a local NLP solver returns whichever endpoint it started near.
+C is continuous and strictly concave on the closed feasible segment. Its global
+minimum is at an endpoint. Both endpoints are strict local minima here because
+introducing an unused reactor adds a positive h**0.6 term that dominates the
+O(h) change in feed and active-reactor cost. Smooth KKT conditions do not apply
+at zero flow: the derivative is singular. The notebook's two positive-lower-bound
+runs illustrate initialization dependence; they do not prove nearest-basin selection.
 
     x2 = 0        -> x1 = 12.5    C = $87.53/hr   global minimum, reactor I
     x2 = 15       -> x1 = 0       C = $95.31/hr   local  minimum, reactor II
@@ -165,5 +167,8 @@ def make_figure():
     ax.set_xlim(-0.6, X2_MAX + 1.6)
     ax.set_ylim(84.0, 105.0)
 
+    for spine in ax.spines.values():
+        spine.set_color("black")
+    ax.tick_params(colors="black")
     fig.tight_layout()
     return fig

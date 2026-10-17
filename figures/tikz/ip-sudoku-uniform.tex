@@ -1,0 +1,20 @@
+% Empty-board relaxation: sum of nine equal entries, versus one-hot assignment.
+\begin{tikzpicture}[font=\small,>=Latex]
+\node[anchor=east] at (-.3,.5) {Binary cell};
+\node[anchor=east] at (-.3,-1.2) {Relaxed cell};
+\foreach \i in {1,...,9}{
+ \pgfmathsetmacro\x{(\i-1)*.9}
+ \draw[black] (\x,0) rectangle +(.9,1);
+ \draw[black] (\x,-1.7) rectangle +(.9,1);
+ \node at (\x+.45,-1.2) {$\frac19$};
+ \node[anchor=south,font=\scriptsize] at (\x+.45,1.2) {$v=\i$};
+ \ifnum\i=5
+  \node[blue!70!black] at (\x+.45,.5) {$1$};
+ \else
+  \node at (\x+.45,.5) {$0$};
+ \fi
+}
+\node[anchor=west] at (8.5,.5) {sum $=1$};
+\node[anchor=west] at (8.5,-1.2) {sum $=1$};
+\node[align=center] at (4.05,-2.6) {On an empty board, put $1/9$ in every $(v,r,c)$ entry.\\Every cell, row--value, column--value and subgrid--value sum has nine terms.};
+\end{tikzpicture}

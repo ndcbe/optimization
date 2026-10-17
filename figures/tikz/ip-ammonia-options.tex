@@ -1,0 +1,21 @@
+% Conceptual three-stage choices, BGW Example 15.2, pp.500--502.
+% A selection schematic, not a complete chemical flowsheet.
+\begin{tikzpicture}[>=Latex,font=\small,
+unit/.style={draw,rounded corners,align=center,minimum width=3.15cm,minimum height=1.0cm},
+lab/.style={align=center,font=\small}]
+\node[lab] at (0,1.2) {Reactor};
+\node[lab] at (4.4,1.2) {Product separation};
+\node[lab] at (8.8,1.2) {Hydrogen recovery};
+\node[unit,draw=blue!70!black] (a) at (0,0) {Tubular};
+\node[unit,draw=blue!70!black,dashed] (b) at (0,-1.6) {Multibed quench};
+\node[unit,draw=black] (c) at (4.4,0) {Flash condensation};
+\node[unit,draw=black,dashed] (d) at (4.4,-1.6) {Absorption /\\distillation};
+\node[unit,draw=orange!80!black] (e) at (8.8,0) {Membrane};
+\node[unit,draw=orange!80!black,dashed] (f) at (8.8,-1.6) {No recovery};
+\coordinate (s1) at (2.2,-.8);\coordinate (s2) at (6.6,-.8);
+\draw[->] (a.east)--(s1)--(c.west);\draw[->] (s1)--(d.west);\draw (b.east)--(s1);
+\draw[->] (c.east)--(s2)--(e.west);\draw[->] (s2)--(f.west);\draw (d.east)--(s2);
+\draw[->] (-2.8,-.8)--(-2,-.8);\draw (-2,-.8)|-(a.west);\draw (-2,-.8)|-(b.west);
+\node[lab,anchor=east] at (-2.8,-.8) {Feed};
+\node[lab] at (4.4,-2.7) {Choose exactly one option at each stage.\\Each route selects units; operating flows and feasibility still need a model.};
+\end{tikzpicture}

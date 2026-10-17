@@ -3,11 +3,11 @@
     figures/plots/reactor-cost-linearization.py
         -> media/figures/reactor-cost-linearization.{png,pdf}
 
-`notebooks/1-dev/IP.ipynb` cell 35, migrated. That cell is pure numpy with
-hard-coded constants -- no Pyomo, no solver -- but it sits DOWNSTREAM of a
-deliberate failure at cell 22 ($0^{0.6}$ is undefined), so on a clean run of
-the notebook it never executes and the plot is never seen. Rendering it here
-fixes that without touching the pedagogical failure.
+This analytic comparison contains equipment-only and total-cost panels plus a
+zero-flow inset. The native IP notebook embeds this shared figure and retains a
+separate editable total-cost exploration. Its intentional initial solver failure
+is caught, so the downstream exploration DOES execute. Neither plot is a solver
+result, and the shared analytical drawing keeps its existing script owner.
 
 Source of the numbers: Biegler, Grossmann & Westerberg, *Systematic Methods of
 Chemical Process Design*, Prentice-Hall (1997), Example 15.3 "Selection of
@@ -200,5 +200,13 @@ def make_figure():
         bbox_to_anchor=(0.5, -0.12),
     )
 
+    for ax in fig.axes:
+        for spine in ax.spines.values():
+            spine.set_color("black")
+        ax.tick_params(colors="black")
+        for child in ax.child_axes:
+            for spine in child.spines.values():
+                spine.set_color("black")
+            child.tick_params(colors="black")
     fig.tight_layout()
     return fig

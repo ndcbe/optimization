@@ -2,13 +2,20 @@
  "meta": {
   "schema": 1,
   "figure": "battery-stochastic-scenarios",
-  "notebook": "notebooks/1-dev/Pyomo-Nuts-and-Bolts.ipynb",
-  "description": "Two-stage battery arbitrage: 20 sampled CAISO weeks, the here-and-now bid for the committed day beside the deterministic (mean-forecast) schedule, and the state of charge under non-anticipativity.",
-  "generated": "2026-08-25",
+  "notebook": "notebooks/4-dev/Battery_Forecasts_MPC.ipynb",
+  "description": "Fixed 20-week historical ensemble, 88% round-trip efficiency, E0=0; commit 24 hours then full-path recourse. Not a forecast backtest.",
+  "generated": "2026-10-17",
   "generator": "helper 2026.08.25",
   "source_tag": null,
   "source_digest": null,
-  "solver": "HiGHS (appsi_highs) via Pyomo"
+  "dependencies": {
+   "file:notebooks/data/Prices_DAM_ALTA2G_7_B1.csv": "8e39e178a48954a5e0e83e71e6f406349ac6b7d75b8f90f9fb52e8d51afbcdb2",
+   "cell:notebooks/4-dev/Battery_Forecasts_MPC.ipynb#model:weekly-battery-commitment": "af2bc7ed5dc4be3276d7d3d1c3d18f49452b58ec2be7169a756e7c78d1ae7739",
+   "cell:notebooks/4-dev/Battery_Forecasts_MPC.ipynb#results:weekly-battery-data": "99276375a9821c0b762e307484b3a745f73812500697e31a8c7100069f8f217c",
+   "cell:notebooks/4-dev/Battery_Forecasts_MPC.ipynb#results:weekly-battery-metrics": "6ea0723d69b6f1fce14b1e15acaac523016f8855afeb682df99bffdc30cd5969",
+   "cell:notebooks/4-dev/Battery_Forecasts_MPC.ipynb#results:weekly-battery-extract": "0b5758a04f1343c4574fad7f13fde43379e08032f0ce0927d85f63d2fd78e824"
+  },
+  "solver": "HiGHS via Pyomo appsi_highs"
  },
  "data": {
   "price_scenarios": [
@@ -3416,6 +3423,31 @@
   "hours_per_week": 168,
   "n_scenarios": 20,
   "n_commit": 24,
+  "E0": 0.0,
+  "eta_round_trip": 0.88,
+  "seed": 0,
+  "week_indices": [
+   0,
+   1,
+   2,
+   7,
+   9,
+   11,
+   17,
+   21,
+   22,
+   27,
+   28,
+   30,
+   34,
+   35,
+   40,
+   45,
+   46,
+   48,
+   49,
+   50
+  ],
   "expected_profit": 540.9684992834832,
   "net_here_and_now": [
    0.0,
@@ -3444,7 +3476,7 @@
    0.0
   ],
   "net_deterministic": [
-   -0.0,
+   0.0,
    1.0,
    1.0,
    1.0,
@@ -3458,20 +3490,19 @@
    1.0,
    1.0,
    0.0,
-   -0.0,
    0.0,
-   -0.0,
+   0.0,
+   0.0,
    -1.0,
    -1.0,
    -1.0,
    -0.7523326078587435,
    0.0,
-   -0.0,
+   0.0,
    0.0
   ],
-  "gap_commit_24": 0.0,
+  "gap_commit_24": 1.1102230246251565e-16,
   "gap_commit_6": 0.47233260785874354,
-  "hours_shown": 48,
   "energy": [
    [
     -0.0,
@@ -4473,6 +4504,48 @@
     0.0,
     -0.0
    ]
+  ],
+  "hours_shown": 48,
+  "information_metrics": [
+   {
+    "shared hours": 1,
+    "RP": 554.2764379209073,
+    "EEV": 554.2764379209073,
+    "WS": 554.5291720034883,
+    "VSS": 0.0,
+    "EVPI": 0.25273408258101426,
+    "max net-action difference [MW]": 0.0,
+    "variables": 10082,
+    "equality rows": 3420,
+    "bound sides": 20164,
+    "max equality residual": 0.0
+   },
+   {
+    "shared hours": 6,
+    "RP": 552.2183227826963,
+    "EEV": 551.8628845927705,
+    "WS": 554.5291720034883,
+    "VSS": 0.35543818992584875,
+    "EVPI": 2.3108492207919653,
+    "max net-action difference [MW]": 0.47233260785874354,
+    "variables": 10092,
+    "equality rows": 3620,
+    "bound sides": 20184,
+    "max equality residual": 0.0
+   },
+   {
+    "shared hours": 24,
+    "RP": 540.9684992834832,
+    "EEV": 540.9684992834832,
+    "WS": 554.5291720034883,
+    "VSS": 0.0,
+    "EVPI": 13.560672720005073,
+    "max net-action difference [MW]": 1.1102230246251565e-16,
+    "variables": 10128,
+    "equality rows": 4340,
+    "bound sides": 20256,
+    "max equality residual": 1.1102230246251565e-16
+   }
   ]
  }
 }

@@ -1,0 +1,16 @@
+% sqrt(x) on [0,1]; secants from zero to a=.04,.25,.81 grow steeper as a decreases.
+% Curve points (.04,.2),(.25,.5),(.81,.9) are exact; no uniform secant bound near zero.
+\begin{tikzpicture}[font=\small,>={Latex[length=2mm]},x=4.3cm,y=3.1cm]
+ \draw[->,black] (-.05,0)--(1.12,0) node[right] {$x$};
+ \draw[->,black] (0,-.08)--(0,1.12) node[above] {$\sqrt{x}$};
+ \draw[thick,domain=0:1,samples=90] plot({\x*\x},\x);
+ \draw[blue!70!black,dashed] (0,0)--(.81,.9);
+ \draw[blue!70!black,dash dot] (0,0)--(.25,.5);
+ \draw[blue!70!black,densely dotted,thick] (0,0)--(.04,.2);
+ \foreach \a/\v in {.81/.9,.25/.5,.04/.2}{\fill (\a,\v) circle(1.2pt);}
+ \draw[dotted] (.81,0)--(.81,.9);
+ \node[below] at (.81,0) {$a$};
+ \node[anchor=west] at (.28,.14) {secants from $0$};
+ \draw[->] (.45,.2) to[bend left=30] (.07,.34);
+ \node[anchor=west] at (.48,.36) {$a\downarrow0$};
+\end{tikzpicture}

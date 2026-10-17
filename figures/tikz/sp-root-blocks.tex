@@ -1,0 +1,11 @@
+% Course construction: shared source for print and native reference.
+\begin{tikzpicture}[>=Stealth,font=\small,
+ box/.style={draw,rounded corners,align=center,inner sep=5pt},flow/.style={->,thick}]
+\node[box,fill=blue!12] (root) at (0,0) {Root model\\$\mathbf{x}$: 3 acreage variables\\one land limit};
+\foreach \s/\yy in {1/1.15,2/0,3/-1.15}{
+ \node[box,fill=orange!14,minimum width=5.0cm] (b\s) at (6.5,\yy)
+  {Scenario Block $\s$: 6 trade variables\\harvest balances, quota, $P_{\s}$};
+ \draw[flow] (root.east)--(b\s.west);
+}
+\node[align=center] at (0,-1.5) {Every arrow refers to the\emph{ same} acreage objects.};
+\end{tikzpicture}

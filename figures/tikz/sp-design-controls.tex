@@ -1,0 +1,11 @@
+% Course construction: shared source for print and native reference.
+\begin{tikzpicture}[>=Stealth,font=\small,
+ box/.style={draw,rounded corners,align=center,inner sep=5pt}]
+\node[box,fill=blue!12] (design) at (0,0) {One robot morphology $\boldsymbol\rho$\\limbs, motors, gear ratios};
+\foreach \yy/\s in {1.2/1,0/2,-1.2/3}{
+ \node[box,fill=orange!14,minimum width=4.4cm] (task\s) at (6.5,\yy)
+ {Task $\s$: states $\mathbf{x}_\s(t)$\\and controls $\mathbf{u}_\s(t)$};
+ \draw[->,thick] (design.east)--(task\s.west);
+}
+\node[below,align=center] at (0,-1.1) {Shared design enters every\\task's dynamics and constraints.};
+\end{tikzpicture}

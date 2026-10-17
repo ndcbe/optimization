@@ -1,0 +1,19 @@
+% Course construction: shared source for print and native reference.
+\begin{tikzpicture}[>=Stealth,font=\small,
+ box/.style={draw,rounded corners,minimum width=1.4cm,minimum height=.65cm},flow/.style={->,thick}]
+\node at (0,1.65) {One shared vector};
+\node[box,fill=blue!12] (x) at (0,.65) {$\mathbf{x}$};
+\foreach \s/\xx in {1/-1.65,2/0,3/1.65}{
+ \node[box,fill=orange!14] (y\s) at (\xx,-.7) {$\mathbf{y}_{\s}$};
+ \draw[flow] (x)--(y\s);
+}
+\node at (6.4,1.65) {Scenario copies plus equalities};
+\foreach \s/\xx in {1/4.0,2/6.4,3/8.8}{
+ \node[box,fill=blue!12] (c\s) at (\xx,.65) {$\mathbf{x}_{\s}$};
+ \node[box,fill=orange!14] (d\s) at (\xx,-.7) {$\mathbf{y}_{\s}$};
+ \draw[flow] (c\s)--(d\s);
+}
+\draw[thick,dashed] (c1)--node[above] {$=$}(c2);
+\draw[thick,dashed] (c2)--node[above] {$=$}(c3);
+\node[align=center] at (3.9,-1.5) {The equalities enforce the same planting decision.};
+\end{tikzpicture}

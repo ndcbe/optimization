@@ -12,15 +12,13 @@
 %      connectivity is hard to understand. In Page 7-8, I suggested adding a
 %      picture. It would be good to have the same (or similar) picture here."
 %
-% THE POINT OF THE FIGURE, in one line: alpha and beta are the exponents of the
-% Jacobi weight, and setting one of them to 1 PINS the corresponding endpoint as
-% a collocation point -- beta pins tau = 0, alpha pins tau = 1. Read down the
-% figure and the three families are one family with 0, 1 or 2 endpoints pinned.
-% That also explains the truncation-error column on the same handout page: an
-% n-point rule with no pinned node is exact to degree 2n-1 (O(h^2K)); each
-% pinned node is one fewer FREE node, so the order drops by exactly one --
-% O(h^2K-1) for Radau, O(h^2K-2) for Lobatto. The two columns of that table are
-% the same fact seen twice.
+% The Jacobi weight constructs the FREE nodes, with fixed endpoints added
+% afterward. Gauss has K free roots at weight 1; right Radau has K-1 at
+% weight 1-tau plus endpoint 1; Lobatto has K-2 at weight tau(1-tau) plus
+% endpoints 0 and 1. Weight exponents do not pin ordinary Jacobi roots.
+% These rules have quadrature precision 2K-1, 2K-2 and 2K-3 respectively.
+% Their smooth-ODE endpoint orders are 2K, 2K-1 and 2K-2; normalized local
+% truncation error and the unnormalized one-step defect differ by a power.
 %
 % PROVENANCE OF THE NUMBERS. 🔴 Read this before "correcting" any value.
 %   * Legendre and Radau are Biegler, Table 10.1, printed p. 292, transcribed
@@ -31,10 +29,10 @@
 %     ("We will focus on Gauss-Legendre and Radau collocation", p. 292). The
 %     Lobatto values here are DERIVED: endpoints plus the roots of P'_{K-1}
 %     shifted to [0,1], i.e. 0, 1/2, 1 for K=3 and 0, 0.172673, 1/2, 0.827327, 1
-%     for K=5. Marked \authored in the lecture for that reason.
+%     for K=5. The verification record identifies this derived extension.
 %   * RADAU HERE IS RIGHT-RADAU (Radau IIA), the course's choice, so tau_K = 1.
 %     The left-Radau family pins tau = 0 instead and is the mirror image; the
-%     lecture says which one it uses at Sec. IX. Do not "fix" the asymmetry.
+%     lecture names the right-endpoint choice explicitly.
 %
 % GREYSCALE. Two hues, Okabe-Ito blue #0072B2 (L* 46) and orange #E69F00
 % (L* 70.6). Nothing is carried by colour alone: K=3 is FILLED CIRCLES above the
@@ -88,7 +86,7 @@
         (\t,\yy-0.30) +(-2.1pt,-2.1pt) rectangle +(2.1pt,2.1pt);
     }
     % verdict
-    \node[anchor=west, font=\scriptsize, black!70] at (1.12,\yy) {\verdict};
+% Endpoint positions supply the evidence; do not label the activity answer.
   }
 
   % ---- legend --------------------------------------------------------------

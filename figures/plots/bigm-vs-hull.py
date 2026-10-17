@@ -8,8 +8,8 @@ argues for in words and never shows.
 
     [ Y_1 ;  P <= 10 ; -P <= -5  ]   v   [ Y_2 ;  P <= 30 ; -P <= -20 ]
 
-Big-M, BGW (15.44), p. 520, with M_1 = M_2 = 20 (the smallest valid pair on
-0 <= P <= 30, derived in the lecture):
+Big-M, BGW (15.44), p. 520, with M_1 = M_2 = 20 (smallest common-per-term constants that deactivate
+each row over the ENTIRE box 0 <= P <= 30):
 
     P <= 10 + 20(1 - y_1)      -P <= -5  + 20(1 - y_1)
     P <= 30 + 20(1 - y_2)      -P <= -20 + 20(1 - y_2)      y_1 + y_2 = 1
@@ -35,6 +35,12 @@ promises.
 At the integer points t = 0 and t = 1 the two agree exactly, [20,30] and
 [5,10]: both relaxations are correct, and tightness is only ever a statement
 about the fractional interior. That is the point of the figure.
+
+These are manual constants for the box-wide deactivation policy. Using the other
+selected branch can justify M_2 = 15. The canonical Pyomo model instead has
+P in [5,30], whose automatic row-specific constants give a hull-exact LP
+projection in this example. Do not identify this plotted pentagon with that
+automatic transformation.
 
 No solver. Every boundary above is a line the docstring derives by hand, and
 the two vertices are checked against exact fractions in the test at the bottom.
@@ -87,7 +93,7 @@ from _house import HATCH_CYCLE, SHADE_ALPHA
 PL1, PU1 = 5.0, 10.0
 PL2, PU2 = 20.0, 30.0
 
-# Smallest valid big-M on 0 <= P <= 30, one M per term (lecture derivation):
+# Box-wide row deactivation on 0 <= P <= 30, one common M per term:
 #   M_1 >= max(max(P-10), max(-P+5))  = max(20, 5)  = 20
 #   M_2 >= max(max(P-30), max(-P+20)) = max( 0, 20) = 20
 M1 = M2 = 20.0

@@ -1,0 +1,16 @@
+% Along eigenvector vi, q(t vi)=lambda_i t^2. Three sign patterns, same scale.
+\begin{tikzpicture}[>=Latex,font=\small]
+\foreach \shift/\lam/\cap in {0/1/{positive definite},4.4/0/{semidefinite, singular},8.8/-1/{indefinite}} {
+ \begin{scope}[xshift=\shift cm,x=1.25cm,y=.65cm]
+ \draw[->,black!35] (-1.15,0)--(1.2,0) node[right] {$t$};
+ \draw[->,black!35] (0,-1.2)--(0,2.3);
+ \draw[blue!65!black,very thick,domain=-1:1,samples=40] plot (\x,{2*\x*\x});
+ \draw[orange!80!black,thick,dashed,domain=-1:1,samples=40] plot (\x,{\lam*\x*\x});
+ \node[align=center] at (0,-1.9) {\cap};
+ \node at (0,2.85) {$(\lambda_1,\lambda_2)=(2,\lam)$};
+ \end{scope}}
+\draw[very thick,blue!65!black] (2.2,-2.25)--(3,-2.25);
+\node[anchor=west] at (3.15,-2.25) {$q(t\mathbf v_1)=2t^2$};
+\draw[thick,dashed,orange!80!black] (6.5,-2.25)--(7.3,-2.25);
+\node[anchor=west] at (7.45,-2.25) {$q(t\mathbf v_2)=\lambda_2t^2$};
+\end{tikzpicture}

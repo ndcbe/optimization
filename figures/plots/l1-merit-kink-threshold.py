@@ -97,13 +97,13 @@ def make_figure():
         )
 
     # The kink. Every curve passes through it, which is the point.
-    axL.axvline(1.0, color="0.6", linestyle=":", linewidth=1.4, zorder=0)
+    axL.axvline(1.0, color='black', linestyle=":", linewidth=1.4, zorder=0)
     axL.plot([1.0], [-2.0], marker="o", markersize=9, color="black", linestyle="none",
              zorder=6)
     axL.annotate(
         r"kink at $\mathbf{x}^*$" "\n" r"($\|h\|_1$ not differentiable)",
         xy=(1.0, -2.0),
-        xytext=(0.655, -1.62),
+        xytext=(0.655, -2.22),
         fontsize=12,
         ha="left",
         va="center",
@@ -115,7 +115,7 @@ def make_figure():
     axL.set_ylabel(r"$\varphi_1(x;\rho) = f + \rho\,|h|$")
     axL.set_xlim(CLO, CHI)
     axL.set_ylim(-2.45, 0.32)
-    axL.set_title("the kink is what makes it exact", fontsize=13.5)
+    axL.set_title("One-sided slopes at feasibility", fontsize=13.5)
 
     # --------------------------------------------------------------- RIGHT
     r = np.linspace(0.0, 1.35, 400)
@@ -134,38 +134,19 @@ def make_figure():
         zorder=0,
     )
 
-    axR.axhline(0.0, color="0.6", linestyle=":", linewidth=1.4, zorder=1)
+    axR.axhline(0.0, color='black', linestyle=":", linewidth=1.4, zorder=1)
     axR.plot(r, dplus, linewidth=2.6, color="#000000", linestyle="-")
     axR.plot(r, dminus, linewidth=2.6, color="#0072B2", linestyle="--")
 
-    axR.annotate(
-        r"$D^{+} = -2 + 4\rho$",
-        xy=(1.31, dplus[-1]),
-        xytext=(-4, -2),
-        textcoords="offset points",
-        ha="right",
-        va="top",
-        fontsize=13,
-        bbox=dict(facecolor="white", edgecolor="none", pad=1.2),
-    )
-    axR.annotate(
-        r"$D^{-} = -2 - 4\rho$",
-        xy=(1.31, dminus[-1]),
-        xytext=(-4, 4),
-        textcoords="offset points",
-        ha="right",
-        va="bottom",
-        fontsize=13,
-        color="#0072B2",
-        bbox=dict(facecolor="white", edgecolor="none", pad=1.2),
-    )
+    axR.text(.05,2.8,r"$D^{+}=-2+4\rho$",fontsize=13)
+    axR.text(.05,-6.8,r"$D^{-}=-2-4\rho$",fontsize=13,color="#0072B2")
 
     axR.plot([RHO_STAR], [0.0], marker="o", markersize=9, color="black",
              linestyle="none", zorder=6)
     axR.annotate(
         r"$\rho^* = |v^*| = \frac{1}{2}$",
         xy=(RHO_STAR, 0.0),
-        xytext=(RHO_STAR + 0.05, 2.15),
+        xytext=(.07, 1.15),
         fontsize=13,
         ha="left",
         va="center",
@@ -218,7 +199,7 @@ if __name__ == "__main__":
         print(f"  rho = {rho:.2f}:  D- = {dm:+.4f}   D+ = {dp:+.4f}")
 
     # 4. The 2-D claim the 1-D slice only illustrates: is x* = (-1,-1) really a
-    #    local minimiser of phi_1 in the PLANE iff rho > 1/2?
+    #    local minimiser of phi_1 in the PLANE for weights above the threshold?
     rng = _np.random.default_rng(0)
     xs = _np.array([-1.0, -1.0])
 

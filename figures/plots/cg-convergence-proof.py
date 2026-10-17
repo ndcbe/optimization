@@ -12,6 +12,6 @@ def make_figure():
     axes[0].plot(k,R,'--s',ms=4,color='#D55E00',label=r'decrease $1/[k(k+1)]$')
     axes[0].set(xlabel='iteration k',ylabel='value');axes[0].legend(fontsize=9)
     k=np.arange(1,501);x=np.sin(np.log(k+1))
-    axes[1].plot(k,x,ls='-',color='#D55E00',label='zero-residual nonconvergent sequence')
-    axes[1].axhline(0,color='0.5',lw=1);axes[1].set(xlabel='sequence index k',ylabel='x1 (x2 = 0)');axes[1].legend(fontsize=9,loc='upper right')
+    axes[1].plot(k,x,ls='-',color='#D55E00',label=r'$x_1^k=\sin(\log(k+1))$')
+    axes[1].axhline(0,color='black',lw=1);axes[1].set(xlabel='$k$',ylabel=r'$x_1$ ($x_2=0$)');axes[1].legend(fontsize=9,loc='upper right')
     fig.tight_layout();return fig

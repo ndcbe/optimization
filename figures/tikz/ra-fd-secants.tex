@@ -1,0 +1,17 @@
+% f(s)=s^2/2 at a=1, h=.6. Forward/backward slopes1.3/.7, tangent1.
+% Central chord slope1; for this quadratic central differences are exact.
+% This sketch explains even-term cancellation; the handout derives the general remainder.
+\begin{tikzpicture}[font=\small,>={Latex[length=2mm]},x=1.7cm,y=1.4cm]
+ \draw[->,black] (0,0)--(2.15,0) node[right] {$s$};
+ \draw[->,black] (0,-.3)--(0,1.65) node[above] {$f$};
+ \draw[thick,domain=.12:1.8,samples=60] plot(\x,{.5*\x*\x});
+ \draw[blue!70!black,dashed,thick] (.4,.08)--(1,.5);
+ \draw[orange!80!black,dash dot,thick] (1,.5)--(1.6,1.28);
+ \draw[densely dotted,thick] (.3,-.2)--(1.7,1.2);
+ \foreach \x/\y/\lab in {.4/.08/{a-h},1/.5/a,1.6/1.28/{a+h}}{
+  \fill (\x,\y) circle(1.5pt);\draw[dotted] (\x,0)--(\x,\y);\node[below] at (\x,-.05) {$\lab$};}
+ \node[align=left,anchor=west,text width=65mm] at (2.9,1)
+ {Dashed: backward secant.\\Dash-dot: forward secant.\\Dotted: tangent at $a$.\\[6pt]
+  Central difference averages the\\two one-sided slopes:\\[4pt]
+  $\displaystyle D_0(h)=\tfrac12\bigl[D_+(h)+D_-(h)\bigr]$.};
+\end{tikzpicture}

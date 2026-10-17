@@ -1,0 +1,13 @@
+% phi(s)=.5s^2, alpha=1.5; xa=-1.4,xb=.8,xc=-.3 at theta=.5.
+% Endpoint values .98,.32; chord at xc .65; phi(xc)=.045 <= .65 <= alpha.
+\begin{tikzpicture}[font=\small,>={Latex[length=2mm]},x=1.7cm,y=1.5cm]
+ \draw[->,black] (-1.9,0)--(1.95,0) node[right] {$s$};
+ \draw[->,black] (0,-.35)--(0,1.95) node[above] {$\phi$};
+ \draw[thick,domain=-1.75:1.75,samples=60] plot(\x,{.5*\x*\x});
+ \draw[dashed,thick] (-1.8,1.5)--(1.8,1.5) node[right] {$\alpha$};
+ \draw[blue!70!black,dash dot,thick] (-1.4,.98)--(.8,.32);
+ \foreach \x/\y/\n in {-1.4/.98/a,.8/.32/b,-.3/.045/c}{
+  \fill (\x,\y) circle(1.4pt);\draw[dotted] (\x,0)--(\x,\y);\node[below] at (\x,-.06) {$x_\n$};}
+ \draw[<->] (-.3,.045)--(-.3,.65);
+
+\end{tikzpicture}

@@ -11,8 +11,8 @@ def make_figure():
     axes[0].contour(X,Y,X*X-Y*Y,levels=[-1,-.3,.3,1],colors=['#D55E00','#D55E00','#0072B2','#0072B2'],linestyles=['--','--','-','-'])
     U=X+.7*Y;V=Y
     axes[1].contour(X,Y,U*U-V*V,levels=[-1,-.3,.3,1],colors=['#D55E00','#D55E00','#0072B2','#0072B2'],linestyles=['--','--','-','-'])
-    for ax,title in zip(axes,[r'$B=\mathrm{diag}(1,-1)$',r'Sheared form $S^TBS$']):
-        ax.set_aspect('equal');ax.set_title(title,fontsize=12);ax.axhline(0,color='0.65',lw=.7);ax.axvline(0,color='0.65',lw=.7)
+    for ax,title in zip(axes,[r'$\mathbf{B}=\mathrm{diag}(1,-1)$',r'Sheared form $\mathbf{S}^T\mathbf{BS}$']):
+        ax.set_aspect('equal');ax.set_title(title,fontsize=12);ax.axhline(0,color='black',lw=.7);ax.axvline(0,color='black',lw=.7)
         ax.set(xlabel='first coordinate',ylabel='second coordinate');ax.set_xticks([-1,0,1]);ax.set_yticks([-1,0,1])
     fig.text(.5,.01,'Solid: positive levels. Dashed: negative levels. Coordinates change; sign dimensions persist.',ha='center',fontsize=10)
     fig.tight_layout(rect=(0,.04,1,1));return fig

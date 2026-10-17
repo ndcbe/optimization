@@ -217,13 +217,13 @@ def make_figure():
     # Both labels stay BLACK. The comparison is symmetric, and orange text at
     # L* = 70.6 is not readable at 15 pt on white -- colouring only one of the
     # pair would make the figure look like it was claiming something about it.
-    _text(ax, (0.648, 0.985), r"$\mathbf{Y} \mathbf{p}_Y$", size=15)
+    ax.annotate(r"$\mathbf{Y}\mathbf{p}_Y$",xy=tuple(xk+.5*s["normal"]),xytext=(.79,1.11),fontsize=15,bbox=BOX,arrowprops=dict(arrowstyle="-",color="black",lw=.7),zorder=9)
     _text(ax, (0.470, 1.093), r"$\mathbf{Y}^{c} \mathbf{p}_{Y^c}$", ha="center", size=15)
     _text(ax, (0.775, 0.780), r"$\mathbf{Z} \mathbf{p}_Z$", size=15)
     _text(ax, (0.885, 0.885), r"$\mathbf{d}_x$", size=15)
-    _text(ax, tuple(xk + np.array([0.030, 0.026])), r"$\mathbf{x}^k$", size=15, box=False)
+    _text(ax, tuple(xk + np.array([-0.01, 0.18])), r"$\mathbf{x}^k$", size=15, box=False)
     _text(ax, (0.995, 0.660), r"$\mathbf{x}^k + \mathbf{d}_x$", size=13, box=False)
-    _text(ax, (0.155, 0.905), r"$h(\mathbf{x})=0$", va="top", size=14, rot=-13.0)
+    ax.annotate(r"$h(\mathbf{x})=0$",xy=(.28,np.sqrt(1-.28**2)),xytext=(.15,.70),fontsize=14,bbox=BOX,arrowprops=dict(arrowstyle="-",color="black",lw=.7),zorder=9)
     ax.annotate(
         "linearized constraint\n" r"$h(\mathbf{x}^k) + \mathbf{J}_h(\mathbf{x}^k)(\mathbf{x} - \mathbf{x}^k) = 0$",
         xy=(1.152, 0.449), xytext=(1.045, 1.16), fontsize=12, ha="left", va="center",

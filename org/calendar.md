@@ -73,5 +73,5 @@ Mondays and Wednesdays, 12:30 -- 1:45 pm, 184 Nieuwland Science Hall.
 | Monday, November 30, 2026 | 24. Barrier and Interior Point Methods |
 | Wednesday, December 2, 2026 | 25. Integer Programming Algorithms |
 | Monday, December 7, 2026 | 26. Deterministic Global Optimization |
-| Wednesday, December 9, 2026 | 27. Optimization in Context |
+| Wednesday, December 9, 2026 | 27. Optimization for Decision Support |
 | Tuesday, December 15, 2026 | **FINAL EXAM (in person), 7:30--9:30 pm** |

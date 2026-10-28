@@ -1,53 +1,39 @@
-% Newton's method for one equation: each iterate is the zero of the tangent line.
-%
-%   figures/tikz/nu-newton-tangent.tex
-%       -> media/figures/nu-newton-tangent.{png,svg}
-%
-% Lecture 15 (Newton Methods for Unconstrained Optimization), Section IV.A.
-%
-% GEOMETRY (x: 1 unit = 2.9 cm, y: 1 unit = 1.25 cm). f(x) = x^2/2 - 1, f'(x) = x,
-% root x* = sqrt(2) = 1.4142. Newton from x^k = 2.6:
-%   f(2.6) = 2.38,             tangent zero x^{k+1} = 2.6 - 2.38/2.6 = 1.6846
-%   f(1.6846) = 0.4190,        tangent zero x^{k+2} = 1.6846 - 0.4190/1.6846 = 1.4359
-% Errors |x - x*| = 1.186, 0.270, 0.0217 (computed in Python, 2026-10-07).
-%
-% GREYSCALE: f is a thick solid curve, the first tangent solid, the second tangent
-% dashed; points are labelled, no distinction is carried by colour alone.
+% The model zeros and the derivative zero are different objects.
 \definecolor{okabeblue}{HTML}{0072B2}
-
-\begin{tikzpicture}[
-    x=2.9cm, y=1.25cm,
-    >={Latex[length=2.0mm]},
-    font=\small,
-    lab/.style={font=\scriptsize, inner sep=1.5pt},
-  ]
-  \draw[black, ->] (0.85,0) -- (2.85,0) node[right, lab] {$x$};
-  \draw[black, ->] (0.95,-0.7) -- (0.95,2.75) node[above, lab] {$F(x)$};
-  % f(x) = x^2/2 - 1
-  \draw[okabeblue, line width=1.2pt, domain=1.0:2.72, samples=60, variable=\t]
-    plot ({\t},{\t*\t/2-1});
-  % tangent at x^k = 2.6: y = 2.38 + 2.6 (x - 2.6), zero at 1.6846
-  \draw[thick] (1.62,-0.1636) -- (2.72,2.692);
-  % tangent at x^{k+1} = 1.6846: y = 0.4190 + 1.6846 (x - 1.6846), zero at 1.4359
-  \draw[thick, dashed] (1.38,-0.0941) -- (1.84,0.6807);
-  % vertical guides from the axis to the curve
-  \draw[densely dotted] (2.6,0) -- (2.6,2.38);
-  \draw[densely dotted] (1.6846,0) -- (1.6846,0.4190);
-  \filldraw (2.6,2.38) circle (1.5pt);
-  \filldraw (1.6846,0.4190) circle (1.5pt);
-  \filldraw[fill=white] (2.6,0) circle (1.4pt);
-  \filldraw[fill=white] (1.6846,0) circle (1.4pt);
-  \filldraw[fill=white] (1.4359,0) circle (1.4pt);
-  \filldraw (1.4142,0) circle (1.2pt);
-  \node[lab, below] at (2.6,0) {$x^{k}$};
-  \node[lab, below right] at (1.69,-0.01) {$x^{k+1}$};
-  \node[lab, above left] at (1.44,0.02) {$x^{k+2}$};
-  \draw[black!60, line width=0.4pt] (1.4142,-0.04) -- (1.30,-0.42) node[below, lab] {$x^{*}$};
-  % Curve-free legend, with line identities retained in greyscale.
-  \draw[okabeblue,line width=1.2pt] (1.03,3.5)--(1.21,3.5);
-  \node[lab,anchor=west] at (1.24,3.5) {$F(x)$};
-  \draw[thick] (1.62,3.5)--(1.8,3.5);
-  \node[lab,anchor=west] at (1.83,3.5) {tangent at $x^k$};
-  \draw[thick,dashed] (1.03,3.22)--(1.21,3.22);
-  \node[lab,anchor=west] at (1.24,3.22) {tangent at $x^{k+1}$};
+\begin{tikzpicture}[x=1.85cm,y=.85cm,>=Latex,font=\small,
+lab/.style={font=\scriptsize,inner sep=1.5pt}]
+\draw[->] (0,-.05)--(2.95,-.05) node[right,lab] {$x$};
+\draw[->] (0,-1.2)--(0,3.1) node[below left,lab] {$F(x)$};
+\draw[okabeblue,very thick,domain=0:2.8,samples=80] plot (\x,{\x*\x/2-1});
+\draw[thick] (1.5,-.48)--(2.8,2.9);
+\draw[thick,dashed] (1.2,-.40)--(2.05,1.035);
+\draw[densely dotted] (2.6,0)--(2.6,2.38);
+\fill (2.6,2.38) circle (1.5pt);
+\fill (1.6846,.419) circle (1.5pt);
+\fill (1.4142,0) circle (1.5pt);
+\draw[->,thin] (1.05,-.8) node[below,lab] {(a) $x^*$}--(1.4142,-.09);
+\draw[->,thin] (2.06,-.7) node[below,lab] {(b) $x^{k+1}$}--(1.6846,-.09);
+\node[below,lab] at (2.6,0) {$x^k$};
+\node[above,lab] at (1.4359,.03) {$x^{k+2}$};
+\draw[okabeblue,very thick] (.12,3.75)--(.40,3.75);
+\node[anchor=west,lab] at (.43,3.75) {$F(x)$};
+\draw[thick] (1.15,3.75)--(1.43,3.75);
+\node[anchor=west,lab] at (1.46,3.75) {$\ell_k(x)$};
+\draw[thick,dashed] (.12,3.42)--(.4,3.42);
+\node[anchor=west,lab] at (.43,3.42) {$\ell_{k+1}(x)$};
+\begin{scope}[shift={(4.1,0)}]
+\draw[->] (-.35,0)--(2.95,0) node[right,lab] {$x$};
+\draw[->] (0,-1.2)--(0,3.1) node[below right,lab] {derivative};
+\draw[okabeblue,very thick] (-.3,-.3)--(2.8,2.8);
+\draw[thick] (-.3,2.6)--(2.8,2.6);
+\draw[thick,dashed] (-.3,1.6846)--(2.8,1.6846);
+\fill (0,0) circle (1.5pt);
+\draw[->,thin] (.6,-.8) node[below,lab] {(c) zero of $F'$}--(.04,-.08);
+\draw[okabeblue,very thick] (-.2,3.75)--(.08,3.75);
+\node[anchor=west,lab] at (.11,3.75) {$F'(x)=x$};
+\draw[thick] (1.55,3.75)--(1.83,3.75);
+\node[anchor=west,lab] at (1.86,3.75) {$\ell_k'(x)$};
+\draw[thick,dashed] (-.2,3.42)--(.08,3.42);
+\node[anchor=west,lab] at (.11,3.42) {$\ell_{k+1}'(x)$};
+\end{scope}
 \end{tikzpicture}

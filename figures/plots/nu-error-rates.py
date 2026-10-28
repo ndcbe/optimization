@@ -11,5 +11,7 @@ def make_figure():
     ax.semilogy(k,quad,color='#D55E00',linestyle='--',marker='s',markersize=5,label='Quadratic: square the error')
     ax.set(xlabel='Iteration $k$',ylabel='Error $e_k$',xticks=k,ylim=(1e-20,1))
     ax.tick_params(labelsize=11)
+    ax.grid(True, which='major', color='0.85', linewidth=0.6)
+    ax.set_axisbelow(True)
     ax.legend(fontsize=11,loc='lower left')
     return fig

@@ -206,7 +206,7 @@ exam period. Dates are on the [semester calendar](./calendar.md).
 | Exam | When | Notes permitted |
 | --- | --- | --- |
 | Midterm 1 | Wednesday, September 30, in class | open course pack / open binder |
-| Midterm 2 | Wednesday, November 4, in class | open course pack / open binder |
+| Midterm 2 | Wednesday, November 11, in class | open course pack / open binder |
 | Final | Tuesday, December 15, 7:30--9:30 pm | open course pack / open binder |
 
 All exams are **individual**. The only electronic device permitted is a scientific or graphing calculator

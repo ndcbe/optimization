@@ -2,9 +2,13 @@
 
 ```{note}
 This page is generated from the instructor's master calendar. If it disagrees with Canvas, Canvas wins.
+
+The October 29 update confirms the schedule through November 11. Topic dates after the second midterm are being revised.
 ```
 
 ## Assignments
+
+Homework scope and late-semester deadlines are under review. The dates below remain the posted website deadlines until revisions are announced; check Canvas for current requirements.
 
 | Deadline | Description |
 | ----------- | ----------- |
@@ -31,8 +35,10 @@ All assignments are due at 5pm unless otherwise noted.
 | Exam | When |
 | --- | --- |
 | Midterm 1 | Wednesday, September 30, 2026, in class |
-| Midterm 2 | Wednesday, November 4, 2026, in class |
+| Midterm 2 | Wednesday, November 11, 2026, in class |
 | Final | Tuesday, December 15, 2026, 7:30--9:30 pm |
+
+Midterm 2 has moved from November 4 to November 11. It will be proctored during Prof. Dowling's travel and retains its original coverage, through Lecture 18.
 
 All three are in person, individual, and open course pack. Notes must be on paper, and the only
 electronic device permitted is a scientific or graphing calculator --- see the
@@ -42,7 +48,33 @@ electronic device permitted is a scientific or graphing calculator --- see the
 
 Mondays and Wednesdays, 12:30 -- 1:45 pm, 184 Nieuwland Science Hall.
 
+### Confirmed teaching and upcoming meetings
+
 | Day | Topic(s) |
+| ----------- | ----------- |
+| Monday, October 26, 2026 | 14. Unconstrained Optimality Conditions — taught |
+| Wednesday, October 28, 2026 | 15. Newton Methods for Unconstrained Optimization — taught |
+| Monday, November 2, 2026 | 16. Quasi-Newton Methods |
+| Wednesday, November 4, 2026 | 17. Line Search and Trust Regions |
+| Monday, November 9, 2026 | 18. Introduction to Constrained Optimization — AIChE travel; lecture delivery details forthcoming |
+| Wednesday, November 11, 2026 | **MIDTERM 2, in class, proctored** |
+| Monday, November 16, 2026 | Topic to be announced |
+| Wednesday, November 18, 2026 | Topic to be announced |
+| Monday, November 23, 2026 | Topic to be announced |
+| Wednesday, November 25, 2026 | **No class, Thanksgiving holiday** |
+| Monday, November 30, 2026 | Topic to be announced |
+| Wednesday, December 2, 2026 | Topic to be announced |
+| Monday, December 7, 2026 | Topic to be announced |
+| Wednesday, December 9, 2026 | Topic to be announced |
+| Tuesday, December 15, 2026 | **FINAL EXAM (in person), 7:30--9:30 pm** |
+
+Dates for Lectures 19--27 are being revised. Their handouts and website references remain available; the revised teaching schedule will be posted here.
+
+### Earlier original plan
+
+This table preserves the original plan through fall break, rather than an actual teaching log. Lectures 14 and 15 were taught on October 26 and 28, as recorded above.
+
+| Day | Originally planned topic(s) |
 | ----------- | ----------- |
 | Monday, August 24, 2026 | 1. Introduction: Why and How We Optimize |
 | Wednesday, August 26, 2026 | 2. Continuous Optimization |
@@ -57,21 +89,7 @@ Mondays and Wednesdays, 12:30 -- 1:45 pm, 184 Nieuwland Science Hall.
 | Monday, September 28, 2026 | 11. Optimization for Decision Support |
 | Monday, October 5, 2026 | 12. Linear Algebra Review |
 | Wednesday, October 7, 2026 | 13. Real Analysis Review |
-| Monday, October 12, 2026 | 14. Unconstrained Optimality Conditions |
-| Wednesday, October 14, 2026 | 15. Newton Methods for Unconstrained Optimization |
+| Monday, October 12, 2026 | 14. Unconstrained Optimality Conditions — taught October 26 instead |
+| Wednesday, October 14, 2026 | 15. Newton Methods for Unconstrained Optimization — taught October 28 instead |
 | Monday, October 19, 2026 | **Fall Break, no class** |
 | Wednesday, October 21, 2026 | **Fall Break, no class** |
-| Monday, October 26, 2026 | 16. Quasi-Newton Methods |
-| Wednesday, October 28, 2026 | 17. Line Search and Trust Regions |
-| Monday, November 2, 2026 | 18. Introduction to Constrained Optimization |
-| Monday, November 9, 2026 | 19. KKT Conditions, Multipliers, and Sensitivity — Travel for AIChE conference, video lecture? |
-| Wednesday, November 11, 2026 | 20. Constraint Qualifications — Travel for AIChE conference, video lecture? |
-| Monday, November 16, 2026 | 21. Second Order Conditions and Equality Constrained NLPs |
-| Wednesday, November 18, 2026 | 22. Globalization for Constrained Optimization |
-| Monday, November 23, 2026 | 23. Sequential Quadratic Programming |
-| Wednesday, November 25, 2026 | **No class, Thanksgiving holiday** |
-| Monday, November 30, 2026 | 24. Barrier and Interior Point Methods |
-| Wednesday, December 2, 2026 | 25. Integer Programming Algorithms |
-| Monday, December 7, 2026 | 26. Deterministic Global Optimization |
-| Wednesday, December 9, 2026 | 27. Optimization for Decision Support |
-| Tuesday, December 15, 2026 | **FINAL EXAM (in person), 7:30--9:30 pm** |

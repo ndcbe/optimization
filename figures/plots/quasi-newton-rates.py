@@ -16,8 +16,10 @@ Test problem: Rosenbrock, from x0 = (-1.2, 1). This is deliberately Nocedal &
 Wright's OWN comparison problem -- their function (2.22), and the table on
 printed p. 141 reports steepest descent / BFGS / Newton taking 5264 / 34 / 21
 iterations to drive the gradient norm to 1e-5 from this exact starting point,
-with Wolfe line searches. Measured at THAT criterion this script reproduces
-21 (Newton) and 34 (BFGS) -- exactly the printed table, not merely close.
+with Wolfe line searches. This script uses Armijo backtracking instead (see
+`armijo_step`); measured at THAT criterion it still reproduces 21 (Newton) and
+34 (BFGS) -- exactly the printed table, not merely close -- because on this run
+the Wolfe curvature test never changes an accepted Newton or BFGS step.
 The counts to this script's own GTOL = 1e-11 are 22 and 37, and quoting those
 against the book's 1e-5 figures compares two different stopping rules; an
 earlier version of this docstring did, and called the exact reproduction
@@ -79,19 +81,21 @@ def hess(x):
     )
 
 
-def wolfe_step(x, p, c1=1e-4, c2=0.9):
-    """Backtrack from alpha = 1 until both Wolfe conditions hold.
+def armijo_step(x, p, c1=1e-4, rho=0.5):
+    """Backtrack from alpha = 1 until the Armijo condition holds.
 
-    The Wolfe conditions are not decoration here: Nocedal & Wright, printed
-    p. 138, (6.8), show they are what guarantees the BFGS curvature condition
-    s^T y > 0, and therefore what keeps B^k positive definite.
+    This is Biegler's Algorithm 3.2 and Nocedal & Wright's Algorithm 3.1 (printed
+    p. 37). No Goldstein or Wolfe test belongs inside a shrinking loop: those
+    tests reject steps that are too SHORT, which shrinking cannot repair. The
+    accepted step is either 1 or within a factor rho of a trial rejected for
+    being too long, so it is not too short (Nocedal & Wright, p. 37). BFGS
+    positive definiteness therefore relies on the s^T y skip test in run().
     """
     a, f0, slope = 1.0, f(x), grad(x) @ p
     for _ in range(60):
-        xn = x + a * p
-        if f(xn) <= f0 + c1 * a * slope and grad(xn) @ p >= c2 * slope:
+        if f(x + a * p) <= f0 + c1 * a * slope:
             return a
-        a *= 0.5
+        a *= rho
     return a
 
 
@@ -117,7 +121,7 @@ def run(kind):
                 note = f"ascent at k={k}"
                 break
 
-        s = wolfe_step(x, p) * p
+        s = armijo_step(x, p) * p
         xn = x + s
         y = grad(xn) - g
 
@@ -158,7 +162,7 @@ def make_figure():
                 ha="right", va="center")
     label_curve(ax, 37.0, 3e-6, "BFGS\n(superlinear)", fontsize=13,
                 ha="left", va="center")
-    label_curve(ax, 47.0, 1.2e1, "steepest descent (linear)", fontsize=13,
+    label_curve(ax, 47.0, 5.0e1, "steepest descent (linear)", fontsize=13,
                 ha="center", va="bottom")
 
     # SR1 stops. Mark the stop, name the mechanism, do not hide it.

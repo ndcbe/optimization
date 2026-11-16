@@ -3,7 +3,7 @@
 ```{note}
 This page is generated from the instructor's master calendar. If it disagrees with Canvas, Canvas wins.
 
-The October 29 update confirms the schedule through November 11. Topic dates after the second midterm are being revised.
+Lecture 18 was taught on November 16. Topic dates for Lectures 19--27 are being revised.
 ```
 
 ## Assignments
@@ -56,9 +56,9 @@ Mondays and Wednesdays, 12:30 -- 1:45 pm, 184 Nieuwland Science Hall.
 | Wednesday, October 28, 2026 | 15. Newton Methods for Unconstrained Optimization — taught |
 | Monday, November 2, 2026 | 16. Quasi-Newton Methods |
 | Wednesday, November 4, 2026 | 17. Line Search and Trust Regions |
-| Monday, November 9, 2026 | 18. Introduction to Constrained Optimization — AIChE travel; lecture delivery details forthcoming |
+| Monday, November 9, 2026 | AIChE travel — Lecture 18 moved to November 16 |
 | Wednesday, November 11, 2026 | **MIDTERM 2, in class, proctored** |
-| Monday, November 16, 2026 | Topic to be announced |
+| Monday, November 16, 2026 | 18. Introduction to Constrained Optimization — taught |
 | Wednesday, November 18, 2026 | Topic to be announced |
 | Monday, November 23, 2026 | Topic to be announced |
 | Wednesday, November 25, 2026 | **No class, Thanksgiving holiday** |

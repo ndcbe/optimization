@@ -16,4 +16,15 @@ def make_figure():
     axs[2].set_title(r"(3) $f=0,\ \mathcal{F}=\mathbb{R}$",fontsize=11)
     for ax in axs:
         ax.axhline(0,color="black",linewidth=.6);ax.set(xlabel="decision x",ylabel="f(x)",xlim=(-1.5,1.7))
+    # Annotations replace a prose key below the figure (instructor markup, 2026-11-16).
+    note=dict(fontsize=8.5,ha="center",va="center")
+    arrow=dict(arrowstyle="->",color="0.25",linewidth=.8)
+    out=r"objective, $x\notin\mathcal{F}$"
+    axs[0].annotate(out,xy=(-.75,.5625),xytext=(-.2,2.55),arrowprops=arrow,**note)
+    axs[0].annotate(r"candidate $x^*$",xy=(1,1),xytext=(.35,1.55),arrowprops=arrow,**note)
+    axs[0].annotate("feasible",xy=(1.45,2.1),xytext=(.75,2.1),arrowprops=arrow,**note)
+    axs[1].annotate(r"candidate $x^*$",xy=(0,0),xytext=(-.55,1.1),arrowprops=arrow,**note)
+    axs[1].annotate(out,xy=(.9,.9),xytext=(.55,-1.0),arrowprops=arrow,**note)
+    axs[2].annotate(r"candidate $x^*$",xy=(0,0),xytext=(.1,.028),arrowprops=arrow,**note)
+    axs[2].annotate("every point is feasible",xy=(-.9,0),xytext=(-.1,-.03),arrowprops=arrow,**note)
     return fig

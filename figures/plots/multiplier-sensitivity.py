@@ -7,23 +7,16 @@ The KKT-multipliers handout derives
 
     lim_{eps -> 0} [ f(x^eps) - f(x*) ] / eps  =  u*_ihat            Biegler p. 73
 
-then checks it twice by hand -- once on Example 4.7, once on the weak-activity
-variation -- and then lists two limitations in a box: "only a linearization"
-and "loses meaning when the active set changes". Three separate algebraic
-verifications, no picture, and the two limitations are asserted rather than
-shown.
+then checks it on Example 4.7 and its weak-activity variation. The two panels
+compare the exact value function with its first-order prediction at eps=0.
 
-All five statements are the SAME picture: the optimal value as a function of
-the perturbation, and a straight line of slope u* through it.
-
-  * the multiplier IS the slope at eps = 0, in both panels;
-  * "only a linearization" is the gap between the curve and the line;
-  * "loses meaning when the active set changes" is the active-set transition at eps = -1/2 in
-    the left panel, past which the old tangent predicts a NEGATIVE objective while
-    the truth is flat at zero;
-  * and the asymmetry the handout points out in the weak case -- "the one-sided
-    behaviour is invisible to a single number" -- is the right panel, where one
-    side of the tangent is exact and the other is not.
+  * the multiplier is the slope at zero in both panels;
+  * the curve/line gap shows the finite-change error;
+  * the left active-set transition is at eps=-1/2. The original tangent at
+    zero predicts negative values there, while the true value is zero;
+  * both value functions remain C1 at their active-set transitions. Recheck
+    the local branch and derivative rather than assuming a kink;
+  * in the weak case, loosening costs nothing while tightening costs eps^2.
 
 The two problems (both Biegler's; the handout works both)
 ---------------------------------------------------------
@@ -31,7 +24,7 @@ LEFT, Example 4.7, p. 73.  Perturb the LOWER bound by eps:
 
     min x^2  s.t.  1/2 + eps <= x <= 1
     x*   = 1/2,  u*_L = 1,  u*_U = 0,  strict complementarity HOLDS
-    V(eps) = (1/2 + eps)^2     for eps >= -1/2       lower bound active
+    V(eps) = (1/2 + eps)^2     for -1/2 <= eps <= 1/2   lower bound active
            = 0                 for eps <= -1/2       lower bound goes SLACK
     upper end eps = 1/2: beyond it 1/2 + eps > 1 and the problem is infeasible.
 
@@ -51,8 +44,8 @@ independent numerical solution that happens to agree with it.
 
     left  V(0) = 0.250000, V'(0+) = V'(0-) = 1.000000 = u*_L     matches p. 74
     right V(0) = 0.000000, V'(0+) = V'(0-) = 0.000000 = u*_L     matches p. 74
-    left  transition at eps = -0.5, where the active set changes; the tangent there
-          predicts -0.25 and the truth is 0.
+    left  transition at eps = -0.5, where the active set changes; the
+          original tangent at eps=0 predicts -0.25 and the truth is 0.
     right at eps = 0.15 the tangent predicts 0 and the truth is 0.0225 = eps^2.
 
 The handout's own arithmetic check, lim (eps + eps^2)/eps = 1, is the left
@@ -159,32 +152,32 @@ def make_figure():
     ax.set_ylabel(r"$f(x^{\epsilon})$")
     ax.annotate(r"slope $= u^*_L = 1$", xy=(0.285, 0.535), xytext=(-0.245, 0.635),
                 fontsize=13, ha="left", va="center", zorder=8, bbox=BOX,
-                arrowprops=dict(arrowstyle="-", lw=0.9, color="black"))
-    ax.annotate("active set changes here:\nthe lower bound goes slack,\n"
-                "and the tangent goes negative",
+                arrowprops=dict(arrowstyle="->", lw=0.9, color="black"))
+    ax.annotate("active set changes here;\nlower bound goes slack;\n"
+                "value stays differentiable",
                 xy=(-0.5, 0.0), xytext=(-0.72, 0.44), fontsize=11.5, ha="left",
                 va="center", zorder=8,
                 bbox=dict(boxstyle="round,pad=0.14", fc="white", ec="0.55", lw=0.8),
-                arrowprops=dict(arrowstyle="-", lw=0.9, color="black"))
+                arrowprops=dict(arrowstyle="->", lw=0.9, color="black"))
     ax.annotate(r"$f(x^*) = \frac{1}{4}$", xy=(0.035, 0.215), fontsize=12.5, ha="left",
                 va="top", zorder=8, bbox=BOX)
-    ax.annotate("strongly active:\n$u^*_L > 0$", xy=(-0.70, -0.215), fontsize=12.5,
+    ax.annotate("at $\\epsilon=0$:\nstrongly active\n$u^*_L > 0$", xy=(-0.70, -0.17), fontsize=11.5,
                 ha="left", va="center", zorder=8, bbox=BOX)
 
     # ---- right: the variation, weakly active lower bound, u*_L = 0 ---------
     ax = axes[1]
     _panel(ax, 0.0, 0.0, r"$\min\ x^2$   s.t.   $\epsilon \leq x \leq 1$")
-    ax.annotate(r"tangent, slope $= u^*_L = 0$", xy=(0.32, 0.0), xytext=(-0.30, -0.13),
+    ax.annotate(r"tangent, slope $= u^*_L = 0$", xy=(0.32, 0.0), xytext=(-0.30, 0.15),
                 fontsize=12.5, ha="left", va="center", zorder=8, bbox=BOX,
-                arrowprops=dict(arrowstyle="-", lw=0.9, color="black"))
+                arrowprops=dict(arrowstyle="->", lw=0.9, color="black"))
     ax.annotate("tighten: costs $\\epsilon^2$,\nnot $0\\cdot\\epsilon$",
                 xy=(0.30, 0.095), xytext=(-0.12, 0.47), fontsize=12, ha="left",
                 va="center", zorder=8, bbox=BOX,
-                arrowprops=dict(arrowstyle="-", lw=0.9, color="black"))
+                arrowprops=dict(arrowstyle="->", lw=0.9, color="black"))
     ax.annotate("loosen: the tangent\nis exact", xy=(-0.35, 0.0), xytext=(-0.72, 0.32),
                 fontsize=12, ha="left", va="center", zorder=8, bbox=BOX,
-                arrowprops=dict(arrowstyle="-", lw=0.9, color="black"))
-    ax.annotate("weakly active:\n$u^*_L = 0$", xy=(-0.70, -0.215), fontsize=12.5,
+                arrowprops=dict(arrowstyle="->", lw=0.9, color="black"))
+    ax.annotate("at $\\epsilon=0$:\nweakly active\n$u^*_L = 0$", xy=(-0.70, -0.17), fontsize=11.5,
                 ha="left", va="center", zorder=8, bbox=BOX)
 
     fig.tight_layout()

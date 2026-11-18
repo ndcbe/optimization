@@ -9,10 +9,11 @@ def make_figure():
     ax.axvline(0,color="0.4",linestyle="--",linewidth=1)
     ax.plot(1,f(1),'o',color="#0072B2",ms=7);ax.plot(-1,f(-1),'s',color="#D55E00",ms=7)
     ax.plot([.7,1.3],[-.4,-.4],color="#0072B2",linestyle="--",linewidth=2)
-    ax.text(.55,1.85,r"$g(x)=-x\leq0$",fontsize=12)
+    ax.annotate("local neighborhood",xy=(1,-.4),xytext=(.2,-.79),fontsize=10,arrowprops=dict(arrowstyle="->",lw=.8),bbox=dict(facecolor="white",edgecolor="none",pad=1))
+    ax.text(.55,1.85,"feasible\n"+r"$g(x)=-x\leq0$",fontsize=11)
     ax.annotate(r"$x^*=1$",xy=(1,f(1)),xytext=(.8,.8),arrowprops=dict(arrowstyle='->'),fontsize=12)
     ax.annotate(r"$x=-1$",xy=(-1,f(-1)),xytext=(-1.5,.5),arrowprops=dict(arrowstyle='->'),fontsize=12)
-    ax.set(xlim=(-1.65,1.65),ylim=(-.6,2.9),xlabel="decision x",ylabel="objective f(x)")
+    ax.set(xlim=(-1.65,1.65),ylim=(-1.0,2.9),xlabel="decision x",ylabel="objective f(x)")
     for ax in [ax]:
         ax.axhline(0,color="black",lw=.7,zorder=0)
         ax.axvline(0,color="black",lw=.7,zorder=0)

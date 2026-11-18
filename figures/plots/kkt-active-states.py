@@ -11,7 +11,7 @@ def make_figure():
         star=max(a,0);ax.plot(star,(star-a)**2,'o',color="#0072B2",ms=6)
         ax.set(xlim=(-1.4,1.9),ylim=(-.15,4.4),xlabel="x",title=rf"({index}) $f=(x-({a}))^2$")
         ax.title.set_fontsize(11)
-        ax.text(.10,3.7,r"$g\leq0$",fontsize=10,bbox=dict(facecolor="white",edgecolor="none",pad=1))
+        ax.text(.10,3.2,"feasible\n"+r"$x\geq0$",fontsize=10,bbox=dict(facecolor="white",edgecolor="none",pad=1))
     axs[0].set_ylabel("f(x)")
     for ax in axs:
         ax.axhline(0,color="black",lw=.7,zorder=0)

@@ -144,41 +144,24 @@ def _panel(ax, lower0, mult, title, kink=None):
 
 def make_figure():
     _report()
-    fig, axes = plt.subplots(1, 2, figsize=(9.2, 4.3), sharey=True)
-
-    # ---- left: Example 4.7, strongly active lower bound, u*_L = 1 ----------
-    ax = axes[0]
-    _panel(ax, 0.5, 1.0, r"$\min\ x^2$   s.t.   $\frac{1}{2} + \epsilon \leq x \leq 1$", kink=-0.5)
-    ax.set_ylabel(r"$f(x^{\epsilon})$")
-    ax.annotate(r"slope $= u^*_L = 1$", xy=(0.285, 0.535), xytext=(-0.245, 0.635),
-                fontsize=13, ha="left", va="center", zorder=8, bbox=BOX,
-                arrowprops=dict(arrowstyle="->", lw=0.9, color="black"))
-    ax.annotate("active set changes here;\nlower bound goes slack;\n"
-                "value stays differentiable",
-                xy=(-0.5, 0.0), xytext=(-0.72, 0.44), fontsize=11.5, ha="left",
-                va="center", zorder=8,
-                bbox=dict(boxstyle="round,pad=0.14", fc="white", ec="0.55", lw=0.8),
-                arrowprops=dict(arrowstyle="->", lw=0.9, color="black"))
-    ax.annotate(r"$f(x^*) = \frac{1}{4}$", xy=(0.035, 0.215), fontsize=12.5, ha="left",
-                va="top", zorder=8, bbox=BOX)
-    ax.annotate("at $\\epsilon=0$:\nstrongly active\n$u^*_L > 0$", xy=(-0.70, -0.17), fontsize=11.5,
-                ha="left", va="center", zorder=8, bbox=BOX)
-
-    # ---- right: the variation, weakly active lower bound, u*_L = 0 ---------
-    ax = axes[1]
-    _panel(ax, 0.0, 0.0, r"$\min\ x^2$   s.t.   $\epsilon \leq x \leq 1$")
-    ax.annotate(r"tangent, slope $= u^*_L = 0$", xy=(0.32, 0.0), xytext=(-0.30, 0.15),
-                fontsize=12.5, ha="left", va="center", zorder=8, bbox=BOX,
-                arrowprops=dict(arrowstyle="->", lw=0.9, color="black"))
-    ax.annotate("tighten: costs $\\epsilon^2$,\nnot $0\\cdot\\epsilon$",
-                xy=(0.30, 0.095), xytext=(-0.12, 0.47), fontsize=12, ha="left",
-                va="center", zorder=8, bbox=BOX,
-                arrowprops=dict(arrowstyle="->", lw=0.9, color="black"))
-    ax.annotate("loosen: the tangent\nis exact", xy=(-0.35, 0.0), xytext=(-0.72, 0.32),
-                fontsize=12, ha="left", va="center", zorder=8, bbox=BOX,
-                arrowprops=dict(arrowstyle="->", lw=0.9, color="black"))
-    ax.annotate("at $\\epsilon=0$:\nweakly active\n$u^*_L = 0$", xy=(-0.70, -0.17), fontsize=11.5,
-                ha="left", va="center", zorder=8, bbox=BOX)
-
+    eps = np.linspace(EPS_LO, EPS_HI, 1201)
+    fig, axes = plt.subplots(1, 2, figsize=(8.1, 2.8), sharey=True)
+    titles = [r"$\min x^2,\quad \frac{1}{2}+\epsilon\leq x\leq1$",
+              r"$\min x^2,\quad \epsilon\leq x\leq1$"]
+    for ax, lower0, mult, title in zip(axes, [.5, 0.], [1., 0.], titles):
+        v0 = value(0., lower0)
+        ax.plot(eps, curve(lower0, eps), color=VALUE, lw=2.2, ls="-",
+                label="exact objective value", zorder=3)
+        ax.plot(eps, v0+mult*eps, color=TANGENT, lw=1.8, ls="--",
+                label="first-order approximation", zorder=4)
+        ax.plot(0., v0, "o", color="black", ms=4, zorder=5)
+        ax.axhline(0., color="black", lw=.6, zorder=0)
+        ax.axvline(0., color="black", lw=.6, zorder=0)
+        ax.set(xlim=(EPS_LO,EPS_HI),ylim=(-.30,.72),xlabel=r"$\epsilon$",title=title)
+        ax.title.set_fontsize(12)
+    axes[0].set_ylabel(r"$f(x^\epsilon)$")
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="upper center", bbox_to_anchor=(.5,1.02),
+               ncol=2, frameon=False, fontsize=10)
     fig.tight_layout()
     return fig

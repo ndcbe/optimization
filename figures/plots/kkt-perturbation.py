@@ -13,7 +13,7 @@ def make_figure():
     ax.text(1.31,.69,r"$g+\epsilon=0$",fontsize=11)
     ax.text(.60,1.68,r"$h=x_2-x_1=0$",fontsize=11)
     ax.text(.7,.84,r"$\mathbf{x}^*$",fontsize=12);ax.text(1.36,1.17,r"$\mathbf{x}^{\epsilon}$",fontsize=12)
-    ax.text(.74,.61,r"$b=1,\quad\epsilon=0.3$",fontsize=11)
+    ax.text(1.47,.83,r"$\epsilon=0.3$",fontsize=11)
     ax.set(xlim=(.55,1.85),ylim=(.55,1.8),xlabel=r"$x_1$",ylabel=r"$x_2$")
     for ax in [ax]:
         ax.axhline(0,color="black",lw=.7,zorder=0)

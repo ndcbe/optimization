@@ -12,7 +12,7 @@ def make_figure():
     ax.annotate("local neighborhood",xy=(1,-.4),xytext=(.2,-.79),fontsize=10,arrowprops=dict(arrowstyle="->",lw=.8),bbox=dict(facecolor="white",edgecolor="none",pad=1))
     ax.text(.55,1.85,"feasible\n"+r"$g(x)=-x\leq0$",fontsize=11)
     ax.annotate(r"$x^*=1$",xy=(1,f(1)),xytext=(.8,.8),arrowprops=dict(arrowstyle='->'),fontsize=12)
-    ax.annotate(r"$x=-1$",xy=(-1,f(-1)),xytext=(-1.5,.5),arrowprops=dict(arrowstyle='->'),fontsize=12)
+    ax.annotate("$x=-1$\nnot feasible",xy=(-1,f(-1)),xytext=(-.95,1.65),ha="center",arrowprops=dict(arrowstyle="->"),fontsize=11,bbox=dict(facecolor="white",edgecolor="none",pad=1))
     ax.set(xlim=(-1.65,1.65),ylim=(-1.0,2.9),xlabel="decision x",ylabel="objective f(x)")
     for ax in [ax]:
         ax.axhline(0,color="black",lw=.7,zorder=0)

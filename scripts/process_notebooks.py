@@ -12,7 +12,8 @@ import sys
 # matters: the stripper stops recognising a block, the checker keeps saying the
 # block is fine.
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from check_solution_leaks import published_answer_findings  # noqa: E402
+from check_solution_leaks import (  # noqa: E402
+    MD_SOLUTION_BLOCK, markdown_solution_findings, published_answer_findings)
 
 # ---------------------------------------------------------------------------
 # AI-review banner
@@ -286,6 +287,36 @@ def process_notebook(folder_original, folder_new, filename, verbose=1):
     replace_code(SOLUTION_CODE, "# Add your solution here", clear_outputs=True)
     replace_code(HIDDEN_TESTS, "# Removed autograder test. You may delete this cell.",
                  clear_outputs=True)
+
+    # -----------------------------------------------------------------------
+    # Markdown solutions (2026-11-20): typeset answers to analytic questions,
+    # between '<!-- BEGIN SOLUTION -->' and '<!-- END SOLUTION -->' lines in a
+    # markdown cell. Validate first -- a malformed block is not matched by the
+    # strip pattern and would publish -- then delete each block, and delete a
+    # cell that held nothing but solutions so no empty cell is left behind.
+    md_findings = []
+    for i, cell in enumerate(nb.cells):
+        if cell.cell_type == "markdown":
+            md_findings += markdown_solution_findings(
+                cell.source, where=f"{input_notebook}: cell {i}: ")
+    if md_findings:
+        print(f"\nABORT: malformed markdown SOLUTION marker in {input_notebook}:")
+        for f in md_findings:
+            print(f"  {f}")
+        raise SystemExit(1)
+    md_stripped, md_dropped, kept = 0, 0, []
+    for cell in nb.cells:
+        if cell.cell_type == "markdown" and MD_SOLUTION_BLOCK.search(cell.source):
+            cell.source = MD_SOLUTION_BLOCK.sub("", cell.source)
+            md_stripped += 1
+            if not cell.source.strip():
+                md_dropped += 1
+                continue
+        kept.append(cell)
+    nb.cells = kept
+    if verbose >= 1 and md_stripped:
+        print(f"  Stripped markdown solutions from {md_stripped} cell(s); "
+              f"dropped {md_dropped} cell(s) left empty")
 
     # -----------------------------------------------------------------------
     # Cells whose OUTPUT is an answer even though their SOURCE is not.
@@ -621,6 +652,38 @@ def selftest():
         s3 = "".join(pub[3]["source"])
         check("hidden tests stripped, outputs cleared",
               "HIDDEN TESTS" not in s3 and not pub[3]["outputs"], s3)
+
+        # Markdown solutions (2026-11-20): a solution-only cell disappears, a
+        # mixed cell keeps its prompt, and nothing of the answer survives.
+        write("md.ipynb", _selftest_nb([
+            _sm("**Answer:**\n"),
+            _sm("<!-- BEGIN SOLUTION -->\n$u_1 = u_2 = 2/3$\n<!-- END SOLUTION -->\n"),
+            _sm("Prompt text.\n\n<!-- BEGIN SOLUTION -->\nsecret 2/3\n"
+                "<!-- END SOLUTION -->\nAfter.\n"),
+        ]))
+        process_notebook(src_dir, out_dir, "md.ipynb", verbose=0)
+        with open(os.path.join(out_dir, "md.ipynb")) as fp:
+            mpub = ["".join(c["source"]) for c in json.load(fp)["cells"]]
+        check("solution-only markdown cell is dropped",
+              len(mpub) == 2, repr(mpub))
+        check("mixed markdown cell keeps its prompt and loses the answer",
+              any("Prompt text." in s and "After." in s and "secret" not in s
+                  for s in mpub), repr(mpub))
+        check("no markdown solution text or marker survives",
+              not any("2/3" in s or "SOLUTION" in s for s in mpub), repr(mpub))
+
+        # Must ABORT: an unclosed markdown solution would publish the answer.
+        write("mdbad.ipynb", _selftest_nb([
+            _sm("<!-- BEGIN SOLUTION -->\n$u = 2/3$\n")]))
+        try:
+            process_notebook(src_dir, out_dir, "mdbad.ipynb", verbose=0)
+        except SystemExit:
+            check("unclosed markdown SOLUTION aborts the publish", True)
+        else:
+            check("unclosed markdown SOLUTION aborts the publish", False,
+                  "it published instead")
+        check("the aborted markdown notebook was NOT written",
+              not os.path.exists(os.path.join(out_dir, "mdbad.ipynb")))
 
         # Must NOT abort: the AI-review banner INSERTS a cell, which lengthens
         # the per-cell count list. The first version of the pass-through guard

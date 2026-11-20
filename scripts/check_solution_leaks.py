@@ -23,7 +23,9 @@ on every build is the difference between "fixed" and "stays fixed".
 WHAT IT CHECKS
 --------------
 1. No solution/hidden-test MARKER survives in a published notebook, in any cell
-   type. (markdown is not stripped, so a marker there would publish verbatim.)
+   type. That includes the MARKDOWN solution marker `<!-- BEGIN SOLUTION -->`
+   (below); a `###` solution marker in markdown is never stripped, so it would
+   publish verbatim.
 2. No published cell whose source was REWRITTEN by the pipeline -- i.e. carries
    the "Add your solution here" or "Removed autograder test" substitute -- still
    has stored `outputs`. This is the check that would have caught 2026-08-21.
@@ -37,6 +39,21 @@ WHAT IT CHECKS
 5. No solution/hidden-test marker appears in a published cell's stored OUTPUTS.
    Source-only checks are exactly what stayed clean through 2026-08-21.
 6. PUBLISHED ANSWER blocks (below) are well formed everywhere they appear.
+7. MARKDOWN SOLUTION blocks (below) are well formed in the SOURCES: matched,
+   unnested, and spelled exactly, because a malformed one is not stripped.
+
+MARKDOWN SOLUTIONS (added 2026-11-20)
+-------------------------------------
+Typeset answers to analytic questions live in the instructor notebook as
+markdown, between
+
+    <!-- BEGIN SOLUTION -->   ...   <!-- END SOLUTION -->
+
+`process_notebooks.py` deletes the block when it publishes, and deletes the
+whole cell if nothing else is left in it. The HTML-comment spelling renders as
+nothing in the instructor copy, as the PUBLISHED ANSWER markdown marker does.
+A markdown block that is meant to be PUBLISHED uses PUBLISHED ANSWER instead;
+the two are distinct words, so they cannot be confused.
 
 THE PUBLISHED-ANSWER EXCEPTION
 ------------------------------
@@ -158,6 +175,52 @@ PA_MARKER = re.compile(
 NEAR_MISS = re.compile(r"\b(?:BEGIN|END)[ \t]+PUBLISHED[ \t]+ANSWER\b")
 
 # Solution markers must never appear inside a published-answer block.
+# ---------------------------------------------------------------------------
+# Markdown solution blocks (2026-11-20). Shared with process_notebooks.py, which
+# imports these, so the stripper and the checker cannot disagree on the syntax.
+MD_SOLUTION_MARKER = re.compile(
+    r"^[ \t]*<!--[ \t]*(BEGIN|END)[ \t]+SOLUTION[ \t]*-->[ \t]*$")
+MD_SOLUTION_BLOCK = re.compile(
+    r"^[ \t]*<!--[ \t]*BEGIN[ \t]+SOLUTION[ \t]*-->[ \t]*\n"
+    r".*?"
+    r"^[ \t]*<!--[ \t]*END[ \t]+SOLUTION[ \t]*-->[ \t]*(?:\n|\Z)",
+    re.M | re.S)
+# Any mention of BEGIN/END SOLUTION in markdown that is not an exact marker
+# line. A near miss is not stripped, so it must fail rather than publish.
+MD_SOLUTION_NEAR_MISS = re.compile(r"\b(BEGIN|END)[ \t]+SOLUTION\b")
+MD_SOLUTION_ANYWHERE = re.compile(r"<!--[ \t]*(BEGIN|END)[ \t]+SOLUTION")
+
+
+def markdown_solution_findings(src, where=""):
+    """Problems with markdown solution markers in one markdown cell's source."""
+    findings, depth, open_line = [], 0, None
+    for lineno, line in enumerate(src.splitlines(), start=1):
+        m = MD_SOLUTION_MARKER.match(line)
+        if not m:
+            if MD_SOLUTION_NEAR_MISS.search(line) and "### " not in line:
+                findings.append(
+                    f"{where}line {lineno}: {line.strip()!r} looks like a markdown "
+                    f"solution marker but is not one; it must be a bare line "
+                    f"'<!-- BEGIN SOLUTION -->' or '<!-- END SOLUTION -->'. "
+                    f"Not stripped, so it would publish")
+            continue
+        if m.group(1) == "BEGIN":
+            if depth:
+                findings.append(f"{where}line {lineno}: nested "
+                                f"'<!-- BEGIN SOLUTION -->' (opened on line {open_line})")
+            depth, open_line = depth + 1, lineno
+        else:
+            if not depth:
+                findings.append(f"{where}line {lineno}: '<!-- END SOLUTION -->' "
+                                f"with no matching BEGIN in this cell")
+            else:
+                depth -= 1
+    if depth:
+        findings.append(f"{where}'<!-- BEGIN SOLUTION -->' on line {open_line} is "
+                        f"never closed in this cell; the answer would publish")
+    return findings
+
+
 SOLUTION_MARKER_LINE = re.compile(
     r"^\s*### (?:BEGIN|END) (?:SOLUTION|HIDDEN TESTS)\s*$")
 
@@ -293,6 +356,11 @@ def check_published(paths):
                     findings.append(
                         f"{rel}: cell {i} ({cell.get('cell_type')}) still contains "
                         f"{marker!r}")
+            if MD_SOLUTION_ANYWHERE.search(src):
+                findings.append(
+                    f"{rel}: cell {i} ({cell.get('cell_type')}) still contains a "
+                    f"markdown solution marker '<!-- ... SOLUTION -->'; the "
+                    f"typeset answer was published")
 
             # The published-answer marker is ALLOWED to survive here -- that is
             # the whole point of it -- but only well formed. A half-open block
@@ -357,6 +425,8 @@ def check_sources(paths):
             findings += pa
 
             if cell.get("cell_type") == "markdown":
+                findings += markdown_solution_findings(
+                    src, where=f"{path}: cell {i}: ")
                 for marker in LIVE_MARKERS:
                     if marker in src:
                         findings.append(
@@ -469,6 +539,9 @@ PA_CODE_OK = ("### BEGIN PUBLISHED ANSWER\n"
               "# 4 foods, 3 nutrient constraints -> 1 degree of freedom\n"
               "print('cost = 2.28')\n"
               "### END PUBLISHED ANSWER\n")
+MD_SOL_OK = ("<!-- BEGIN SOLUTION -->\n"
+             "**Solution.** Both constraints are active, so $u_1 = u_2 = 2/3$.\n"
+             "<!-- END SOLUTION -->\n")
 PA_MD_OK = ("Check your work.\n"
             "\n"
             "<!-- BEGIN PUBLISHED ANSWER -->\n"
@@ -563,6 +636,27 @@ def selftest():
             ("PUBLISHED ANSWER cell also tagged drop-output",
              check_sources,
              write("p.ipynb", _nb([_code(PA_CODE_OK, tags=["drop-output"])]))),
+
+            # --- markdown solution blocks (2026-11-20) ----------------------
+            ("markdown SOLUTION block survives in a published notebook",
+             check_published,
+             write("q.ipynb", _nb([_md(MD_SOL_OK)]))),
+            ("markdown '<!-- BEGIN SOLUTION -->' never closed (source)",
+             check_sources,
+             write("r.ipynb", _nb([_md("<!-- BEGIN SOLUTION -->\n"
+                                       "u = 2/3\n")]))),
+            ("markdown solution marker misspelled (source)",
+             check_sources,
+             write("s.ipynb", _nb([_md("<!-- BEGIN SOLUTION\n"
+                                       "u = 2/3\n"
+                                       "<!-- END SOLUTION -->\n")]))),
+            ("nested markdown solution blocks (source)",
+             check_sources,
+             write("t.ipynb", _nb([_md("<!-- BEGIN SOLUTION -->\n"
+                                       "<!-- BEGIN SOLUTION -->\n"
+                                       "x\n"
+                                       "<!-- END SOLUTION -->\n"
+                                       "<!-- END SOLUTION -->\n")]))),
         ]
         for label, fn, path in cases:
             found = fn([path])
@@ -572,6 +666,17 @@ def selftest():
             print(f"  [{status:13s}] {label}")
             for f in found:
                 print(f"                  -> {f}")
+
+        # A well-formed markdown solution is fine in a SOURCE notebook.
+        md_src = write("mdsol.ipynb", _nb([_md("**Answer:**\n"), _md(MD_SOL_OK)]))
+        found = check_sources([md_src])
+        if found:
+            ok = False
+            print("  [FALSE POSITIVE] a well-formed markdown solution was flagged:")
+            for f in found:
+                print(f"                  -> {f}")
+        else:
+            print("  [clean passes  ] a well-formed markdown solution passes in a source")
 
         clean = write("ok.ipynb", _nb([
             _code("# Add your solution here\n"),

@@ -286,6 +286,34 @@ def install_highs(verbose=False):
         print("highspy was successfully installed")
 
 
+def install_scip(verbose=False):
+    """Installs SCIP via pip (the PySCIPOpt package bundles the SCIP library)
+
+    SCIP is a global MINLP solver. It is used from Pyomo via
+    `pyo.SolverFactory('scip_direct')`. Locally it comes from environment.yml.
+
+    Argument:
+        verbose: bool, if True, display console output from pip install
+    """
+
+    try:
+        import pyscipopt
+
+        print("pyscipopt was found! No need to install.")
+    except ImportError:
+        print("Installing pyscipopt via pip...")
+        v = subprocess.run(
+            [sys.executable, "-m", "pip", "install", "-q", "pyscipopt"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        if verbose:
+            print(v.stdout)
+            print(v.stderr)
+        print("pyscipopt was successfully installed")
+
+
 def install_casadi(verbose=False):
     """Installs CasADi via pip
 

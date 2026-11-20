@@ -60,6 +60,8 @@ Verified 2026-08-17 and again 2026-08-22 on macOS (Apple Silicon), the second ti
 a machine that had never had the environment: Python 3.13.15, Pyomo 6.10.1, NumPy 2.5.2, pandas 3.0.5,
 Ipopt 3.13.2, GLPK 5.0. Pyomo reports `glpk`, `cbc`, `ipopt`, `couenne`, `bonmin`, `appsi_highs` and `k_aug`
 all available; `gurobi` needs its own licence and is not expected to work out of the box.
+`scip_direct` (SCIP 10.0.3 via PySCIPOpt 6.2.1) was added 2026-11-20 for Algorithms 6 and verified on
+macOS (Apple Silicon) in an existing environment; it has not been re-verified from a clean create.
 
 > **If a solver seems missing, check your `PATH` before believing it.** `SolverFactory("glpk").available()`
 > returns `False` when `glpsol` is installed but not visible — most often because the interpreter was called

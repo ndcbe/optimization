@@ -360,6 +360,7 @@ def easy_install(verbose=False):
     install_ipopt(verbose=verbose, try_conda_as_backup=True)
     install_highs(verbose=verbose)
     install_casadi(verbose=verbose)
+    install_scip(verbose=verbose)
 
 def _update_path():
     """Add idaes executables to PATH"""

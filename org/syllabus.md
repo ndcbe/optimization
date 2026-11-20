@@ -98,7 +98,7 @@ get wrong is not practice.
 
 **Your lowest homework score is dropped.** For many
 students this makes the final assignment effectively optional, which is deliberate: Prof. Dowling knows that
-the last week of the semester can be crazy.
+the last week of the semester can be crazy. This semester, Algorithms 6 is explicitly optional.
 
 Homework is designed around an **independent attempt followed by critical use of assistance**. Unless an
 assignment gives a different time, begin each problem by working for approximately **30 minutes without
@@ -208,6 +208,8 @@ exam period. Dates are on the [semester calendar](./calendar.md).
 | Midterm 1 | Wednesday, September 30, in class | open course pack / open binder |
 | Midterm 2 | Wednesday, November 11, in class | open course pack / open binder |
 | Final | Tuesday, December 15, 7:30--9:30 pm | open course pack / open binder |
+
+The final exam covers the lectures taught in class. Lectures 23, 25 and 26 are recorded, optional lectures this semester and are **not** on the final; see the [semester calendar](./calendar.md).
 
 All exams are **individual**. The only electronic device permitted is a scientific or graphing calculator
 (no network access or communication). No laptops, tablets, phones, smart watches, e-readers, or

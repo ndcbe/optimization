@@ -3,12 +3,12 @@
 ```{note}
 This page is generated from the instructor's master calendar. If it disagrees with Canvas, Canvas wins.
 
-Lecture 18 was taught on November 16. Topic dates for Lectures 19--27 are being revised.
+Revised November 20, 2026: Lectures 23, 25 and 26 are now recorded, optional lectures, and they are not on the final exam. Algorithms 4 and 5 have new scope and deadlines; Algorithms 6 is optional.
 ```
 
 ## Assignments
 
-Homework scope and late-semester deadlines are under review. The dates below remain the posted website deadlines until revisions are announced; check Canvas for current requirements.
+Late-semester homework was revised on November 20. Check Canvas for current requirements.
 
 | Deadline | Description |
 | ----------- | ----------- |
@@ -21,13 +21,13 @@ Homework scope and late-semester deadlines are under review. The dates below rem
 | Friday, October 23, 2026 | [](../notebooks/assignments/Algorithms1.ipynb) |
 | Friday, October 30, 2026 | [](../notebooks/assignments/Algorithms2.ipynb) |
 | Friday, November 13, 2026 | [](../notebooks/assignments/Algorithms3.ipynb) |
-| Friday, November 20, 2026 | [](../notebooks/assignments/Algorithms4.ipynb) |
-| Wednesday, December 2, 2026 | [](../notebooks/assignments/Algorithms5-SQP.ipynb) |
-| Wednesday, December 9, 2026 | [](../notebooks/assignments/Algorithms6-MINLP.ipynb) |
+| Friday, December 4, 2026 | Algorithms 4: KKT Conditions and Constraint Qualifications (revised; posting soon) |
+| Wednesday, December 9, 2026 | Algorithms 5: Interior Point Methods (revised; posting soon) |
+| Wednesday, December 9, 2026 | [](../notebooks/assignments/Algorithms6-MINLP.ipynb) --- **optional** |
 
 All assignments are due at 5pm unless otherwise noted.
 
-**Your lowest homework score is dropped** --- ten are set and the best nine count. See the
+**Your lowest homework score is dropped** --- ten are set and the best nine count. Algorithms 6 is optional: skip it and it is your dropped score, or complete it to replace a lower one. See the
 [syllabus](./syllabus.md).
 
 ## Exams
@@ -59,16 +59,20 @@ Mondays and Wednesdays, 12:30 -- 1:45 pm, 184 Nieuwland Science Hall.
 | Monday, November 9, 2026 | AIChE travel — Lecture 18 moved to November 16 |
 | Wednesday, November 11, 2026 | **MIDTERM 2, in class, proctored** |
 | Monday, November 16, 2026 | 18. Introduction to Constrained Optimization — taught |
-| Wednesday, November 18, 2026 | Topic to be announced |
-| Monday, November 23, 2026 | Topic to be announced |
+| Wednesday, November 18, 2026 | 19. KKT Conditions, Multipliers, and Sensitivity — taught |
+| Monday, November 23, 2026 | 20. Constraint Qualifications |
 | Wednesday, November 25, 2026 | **No class, Thanksgiving holiday** |
-| Monday, November 30, 2026 | Topic to be announced |
-| Wednesday, December 2, 2026 | Topic to be announced |
-| Monday, December 7, 2026 | Topic to be announced |
-| Wednesday, December 9, 2026 | Topic to be announced |
+| Monday, November 30, 2026 | 21. Second Order Conditions and Equality Constrained NLPs |
+| Wednesday, December 2, 2026 | 22. Globalization for Constrained Optimization |
+| Monday, December 7, 2026 | 24. Barrier and Interior Point Methods |
+| Wednesday, December 9, 2026 | 27. Optimization for Decision Support — last day of class |
 | Tuesday, December 15, 2026 | **FINAL EXAM (in person), 7:30--9:30 pm** |
 
-Dates for Lectures 19--27 are being revised. Their handouts and website references remain available; the revised teaching schedule will be posted here.
+**Recorded, optional lectures.** These are not taught in class and are **not on the final exam**. Recordings will be posted on Canvas; the handouts and website references remain available.
+
+- 23. Sequential Quadratic Programming
+- 25. Integer Programming Algorithms
+- 26. Deterministic Global Optimization
 
 ### Earlier original plan
 

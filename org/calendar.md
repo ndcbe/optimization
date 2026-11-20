@@ -21,7 +21,7 @@ Late-semester homework was revised on November 20. Check Canvas for current requ
 | Friday, October 23, 2026 | [](../notebooks/assignments/Algorithms1.ipynb) |
 | Friday, October 30, 2026 | [](../notebooks/assignments/Algorithms2.ipynb) |
 | Friday, November 13, 2026 | [](../notebooks/assignments/Algorithms3.ipynb) |
-| Friday, December 4, 2026 | Algorithms 4: KKT Conditions and Constraint Qualifications (revised; posting soon) |
+| Friday, December 4, 2026 | [](../notebooks/assignments/Algorithms4.ipynb) |
 | Wednesday, December 9, 2026 | Algorithms 5: Interior Point Methods (revised; posting soon) |
 | Wednesday, December 9, 2026 | [](../notebooks/assignments/Algorithms6-MINLP.ipynb) --- **optional** |
 

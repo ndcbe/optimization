@@ -22,8 +22,9 @@ Late-semester homework was revised on November 20. Check Canvas for current requ
 | Friday, October 30, 2026 | [](../notebooks/assignments/Algorithms2.ipynb) |
 | Friday, November 13, 2026 | [](../notebooks/assignments/Algorithms3.ipynb) |
 | Friday, December 4, 2026 | [](../notebooks/assignments/Algorithms4.ipynb) |
-| Wednesday, December 9, 2026 | Algorithms 5: Interior Point Methods (revised; posting soon) |
-| Wednesday, December 9, 2026 | [](../notebooks/assignments/Algorithms6-MINLP.ipynb) --- **optional** |
+| Wednesday, December 9, 2026 | [](../notebooks/assignments/Algorithms5.ipynb) |
+| Wednesday, December 9, 2026 | [](../notebooks/assignments/Algorithms6-MINLP.ipynb) |
+| Optional, not graded | [](../notebooks/assignments/Algorithms5-SQP.ipynb), practice for recorded Lecture 23 |
 
 All assignments are due at 5pm unless otherwise noted.
 

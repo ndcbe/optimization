@@ -209,7 +209,7 @@ exam period. Dates are on the [semester calendar](./calendar.md).
 | Midterm 2 | Wednesday, November 11, in class | open course pack / open binder |
 | Final | Tuesday, December 15, 7:30--9:30 pm | open course pack / open binder |
 
-The final exam covers the lectures taught in class. Lectures 23, 25 and 26 are recorded, optional lectures this semester and are **not** on the final; see the [semester calendar](./calendar.md).
+The final exam covers the lectures taught in class and the recorded, required Lecture 22. Lectures 23 and 26 are recorded, optional lectures this semester and are **not** on the final; see the [semester calendar](./calendar.md).
 
 All exams are **individual**. The only electronic device permitted is a scientific or graphing calculator
 (no network access or communication). No laptops, tablets, phones, smart watches, e-readers, or

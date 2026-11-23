@@ -1,0 +1,51 @@
+% The tangent cone of the smooth feasible set S = {x : x2 >= 0.2 x1^2} at xbar = (0,0).
+%
+%   figures/tikz/cq-tangent-cone-smooth.tex
+%       -> media/figures/cq-tangent-cone-smooth.{png,svg}
+%
+% Lecture 20 (Constraint Qualifications), section III.A "Feasible sequences and
+% limiting directions", beside cq-limiting-direction and Definition 20.3
+% (tangent cone; Biegler (4.26), p. 74; Nocedal & Wright Def. 12.2, p. 316).
+%
+% GEOMETRY (1 unit = 1 cm before scaling), n = 2, xbar = (0,0). SAME window and
+% scale as cq-limiting-direction, so the two panels read as a pair.
+%   Claim: T_S(xbar) = {w : w2 >= 0}, the closed upper half-plane.
+%   (subset)  z in S gives z2 >= 0.2 z1^2 >= 0, so w2 = lim z2/t >= 0.
+%   (superset) for any w with w2 >= 0 take z(t) = (t w1, t w2 + 0.2 t^2 w1^2);
+%             z2 = t w2 + 0.2 t^2 w1^2 >= 0.2 z1^2, so z(t) is in S, and
+%             (z(t) - xbar)/t = (w1, w2 + 0.2 t w1^2) -> w.
+%   Rays drawn at 0, 50, 90, 135 and 180 degrees: each is the limit of
+%   rescaled feasible chords. The 180-degree ray is reached along the LEFT
+%   branch of the parabola, which the left panel does not show.
+%   The dashed parabola is the boundary of S, kept for reference: S lies inside
+%   the cone, and the cone is the boundary line's slope-zero half-plane.
+%
+% GREYSCALE: black, grey and one light grey fill; no colour carries meaning.
+\begin{tikzpicture}[
+    scale=1.25,
+    >={Latex[length=2.0mm]},
+    font=\small,
+    lab/.style={font=\scriptsize, inner sep=1.5pt},
+  ]
+\begin{scope}
+  \clip (-0.6,-0.55) rectangle (2.3,2.15);
+  % the cone: closed upper half-plane
+  \fill[black!9] (-0.6,0) rectangle (2.3,2.15);
+  \draw[black!70, line width=1.0pt] (-0.6,0) -- (2.3,0);
+  % boundary of S, for reference
+  \draw[black!55, dashed, line width=0.6pt]
+     plot[domain=-0.6:2.3, samples=40] (\x, {0.2*\x*\x});
+\end{scope}
+% rescaled feasible chords: directions in the cone
+\foreach \a in {50,90,135,180}
+  \draw[->, black!60, line width=0.8pt] (0,0) -- (\a:0.5);
+\draw[->, line width=1.3pt] (0,0) -- (1,0);
+\node[lab, anchor=north] at (0.85,-0.02) {$\mathbf{d}$};
+\node[lab, anchor=south west] at (50:0.5) {$\mathbf{w}$};
+% xbar
+\filldraw (0,0) circle (1.6pt);
+\node[lab, anchor=north east] at (-0.05,-0.02) {$\bar{\mathbf{x}}$};
+% labels
+\node[lab, anchor=west] at (-0.55,1.85) {tangent cone $T_S(\bar{\mathbf{x}})$};
+\node[lab, anchor=south east, fill=white, inner sep=1pt] at (2.25,-0.5) {not in $T_S$};
+\end{tikzpicture}

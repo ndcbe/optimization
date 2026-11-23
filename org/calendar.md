@@ -18,8 +18,8 @@ If this page disagrees with Canvas, Canvas wins.
 | Friday, October 30, 2026 | [](../notebooks/assignments/Algorithms2.ipynb) |
 | Friday, November 13, 2026 | [](../notebooks/assignments/Algorithms3.ipynb) |
 | Friday, December 4, 2026 | [](../notebooks/assignments/Algorithms4.ipynb) |
-| Wednesday, December 9, 2026 | [](../notebooks/assignments/Algorithms5.ipynb) |
-| Wednesday, December 9, 2026 | [](../notebooks/assignments/Algorithms6.ipynb) |
+| Friday, December 11, 2026 | [](../notebooks/assignments/Algorithms5.ipynb) |
+| Tuesday, December 15, 2026 | [](../notebooks/assignments/Algorithms6.ipynb) |
 | Optional, not graded | [](../notebooks/assignments/Algorithms-SQP.ipynb), practice for recorded Lecture 23 |
 
 All assignments are due at 5pm unless otherwise noted.

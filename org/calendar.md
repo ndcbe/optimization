@@ -100,27 +100,18 @@ Mondays and Wednesdays, 12:30 -- 1:45 pm, 184 Nieuwland Science Hall.
 | Monday, November 30, 2026 | 21. Second Order Conditions and Equality Constrained NLPs | [](../notebooks/7/Second-Order.ipynb) |
 |  |  | [](../notebooks/7/Interior-Point1.ipynb) |
 |  |  | [](../notebooks/7/Interior-Point2.ipynb) |
-| Wednesday, December 2, 2026 | 25. Integer Programming Algorithms | [](../notebooks/8/MILP.ipynb) |
+| **Recorded** | 22. Globalization for Constrained Optimization (required) | [](../notebooks/7/Constrained-Globalization.ipynb) |
+| **Recorded** | 23. Sequential Quadratic Programming (optional) | [](../notebooks/7/SQP.ipynb) |
+| Wednesday, December 2, 2026 | 24. Barrier and Interior Point Methods | [](../notebooks/7/Barrier-Methods.ipynb) |
+| Monday, December 7, 2026 | 25. Integer Programming Algorithms | [](../notebooks/8/MILP.ipynb) |
 |  |  | [](../notebooks/8/MINLP-Algorithms.ipynb) |
-| Monday, December 7, 2026 | 24. Barrier and Interior Point Methods | [](../notebooks/7/Barrier-Methods.ipynb) |
+| **Recorded** | 26. Deterministic Global Optimization (optional) | [](../notebooks/8/Global-Opt.ipynb) |
+|  |  | [](../notebooks/8/Deterministic_Global_Optimization.ipynb) |
 | Wednesday, December 9, 2026 | 27. Optimization for Decision Support | [](../notebooks/8/Optimization-in-Context.ipynb) |
 | Tuesday, December 15, 2026 | **FINAL EXAM (in person), 7:30--9:30 pm** | |
 
-### Recorded, required lecture
+### Recorded lectures
 
-This lecture is recorded and posted on Canvas. **Watch it before Monday, December 7**: Lecture 24 and
-Algorithms 5 build on its merit function and filter. It is on the final exam.
-
-| Lecture | Course webpages |
-| ----------- | ----------- |
-| 22. Globalization for Constrained Optimization | [](../notebooks/7/Constrained-Globalization.ipynb) |
-
-### Recorded, optional lectures
-
-These lectures are recorded and posted on Canvas. They are optional and **not on the final exam**.
-
-| Lecture | Course webpages |
-| ----------- | ----------- |
-| 23. Sequential Quadratic Programming | [](../notebooks/7/SQP.ipynb) |
-| 26. Deterministic Global Optimization | [](../notebooks/8/Global-Opt.ipynb) |
-|  | [](../notebooks/8/Deterministic_Global_Optimization.ipynb) |
+Recorded lectures are posted on Canvas. Lecture 22 is required: **watch it before Wednesday, December 2**.
+Lecture 24 and Algorithms 5 build on its merit function and filter, and it is on the final exam.
+Lectures 23 and 26 are optional and **not on the final exam**.

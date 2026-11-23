@@ -17,14 +17,14 @@ If this page disagrees with Canvas, Canvas wins.
 | Friday, October 23, 2026 | [](../notebooks/assignments/Algorithms1.ipynb) |
 | Friday, October 30, 2026 | [](../notebooks/assignments/Algorithms2.ipynb) |
 | Friday, November 13, 2026 | [](../notebooks/assignments/Algorithms3.ipynb) |
-| Friday, December 4, 2026 | [](../notebooks/assignments/Algorithms4.ipynb) |
-| Friday, December 11, 2026 | [](../notebooks/assignments/Algorithms5.ipynb) |
+| Wednesday, December 2, 2026 | [](../notebooks/assignments/Algorithms4.ipynb) |
+| Wednesday, December 9, 2026 | [](../notebooks/assignments/Algorithms5.ipynb) |
 | Tuesday, December 15, 2026 | [](../notebooks/assignments/Algorithms6.ipynb) |
 | Optional, not graded | [](../notebooks/assignments/Algorithms-SQP.ipynb), practice for recorded Lecture 23 |
 
 All assignments are due at 5pm unless otherwise noted.
 
-**Your lowest homework score is dropped** --- ten are set and the best nine count. Algorithms 6 is optional: skip it and it is your dropped score, or complete it to replace a lower one. See the
+**Your lowest homework score is dropped** (best 9 out of 10). For many students, Algorithms 6 is optional and becomes the dropped score. See the
 [syllabus](./syllabus.md).
 
 ## Exams
